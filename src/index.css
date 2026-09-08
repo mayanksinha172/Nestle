@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #141312;
+  --s1: #1b1918;
+  --s2: #242121;
+  --ink: #f3f2f2;
+  --dim: #9b9797;
+  --faint: #605d5d;
+  --rule: rgba(243, 242, 242, 0.14);
+  --rule2: rgba(243, 242, 242, 0.32);
+  --acc: #ff563c;
+  --ok: #4fa87c;
+  --warn: #cf9a2b;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html, body { margin: 0; padding: 0; background: #141312; }
+* { box-sizing: border-box; }
+
+a { color: #ff563c; text-decoration: none; }
+a:hover { color: #ff9783; }
+
+input, textarea, select, button { font-family: inherit; font-size: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+::selection { background: rgba(255, 86, 60, 0.28); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--rule); }
+::-webkit-scrollbar-track { background: transparent; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes puls { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes fill { from { opacity: 0.25; } to { opacity: 1; } }
