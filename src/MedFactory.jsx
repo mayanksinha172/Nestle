@@ -203,7 +203,7 @@ const INTEL_CRITERIA = [
     id: 'conference',
     label: 'Conference & Trend Signals',
     color: 'var(--ok)',
-    opener: (topic, hero) =>
+    opener: () =>
       `What's the current signal from conferences and publications?\n\nAny key abstracts, posters, or late-breaking trials from ADA, ESC, EASD, or ACC that should inform this deck? Any major meta-analyses published in the last 18 months?\n\nAlso — are there any upcoming data readouts, guideline updates, or label expansions that the content should anticipate or be future-proofed against?`,
   },
   {
@@ -217,7 +217,7 @@ const INTEL_CRITERIA = [
     id: 'evidence',
     label: 'Evidence Strength',
     color: 'var(--ok)',
-    opener: (topic, hero) =>
+    opener: () =>
       `Walk me through the evidence hierarchy supporting the key claims.\n\nWhat are the landmark trials we should anchor to? Are there head-to-head RCTs, or are we relying on indirect comparisons and real-world data? What is the quality of the primary publications — peer-reviewed journals, sample sizes, follow-up duration?\n\nAny claims that are widely accepted in practice but where the evidence base is actually thinner than it appears?`,
   },
   {
@@ -238,7 +238,7 @@ const INTEL_CRITERIA = [
     id: 'judgment',
     label: 'Strategic Judgments',
     color: 'var(--dim)',
-    opener: (topic, hero) =>
+    opener: () =>
       `Final layer — strategic and editorial judgments.\n\nWhat tone should this deck take: authoritative and data-heavy, or conversational and case-driven? Are there any competitive sensitivities, regulatory guardrails, or internal brand guidelines that constrain what we can say?\n\nAnything you want to make absolutely sure makes it into the content — or absolutely sure stays out? Think of this as your final editorial brief to the agent team before they start building.`,
   },
 ];
@@ -254,10 +254,403 @@ const SLIDES = [
   { n: 8, title: 'Safety and tolerability profile', st: 'pending', layout: 'Table' },
 ];
 
+const RESEARCH_PAPERS = [
+  { db: 'PubMed', type: 'RCT', title: 'Semaglutide CV outcomes — SUSTAIN-6', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2019, score: 0.97, artifacts: ['Deck', 'Protocol'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 22/25 (excellent)', grade: 'High certainty', citations: '891 citations · 148.5/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,297 · ITT · 104 wks', relevance: 97, flag: null, excerpt: '"The primary composite outcome of cardiovascular death, nonfatal myocardial infarction, or nonfatal stroke occurred in 6.6% of the semaglutide group versus 8.9% in the placebo group (HR 0.74; 95% CI 0.58–0.95; P=0.02 for noninferiority)."', excerptSrc: '— Results, p.12' },
+  { db: 'PubMed', type: 'RCT', title: 'SELECT: Semaglutide in obesity without diabetes', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2023, score: 0.95, artifacts: ['Deck', 'Blog'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 24/25 (excellent)', grade: 'High certainty', citations: '312 citations · 156/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=17,604 · ITT · 39.8 mo', relevance: 95, flag: null, excerpt: '"Treatment with semaglutide resulted in a significantly lower incidence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke than placebo (HR 0.80; 95% CI 0.72–0.90; P<0.001)."', excerptSrc: '— Primary outcomes, p.8' },
+  { db: 'EMBASE', type: 'Systematic Review', title: 'GLP-1 RA class effect on MACE — Cochrane review', journal: 'Cochrane Database Syst Rev · MEDLINE-indexed, high impact', year: 2024, score: 0.93, artifacts: ['Deck', 'Protocol', 'Blog'], track: 'General interventional evidence', designTier: 'Systematic review · meta-analysis of 7 RCTs', appraisal: 'AMSTAR-2: 15/16 (high confidence)', grade: 'High certainty', citations: '44 citations · 44/yr', funding: 'Independent — no industry funding', statRigor: 'Pooled N=56,004, I²=12%', relevance: 93, flag: null, excerpt: '"GLP-1 receptor agonists reduced major adverse cardiovascular events compared with placebo or active comparator (RR 0.88; 95% CI 0.82–0.94), with evidence of low heterogeneity across trials, supporting a class effect."', excerptSrc: '— Results, p.7' },
+  { db: 'ADA Guidelines', type: 'Guideline', title: 'Standards of Care in Diabetes 2025 · Section 9', journal: 'Diabetes Care · ADA official guideline', year: 2025, score: 0.94, artifacts: ['Deck', 'Protocol'], track: 'Clinical practice guideline', designTier: 'Expert consensus · annual update', appraisal: 'AGREE II: A-rated', grade: 'Grade A — Strong recommendation', citations: '2,100+ citations · ongoing', funding: 'ADA · public-health grant', statRigor: 'N/A · evidence synthesis', relevance: 94, flag: null, excerpt: '"For adults with type 2 diabetes and established atherosclerotic cardiovascular disease, a GLP-1 receptor agonist with demonstrated cardiovascular benefit is recommended independently of baseline HbA1c or individualised glucose target."', excerptSrc: '— Section 9.3, p.S114' },
+  { db: 'EMBASE', type: 'Meta-Analysis', title: 'Glycaemic attainment in T2D — 41 real-world cohorts', journal: 'Lancet Diabetes Endocrinol · MEDLINE-indexed, high impact', year: 2024, score: 0.91, artifacts: ['Deck', 'Blog'], track: 'Real-world outcomes evidence', designTier: 'Meta-analysis · 41 real-world cohorts', appraisal: 'AMSTAR-2: 13/16 (moderate confidence)', grade: 'Moderate certainty', citations: '62 citations · 62/yr', funding: 'Independent · public-health grant', statRigor: 'Pooled N=1.2M, I²=38%', relevance: 91, flag: null, excerpt: '"Across 41 cohorts totalling 1.2 million patients, only 47.2% achieved their individualised HbA1c target. Attainment was lowest in the first two years following treatment intensification, the window in which therapeutic inertia is most frequently recorded."', excerptSrc: '— Primary analysis, p.4' },
+  { db: 'PubMed', type: 'RCT', title: 'LEADER: Liraglutide and cardiovascular outcomes', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2016, score: 0.86, artifacts: ['Deck'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 21/25 (good)', grade: 'High certainty', citations: '4,211 citations · 526/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=9,340 · ITT · 3.8 yrs', relevance: 86, flag: null, excerpt: '"The rate of first occurrence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke was lower with liraglutide than with placebo (HR 0.87; 95% CI 0.78–0.97; P=0.01 for superiority)."', excerptSrc: '— Primary endpoint, p.10' },
+  { db: 'IDF Atlas', type: 'Registry', title: 'IDF Diabetes Atlas 11th edition — 2025', journal: 'International Diabetes Federation · global surveillance', year: 2025, score: 0.88, artifacts: ['Deck', 'Blog'], track: 'Epidemiological / burden of disease', designTier: 'Registry · global epidemiological survey', appraisal: 'N/A · surveillance report', grade: 'Grade B — Surveillance data', citations: '180 citations · ongoing', funding: 'IDF · multi-donor funded', statRigor: 'N=589M+ · global modelling', relevance: 88, flag: null, excerpt: '"An estimated 589 million adults aged 20–79 years were living with diabetes in 2024. This number is projected to reach 853 million by 2050, with the largest relative increases occurring in low- and middle-income regions."', excerptSrc: '— Executive Summary, p.6' },
+  { db: 'EMBASE', type: 'Real-World', title: 'Therapeutic inertia in T2D — UK primary care cohort', journal: 'Diabetes Obes Metab · MEDLINE-indexed', year: 2023, score: 0.87, artifacts: ['Deck', 'Protocol'], track: 'Real-world outcomes evidence', designTier: 'Retrospective cohort · UK primary care', appraisal: 'STROBE: 18/22 (good)', grade: 'Moderate certainty', citations: '39 citations · 13/yr', funding: 'Independent · NHS research grant', statRigor: 'N=82,000 · retrospective · 5 yr follow-up', relevance: 87, flag: null, excerpt: '"The median delay from first recorded HbA1c exceeding the individualised target to treatment intensification was 3.7 years (IQR 1.4–6.9), with the longest delays observed in patients managed exclusively in primary care without specialist referral."', excerptSrc: '— Results, p.5' },
+  { db: 'ADA/KDIGO', type: 'Guideline', title: 'Joint consensus on CKD management in T2D — 2025', journal: 'Diabetes Care / Kidney Int · joint ADA + KDIGO', year: 2025, score: 0.79, artifacts: ['Protocol', 'Deck'], track: 'Clinical practice guideline', designTier: 'Joint expert consensus guideline', appraisal: 'AGREE II: A-rated', grade: 'Grade A — Joint recommendation', citations: '94 citations · ongoing', funding: 'ADA + KDIGO · non-industry', statRigor: 'N/A · evidence synthesis panel', relevance: 79, flag: null, excerpt: '"For patients with type 2 diabetes and chronic kidney disease with eGFR ≥15 mL/min/1.73m², a GLP-1 receptor agonist with demonstrated cardiovascular or kidney benefit is recommended as a preferred add-on therapy, independently of HbA1c."', excerptSrc: '— Recommendation 4.2, p.S18' },
+  { db: 'NICE', type: 'Guideline', title: 'Type 2 diabetes in adults: management — NG28', journal: 'NICE · UK national clinical guideline', year: 2024, score: 0.85, artifacts: ['Protocol', 'Deck'], track: 'Clinical practice guideline', designTier: 'NICE clinical guideline · evidence review', appraisal: 'AGREE II: A-rated', grade: 'Grade A — NICE evidence review', citations: '620 citations · ongoing', funding: 'NICE · UK government funded', statRigor: 'N/A · UK population-based review', relevance: 85, flag: null, excerpt: '"Individualise HbA1c targets, taking account of the person\'s daily activities, likelihood of adherence, comorbidities, risk of hypoglycaemia, and the likelihood that achieving the target will not be outweighed by the risks of treatment."', excerptSrc: '— Recommendation 1.7.1, p.22' },
+  { db: 'PubMed', type: 'RCT', title: 'AMPLITUDE-O: Efpeglenatide CV outcomes in T2D', journal: 'N Engl J Med · MEDLINE-indexed', year: 2021, score: 0.74, artifacts: ['Deck'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 20/25 (good)', grade: 'High certainty', citations: '148 citations · 29.6/yr', funding: 'Industry-sponsored · Sanofi', statRigor: 'N=4,076 · ITT · 1.8 yrs', relevance: 74, flag: null, excerpt: '"The incidence of major adverse cardiovascular events was significantly lower with efpeglenatide than with placebo (HR 0.73; 95% CI 0.58–0.92; P=0.007), consistent with a GLP-1 class effect on cardiovascular risk reduction."', excerptSrc: '— Primary results, p.9' },
+  { db: 'EMBASE', type: 'RCT', title: 'Renal outcomes with GLP-1 RA in T2D and CKD', journal: 'N Engl J Med · post-hoc analysis', year: 2019, score: 0.82, artifacts: ['Deck', 'Protocol'], track: 'Renal outcomes evidence', designTier: 'Pre-specified post-hoc analysis of SUSTAIN-6', appraisal: 'CONSORT: 19/25 (post-hoc limitation noted)', grade: 'Moderate certainty', citations: '212 citations · 35.3/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,297 · CKD subgroup · post-hoc', relevance: 82, flag: null, excerpt: '"Treatment with semaglutide was associated with a lower rate of new or worsening nephropathy (3.8% vs 6.1%; HR 0.64; 95% CI 0.46–0.88), driven predominantly by a reduction in persistent macroalbuminuria."', excerptSrc: '— Secondary outcomes, p.14' },
+];
+
+const RESEARCH_DBS = ['PubMed', 'EMBASE', 'ADA / EASD Guidelines', 'NICE / SIGN', 'Cochrane Library', 'IDF Atlas'];
+
+const CONTENT_TRACKS = [
+  { id: 'condition', label: 'Condition & clinical problem', color: '#7eb8f7',
+    paperTracks: ['Epidemiological / burden of disease', 'Real-world outcomes evidence'] },
+  { id: 'root', label: 'Root cause & mechanisms', color: '#7cc8b8',
+    paperTracks: ['Clinical practice guideline'] },
+  { id: 'foundational', label: 'Foundational & lifestyle support', color: '#e5a14b',
+    paperTracks: [] },
+  { id: 'general', label: 'General interventional evidence', color: '#f97b7b',
+    paperTracks: ['General interventional evidence', 'Cardiovascular outcomes evidence'] },
+  { id: 'targeted', label: 'Targeted support & ingredients', color: '#c084fc',
+    paperTracks: [] },
+  { id: 'hero', label: 'Hero product evidence', color: '#fb923c',
+    paperTracks: [] },
+  { id: 'safety', label: 'Safety & clinical application', color: '#4ade80',
+    paperTracks: ['Renal outcomes evidence'] },
+];
+
+const ALL_ARTIFACTS = ['Deck', 'Blog', 'Protocol', 'Blurb', 'Facts'];
+
+const PAPER_MOCK_SECTIONS = {
+  default: [
+    {
+      id: 'abstract', heading: 'Abstract',
+      paragraphs: [
+        'Background: Type 2 diabetes mellitus (T2DM) remains a leading cause of cardiovascular morbidity worldwide. GLP-1 receptor agonists have demonstrated significant reductions in major adverse cardiovascular events (MACE) in large randomised controlled trials.',
+        'Methods: We conducted a systematic review and meta-analysis of cardiovascular outcome trials (CVOTs) for GLP-1 RAs, including SUSTAIN-6, LEADER, PIONEER 6, HARMONY, and SELECT. Primary endpoint was 3-point MACE (CV death, non-fatal MI, non-fatal stroke). Secondary endpoints included all-cause mortality, hospitalisation for heart failure, and renal composite outcomes.',
+        'Results: Across 6 trials (n=60,080 participants), GLP-1 RAs significantly reduced 3-point MACE (HR 0.86; 95% CI 0.80–0.93; p<0.001). Semaglutide demonstrated the most pronounced effect with a 20% MACE reduction in SELECT (HR 0.80; 95% CI 0.72–0.90).',
+        'Conclusions: GLP-1 receptor agonists provide meaningful cardiovascular protection in patients with T2DM and established or high-risk cardiovascular disease. These findings support guideline recommendations for preferential use of GLP-1 RAs in this population.',
+      ]
+    },
+    {
+      id: 'intro', heading: '1. Introduction',
+      paragraphs: [
+        'Type 2 diabetes mellitus affects an estimated 537 million adults globally and is projected to reach 783 million by 2045 (IDF Atlas, 2021). Cardiovascular disease remains the leading cause of mortality in this population, accounting for approximately 50% of deaths in people with T2DM.',
+        'Glucagon-like peptide-1 receptor agonists (GLP-1 RAs) represent a major therapeutic advance in the management of T2DM. Beyond glycaemic control, this drug class has demonstrated clinically meaningful reductions in cardiovascular events through mechanisms that include weight reduction, blood pressure lowering, and direct cardioprotective effects via GLP-1R expressed in cardiac tissue.',
+        'The semaglutide cardiovascular outcome programme — comprising SUSTAIN-6 (subcutaneous) and PIONEER 6 (oral) — established non-inferiority to placebo for MACE. The more recent SELECT trial (2023), uniquely enrolling patients with overweight/obesity and established CVD without T2DM, demonstrated superiority for 3-point MACE, broadening the evidence base substantially.',
+        'This review aims to synthesise the totality of cardiovascular evidence for GLP-1 RAs, with particular focus on semaglutide, to inform clinical practice and medical affairs communications.',
+      ]
+    },
+    {
+      id: 'methods', heading: '2. Methods',
+      paragraphs: [
+        'We searched PubMed, EMBASE, and the Cochrane Library from inception to August 2025. Eligible studies were randomised controlled trials with pre-specified cardiovascular outcome data reporting on GLP-1 RA therapies in adults with T2DM or high cardiovascular risk, with a minimum follow-up of 12 months.',
+        'Two independent reviewers extracted data on trial design, population characteristics, primary endpoint events, and pre-specified secondary outcomes. Risk of bias was assessed using the Cochrane RoB 2 tool. Statistical heterogeneity was evaluated using the I² statistic; values >50% were considered to indicate substantial heterogeneity.',
+        'The primary analysis used a random-effects model (DerSimonian-Laird). Subgroup analyses were performed by baseline HbA1c, BMI, renal function (eGFR <60 mL/min/1.73m²), and history of prior MI or stroke.',
+      ]
+    },
+    {
+      id: 'results', heading: '3. Results',
+      paragraphs: [
+        '3.1 Trial Characteristics. Six CVOTs met inclusion criteria: LEADER (liraglutide; n=9,340), SUSTAIN-6 (semaglutide SC; n=3,297), PIONEER 6 (semaglutide oral; n=3,183), HARMONY (albiglutide; n=9,463), REWIND (dulaglutide; n=9,901), SELECT (semaglutide SC 2.4 mg; n=17,604). Mean follow-up ranged from 1.3 years (PIONEER 6) to 5.4 years (REWIND).',
+        '3.2 Primary Endpoint. The pooled HR for 3-point MACE was 0.86 (95% CI 0.80–0.93; I²=23%). All agents demonstrated point estimates below 1.0. Semaglutide showed numerically superior cardiovascular protection: SUSTAIN-6 HR 0.74 (95% CI 0.58–0.95) and SELECT HR 0.80 (95% CI 0.72–0.90).',
+        '3.3 Secondary Outcomes. All-cause mortality was reduced by 12% across the class (HR 0.88; 95% CI 0.82–0.94). Hospitalisation for heart failure was reduced by 9% (HR 0.91; 95% CI 0.83–0.99). The renal composite outcome (40% eGFR decline, ESKD, or renal death) was reduced by 21% (HR 0.79; 95% CI 0.73–0.87), with consistent effects across eGFR strata.',
+        '3.4 Subgroup Analyses. Cardiovascular benefit was consistent across age, sex, baseline HbA1c, and BMI. In patients with prior MI or stroke, the MACE reduction was more pronounced (HR 0.81; 95% CI 0.73–0.90 vs HR 0.91 in those without established CVD).',
+      ]
+    },
+    {
+      id: 'discussion', heading: '4. Discussion',
+      paragraphs: [
+        'This meta-analysis confirms that GLP-1 receptor agonists, as a class, significantly reduce 3-point MACE in individuals with T2DM and high cardiovascular risk. The consistency of effect across agents and trials strengthens confidence in a class-level cardioprotective mechanism, likely mediated through both metabolic and direct cardiac effects.',
+        'Semaglutide demonstrates the most robust evidence base, encompassing both the largest trial by sample size (SELECT, n=17,604) and one of the earliest superiority demonstrations (SUSTAIN-6). The SELECT trial is particularly noteworthy as it demonstrated benefit in individuals without T2DM, suggesting that cardiovascular protection extends beyond glycaemic mechanisms.',
+        'Several limitations warrant consideration. Trial populations differed in baseline CV risk, duration of diabetes, and background therapy. The SUSTAIN-6 trial was powered for non-inferiority only; the superiority finding should be interpreted with appropriate caution. Publication bias, while unlikely given regulatory mandates for CVOT reporting, cannot be entirely excluded.',
+        'From a clinical and medical affairs perspective, these data support the preferential positioning of semaglutide in patients with T2DM and established CVD or high cardiovascular risk, consistent with the 2023 ADA/EASD consensus statement.',
+      ]
+    },
+    {
+      id: 'refs', heading: 'References',
+      paragraphs: [
+        '1. Marso SP et al. Semaglutide and Cardiovascular Outcomes in Patients with Type 2 Diabetes. N Engl J Med. 2016;375:1834-1844. (SUSTAIN-6)',
+        '2. Lincoff AM et al. Semaglutide and Cardiovascular Outcomes in Obesity without Diabetes. N Engl J Med. 2023;389:2221-2232. (SELECT)',
+        '3. Marso SP et al. Liraglutide and Cardiovascular Outcomes in Type 2 Diabetes. N Engl J Med. 2016;375:311-322. (LEADER)',
+        '4. American Diabetes Association / EASD. Consensus Report: Management of Hyperglycaemia in Type 2 Diabetes, 2023. Diabetes Care. 2023;46(10):2753–2786.',
+        '5. IDF Diabetes Atlas, 10th Edition, 2021. International Diabetes Federation, Brussels.',
+      ]
+    },
+  ]
+};
+
+/* ─────────────────────────────────────────────────────────────────
+   SciPaperReader — defined at module level so React never unmounts it
+   on re-render (avoids flicker / animation replays).
+───────────────────────────────────────────────────────────────── */
+const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
+  setSciSelectedPaper, setSciCommentDraft, setSciCommentText,
+  submitSciComment, cancelSciComment, resolveSciComment }) => {
+
+  const [hoveredPara, setHoveredPara] = React.useState(null);
+  const sections = PAPER_MOCK_SECTIONS.default;
+  const trackColor = (() => {
+    const tc = CONTENT_TRACKS.find(t => t.paperTracks && t.paperTracks.includes(paper.track));
+    return tc ? tc.color : '#1e40af';
+  })();
+  const activeCount = Object.entries(sciInlineComments)
+    .filter(([k]) => k.startsWith(`${paper._idx}-`))
+    .flatMap(([, c]) => c).filter(c => !c.resolved).length;
+
+  return (
+    <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#fff', borderLeft: '1px solid rgba(13,31,78,0.12)' }}>
+
+      {/* ── Header bar ── */}
+      <div style={{ padding: '13px 20px', borderBottom: '1px solid rgba(13,31,78,0.12)', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, background: '#fff' }}>
+        <div style={{ width: 5, height: 38, background: trackColor, flexShrink: 0, borderRadius: 3 }} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ font: '700 13.5px/1.4 Archivo', color: '#0d1f4e', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
+          <div style={{ font: '400 11px/1 Archivo', color: '#4a6896', marginTop: 4 }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+          {activeCount > 0 && (
+            <span style={{ padding: '3px 10px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.3)', font: '600 10px/1 Archivo', color: '#92400e', borderRadius: 99 }}>
+              {activeCount} comment{activeCount > 1 ? 's' : ''}
+            </span>
+          )}
+          <span style={{ font: '400 10px/1 Archivo', color: '#4a6896', letterSpacing: '0.02em' }}>Hover to comment</span>
+          <button onClick={() => setSciSelectedPaper(null)} style={{ padding: '5px 13px', font: '600 10.5px/1 Archivo', border: '1px solid rgba(13,31,78,0.18)', color: '#1e3460', background: 'transparent', cursor: 'pointer', borderRadius: 4 }}>&#x2715; Close</button>
+        </div>
+      </div>
+
+      {/* ── Body: scrollable text + sidebar ── */}
+      <div style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
+
+        {/* Text column */}
+        <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc' }}>
+          <div style={{ maxWidth: 720, margin: '0 auto', padding: '52px 56px 80px 68px' }}>
+
+            {/* Paper title block */}
+            <div style={{ marginBottom: 36 }}>
+              <h1 style={{ font: '800 26px/1.3 Archivo', letterSpacing: '-0.03em', color: '#0d1f4e', margin: '0 0 14px' }}>{paper.title}</h1>
+              <p style={{ font: '500 13px/1.6 Archivo', color: '#4a6896', margin: '0 0 6px' }}>
+                Systematic Review &amp; Meta-Analysis &middot; {paper.journal} &middot; {paper.year}
+              </p>
+              {paper.n && <p style={{ font: '600 12px/1 Archivo', color: '#1e3460', margin: '0 0 28px' }}>n = {paper.n.toLocaleString()} participants</p>}
+              <div style={{ height: 2, background: 'rgba(13,31,78,0.1)' }} />
+            </div>
+
+            {/* Sections */}
+            {sections.map((sec) => (
+              <div key={sec.id} style={{ marginBottom: 44 }}>
+                <h3 style={{ font: '600 10.5px/1 Archivo', letterSpacing: '0.14em', color: '#4a6896', textTransform: 'uppercase', margin: '0 0 18px', paddingBottom: 10, borderBottom: '1px solid rgba(13,31,78,0.1)' }}>
+                  {sec.heading}
+                </h3>
+
+                {sec.paragraphs.map((para, pi) => {
+                  const paraKey = `${paper._idx}-${sec.id}-${pi}`;
+                  const paraComments = (sciInlineComments[paraKey] || []).filter(c => !c.resolved);
+                  const isDraftTarget = sciCommentDraft && sciCommentDraft.key === paraKey;
+                  const hasComment = paraComments.length > 0;
+                  const isHov = hoveredPara === paraKey && !isDraftTarget;
+
+                  return (
+                    <div key={pi}
+                      style={{ position: 'relative', marginBottom: 22 }}
+                      onMouseEnter={() => setHoveredPara(paraKey)}
+                      onMouseLeave={() => { if (hoveredPara === paraKey) setHoveredPara(null); }}>
+
+                      {/* Left margin: comment dot or + button */}
+                      <div style={{ position: 'absolute', left: -40, top: 5, width: 28, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+                        {hasComment && !isDraftTarget && (
+                          <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#92400e', display: 'grid', placeItems: 'center', fontSize: 9, fontWeight: 800, color: '#fff', boxShadow: '0 1px 4px rgba(0,0,0,0.18)' }}>
+                            {paraComments.length}
+                          </div>
+                        )}
+                        {isHov && !hasComment && (
+                          <div
+                            title="Add comment"
+                            onMouseDown={e => { e.stopPropagation(); setSciCommentDraft(paraKey); }}
+                            style={{ width: 22, height: 22, borderRadius: '50%', background: '#1e40af', display: 'grid', placeItems: 'center', fontSize: 17, fontWeight: 300, color: '#fff', cursor: 'pointer', boxShadow: '0 2px 8px rgba(30,64,175,0.4)', userSelect: 'none', pointerEvents: 'auto' }}>
+                            +
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Paragraph */}
+                      <p
+                        onClick={() => { if (!isDraftTarget) setSciCommentDraft(paraKey); }}
+                        style={{
+                          margin: 0,
+                          font: sec.id === 'refs' ? '400 13px/1.75 Archivo' : '400 15.5px/1.9 Georgia, "Times New Roman", serif',
+                          color: sec.id === 'refs' ? '#1e3460' : '#0d1f4e',
+                          background: isDraftTarget ? 'rgba(30,64,175,0.07)' : hasComment ? 'rgba(146,64,14,0.07)' : isHov ? 'rgba(30,64,175,0.04)' : 'transparent',
+                          padding: '6px 10px',
+                          marginLeft: -10,
+                          borderLeft: isDraftTarget ? '3px solid #1e40af' : hasComment ? '3px solid #92400e' : isHov ? '3px solid rgba(30,64,175,0.3)' : '3px solid transparent',
+                          cursor: 'text',
+                          transition: 'background 0.1s, border-color 0.1s',
+                          borderRadius: '0 3px 3px 0',
+                          userSelect: 'text',
+                        }}>
+                        {para}
+                      </p>
+
+                      {/* Comment input card */}
+                      {isDraftTarget && (
+                        <div
+                          onClick={e => e.stopPropagation()}
+                          style={{ marginTop: 12, background: '#fff', border: '1px solid rgba(13,31,78,0.14)', boxShadow: '0 4px 24px rgba(13,31,78,0.12)', padding: '14px 16px', borderRadius: 6, animation: 'fadeUp 0.16s ease' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                            <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#1e40af', display: 'grid', placeItems: 'center', font: '700 9px Archivo', color: '#fff', flexShrink: 0 }}>AM</div>
+                            <div>
+                              <div style={{ font: '600 12px/1 Archivo', color: '#0d1f4e' }}>Dr. Arjun Mehta</div>
+                              <div style={{ font: '400 10px/1 Archivo', color: '#4a6896', marginTop: 2 }}>Scientific Adviser</div>
+                            </div>
+                          </div>
+                          <textarea
+                            autoFocus
+                            rows={3}
+                            placeholder="Add a scientific comment or concern…"
+                            value={sciCommentDraft.text}
+                            onChange={e => setSciCommentText(e.target.value)}
+                            style={{ width: '100%', background: '#f8fafc', border: '1px solid rgba(13,31,78,0.15)', color: '#0d1f4e', padding: '10px 12px', font: '400 13.5px/1.6 Archivo', resize: 'none', outline: 'none', display: 'block', borderRadius: 4 }}
+                          />
+                          <div style={{ display: 'flex', gap: 8, marginTop: 10, justifyContent: 'flex-end' }}>
+                            <button onClick={cancelSciComment} style={{ padding: '7px 14px', font: '600 11.5px/1 Archivo', border: '1px solid rgba(13,31,78,0.18)', color: '#1e3460', background: '#fff', cursor: 'pointer', borderRadius: 4 }}>Cancel</button>
+                            <button onClick={submitSciComment} style={{ padding: '7px 18px', font: '700 11.5px/1 Archivo', background: '#1e40af', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: 4 }}>Add Comment</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Comments sidebar */}
+        <div style={{ width: 280, flexShrink: 0, borderLeft: '1px solid rgba(13,31,78,0.1)', overflowY: 'auto', padding: '24px 18px', background: '#fff' }}>
+          <div style={{ font: '700 9px/1 Archivo', letterSpacing: '0.14em', color: '#4a6896', marginBottom: 18 }}>REVIEW COMMENTS</div>
+          {Object.entries(sciInlineComments)
+            .filter(([k]) => k.startsWith(`${paper._idx}-`))
+            .flatMap(([key, cmts]) => cmts.map(cmt => ({ key, cmt })))
+            .filter(({ cmt }) => !cmt.resolved)
+            .map(({ key, cmt }) => (
+              <div key={cmt.id} style={{ border: '1px solid rgba(13,31,78,0.1)', background: '#f8fafc', padding: '12px 14px', marginBottom: 10, borderRadius: 6, animation: 'rise 0.2s ease' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                  <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#1e40af', display: 'grid', placeItems: 'center', font: '700 9px Archivo', color: '#fff', flexShrink: 0 }}>AM</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ font: '600 12px/1 Archivo', color: '#0d1f4e' }}>{cmt.author}</div>
+                    <div style={{ font: '400 10px/1 Archivo', color: '#4a6896', marginTop: 3 }}>{cmt.time}</div>
+                  </div>
+                </div>
+                <p style={{ margin: '0 0 10px', font: '400 13px/1.65 Archivo', color: '#0d1f4e' }}>{cmt.text}</p>
+                <button
+                  onClick={() => resolveSciComment(key, cmt.id)}
+                  style={{ font: '600 10.5px/1 Archivo', color: '#4a6896', background: 'none', border: '1px solid rgba(13,31,78,0.12)', cursor: 'pointer', padding: '4px 10px', borderRadius: 3 }}>
+                  &#x2713; Resolve
+                </button>
+              </div>
+            ))}
+          {activeCount === 0 && (
+            <div style={{ font: '400 12.5px/1.8 Archivo', color: '#4a6896', padding: '8px 0' }}>
+              No comments yet.<br />
+              Hover any paragraph and click the{' '}
+              <strong style={{ color: '#1e40af' }}>+</strong> button to add a comment.
+            </div>
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+/* ── Resizable split panel (drag the divider to resize) ── */
+const ResizableSplit = ({ left, right, defaultLeftPct = 44, minPct = 20, maxPct = 78 }) => {
+  const [pct, setPct] = React.useState(defaultLeftPct);
+  const containerRef = React.useRef(null);
+  const dragging = React.useRef(false);
+
+  const startDrag = (e) => {
+    e.preventDefault();
+    dragging.current = true;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    const onMove = (me) => {
+      if (!dragging.current || !containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const next = ((me.clientX - rect.left) / rect.width) * 100;
+      setPct(Math.min(maxPct, Math.max(minPct, next)));
+    };
+    const onUp = () => {
+      dragging.current = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  };
+
+  return (
+    <div ref={containerRef} style={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
+      <div style={{ width: `${pct}%`, flexShrink: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>{left}</div>
+      <div
+        onMouseDown={startDrag}
+        style={{ width: 6, flexShrink: 0, cursor: 'col-resize', background: 'rgba(13,31,78,0.12)', position: 'relative', zIndex: 10, transition: 'background 0.15s' }}
+        onMouseEnter={e => { e.currentTarget.style.background = '#1e40af'; }}
+        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(13,31,78,0.12)'; }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', display: 'flex', flexDirection: 'column', gap: 4, pointerEvents: 'none' }}>
+          {[0,1,2,3,4].map(i => <div key={i} style={{ width: 2, height: 2, borderRadius: '50%', background: 'rgba(255,255,255,0.7)' }} />)}
+        </div>
+      </div>
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>{right}</div>
+    </div>
+  );
+};
+
+/* ── Organize screen agent messages ── */
+const ORGANIZE_AGENT_MSGS = [
+  { text: 'Starting research organisation… scanning **7 accepted papers** across the evidence library and mapping excerpts to 7 content tracks.' },
+  { text: '**Cardiovascular Outcomes** track is strongest — SUSTAIN-6, SELECT, and LEADER provide complementary RCT evidence (HR range 0.74–0.87). SELECT (n=17,604) recommended as the primary anchor claim for all artifact types.' },
+  { text: '**Real-World Evidence** track has 2 papers. The 41-cohort meta-analysis (n=1.2M, attainment 47.2%) and UK therapeutic-inertia cohort (median delay 3.7 yrs) complement each other well for Blog and Facts artifacts.' },
+  { text: '**Clinical Practice Guideline** track has 2 papers. ADA 2025 Section 9 (Grade A) and ADA/KDIGO 2025 joint consensus anchor the Protocol artifact with strong guideline-level evidence.' },
+  { text: '⚠ **Gap detected:** Epidemiological / Burden of Disease track has no accepted papers. IDF Atlas 11th edition (n=589M, 2025) is in your research pool — accepting it fills the Blog and Facts excerpt gap immediately.' },
+  { text: '**Organisation complete.** 4 of 5 artifacts have sufficient excerpt coverage. Blurb set still needs 2 excerpts — the IDF Atlas burden figure and the therapeutic-inertia 3.7-year delay statistic are the best candidates. Ready for MA Review.' },
+];
+
+const REVIEW_AGENT_MSGS = [
+  { step: 1, text: 'Starting Medical Affairs review…\n\nScanning **12 accepted papers** across 6 databases. Loading excerpts from **7 content tracks**. Cross-referencing artifact coverage against required thresholds.' },
+  { step: 2, artifact: 'Deck', color: '#7eb8f7', quality: 89,
+    text: '**HCP Deck (45 min) — Evidence quality: HIGH**\n\n8 of 9 required excerpts confirmed. Strong cardiovascular outcomes evidence from SUSTAIN-6 (RCT, HR 0.74), SELECT (RCT, HR 0.80), and LEADER (RCT, HR 0.87). ADA 2025 provides a Grade A recommendation anchor.\n\n**Gap identified:** Mechanistic GLP-1 receptor pathway detail is thin — 1 excerpt versus 3 recommended for slides 4–5.\n\n**Recommendation:** Proceed. Flag mechanistic gap to content writer.',
+    sources: ['SUSTAIN-6', 'SELECT', 'LEADER', 'ADA 2025'] },
+  { step: 3, artifact: 'Blog', color: '#fb923c', quality: 100,
+    text: '**Blog Post (500 words) — Evidence quality: HIGH**\n\nAll 5 required excerpts confirmed. Strong narrative arc from IDF Atlas burden data through real-world attainment gaps (47.2% target achievement) to GLP-1 RA class benefit.\n\n**No critical gaps identified.** Evidence base supports an evidence-led patient story without requiring specialist language.\n\n**Recommendation:** Proceed with full confidence.',
+    sources: ['IDF Atlas 2025', 'Lancet DE 2024', 'SELECT'] },
+  { step: 4, artifact: 'Protocol', color: '#4ade80', quality: 74,
+    text: '**Protocol — Evidence quality: MODERATE**\n\n6 of 7 required excerpts confirmed. ADA 2025 and ADA/KDIGO joint consensus provide strong guideline anchors. NICE NG28 adds UK-specific context.\n\n**Gap identified:** No excerpt covering dose-titration safety in eGFR 30–59 range. SUSTAIN-6 renal subgroup partially addresses this but was not designed for dose guidance.\n\n**Recommendation:** Proceed with caution. Add a dose-titration note citing the KDIGO joint consensus, section 4.2.',
+    sources: ['ADA 2025', 'ADA/KDIGO 2025', 'NICE NG28'] },
+  { step: 5, artifact: 'Blurb', color: '#f97b7b', quality: 33,
+    text: '**Blurb (×5) — Evidence quality: LOW**\n\n1 of 3 required excerpts confirmed. Coverage is thin — only the SELECT primary endpoint excerpt maps cleanly to a short-form message.\n\n**Critical gaps:** No burden-of-disease hook, no treatment-inertia statistic, no branded call-to-action anchor.\n\n**Recommendation:** Accept at least 2 more excerpts before generating — suggest the IDF Atlas burden figure and the therapeutic inertia 3.7-year delay statistic.',
+    sources: ['SELECT'] },
+  { step: 6, artifact: 'Facts', color: '#a78bfa', quality: 100,
+    text: '**Fact Sheet — Evidence quality: HIGH**\n\n5 excerpts confirmed (above 4 required). Excellent breadth: epidemiology (IDF Atlas), outcomes (SUSTAIN-6, SELECT, LEADER), guidelines (ADA), and real-world attainment gaps (Lancet DE 2024).\n\n**No gaps identified.** Fact sheet can be generated across all 5 target categories immediately.\n\n**Recommendation:** Proceed.',
+    sources: ['IDF Atlas 2025', 'SUSTAIN-6', 'SELECT', 'LEADER', 'ADA 2025', 'Lancet DE'] },
+  { step: 7, artifact: null, quality: 78,
+    text: '**Review complete.**\n\nOverall evidence quality: **GOOD (78/100)**. 4 of 5 artifacts meet threshold for content generation. The Blurb set requires 2 additional excerpts.\n\n**Recommended next action:** Accept the IDF Atlas burden excerpt and the UK therapeutic inertia statistic from the Organize screen, then return to generate all 5 artifact types.' },
+];
+
+const ARTIFACT_TARGETS = {
+  Deck:     { label: 'HCP deck (45 min)', target: 9 },
+  Blog:     { label: 'Blog post',         target: 5 },
+  Protocol: { label: 'Protocol',          target: 7 },
+  Blurb:    { label: 'Blurb (×5)',        target: 3 },
+  Facts:    { label: 'Fact sheet',        target: 4 },
+};
+
+const PAPER_FIGURES = {
+  0: [
+    { type: 'km',     label: 'Figure 2', caption: 'KM estimates — time to first MACE, semaglutide vs. placebo (SUSTAIN-6)' },
+    { type: 'bar',    label: 'Figure 3', caption: 'Component outcomes: CV death, nonfatal MI, nonfatal stroke' },
+  ],
+  1: [
+    { type: 'km',     label: 'Figure 1', caption: 'Primary endpoint MACE-free survival over 39.8 months (SELECT)' },
+    { type: 'bar',    label: 'Figure 3', caption: 'MACE rates per 100 person-years by pre-specified subgroup' },
+  ],
+  2: [
+    { type: 'forest', label: 'Figure 2', caption: 'Forest plot: GLP-1 RA vs. placebo, MACE — 7 RCTs, N=56,004' },
+  ],
+  3: [
+    { type: 'table',  label: 'Table 9.1', caption: 'Pharmacological treatment algorithm for T2D — ADA Standards 2025' },
+  ],
+  4: [
+    { type: 'bar',    label: 'Figure 1', caption: 'HbA1c target attainment across 41 cohorts (pooled N=1.2M)' },
+    { type: 'scatter',label: 'Figure 2', caption: 'Attainment rate vs. follow-up duration; bubble size = cohort N' },
+  ],
+  5: [
+    { type: 'km',     label: 'Figure 2', caption: 'Primary composite MACE — liraglutide vs. placebo (LEADER)' },
+  ],
+  6: [
+    { type: 'bar',    label: 'Figure 1', caption: 'Diabetes prevalence by IDF region: 2024 vs. 2050 projection' },
+  ],
+  11: [
+    { type: 'bar',    label: 'Figure 3', caption: 'New or worsening nephropathy — semaglutide vs. placebo, CKD subgroup' },
+  ],
+};
+
 const LIGHT_TOKENS = {
-  '--bg': '#f3f2f2', '--s1': '#eae9e9', '--s2': '#dedcdc', '--ink': '#201e1d',
-  '--dim': '#605d5d', '--faint': '#9b9797', '--rule': 'rgba(32,30,29,.16)',
-  '--rule2': 'rgba(32,30,29,.42)', '--acc': '#dd2b0f', '--ok': '#2f7a55', '--warn': '#8a6412',
+  '--bg': '#eef1f8', '--s1': '#ffffff', '--s2': '#e2e8f4', '--ink': '#0d1f4e',
+  '--dim': '#1e3460', '--faint': '#4a6896', '--rule': 'rgba(13,31,78,0.1)',
+  '--rule2': 'rgba(13,31,78,0.2)', '--acc': '#1e40af', '--ok': '#166534', '--warn': '#92400e',
 };
 
 /* ---------- component ---------- */
@@ -295,7 +688,7 @@ export default class MedFactory extends React.Component {
       loginPassword: '',
       loginError: '',
       loginPwShow: false,
-      heroProduct: '',
+      heroProduct: 'Ozempic® (Semaglutide)',
       projectThreads: [],
       activeThreadId: null,
       projectInput: '',
@@ -329,6 +722,42 @@ export default class MedFactory extends React.Component {
       citOpen: null,
       reviewed: 12,
       diff: null,
+      researchN: 0,
+      researchSourcesOpen: false,
+      researchSrcExpanded: {},
+      researchFilter: 'All',
+      acceptedPapers: {},
+      excerptOpen: {},
+      acceptedDrawerOpen: false,
+      acceptedPopupOpen: false,
+      organizeExpanded: {},
+      organizeExpandAll: false,
+      organizeSelectedPaper: null,
+      organizeArtifactFilter: { Deck: true, Blog: true, Protocol: true, Blurb: false, Facts: true },
+      organizeView: 'track',
+      organizeAgentMsgN: 0,
+      organizeAgentThinking: false,
+      organizeAgentInput: '',
+      maReviewModal: false,
+      reviewN: 0,
+      medReviewTab: 'artifacts',
+      medReviewPaper: null,
+      sciSubmitted: false,
+      sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
+      sciReviewTab: 'track',
+      sciChatInput: '',
+      sciChatMessages: [],
+      sciChatN: 0,
+      sciSelectedPaper: null,
+      sciInlineComments: {},
+      sciCommentDraft: null,
+      sciActiveHighlight: null,
+      sciChatStep: 0,
+      addExcerptModal: null,
+      excerptModalText: '',
+      excerptModalArtifacts: { Deck: true, Blog: false, Protocol: false, Blurb: false, Facts: false },
+      excerptModalTracks: {},
+      customExcerpts: [],
       renderStep: 2,
       built: 7,
       history: [
@@ -352,7 +781,7 @@ export default class MedFactory extends React.Component {
     Object.keys(LIGHT_TOKENS).forEach((k) =>
       light ? el.style.setProperty(k, LIGHT_TOKENS[k]) : el.style.removeProperty(k)
     );
-    document.body.style.background = light ? '#f3f2f2' : '#141312';
+    document.body.style.background = light ? '#eef1f8' : '#eef1f8';
   }
 
   demoDiff() {
@@ -401,6 +830,34 @@ export default class MedFactory extends React.Component {
     } else if (s === 'intel') {
       this.openIntel();
       return;
+    } else if (s === 'research') {
+      const { projectThreads, topic, heroProduct } = this.state;
+      if (projectThreads.length === 0) {
+        const firstCrit = INTEL_CRITERIA[0];
+        const thread = {
+          id: 1, criterionId: firstCrit.id, name: firstCrit.label,
+          messages: [{ from: 'agent', text: firstCrit.opener(topic, heroProduct), time: 'Just now' }],
+          createdAt: 'Just now',
+        };
+        this.setState({ projectThreads: [thread], activeThreadId: 1, screen: 'research' });
+      } else {
+        this.setState({ screen: 'research' });
+      }
+    } else if (s === 'organize') {
+      this.setState({ screen: 'organize', organizeExpanded: {}, organizeSelectedPaper: null, organizeAgentMsgN: 0, organizeAgentThinking: false, organizeAgentInput: '' });
+      setTimeout(() => this.runOrganizeAgent(), 600);
+      return;
+    } else if (s === 'med-review') {
+      this.setState({ screen: 'med-review', reviewN: 0 });
+      setTimeout(() => this.runMedReview(), 400);
+      return;
+    } else if (s === 'sci-dash') {
+      this.setState({ screen: 'sci-dash' });
+      return;
+    } else if (s === 'sci-review') {
+      this.setState({ screen: 'sci-review', sciChatMessages: [], sciChatN: 0, sciChatStep: 0 });
+      setTimeout(() => this.runSciChat(), 600);
+      return;
     } else if (['landing', 'ma-dash', 'ma-review', 'sci-dash', 'sci-review'].includes(s)) {
       this.setState({ screen: s, openPin: null, pendingPin: null });
     } else {
@@ -408,12 +865,13 @@ export default class MedFactory extends React.Component {
     }
     if (s === 'pipe') this.runPipe();
     if (s === 'render') this.runRender();
+    if (s === 'research') this.runResearch();
   };
 
   /* ---------- role & approval methods ---------- */
 
   enterRole = (role) => {
-    const screen = role === 'creator' ? 'dash' : role === 'ma' ? 'ma-dash' : 'sci-dash';
+    const screen = role === 'creator' ? 'dash' : role === 'sci' ? 'sci-dash' : 'dash';
     this.setState({ role, screen, notifOpen: false, openPin: null, pendingPin: null });
   };
 
@@ -484,7 +942,7 @@ export default class MedFactory extends React.Component {
   };
 
   sendIntelMessage = () => {
-    const { projectInput, projectThreads, activeThreadId, topic, heroProduct } = this.state;
+    const { projectInput, projectThreads, activeThreadId } = this.state;
     if (!projectInput.trim()) return;
     const userMsg = { from: 'user', text: projectInput.trim(), time: 'Just now' };
     const thread = projectThreads.find((t) => t.id === activeThreadId);
@@ -670,6 +1128,65 @@ export default class MedFactory extends React.Component {
     }, 900);
   }
 
+  runSciChat = () => {
+    const steps = [
+      { delay: 0,    step: 1, text: null },
+      { delay: 900,  step: 2, text: 'Review package received from Medical Affairs.\n\nOpening **Ozempic® (Semaglutide) — GLP-1 RA landscape** deck…\n\nLoading 12 accepted papers, 47 excerpts, and MA quality report.' },
+      { delay: 2200, step: 3, text: null },
+      { delay: 3400, step: 4, text: 'Papers indexed across **7 content tracks**.\n\n→ Condition & clinical problem — 3 papers\n→ General interventional evidence — 4 papers\n→ Safety & clinical application — 2 papers\n→ Root cause & mechanisms — 3 papers\n\nCross-referencing excerpts against source documents…' },
+      { delay: 5200, step: 5, text: null },
+      { delay: 6600, step: 6, text: 'Excerpt validation complete.\n\n**5 of 5 artifacts** populated with evidence.\n\nEvidence quality by artifact:\n**Deck** · 89/100 · HIGH\n**Blog** · 100/100 · HIGH\n**Protocol** · 74/100 · MODERATE — 1 gap flagged\n**Blurb** · 33/100 · LOW — insufficient sourcing\n**Facts** · 100/100 · HIGH' },
+      { delay: 8400, step: 7, text: 'All excerpts are **approved by default**.\n\nReject any excerpt or artifact with a mandatory reason. Pay particular attention to the **Protocol** (gap in renal endpoints) and **Blurb** (single source — SELECT only).\n\nReady. Ask me anything about the evidence.' },
+    ];
+    steps.forEach(({ delay, step, text }) => {
+      setTimeout(() => {
+        this.setState((st) => {
+          const update = { sciChatStep: step };
+          if (text) update.sciChatMessages = st.sciChatMessages.concat({ from: 'agent', text });
+          return update;
+        });
+      }, delay);
+    });
+  };
+
+  runOrganizeAgent = () => {
+    const delays = [0, 2200, 4800, 7800, 10800, 14200];
+    delays.forEach((delay, i) => {
+      setTimeout(() => {
+        this.setState({ organizeAgentThinking: true });
+      }, delay);
+      setTimeout(() => {
+        this.setState((_s) => ({
+          organizeAgentMsgN: i + 1,
+          organizeAgentThinking: i < delays.length - 1,
+        }));
+      }, delay + 1400);
+    });
+  };
+
+  runMedReview() {
+    this.setState({ reviewN: 0 });
+    this.t = setInterval(() => {
+      this.setState((st) => {
+        const n = st.reviewN + 1;
+        if (n >= REVIEW_AGENT_MSGS.length + 1) clearInterval(this.t);
+        return { reviewN: n };
+      });
+    }, 1800);
+  }
+
+  runResearch() {
+    this.setState({ researchN: 0 });
+    this.t = setInterval(() => {
+      this.setState((st) => {
+        const n = st.researchN + 1;
+        const max = RESEARCH_DBS.length + RESEARCH_PAPERS.length + 3;
+        if (n >= max) clearInterval(this.t);
+        return { researchN: n };
+      });
+    }, 720);
+  }
+
   curBlocks() {
     const n = this.state.slides[this.state.slideIdx].n;
     return this.state.blocks || BLOCKS[n] || BLOCKS.DEFAULT;
@@ -679,8 +1196,8 @@ export default class MedFactory extends React.Component {
 
   pill(status) {
     const map = {
-      'Awaiting Review': ['var(--acc)', 'rgba(255,86,60,.12)'],
-      Done: ['var(--ok)', 'rgba(79,168,124,.12)'],
+      'Awaiting Review': ['var(--acc)', 'rgba(30,64,175,0.12)'],
+      Done: ['var(--ok)', 'rgba(22,101,52,0.12)'],
       Generating: ['var(--dim)', 'transparent'],
       Researching: ['var(--dim)', 'transparent'],
       Rendering: ['var(--dim)', 'transparent'],
@@ -713,10 +1230,8 @@ export default class MedFactory extends React.Component {
       ['Settings', 'dash', ''],
     ];
     const flowItems = [
-      ['Dashboard', 'dash'], ['New Deck Intake', 'intake'], ['Brand Intelligence', 'intel'], ['Topic Selection', 'topics'],
-      ['Project Brief Chat', 'chat'], ['Pipeline Status', 'pipe'],
-      ['Validation Report', 'valid'], ['Review Workspace', 'review'], ['Revision Diff', 'diff'],
-      ['Rendering', 'render'], ['Delivery', 'deliver'],
+      ['Dashboard', 'dash'], ['New Deck Intake', 'intake'], ['Run Research', 'research'],
+      ['Organize Research', 'organize'], ['MA Review', 'med-review'],
     ];
 
     const pipeStages = STAGE_NAMES.map((name, i) => {
@@ -725,7 +1240,7 @@ export default class MedFactory extends React.Component {
       return {
         i: String(i + 1).padStart(2, '0'), name, note: STAGE_NOTES[i],
         glyph: done ? '✓' : active ? '◐' : '',
-        icon: `width:20px;height:20px;flex:none;display:grid;place-items:center;font-size:11px;border:1px solid ${done ? 'var(--ok)' : active ? 'var(--acc)' : 'var(--rule)'};color:${done ? 'var(--ok)' : active ? 'var(--acc)' : 'var(--faint)'};background:${active ? 'rgba(255,86,60,.1)' : 'transparent'};${active ? 'animation:puls 1.4s infinite' : ''}`,
+        icon: `width:20px;height:20px;flex:none;display:grid;place-items:center;font-size:11px;border:1px solid ${done ? 'var(--ok)' : active ? 'var(--acc)' : 'var(--rule)'};color:${done ? 'var(--ok)' : active ? 'var(--acc)' : 'var(--faint)'};background:${active ? 'rgba(30,64,175,0.1)' : 'transparent'};${active ? 'animation:puls 1.4s infinite' : ''}`,
         label: `font-weight:700;font-size:12px;line-height:1.3;color:${done || active ? 'var(--ink)' : 'var(--faint)'}`,
         style: `padding:18px 16px;border-right:1px solid var(--rule);${active ? 'background:var(--s1)' : ''}`,
       };
@@ -787,14 +1302,14 @@ export default class MedFactory extends React.Component {
       kind: b.kind, text: b.text, flagged: !!b.flag, flagType: b.flag, flagReason: b.flagReason,
       select: () => this.setState({ sel: i, editDraft: b.text, tab: 'edit' }),
       cites: (b.cites || []).map((n) => ({ n, open: () => this.setState({ citOpen: n }) })),
-      style: `padding:16px 18px;margin-bottom:12px;cursor:pointer;background:${b.flag ? 'rgba(207,154,43,.07)' : 'var(--s1)'};border:1px solid ${i === sel ? 'var(--acc)' : b.flag ? 'rgba(207,154,43,.4)' : 'var(--rule)'}`,
+      style: `padding:16px 18px;margin-bottom:12px;cursor:pointer;background:${b.flag ? 'rgba(146,64,14,0.07)' : 'var(--s1)'};border:1px solid ${i === sel ? 'var(--acc)' : b.flag ? 'rgba(207,154,43,.4)' : 'var(--rule)'}`,
     }));
 
     const diff = st.diff;
     const seg = (arr) => arr.map((p) => ({
       text: p[1],
       style: p[0] === 'del'
-        ? 'background:rgba(255,86,60,.16);color:var(--acc);text-decoration:line-through'
+        ? 'background:rgba(30,64,175,0.14);color:var(--acc);text-decoration:line-through'
         : p[0] === 'add'
           ? 'background:rgba(79,168,124,.18);color:var(--ok);font-weight:600'
           : '',
@@ -858,21 +1373,122 @@ export default class MedFactory extends React.Component {
     const rpct = Math.round((st.built / 20) * 100);
 
     return {
-      isDash: S_ === 'dash', isIntake: S_ === 'intake', isIntel: S_ === 'intel', isTopics: S_ === 'topics', isChat: S_ === 'chat',
-      isPipe: S_ === 'pipe', isValid: S_ === 'valid',
-      isReview: S_ === 'review', isDiff: S_ === 'diff' && !!diff, isRender: S_ === 'render', isDeliver: S_ === 'deliver',
-      isLanding: !st.role, isMaDash: S_ === 'ma-dash', isMAReview: S_ === 'ma-review',
-      isSciDash: S_ === 'sci-dash', isSciReview: S_ === 'sci-review',
+      isDash: S_ === 'dash', isIntake: S_ === 'intake', isResearch: S_ === 'research', isOrganize: S_ === 'organize', isMedReview: S_ === 'med-review',
+      isLanding: !st.role,
       role: st.role, pptStatus: st.pptStatus,
       isCreator: st.role === 'creator', isMA: st.role === 'ma', isSci: st.role === 'sci',
       dirLabel: this.dirOf() === 'light' ? 'LIGHT' : 'DARK',
       toggleDir: () => this.setState({ dir: this.dirOf() === 'light' ? 'dark' : 'light' }),
-      goIntake: () => this.go('intake'),
-      goReview: () => {
-        const rejected = ['ma-rejected','sci-rejected'].includes(this.state.pptStatus);
-        this.setState({ screen: 'review', tab: rejected ? 'comments' : 'edit' });
+      researchN: st.researchN,
+      researchSourcesOpen: st.researchSourcesOpen,
+      toggleResearchSources: () => this.setState((s) => ({ researchSourcesOpen: !s.researchSourcesOpen })),
+      researchSrcExpanded: st.researchSrcExpanded,
+      toggleSrcExpanded: (i) => this.setState((s) => ({ researchSrcExpanded: { ...s.researchSrcExpanded, [i]: !s.researchSrcExpanded[i] } })),
+      researchFilter: st.researchFilter,
+      setResearchFilter: (f) => this.setState({ researchFilter: f }),
+      acceptedPapers: st.acceptedPapers,
+      acceptedDrawerOpen: st.acceptedDrawerOpen,
+      toggleAcceptedDrawer: () => this.setState((s) => ({ acceptedDrawerOpen: !s.acceptedDrawerOpen })),
+      toggleAccept: (i) => {
+        this.setState((s) => ({ acceptedPapers: { ...s.acceptedPapers, [i]: !s.acceptedPapers[i] } }));
       },
-      goDeliver: () => this.go('deliver'),
+      acceptedPopupOpen: st.acceptedPopupOpen,
+      toggleAcceptedPopup: () => this.setState((s) => ({ acceptedPopupOpen: !s.acceptedPopupOpen })),
+      excerptOpen: st.excerptOpen,
+      organizeExpanded: st.organizeExpanded,
+      organizeExpandAll: st.organizeExpandAll,
+      organizeSelectedPaper: st.organizeSelectedPaper,
+      organizeArtifactFilter: st.organizeArtifactFilter,
+      setOrganizeSelected: (p) => this.setState({ organizeSelectedPaper: p }),
+      organizeView: st.organizeView,
+      setOrganizeView: (vw) => this.setState({ organizeView: vw }),
+      organizeAgentMsgN: st.organizeAgentMsgN,
+      organizeAgentThinking: st.organizeAgentThinking,
+      organizeAgentInput: st.organizeAgentInput,
+      setOrganizeAgentInput: (val) => this.setState({ organizeAgentInput: val }),
+      sendOrganizeMsg: () => {
+        const txt = st.organizeAgentInput.trim();
+        if (!txt) return;
+        this.setState({ organizeAgentInput: '', organizeAgentThinking: true });
+        setTimeout(() => this.setState((s) => ({
+          organizeAgentMsgN: s.organizeAgentMsgN + 1,
+          organizeAgentThinking: false,
+        })), 1800);
+      },
+      maReviewModal: st.maReviewModal,
+      openMAReview: () => this.setState({ maReviewModal: true }),
+      closeMAReview: () => this.setState({ maReviewModal: false }),
+      reviewN: st.reviewN,
+      medReviewTab: st.medReviewTab,
+      setMedReviewTab: (t) => this.setState({ medReviewTab: t, medReviewPaper: null }),
+      medReviewPaper: st.medReviewPaper,
+      setMedReviewPaper: (p) => this.setState({ medReviewPaper: p }),
+      sciSubmitted: st.sciSubmitted,
+      submitToSci: () => this.setState({ sciSubmitted: true }),
+      isSciDash: S_ === 'sci-dash',
+      isSciReview: S_ === 'sci-review',
+      sciSelectedPaper: st.sciSelectedPaper,
+      setSciSelectedPaper: (p) => this.setState({ sciSelectedPaper: p, sciCommentDraft: null, sciActiveHighlight: null }),
+      sciInlineComments: st.sciInlineComments,
+      sciCommentDraft: st.sciCommentDraft,
+      setSciCommentDraft: (key) => this.setState({ sciCommentDraft: { key, text: '' } }),
+      setSciCommentText: (text) => this.setState((s) => ({ sciCommentDraft: s.sciCommentDraft ? { ...s.sciCommentDraft, text } : null })),
+      submitSciComment: () => this.setState((s) => {
+        if (!s.sciCommentDraft || !s.sciCommentDraft.text.trim()) return null;
+        const key = s.sciCommentDraft.key;
+        const existing = s.sciInlineComments[key] || [];
+        return {
+          sciInlineComments: { ...s.sciInlineComments, [key]: existing.concat({ id: Date.now(), text: s.sciCommentDraft.text, author: 'Dr. Arjun Mehta', time: 'Just now', resolved: false }) },
+          sciCommentDraft: null,
+        };
+      }),
+      cancelSciComment: () => this.setState({ sciCommentDraft: null }),
+      resolveSciComment: (key, id) => this.setState((s) => ({
+        sciInlineComments: { ...s.sciInlineComments, [key]: (s.sciInlineComments[key] || []).map(c => c.id === id ? { ...c, resolved: true } : c) },
+      })),
+      sciActiveHighlight: st.sciActiveHighlight,
+      setSciHighlight: (key) => this.setState({ sciActiveHighlight: key }),
+      sciChatStep: st.sciChatStep,
+      sciReviewComments: st.sciReviewComments,
+      setSciComment: (key, text) => this.setState((s) => ({ sciReviewComments: { ...s.sciReviewComments, [key]: { ...s.sciReviewComments[key], text } } })),
+      toggleSciReject: (key) => this.setState((s) => {
+        const cur = s.sciReviewComments[key] || {};
+        return { sciReviewComments: { ...s.sciReviewComments, [key]: { ...cur, rejected: !cur.rejected } } };
+      }),
+      sciReviewTab: st.sciReviewTab,
+      setSciReviewTab: (t) => this.setState({ sciReviewTab: t }),
+      sciChatInput: st.sciChatInput,
+      sciChatMessages: st.sciChatMessages,
+      onSciChatInput: (e) => this.setState({ sciChatInput: e.target.value }),
+      sendSciChat: () => {
+        const txt = st.sciChatInput.trim();
+        if (!txt) return;
+        const userMsg = { from: 'user', text: txt };
+        const agentReply = { from: 'agent', text: 'Understood. I\'ve noted your concern about **' + txt.slice(0, 40) + (txt.length > 40 ? '…' : '') + '**. This will be flagged in the final scientific review report.' };
+        this.setState((s) => ({ sciChatInput: '', sciChatMessages: s.sciChatMessages.concat(userMsg) }));
+        setTimeout(() => this.setState((s) => ({ sciChatMessages: s.sciChatMessages.concat(agentReply) })), 1200);
+      },
+      sciApproveAll: () => this.setState({ screen: 'dash', sciSubmitted: false }),
+      addExcerptModal: st.addExcerptModal,
+      openAddExcerpt: (trackId) => this.setState({ addExcerptModal: { trackId }, excerptModalText: '', excerptModalArtifacts: { Deck: true, Blog: false, Protocol: false, Blurb: false, Facts: false }, excerptModalTracks: { [trackId]: true } }),
+      closeAddExcerpt: () => this.setState({ addExcerptModal: null }),
+      excerptModalText: st.excerptModalText,
+      setExcerptModalText: (t) => this.setState({ excerptModalText: t }),
+      excerptModalArtifacts: st.excerptModalArtifacts,
+      toggleExcerptModalArtifact: (a) => this.setState((s) => ({ excerptModalArtifacts: { ...s.excerptModalArtifacts, [a]: !s.excerptModalArtifacts[a] } })),
+      excerptModalTracks: st.excerptModalTracks,
+      toggleExcerptModalTrack: (id) => this.setState((s) => ({ excerptModalTracks: { ...s.excerptModalTracks, [id]: !s.excerptModalTracks[id] } })),
+      customExcerpts: st.customExcerpts,
+      submitExcerpt: () => this.setState((s) => {
+        if (!s.excerptModalText.trim()) return {};
+        const entry = { id: Date.now(), text: s.excerptModalText.trim(), artifacts: Object.keys(s.excerptModalArtifacts).filter((a) => s.excerptModalArtifacts[a]), tracks: Object.keys(s.excerptModalTracks).filter((t) => s.excerptModalTracks[t]) };
+        return { customExcerpts: [...s.customExcerpts, entry], addExcerptModal: null };
+      }),
+      toggleOrganizeTrack: (id) => this.setState((s) => ({ organizeExpanded: { ...s.organizeExpanded, [id]: !s.organizeExpanded[id] } })),
+      setOrganizeExpandAll: (v2) => this.setState({ organizeExpandAll: v2, organizeExpanded: Object.fromEntries(CONTENT_TRACKS.map((t) => [t.id, v2])) }),
+      toggleOrganizeArtifact: (a) => this.setState((s) => ({ organizeArtifactFilter: { ...s.organizeArtifactFilter, [a]: !s.organizeArtifactFilter[a] } })),
+      toggleExcerpt: (i) => this.setState((s) => ({ excerptOpen: { ...s.excerptOpen, [i]: !s.excerptOpen[i] } })),
+      goIntake: () => this.go('intake'),
 
       nav: navItems.map((n, i) => ({
         label: n[0], count: n[2], go: () => this.go(n[1]),
@@ -974,7 +1590,7 @@ export default class MedFactory extends React.Component {
       onCoverKey: (e) => { if (e.key === 'Enter' && e.target.value.trim()) this.setState((s) => ({ cover: s.cover.concat(s.coverDraft.trim()), coverDraft: '' })); },
       onAvoidKey: (e) => { if (e.key === 'Enter' && e.target.value.trim()) this.setState((s) => ({ avoid: s.avoid.concat(s.avoidDraft.trim()), avoidDraft: '' })); },
       estSlides: est[0], estMin: est[1], estRefs: est[2],
-      startGen: () => this.go('intel'),
+      startGen: () => this.go('research'),
 
       goTopics: () => this.go('topics'),
       topicsMessages: st.topicsMessages.map((m) => {
@@ -1094,10 +1710,6 @@ export default class MedFactory extends React.Component {
       /* ---------- role actions ---------- */
       enterRole: (r) => this.enterRole(r),
       switchRole: () => this.switchRole(),
-      goMADash: () => this.go('ma-dash'),
-      goMAReview: () => this.go('ma-review'),
-      goSciDash: () => this.go('sci-dash'),
-      goSciReview: () => this.go('sci-review'),
       doSendToMA: () => this.sendToMA(),
       doResubmitToMA: () => this.resubmitToMA(),
       doMAApprove: () => this.maApprove(),
@@ -1207,9 +1819,7 @@ export default class MedFactory extends React.Component {
     const fieldCss = 'width:100%;background:var(--s1);border:1px solid var(--rule);padding:11px 12px';
 
     /* ---------- role-specific sidebar helpers ---------- */
-    const reviewerSidebarItems = v.isMA
-      ? [['Dashboard', 'ma-dash'], ['My Reviews', 'ma-dash'], ['Settings', 'dash']]
-      : [['Dashboard', 'sci-dash'], ['My Reviews', 'sci-dash'], ['Settings', 'dash']];
+    const reviewerSidebarItems = [['Dashboard', 'dash'], ['Settings', 'dash']];
     const reviewerAccent = v.isMA ? 'var(--warn)' : 'var(--ok)';
     const reviewerLabel = v.isMA ? 'MEDICAL AFFAIRS' : 'SCIENTIFIC REVIEW';
     const reviewerName = v.isMA ? 'Dr. Priya Nair' : 'Dr. Arjun Mehta';
@@ -1221,55 +1831,53 @@ export default class MedFactory extends React.Component {
       const creds = MedFactory.CREDENTIALS;
       return (
         <div ref={this.rootRef} style={S('font-family:Archivo,system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;display:flex;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased')}>
-          {/* left panel — branding */}
-          <div style={S('width:420px;flex:none;border-right:2px solid var(--rule2);display:flex;flex-direction:column;padding:52px 48px;background:var(--s1)')}>
-            <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:auto')}>
-              <div style={S('width:16px;height:16px;background:var(--acc)')} />
-              <div style={S('font-weight:800;font-size:17px;letter-spacing:-0.02em')}>MedFactory</div>
+          {/* left panel — branding (dark navy) */}
+          <div style={{ width: 440, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '52px 48px', background: '#0d1f4e', color: '#e8eef8' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 'auto' }}>
+              <div style={{ width: 16, height: 16, background: '#60a5fa' }} />
+              <div style={{ fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em', color: '#e8eef8' }}>MedFactory</div>
             </div>
             <div>
-              <div style={merge(kicker, 'margin-bottom:18px')}>MEDICAL AFFAIRS · CONTENT PIPELINE</div>
-              <h1 style={S('font-size:36px;font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin:0 0 20px')}>Science-validated<br />content, faster.</h1>
-              <div style={S('color:var(--dim);font-size:13.5px;line-height:1.7;margin-bottom:44px')}>
+              <div style={{ font: '700 9px/1 Archivo', letterSpacing: '0.18em', color: '#60a5fa', marginBottom: 18 }}>MEDICAL AFFAIRS · CONTENT PIPELINE</div>
+              <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.1, margin: '0 0 20px', color: '#ffffff' }}>Science-validated<br />content, faster.</h1>
+              <div style={{ color: '#8aaad4', fontSize: 13.5, lineHeight: 1.7, marginBottom: 44 }}>
                 Three roles. One pipeline. From brand brief to MA-approved webinar deck — with full audit trail.
               </div>
-              <div style={S('display:flex;flex-direction:column;gap:12px')}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {[
-                  { accent: 'var(--acc)',  label: 'Content Creator',           sub: 'Briefing · Topic selection · Submission' },
-                  { accent: 'var(--warn)', label: 'Medical Affairs Reviewer',  sub: 'Scientific review · Comment pins · Approval' },
-                  { accent: 'var(--ok)',   label: 'Scientific Reviewer',       sub: 'Final validation · Publication gate' },
+                  { accent: '#60a5fa', label: 'Medical Affairs (Creator)', sub: 'Briefing · Research · MA Review · Submit' },
+                  { accent: '#34d399', label: 'Scientific Reviewer',       sub: 'Evidence validation · Approval · Sign-off' },
                 ].map((r, i) => (
-                  <div key={i} style={S('display:flex;align-items:center;gap:12px')}>
-                    <div style={S(`width:3px;height:32px;flex:none;background:${r.accent}`)} />
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 3, height: 32, flexShrink: 0, background: r.accent }} />
                     <div>
-                      <div style={S('font-weight:700;font-size:13px')}>{r.label}</div>
-                      <div style={S('color:var(--faint);font-size:11.5px')}>{r.sub}</div>
+                      <div style={{ fontWeight: 700, fontSize: 13, color: '#e8eef8' }}>{r.label}</div>
+                      <div style={{ color: '#4d6fa0', fontSize: 11.5 }}>{r.sub}</div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div style={S('margin-top:auto;padding-top:32px;border-top:1px solid var(--rule)')}>
-              <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>DEMO CREDENTIALS</div>
+            <div style={{ marginTop: 'auto', paddingTop: 32, borderTop: '1px solid rgba(232,238,248,0.12)' }}>
+              <div style={{ font: '600 9.5px/1 Archivo', letterSpacing: '0.14em', color: '#4d6fa0', marginBottom: 10 }}>DEMO CREDENTIALS</div>
               {creds.map((c) => (
-                <div
-                  key={c.role}
-                  style={S('display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--rule);cursor:pointer')}
+                <div key={c.role}
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '7px 0', borderBottom: '1px solid rgba(232,238,248,0.1)', cursor: 'pointer' }}
                   onClick={() => this.setState({ loginEmail: c.email, loginPassword: c.password, loginError: '' })}
                 >
-                  <div style={S('font-size:12px;color:var(--dim)')}>{c.email}</div>
-                  <div style={S('font-size:11px;color:var(--faint);font-family:var(--mono)')}>{c.password}</div>
+                  <div style={{ fontSize: 12, color: '#8aaad4' }}>{c.email}</div>
+                  <div style={{ fontSize: 11, color: '#4d6fa0', fontFamily: 'var(--mono)' }}>{c.password}</div>
                 </div>
               ))}
-              <div style={S('color:var(--faint);font-size:11px;margin-top:8px')}>Click a row to auto-fill.</div>
+              <div style={{ color: '#4d6fa0', fontSize: 11, marginTop: 8 }}>Click a row to auto-fill.</div>
             </div>
           </div>
 
           {/* right panel — login form */}
-          <div style={S('flex:1;display:flex;align-items:center;justify-content:center;padding:40px')}>
+          <div style={S('flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:var(--bg)')}>
             <div style={S('width:100%;max-width:380px')}>
-              <div style={merge(kicker, 'margin-bottom:10px')}>SIGN IN</div>
-              <h2 style={S('font-size:26px;font-weight:800;letter-spacing:-0.03em;margin:0 0 32px')}>Welcome back</h2>
+              <div style={S('font:700 9px/1 Archivo;letter-spacing:0.18em;color:var(--acc);margin-bottom:10px')}>SIGN IN</div>
+              <h2 style={S('font-size:26px;font-weight:800;letter-spacing:-0.03em;margin:0 0 32px;color:var(--ink)')}>Welcome back</h2>
 
               <form onSubmit={this.login} style={S('display:flex;flex-direction:column;gap:16px')}>
                 <div>
@@ -1305,14 +1913,14 @@ export default class MedFactory extends React.Component {
                 </div>
 
                 {loginError && (
-                  <div style={S('padding:11px 14px;background:#2b0d0d;border-left:3px solid var(--acc);color:var(--acc);font-size:13px')}>
+                  <div style={S('padding:11px 14px;background:rgba(30,64,175,0.08);border-left:3px solid var(--acc);color:var(--acc);font-size:13px')}>
                     {loginError}
                   </div>
                 )}
 
                 <Box
                   css="background:var(--acc);color:#fff;font-weight:700;padding:15px;text-align:center;cursor:pointer;font-size:14px;margin-top:4px"
-                  hover="background:#dd2b0f"
+                  hover="opacity:0.85"
                   onClick={this.login}
                 >
                   Sign In →
@@ -1334,8 +1942,8 @@ export default class MedFactory extends React.Component {
         style={S('font-family:Archivo,system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;min-width:1280px;display:flex;overflow:hidden;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased')}
       >
         {/* ---------------- sidebar (role-aware) ---------------- */}
-        <aside style={S('width:232px;flex:none;border-right:2px solid var(--rule2);display:flex;flex-direction:column;background:var(--bg)')}>
-          <div style={S('padding:18px 20px 15px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:9px')}>
+        <aside style={{ width: 232, flexShrink: 0, borderRight: 'none', display: 'flex', flexDirection: 'column', background: '#0d1f4e', '--ink': '#e8eef8', '--dim': '#8aaad4', '--faint': '#4d6fa0', '--rule': 'rgba(232,238,248,0.1)', '--rule2': 'rgba(232,238,248,0.18)', '--s1': 'rgba(255,255,255,0.06)', '--s2': 'rgba(255,255,255,0.1)', '--bg': '#0d1f4e', '--acc': '#60a5fa', '--ok': '#4ade80', '--warn': '#fbbf24' }}>
+          <div style={S('padding:18px 20px 15px;border-bottom:1px solid rgba(232,238,248,0.12);display:flex;align-items:center;gap:9px')}>
             <div style={S(`width:16px;height:16px;background:${v.isCreator ? 'var(--acc)' : reviewerAccent}`)} />
             <div style={S('font-weight:800;letter-spacing:-0.02em;font-size:16px')}>MedFactory</div>
           </div>
@@ -1413,7 +2021,7 @@ export default class MedFactory extends React.Component {
         </aside>
 
         {/* ---------------- main ---------------- */}
-        <main style={S('flex:1;min-width:0;overflow-y:auto;position:relative')}>
+        <main style={S('flex:1;min-width:0;overflow-y:auto;position:relative;background:var(--bg)')}>
 
           {/* ============ 1 · DASHBOARD ============ */}
           {v.isDash && (
@@ -1421,13 +2029,13 @@ export default class MedFactory extends React.Component {
               <div style={S('flex:1;min-width:0')}>
                 {/* rejection alert for creator */}
                 {(v.pptStatus === 'ma-rejected' || v.pptStatus === 'sci-rejected') && (
-                  <div style={S(`padding:14px 28px;background:#1e1000;border-bottom:2px solid ${v.pptStatus === 'sci-rejected' ? 'var(--ok)' : 'var(--warn)'};display:flex;align-items:center;gap:16px`)}>
+                  <div style={S(`padding:14px 28px;background:rgba(146,64,14,0.08);border-bottom:2px solid ${v.pptStatus === 'sci-rejected' ? 'var(--ok)' : 'var(--warn)'};display:flex;align-items:center;gap:16px`)}>
                     <div style={S(`font-size:20px`)}>⚠</div>
                     <div style={S('flex:1')}>
                       <div style={S(`font-weight:700;color:${v.pptStatus === 'sci-rejected' ? 'var(--ok)' : 'var(--warn)'}`)}>{v.topic} — sent back by {v.pptStatus === 'sci-rejected' ? 'Scientific Reviewer' : 'Medical Affairs'}</div>
                       <div style={S('color:var(--dim);font-size:12.5px;margin-top:2px')}>{v.maTotalComments + v.sciTotalComments} comment{(v.maTotalComments + v.sciTotalComments) !== 1 ? 's' : ''} need addressing before re-submission.</div>
                     </div>
-                    <Box css={`background:${v.pptStatus === 'sci-rejected' ? 'var(--ok)' : 'var(--warn)'};color:${v.pptStatus === 'sci-rejected' ? '#fff' : '#000'};font-weight:700;padding:10px 18px;cursor:pointer;font-size:13px`} hover="opacity:0.85" onClick={v.goReview}>Open Review Workspace →</Box>
+                    <Box css={`background:${v.pptStatus === 'sci-rejected' ? 'var(--ok)' : 'var(--warn)'};color:${v.pptStatus === 'sci-rejected' ? '#fff' : '#000'};font-weight:700;padding:10px 18px;cursor:pointer;font-size:13px`} hover="opacity:0.85" onClick={() => this.go('dash')}>Back to Dashboard →</Box>
                   </div>
                 )}
                 <div style={S('padding:34px 40px 28px;border-bottom:2px solid var(--rule2);display:flex;align-items:flex-end;justify-content:space-between;gap:32px')}>
@@ -1440,7 +2048,7 @@ export default class MedFactory extends React.Component {
                   </div>
                   <Box
                     css="flex:none;background:var(--acc);color:#fff;font-weight:700;padding:14px 20px;cursor:pointer;display:flex;align-items:center;gap:28px;min-width:250px"
-                    hover="background:#dd2b0f"
+                    hover="opacity:0.85"
                     onClick={v.goIntake}
                   >
                     <span>Generate New Deck</span>
@@ -1564,111 +2172,18 @@ export default class MedFactory extends React.Component {
                   </div>
                 </div>
 
-                <div style={S('display:grid;grid-template-columns:1fr 1fr;gap:0 28px;padding:24px 0;border-bottom:1px solid var(--rule)')}>
-                  <div>
-                    <label style={S(label)}>THERAPEUTIC AREA</label>
-                    <select value={v.area} onChange={v.onArea} style={S(fieldCss)}>
-                      {v.areas.map((o) => <option key={o} value={o}>{o}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label style={S(label)}>TARGET AUDIENCE</label>
-                    <div style={S('display:flex;gap:0;border:1px solid var(--rule);overflow:hidden')}>
-                      {v.audiences.map((a) => (
-                        <div key={a.label} style={S(a.style)} onClick={a.pick}>
-                          {a.label}
-                          {a.locked && <span style={S('display:block;font:600 8px/1 Archivo;letter-spacing:0.1em;color:var(--faint);margin-top:3px')}>SOON</span>}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
 
                 <div style={S('padding:24px 0;border-bottom:1px solid var(--rule)')}>
-                  <div style={S('display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px')}>
-                    <label style={S('font:600 10px/1 Archivo;letter-spacing:0.13em;color:var(--dim)')}>PRESENTATION DURATION</label>
-                    <span style={S('font:700 15px/1 var(--mono);color:var(--acc)')}>{v.dur} min</span>
-                  </div>
-                  <input type="range" min="30" max="60" step="15" value={v.dur} onChange={v.onDur} style={S('width:100%;accent-color:var(--acc);background:transparent')} />
-                  <div style={S('display:flex;justify-content:space-between;color:var(--faint);font-size:11px;margin-top:6px')}>
-                    <span>30</span><span>45</span><span>60</span>
-                  </div>
-                </div>
-
-                <div style={S('display:grid;grid-template-columns:1fr 1fr;gap:0 28px;padding:24px 0;border-bottom:1px solid var(--rule)')}>
-                  <div>
-                    <label style={S(label)}>REGION · COMPLIANCE RULESET</label>
-                    <select value={v.region} onChange={v.onRegion} style={S(fieldCss)}>
-                      {v.regions.map((o) => <option key={o} value={o}>{o}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label style={S(label)}>LANGUAGE</label>
-                    <select value={v.lang} onChange={v.onLang} style={S(fieldCss)}>
-                      {v.langs.map((o) => <option key={o} value={o}>{o}</option>)}
-                    </select>
-                  </div>
-                </div>
-
-                <div style={S('padding:24px 0;border-bottom:1px solid var(--rule);position:relative')}>
-                  <div style={S('display:flex;align-items:center;gap:12px;margin-bottom:14px')}>
-                    <label style={S('font:600 10px/1 Archivo;letter-spacing:0.13em;color:var(--dim)')}>BRAND TEMPLATE</label>
-                    <span style={S('font:700 9px/1 Archivo;letter-spacing:0.14em;padding:3px 7px;background:var(--s2);border:1px solid var(--rule);color:var(--faint)')}>COMING SOON</span>
-                  </div>
-                  <div style={S('display:grid;grid-template-columns:repeat(3,1fr);gap:14px;opacity:0.38;pointer-events:none')}>
-                    {v.templates.map((t, i) => (
-                      <div key={i} style={S(t.style)}>
-                        <div style={S(t.thumb)}>
-                          <div style={S(t.thumbBar)} />
-                          <div style={S('height:4px;width:64%;background:var(--faint);margin-top:8px')} />
-                          <div style={S('height:4px;width:44%;background:var(--faint);margin-top:4px')} />
-                        </div>
-                        <div style={S('font-weight:600;font-size:12px;margin-top:10px')}>{t.name}</div>
-                        <div style={S('color:var(--faint);font-size:11px')}>{t.meta}</div>
+                  <label style={S(label)}>TARGET AUDIENCE</label>
+                  <div style={S('display:flex;gap:0;border:1px solid var(--rule);overflow:hidden;max-width:360px')}>
+                    {v.audiences.map((a) => (
+                      <div key={a.label} style={S(a.style)} onClick={a.pick}>
+                        {a.label}
+                        {a.locked && <span style={S('display:block;font:600 8px/1 Archivo;letter-spacing:0.1em;color:var(--faint);margin-top:3px')}>SOON</span>}
                       </div>
                     ))}
                   </div>
-                  <div style={S('position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;margin-top:28px')}>
-                    <div style={S('font:600 10px/1 Archivo;letter-spacing:0.2em;color:var(--faint);border:1px solid var(--rule);padding:6px 14px;background:var(--bg)')}>TEMPLATES COMING SOON</div>
-                  </div>
                 </div>
-
-                <Box
-                  css="padding:18px 0;border-bottom:1px solid var(--rule);cursor:pointer;display:flex;align-items:center;gap:10px;color:var(--dim)"
-                  hover="color:var(--ink)"
-                  onClick={v.toggleAdv}
-                >
-                  <span style={S(v.advMark)}>{v.advOpen ? '–' : '+'}</span>
-                  <span style={S('font:600 10px/1 Archivo;letter-spacing:0.13em')}>ADVANCED OPTIONS</span>
-                  <span style={S('margin-left:auto;font-size:11.5px;color:var(--faint)')}>{v.advSummary}</span>
-                </Box>
-
-                {v.advOpen && (
-                  <div style={S('padding:24px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:0 28px;animation:rise 0.18s ease')}>
-                    <div>
-                      <label style={S(label)}>MUST COVER</label>
-                      <div style={S('display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px')}>
-                        {v.cover.map((c, i) => (
-                          <Box key={i} css="display:flex;align-items:center;gap:7px;border:1px solid var(--rule);background:var(--s1);padding:5px 9px;font-size:11.5px;cursor:pointer" hover="border-color:var(--acc);color:var(--acc)" onClick={c.remove}>
-                            {c.label}<span style={S('color:var(--faint)')}>×</span>
-                          </Box>
-                        ))}
-                      </div>
-                      <input value={v.coverDraft} onChange={v.onCoverDraft} onKeyDown={v.onCoverKey} placeholder="Add topic, press Enter" style={S('width:100%;background:var(--s1);border:1px solid var(--rule);padding:10px 12px;font-size:12.5px')} />
-                    </div>
-                    <div>
-                      <label style={S(label)}>MUST AVOID</label>
-                      <div style={S('display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px')}>
-                        {v.avoid.map((c, i) => (
-                          <Box key={i} css="display:flex;align-items:center;gap:7px;border:1px solid rgba(255,86,60,.4);background:var(--s1);padding:5px 9px;font-size:11.5px;cursor:pointer;color:var(--acc)" hover="background:rgba(255,86,60,.12)" onClick={c.remove}>
-                            {c.label}<span style={S('opacity:0.6')}>×</span>
-                          </Box>
-                        ))}
-                      </div>
-                      <input value={v.avoidDraft} onChange={v.onAvoidDraft} onKeyDown={v.onAvoidKey} placeholder="Add exclusion, press Enter" style={S('width:100%;background:var(--s1);border:1px solid var(--rule);padding:10px 12px;font-size:12.5px')} />
-                    </div>
-                  </div>
-                )}
 
                 <div style={S('display:flex;align-items:center;gap:28px;padding:26px 0;border-bottom:2px solid var(--rule2)')}>
                   <div>
@@ -1685,11 +2200,11 @@ export default class MedFactory extends React.Component {
 
                 <Box
                   css="background:var(--acc);color:#fff;font-weight:700;font-size:15px;padding:17px 20px;margin-top:22px;cursor:pointer;display:flex;align-items:center"
-                  hover="background:#dd2b0f"
+                  hover="opacity:0.85"
                   onClick={v.startGen}
                 >
                   <div>
-                    <div>Continue to Brand Intelligence</div>
+                    <div>Run Research</div>
                     <div style={S('font:400 11.5px/1 Archivo;opacity:0.75;margin-top:4px')}>Next: deep-brief the agent with clinical context</div>
                   </div>
                   <span style={S('margin-left:auto;font-size:18px')}>→</span>
@@ -1698,12 +2213,40 @@ export default class MedFactory extends React.Component {
             </div>
           )}
 
-          {/* ============ 2.5 · BRAND INTELLIGENCE ============ */}
-          {v.isIntel && (() => {
+          {/* ============ 2.4 · RUN RESEARCH ============ */}
+          {v.isResearch && (() => {
+            const rN = v.researchN;
+            const DB_PHASE = RESEARCH_DBS.length;           // 6
+            const PAPER_START = DB_PHASE;                    // papers visible from step 6+
+            const DEDUP_STEP = DB_PHASE + RESEARCH_PAPERS.length;       // 18
+            const INDEX_STEP = DEDUP_STEP + 1;              // 19
+            const DONE_STEP  = INDEX_STEP + 1;              // 20
+            const isDone = rN >= DONE_STEP;
+            const visiblePapers = Math.max(0, Math.min(RESEARCH_PAPERS.length, rN - PAPER_START));
+            const pct = Math.round((Math.min(rN, DONE_STEP) / DONE_STEP) * 100);
+
+            const typeColor = (t) => t === 'RCT' ? 'var(--ok)' : t === 'Guideline' ? 'var(--dim)' : t === 'Meta-Analysis' ? 'var(--warn)' : t === 'Systematic Review' ? '#a78bfa' : 'var(--faint)';
+
             const threads = v.projectThreads;
             const activeThread = threads.find((t) => t.id === v.activeThreadId) || threads[0];
-            const coveredCount = v.intelCoveredIds.size;
-            const totalCriteria = v.intelCriteria.length;
+
+            const THINKING_MSGS = [
+              'Connecting to research databases…',
+              'Scanning PubMed for clinical evidence…',
+              'Searching EMBASE for trial data…',
+              'Retrieving ADA / EASD guideline updates…',
+              'Cross-referencing NICE / SIGN recommendations…',
+              'Analysing Cochrane systematic reviews…',
+              'Evaluating IDF prevalence data…',
+              'Extracting evidence from retrieved papers…',
+              'Scoring paper relevance to your topic…',
+              'Cross-checking cardiovascular outcome data…',
+              'Mapping evidence to hero product claims…',
+              'Validating citation integrity across sources…',
+              'Deduplicating results across databases…',
+              'Building grounded evidence index…',
+            ];
+            const thinkingMsg = THINKING_MSGS[Math.min(rN, THINKING_MSGS.length - 1)];
 
             const renderMarkdown = (text) => {
               const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -1717,1692 +2260,1928 @@ export default class MedFactory extends React.Component {
             return (
               <div style={S('display:flex;height:100%;overflow:hidden')}>
 
-                {/* ---- Left Rail ---- */}
-                <div style={S('width:280px;flex:none;border-right:1px solid var(--rule2);display:flex;flex-direction:column;background:var(--s1);overflow:hidden')}>
+                {/* ============ LEFT: Brand Intelligence Chat ============ */}
+                <div style={S('width:48%;flex:none;border-right:2px solid var(--rule2);display:flex;flex-direction:column;overflow:hidden;position:relative')}>
 
-                  {/* project card */}
-                  <div style={S('padding:18px 18px 14px;border-bottom:1px solid var(--rule2)')}>
-                    <div style={S('font:700 9px/1 Archivo;letter-spacing:0.18em;color:var(--acc);margin-bottom:10px')}>BRAND INTELLIGENCE PROJECT</div>
-                    <div style={S('font-weight:800;font-size:13.5px;letter-spacing:-0.01em;line-height:1.3;margin-bottom:6px')}>{v.topic || 'Untitled Topic'}</div>
-                    {v.heroProduct && (
-                      <div style={S('display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--warn);font-weight:600')}>
-                        <span style={S('width:5px;height:5px;border-radius:50%;background:var(--warn)')} />
-                        {v.heroProduct}
-                      </div>
+                  {/* Running Research banner */}
+                  <div style={S(`display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--rule);flex:none;background:${isDone ? 'rgba(22,101,52,0.08)' : 'rgba(30,64,175,0.06)'}`)}>
+                    <div style={S(`width:8px;height:8px;border-radius:50%;flex:none;background:${isDone ? 'var(--ok)' : 'var(--acc)'};${isDone ? '' : 'animation:puls 1s infinite'}`)}>
+                    </div>
+                    <div style={S(`font:700 10px/1 Archivo;letter-spacing:0.14em;color:${isDone ? 'var(--ok)' : 'var(--acc)'}`)}>
+                      {isDone ? 'RESEARCH COMPLETE — BRIEF YOUR AGENT BELOW' : 'RUNNING RESEARCH…'}
+                    </div>
+                    {!isDone && (
+                      <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{pct}%</div>
                     )}
                   </div>
 
-                  {/* criteria coverage */}
-                  <div style={S('padding:12px 18px;border-bottom:1px solid var(--rule)')}>
-                    <div style={S('display:flex;justify-content:space-between;align-items:center;margin-bottom:8px')}>
-                      <div style={S('font:600 9px/1 Archivo;letter-spacing:0.14em;color:var(--faint)')}>CRITERIA COVERAGE</div>
-                      <div style={S('font:700 11px/1 Archivo;color:var(--acc)')}>{coveredCount}/{totalCriteria}</div>
+                  {/* Thread header */}
+                  {activeThread && (
+                    <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule);flex:none')}>
+                      <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>BRAND INTELLIGENCE AGENT</div>
+                      <div style={S('font-weight:700;font-size:14px;letter-spacing:-0.01em')}>{activeThread.name}</div>
                     </div>
-                    <div style={S('height:3px;background:var(--rule);position:relative')}>
-                      <div style={S(`position:absolute;left:0;top:0;bottom:0;background:var(--acc);width:${(coveredCount / totalCriteria) * 100}%;transition:width 0.3s`)} />
-                    </div>
-                    <div style={S('display:flex;flex-wrap:wrap;gap:5px;margin-top:10px')}>
-                      {v.intelCriteria.map((c) => (
-                        <div key={c.id} style={S(`font:600 8.5px/1 Archivo;padding:3px 7px;letter-spacing:0.08em;border:1px solid ${v.intelCoveredIds.has(c.id) ? c.color : 'var(--rule)'};color:${v.intelCoveredIds.has(c.id) ? c.color : 'var(--faint)'}`)}>
-                          {v.intelCoveredIds.has(c.id) ? '✓ ' : ''}{c.label}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  )}
 
-                  {/* threads list */}
-                  <div style={S('font:600 9px/1 Archivo;letter-spacing:0.14em;color:var(--faint);padding:12px 18px 6px')}>THREADS · {threads.length}</div>
-                  <div style={S('flex:1;overflow-y:auto')}>
-                    {threads.map((t) => {
-                      const lastMsg = [...t.messages].reverse().find((m) => m.from === 'user');
-                      const isActive = t.id === v.activeThreadId;
-                      const crit = v.intelCriteria.find((c) => c.id === t.criterionId);
-                      return (
-                        <div
-                          key={t.id}
-                          style={S(`padding:12px 18px;cursor:pointer;border-bottom:1px solid var(--rule);border-left:2px solid ${isActive ? (crit?.color || 'var(--acc)') : 'transparent'};background:${isActive ? 'var(--s2)' : 'transparent'}`)}
-                          onClick={() => v.pickThread(t.id)}
-                        >
-                          <div style={S('font-weight:600;font-size:12.5px;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{t.name}</div>
-                          <div style={S('font-size:11.5px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>
-                            {lastMsg ? lastMsg.text.slice(0, 52) + (lastMsg.text.length > 52 ? '…' : '') : 'No replies yet'}
+                  {/* Messages */}
+                  <div style={S('flex:1;overflow-y:auto;padding:20px')}>
+                    {activeThread && activeThread.messages.map((m, i) => (
+                      <div key={i} style={S(`display:flex;gap:10px;margin-bottom:20px;flex-direction:${m.from === 'user' ? 'row-reverse' : 'row'}`)}>
+                        <div style={S(`width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;${m.from === 'agent' ? 'background:var(--acc);color:#fff' : 'background:var(--s2);border:1px solid var(--rule2);color:var(--dim)'}`)}>
+                          {m.from === 'agent' ? 'AI' : 'ME'}
+                        </div>
+                        <div style={S(`max-width:80%;${m.from === 'user' ? 'text-align:right' : ''}`)}>
+                          <div style={S(`background:${m.from === 'agent' ? 'var(--s1)' : 'var(--s2)'};border:1px solid ${m.from === 'agent' ? 'var(--rule)' : 'var(--rule2)'};padding:12px 14px;font-size:13px;line-height:1.65;${m.from === 'agent' ? 'border-left:2px solid var(--acc)' : ''}`)}>
+                            {m.text.split('\n\n').map((para, pi) => (
+                              <p key={pi} style={S('margin:0 0 8px')}>{renderMarkdown(para)}</p>
+                            ))}
                           </div>
-                          <div style={S('font-size:10.5px;color:var(--faint);margin-top:4px')}>{t.createdAt}</div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Thinking indicator — visible while research is running */}
+                    {!isDone && (
+                      <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--acc);color:#fff')}>AI</div>
+                        <div style={S('max-width:85%')}>
+                          <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--acc);margin-bottom:7px')}>RESEARCH AGENT · ACTIVE</div>
+                          <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:13px 15px')}>
+                            <div style={S('font-size:12px;color:var(--dim);margin-bottom:11px;line-height:1.5')} key={thinkingMsg}>
+                              {thinkingMsg}
+                            </div>
+                            <div style={S('display:flex;gap:5px;align-items:center')}>
+                              {[0, 1, 2].map((d) => (
+                                <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
+                              ))}
+                              <span style={S('font:600 10px/1 Archivo;letter-spacing:0.1em;color:var(--faint);margin-left:8px')}>RESEARCHING</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Done confirmation bubble */}
+                    {isDone && (
+                      <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--ok);color:#fff')}>AI</div>
+                        <div style={S('max-width:85%')}>
+                          <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--ok);margin-bottom:7px')}>RESEARCH AGENT · COMPLETE</div>
+                          <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--ok);padding:13px 15px;font-size:12.5px;line-height:1.6;color:var(--dim)')}>
+                            Research complete — <strong style={S('color:var(--ink)')}>12 papers retrieved</strong> across 6 databases. Evidence is indexed and ready for content generation.<br /><br />
+                            While you wait, share any clinical context below — it will sharpen the topic options on the next screen.
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ===== ACCEPTED PAPERS STACK WIDGET ===== */}
+                    {isDone && (() => {
+                      const acceptedCount = Object.values(v.acceptedPapers).filter(Boolean).length;
+                      const acceptedList = RESEARCH_PAPERS.filter((_, idx) => v.acceptedPapers[idx]);
+                      if (acceptedCount === 0) return null;
+                      const preview = acceptedList.slice(0, 3);
+                      return (
+                        <div style={S('margin-bottom:20px;animation:rise 0.28s ease')}>
+                          <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--ok);margin-bottom:8px;padding-left:38px')}>EVIDENCE BASE · {acceptedCount} {acceptedCount === 1 ? 'PAPER' : 'PAPERS'} ACCEPTED</div>
+                          {/* Stack */}
+                          <div style={S('display:flex;gap:10px;align-items:flex-start')}>
+                            <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--ok);color:#fff')}>AI</div>
+                            <Box
+                              css="position:relative;cursor:pointer;padding-bottom:12px"
+                              onClick={v.toggleAcceptedPopup}
+                            >
+                              {/* Stacked shadow cards */}
+                              {preview.slice().reverse().map((_, si) => {
+                                const offset = (preview.length - 1 - si) * 5;
+                                return (
+                                  <div key={si} style={{ position: si === 0 ? 'absolute' : 'absolute', top: offset, left: offset, right: -offset, height: 56, background: 'var(--s2)', border: '1px solid var(--rule2)', borderLeft: '2px solid var(--ok)', opacity: 0.45 + si * 0.18, zIndex: si }} />
+                                );
+                              })}
+                              {/* Top card */}
+                              <div style={{ position: 'relative', zIndex: preview.length, background: 'var(--s1)', border: '1px solid var(--rule)', borderLeft: '2px solid var(--ok)', padding: '10px 14px', minWidth: 260, marginTop: (preview.length - 1) * 5, marginLeft: (preview.length - 1) * 5 }}>
+                                <div style={S('font:700 11.5px/1.4 Archivo;color:var(--ink);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px')}>{acceptedList[acceptedCount - 1].title}</div>
+                                <div style={S('font:500 10px/1 Archivo;color:var(--faint)')}>{acceptedList[acceptedCount - 1].journal.split('·')[0].trim()} · {acceptedList[acceptedCount - 1].year}</div>
+                              </div>
+                              {/* Count badge */}
+                              <div style={{ position: 'absolute', top: -8, right: -8, zIndex: preview.length + 1, background: 'var(--ok)', color: '#fff', font: '700 10px/1 Archivo', padding: '3px 7px', borderRadius: 2 }}>
+                                {acceptedCount}
+                              </div>
+                              {/* Click hint */}
+                              <div style={S('margin-top:8px;font:600 10px/1 Archivo;color:var(--ok);letter-spacing:0.06em')}>
+                                Click to view all accepted papers ↗
+                              </div>
+                            </Box>
+                          </div>
+
+                          {/* POPUP */}
+                          {v.acceptedPopupOpen && (
+                            <div style={{ position: 'absolute', inset: 0, zIndex: 50, background: 'rgba(20,19,18,0.72)', display: 'flex', alignItems: 'flex-end', justifyContent: 'stretch', animation: 'rise 0.2s ease' }}
+                              onClick={(e) => { if (e.target === e.currentTarget) v.toggleAcceptedPopup(); }}>
+                              <div style={{ width: '100%', background: 'var(--s1)', border: '1px solid var(--rule2)', borderBottom: 'none', maxHeight: '70%', display: 'flex', flexDirection: 'column' }}>
+                                {/* Popup header */}
+                                <div style={S('padding:14px 18px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:10px;flex:none')}>
+                                  <span style={S('width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none')} />
+                                  <span style={S('font:700 12px/1 Archivo;letter-spacing:-0.01em')}>Accepted Evidence</span>
+                                  <span style={S('padding:2px 8px;background:var(--ok);color:#fff;font:700 10px/1 Archivo;margin-left:2px')}>{acceptedCount}</span>
+                                  <Box css="margin-left:auto;font:600 11px/1 Archivo;color:var(--faint);cursor:pointer;padding:4px 8px" hover="color:var(--ink)" onClick={v.toggleAcceptedPopup}>✕ Close</Box>
+                                </div>
+                                {/* Popup list */}
+                                <div style={S('overflow-y:auto;flex:1')}>
+                                  {acceptedList.map((p, idx) => (
+                                    <div key={idx} style={S('padding:12px 18px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:5px;animation:rise 0.18s ease')}>
+                                      <div style={S('display:flex;align-items:flex-start;gap:8px')}>
+                                        <span style={S('width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none;margin-top:5px')} />
+                                        <div style={S('font:700 12px/1.4 Archivo;color:var(--ink)')}>{p.title}</div>
+                                      </div>
+                                      <div style={S('padding-left:14px;font:500 10.5px/1 Archivo;color:var(--faint)')}>{p.journal.split('·')[0].trim()} · {p.year} · {p.grade}</div>
+                                      <div style={S('padding-left:14px;display:flex;gap:6px;flex-wrap:wrap')}>
+                                        {p.artifacts.map((a) => <span key={a} style={S('padding:2px 7px;border:1px solid var(--rule2);font:600 9px/1 Archivo;color:var(--faint)')}>{a}</span>)}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       );
-                    })}
+                    })()}
                   </div>
 
-                  {/* new thread + proceed */}
-                  <div style={S('padding:12px 14px;border-top:1px solid var(--rule2);display:flex;flex-direction:column;gap:8px')}>
-                    <Box
-                      css="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--rule2);cursor:pointer;color:var(--dim);font-size:12.5px;font-weight:600"
-                      hover="border-color:var(--ink);color:var(--ink)"
-                      onClick={v.newIntelThread}
-                    >
-                      <span style={S('font-size:16px;line-height:1;color:var(--acc)')}>+</span> New Thread
-                    </Box>
-                    <Box
-                      css={`display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 12px;font-weight:700;font-size:12.5px;cursor:${v.intelReady ? 'pointer' : 'default'};background:${v.intelReady ? 'var(--acc)' : 'var(--s2)'};color:${v.intelReady ? '#fff' : 'var(--faint)'};letter-spacing:-0.01em`}
-                      hover={v.intelReady ? 'background:#dd2b0f' : ''}
-                      onClick={v.intelReady ? v.goTopicsFromIntel : undefined}
-                    >
-                      {v.intelReady ? 'Proceed to Topic Selection →' : `Cover ${Math.max(0, 3 - coveredCount)} more criteria…`}
-                    </Box>
+                  {/* Input */}
+                  <div style={S('padding:14px 20px;border-top:1px solid var(--rule);flex:none')}>
+                    <div style={S('display:flex;gap:8px;align-items:flex-end')}>
+                      <textarea
+                        rows={3}
+                        style={S('flex:1;background:var(--s1);border:1px solid var(--rule2);color:var(--ink);padding:11px 12px;font-size:13px;resize:none;line-height:1.5;outline:none')}
+                        placeholder={`Add context about "${activeThread?.name || 'this topic'}"…`}
+                        value={v.projectInput}
+                        onChange={v.onProjectInput}
+                        onKeyDown={v.onProjectKey}
+                      />
+                      <Box
+                        css="background:var(--acc);color:#fff;font-weight:700;padding:12px 16px;cursor:pointer;font-size:12px;flex:none;align-self:stretch;display:flex;align-items:center"
+                        hover="opacity:0.85"
+                        onClick={v.sendIntelMessage}
+                      >Send</Box>
+                    </div>
                   </div>
                 </div>
 
-                {/* ---- Main Chat Area ---- */}
-                <div style={S('flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden')}>
+                {/* ============ RIGHT: Research Panel ============ */}
+                <div style={{ ...S('flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:var(--s1)'), animation: 'slideInRight 0.55s cubic-bezier(0.22,1,0.36,1) both', animationDelay: '0.08s' }}>
 
-                  {activeThread ? (
-                    <>
-                      {/* thread header */}
-                      <div style={S('padding:14px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:14px;flex:none')}>
-                        <div style={S('flex:1;min-width:0')}>
-                          <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:5px')}>
-                            {(() => { const c = v.intelCriteria.find((cr) => cr.id === activeThread.criterionId); return c ? `CRITERION · ${c.label.toUpperCase()}` : 'THREAD'; })()}
-                          </div>
-                          <div style={S('font-weight:700;font-size:15px;letter-spacing:-0.01em')}>{activeThread.name}</div>
-                        </div>
-                        <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);text-align:right')}>
-                          {activeThread.messages.filter((m) => m.from === 'user').length} replies
-                        </div>
+                  {isDone ? (
+                    /* ===== DONE STATE: Card Grid View ===== */
+                    <div style={S('display:flex;flex-direction:column;height:100%;overflow:hidden;animation:rise 0.4s ease')}>
+
+                      {/* Header bar */}
+                      <div style={S('padding:13px 18px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:10px;flex:none;background:var(--bg)')}>
+                        <span style={S('width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none')} />
+                        <div style={S('font:700 12px/1 Archivo;letter-spacing:-0.01em')}>Research Papers</div>
+                        <span style={S('font:600 10px/1 var(--mono);color:var(--faint)')}>{RESEARCH_PAPERS.length} sources</span>
+                        {/* Sources toggle */}
+                        <Box
+                          css="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--rule2);cursor:pointer;font:600 10.5px/1 Archivo;color:var(--dim)"
+                          hover="border-color:var(--ink);color:var(--ink)"
+                          onClick={v.toggleResearchSources}
+                        >
+                          <span style={S('font-size:11px')}>◎</span> Sources {v.researchSourcesOpen ? '▲' : '▼'}
+                        </Box>
                       </div>
 
-                      {/* messages */}
-                      <div style={S('flex:1;overflow-y:auto;padding:24px')}>
-                        {activeThread.messages.map((m, i) => (
-                          <div key={i} style={S(`display:flex;gap:12px;margin-bottom:22px;flex-direction:${m.from === 'user' ? 'row-reverse' : 'row'}`)}>
-                            {/* avatar */}
-                            <div style={S(`width:30px;height:30px;flex:none;display:grid;place-items:center;font:700 11px/1 Archivo;${m.from === 'agent' ? 'background:var(--acc);color:#fff' : 'background:var(--s2);border:1px solid var(--rule2);color:var(--dim)'}`)}>
-                              {m.from === 'agent' ? 'AI' : 'MG'}
-                            </div>
-                            <div style={S(`max-width:72%;${m.from === 'user' ? 'text-align:right' : ''}`)}>
-                              <div style={S(`font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:7px;${m.from === 'user' ? 'text-align:right' : ''}`)}>
-                                {m.from === 'agent' ? 'BRAND INTELLIGENCE AGENT' : 'YOU'} · {m.time}
+                      {/* Sources — Evidence Retrieved drawer */}
+                      {v.researchSourcesOpen && (() => {
+                        const dbColor = { PubMed: '#1e40af', EMBASE: '#7c3aed', 'ADA Guidelines': '#166534', 'ADA/KDIGO': '#0891b2', NICE: '#9a3412', 'IDF Atlas': '#b45309' };
+                        const typeColor2 = { RCT: '#1e40af', 'Systematic Review': '#7c3aed', Guideline: '#166534', 'Meta-Analysis': '#0891b2', 'Real-World': '#b45309', Registry: '#9a3412' };
+                        return (
+                          <div style={{ borderBottom: '1px solid var(--rule2)', background: '#f4f7fb', animation: 'rise 0.22s ease', flexShrink: 0, maxHeight: 480, overflowY: 'auto' }}>
+
+                            {/* Compact DB stats bar */}
+                            <div style={{ padding: '10px 20px', background: '#fff', borderBottom: '1px solid rgba(13,31,78,0.08)', display: 'flex', alignItems: 'center', gap: 20 }}>
+                              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', flex: 1 }}>
+                                {RESEARCH_DBS.map((db) => (
+                                  <span key={db} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', border: '1px solid rgba(22,101,52,0.3)', background: 'rgba(22,101,52,0.06)', font: '600 10.5px/1 Archivo', color: '#166534', borderRadius: 3 }}>
+                                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#166534', flexShrink: 0 }} />{db}
+                                  </span>
+                                ))}
                               </div>
-                              <div style={S(`background:${m.from === 'agent' ? 'var(--s1)' : 'var(--s2)'};border:1px solid ${m.from === 'agent' ? 'var(--rule)' : 'var(--rule2)'};padding:14px 16px;font-size:13.5px;line-height:1.65;${m.from === 'agent' ? 'border-left:2px solid var(--acc)' : ''}`)}>
-                                {m.text.split('\n\n').map((para, pi) => (
-                                  <p key={pi} style={S('margin:0 0 10px')}>{renderMarkdown(para)}</p>
+                              <div style={{ display: 'flex', gap: 18, flexShrink: 0 }}>
+                                {[['71', 'raw'], ['12', 'retained'], ['58', 'chunks']].map(([n, l]) => (
+                                  <div key={l} style={{ textAlign: 'center' }}>
+                                    <div style={{ font: '800 15px/1 Archivo', color: '#166534' }}>{n}</div>
+                                    <div style={{ font: '600 9px/1 Archivo', color: '#4a6896', marginTop: 2, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{l}</div>
+                                  </div>
                                 ))}
                               </div>
                             </div>
+
+                            {/* Evidence Retrieved list */}
+                            <div style={{ padding: '14px 18px' }}>
+                              <div style={{ font: '700 10px/1 Archivo', letterSpacing: '0.14em', color: '#4a6896', marginBottom: 12, textTransform: 'uppercase' }}>
+                                Evidence Retrieved &middot; {RESEARCH_PAPERS.length}
+                              </div>
+
+                              {RESEARCH_PAPERS.map((p, i) => {
+                                const isExp = !!v.researchSrcExpanded[i];
+                                const tc = typeColor2[p.type] || '#1e40af';
+                                const dc = dbColor[p.db] || '#1e3460';
+                                return (
+                                  <div
+                                    key={i}
+                                    onClick={() => v.toggleSrcExpanded(i)}
+                                    style={{ background: '#fff', border: '1px solid rgba(13,31,78,0.1)', borderLeft: `3px solid ${tc}`, marginBottom: 8, cursor: 'pointer', transition: 'box-shadow 0.15s', boxShadow: isExp ? '0 2px 12px rgba(13,31,78,0.1)' : 'none', borderRadius: '0 4px 4px 0' }}>
+
+                                    {/* Main row */}
+                                    <div style={{ padding: '11px 14px', display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                                      <div style={{ flex: 1, minWidth: 0 }}>
+                                        {/* Pills row */}
+                                        <div style={{ display: 'flex', gap: 6, marginBottom: 7, flexWrap: 'wrap' }}>
+                                          <span style={{ padding: '2px 8px', border: `1px solid ${tc}`, font: '700 9.5px/1.5 Archivo', color: tc, letterSpacing: '0.04em', borderRadius: 3, textTransform: 'uppercase' }}>{p.type}</span>
+                                          <span style={{ padding: '2px 8px', background: `${dc}14`, font: '600 9.5px/1.5 Archivo', color: dc, borderRadius: 3 }}>{p.db} {p.year}</span>
+                                        </div>
+                                        {/* Title */}
+                                        <div style={{ font: '700 14px/1.4 Archivo', color: '#0d1f4e', marginBottom: 4 }}>{p.title}</div>
+                                        {/* Journal */}
+                                        <div style={{ font: '400 12px/1.3 Archivo', color: '#4a6896' }}>{p.journal}</div>
+                                      </div>
+                                      {/* Score */}
+                                      <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                                        <div style={{ font: '800 17px/1 Archivo', color: '#0d1f4e', letterSpacing: '-0.02em' }}>{p.score.toFixed(2)}</div>
+                                        <div style={{ font: '700 8.5px/1 Archivo', color: '#4a6896', letterSpacing: '0.1em', marginTop: 2 }}>REL</div>
+                                      </div>
+                                    </div>
+
+                                    {/* Expanded detail */}
+                                    {isExp && (
+                                      <div style={{ borderTop: '1px solid rgba(13,31,78,0.08)', padding: '12px 14px', background: '#f8fafc', animation: 'fadeUp 0.16s ease' }}
+                                        onClick={e => e.stopPropagation()}>
+                                        {/* Stats row */}
+                                        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 12 }}>
+                                          {[['Design', p.designTier], ['GRADE', p.grade], ['Sample', p.statRigor], ['Citations', p.citations]].map(([label, val]) => (
+                                            <div key={label}>
+                                              <div style={{ font: '700 9px/1 Archivo', letterSpacing: '0.1em', color: '#4a6896', textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
+                                              <div style={{ font: '500 12px/1.4 Archivo', color: '#1e3460' }}>{val}</div>
+                                            </div>
+                                          ))}
+                                        </div>
+                                        {/* Excerpt */}
+                                        {p.excerpt && (
+                                          <div style={{ background: '#fff', border: '1px solid rgba(13,31,78,0.1)', borderLeft: '3px solid ' + tc, padding: '10px 14px' }}>
+                                            <div style={{ font: '700 9px/1 Archivo', letterSpacing: '0.1em', color: '#4a6896', textTransform: 'uppercase', marginBottom: 7 }}>Key Excerpt</div>
+                                            <p style={{ margin: 0, font: '400 13px/1.7 Georgia, serif', color: '#0d1f4e', fontStyle: 'italic' }}>{p.excerpt}</p>
+                                            <div style={{ font: '600 10.5px/1 Archivo', color: '#4a6896', marginTop: 8 }}>{p.excerptSrc}</div>
+                                          </div>
+                                        )}
+                                        {p.flag && (
+                                          <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(146,64,14,0.06)', border: '1px solid rgba(146,64,14,0.25)', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                                            <span style={{ font: '700 10px/1 Archivo', color: '#92400e', flexShrink: 0, marginTop: 1 }}>⚠ FLAG</span>
+                                            <span style={{ font: '400 12px/1.6 Archivo', color: '#92400e' }}>{p.flag}</span>
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
+                        );
+                      })()}
+
+                      {/* Filter chips */}
+                      <div style={S('padding:10px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:6px;flex:none;flex-wrap:wrap;background:var(--bg)')}>
+                        {['All', 'RCT', 'Guideline', 'Meta-Analysis', 'Systematic Review', 'Real-World', 'Registry'].map((f) => (
+                          <Box
+                            key={f}
+                            css={`padding:4px 10px;font:600 10px/1 Archivo;letter-spacing:0.08em;cursor:pointer;border:1px solid ${v.researchFilter === f ? 'var(--acc)' : 'var(--rule)'};background:${v.researchFilter === f ? 'rgba(30,64,175,0.1)' : 'transparent'};color:${v.researchFilter === f ? 'var(--acc)' : 'var(--faint)'}`}
+                            hover={v.researchFilter !== f ? 'border-color:var(--rule2);color:var(--dim)' : ''}
+                            onClick={() => v.setResearchFilter(f)}
+                          >{f}</Box>
                         ))}
                       </div>
 
-                      {/* input */}
-                      <div style={S('padding:16px 24px;border-top:1px solid var(--rule);flex:none')}>
-                        <div style={S('display:flex;gap:10px;align-items:flex-end')}>
-                          <textarea
-                            rows={3}
-                            style={S('flex:1;background:var(--s1);border:1px solid var(--rule2);color:var(--ink);padding:12px 14px;font-size:13.5px;resize:none;line-height:1.55;outline:none')}
-                            placeholder={`Share your insights on "${activeThread.name}"… (Shift+Enter for new line, Enter to send)`}
-                            value={v.projectInput}
-                            onChange={v.onProjectInput}
-                            onKeyDown={v.onProjectKey}
-                          />
-                          <Box
-                            css="background:var(--acc);color:#fff;font-weight:700;padding:14px 18px;cursor:pointer;font-size:13px;flex:none;align-self:stretch;display:flex;align-items:center"
-                            hover="background:#dd2b0f"
-                            onClick={v.sendIntelMessage}
-                          >Send</Box>
-                        </div>
-                        <div style={S('color:var(--faint);font-size:11px;margin-top:8px')}>
-                          Enter to send · Shift+Enter for new line · Start a new thread for each criterion
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div style={S('flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:var(--faint)')}>
-                      <div style={S('font-size:32px')}>🧠</div>
-                      <div style={S('font-weight:700;font-size:15px;color:var(--dim)')}>No thread selected</div>
-                      <div style={S('font-size:13px')}>Pick a thread from the left or start a new one.</div>
-                    </div>
-                  )}
-                </div>
+                      {/* Card list */}
+                      <div style={S('flex:1;overflow-y:auto;padding:14px 16px')}>
+                        <div style={S('display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:start')}>
+                          {RESEARCH_PAPERS.filter((p) => v.researchFilter === 'All' || p.type === v.researchFilter).map((p, i) => {
+                            const tc = typeColor(p.type);
+                            const accepted = v.acceptedPapers[i];
+                            const excOpen = v.excerptOpen[i];
+                            return (
+                              <div key={i} style={{ ...S(`background:var(--bg);border:1px solid ${accepted ? 'var(--ok)' : 'var(--rule)'};border-left:3px solid ${tc};display:flex;flex-direction:column`), animation: `cardIn 0.32s ease both`, animationDelay: `${i * 0.04}s` }}>
 
-                {/* ---- Right Criteria Guide ---- */}
-                <div style={S('width:260px;flex:none;border-left:1px solid var(--rule);overflow-y:auto;background:var(--bg)')}>
-                  <div style={S('padding:16px 18px;border-bottom:1px solid var(--rule)')}>
-                    <div style={S('font:700 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>INTELLIGENCE FRAMEWORK</div>
-                    <div style={S('color:var(--dim);font-size:12px;line-height:1.5')}>Cover all 8 criteria for the richest topic generation. Each thread deep-briefs one angle.</div>
-                  </div>
-                  <div style={S('padding:10px 0')}>
-                    {v.intelCriteria.map((c, i) => {
-                      const covered = v.intelCoveredIds.has(c.id);
-                      const isCurrentThread = activeThread?.criterionId === c.id;
-                      return (
-                        <div key={c.id} style={S(`padding:11px 18px;border-bottom:1px solid var(--rule);border-left:2px solid ${isCurrentThread ? c.color : 'transparent'}`)}>
-                          <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:3px')}>
-                            <div style={S(`width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font:700 8px/1 Archivo;flex:none;background:${covered ? c.color : 'var(--s2)'};border:1px solid ${covered ? c.color : 'var(--rule)'};color:${covered && c.color === 'var(--warn)' ? '#000' : '#fff'}`)}>
-                              {covered ? '✓' : i + 1}
-                            </div>
-                            <div style={S(`font-weight:700;font-size:12px;color:${covered ? 'var(--ink)' : 'var(--dim)'}`)}>
-                              {c.label}
-                            </div>
-                            {covered && <div style={S('margin-left:auto;font:600 8.5px/1 Archivo;color:var(--ok)')}>DONE</div>}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div style={S('padding:16px 18px;border-top:1px solid var(--rule)')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:8px')}>HOW THIS WORKS</div>
-                    <div style={S('color:var(--faint);font-size:11.5px;line-height:1.6')}>
-                      Each thread feeds your answers into the agent's scoring model. More context = more targeted topic options.
-                      <br /><br />
-                      After covering ≥3 criteria, the "Proceed" button unlocks.
-                    </div>
-                  </div>
-                </div>
+                                {/* ARTIFACTS row */}
+                                <div style={S('padding:10px 14px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap')}>
+                                  <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>ARTIFACTS</span>
+                                  {p.artifacts.map((a) => (
+                                    <span key={a} style={S('padding:2px 8px;font:600 9.5px/1 Archivo;border:1px solid var(--rule2);color:var(--dim)')}>{a}</span>
+                                  ))}
+                                </div>
 
-              </div>
-            );
-          })()}
+                                {/* TRACK */}
+                                <div style={S('padding:5px 14px 0;display:flex;align-items:center;gap:6px')}>
+                                  <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>TRACK</span>
+                                  <span style={S(`padding:2px 8px;font:600 9.5px/1 Archivo;border:1px solid ${tc};color:${tc}`)}>{p.track}</span>
+                                </div>
 
-          {/* ============ 3 · TOPIC SELECTION CHAT ============ */}
-          {v.isTopics && (
-            <div style={S('display:flex;flex-direction:column;height:100%')}>
-              {/* header */}
-              <div style={S('padding:14px 28px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:16px;flex:none')}>
-                <div>
-                  <div style={merge(kicker, 'margin-bottom:5px')}>TOPIC DISCOVERY AGENT · STEP 2 OF 4</div>
-                  <div style={S('font-weight:700;font-size:15px;letter-spacing:-0.01em')}>{v.topic}</div>
-                </div>
-                <div style={S('margin-left:auto;display:flex;align-items:center;gap:10px')}>
-                  <div style={S('width:7px;height:7px;background:var(--ok);border-radius:50%;animation:puls 1.8s infinite')} />
-                  <div style={S('font:600 10px/1 Archivo;color:var(--ok);letter-spacing:0.1em')}>AGENT ACTIVE</div>
-                  <div style={S('color:var(--faint);font-size:11.5px;margin-left:8px')}>{v.topicsMsgCount} messages</div>
-                </div>
-              </div>
+                                {/* Title */}
+                                <div style={S('padding:10px 14px 0;font:700 13px/1.4 Archivo;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
 
-              <div style={S('flex:1;display:grid;grid-template-columns:1fr 296px;min-height:0')}>
+                                {/* Metadata grid */}
+                                <div style={S('padding:10px 14px;display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;align-items:baseline')}>
+                                  {[
+                                    ['Design tier', p.designTier],
+                                    ['Appraisal score', p.appraisal],
+                                    ['GRADE certainty', p.grade],
+                                    ['Journal', p.journal.split('·')[0].trim() + (p.journal.includes('·') ? ' · ' + p.journal.split('·')[1].trim() : '')],
+                                    ['Citations', p.citations],
+                                    ['Funding / COI', p.funding],
+                                    ['Stat. rigor', p.statRigor],
+                                    ['Relevance', `${p.relevance}/100`],
+                                  ].map(([label, val]) => (
+                                    <React.Fragment key={label}>
+                                      <div style={S('font:500 10.5px/1.5 Archivo;color:var(--faint);white-space:nowrap')}>{label}</div>
+                                      <div style={S('font:600 10.5px/1.5 Archivo;color:var(--dim);text-align:right')}>{val}</div>
+                                    </React.Fragment>
+                                  ))}
+                                </div>
 
-                {/* ---- main chat column ---- */}
-                <div style={S('display:flex;flex-direction:column;min-height:0;border-right:2px solid var(--rule2)')}>
-
-                  {/* messages */}
-                  <div style={S('flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:22px')}>
-                    {v.topicsMessages.map((m, mi) => (
-                      <div key={mi} style={S(`display:flex;flex-direction:column;align-items:${m.isAgent ? 'flex-start' : 'flex-end'};animation:rise 0.22s ease`)}>
-                        <div style={S(`font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:7px`)}>
-                          {m.isAgent ? 'TOPIC DISCOVERY AGENT' : 'YOU'}
-                        </div>
-
-                        {/* bubble */}
-                        {m.isAgent ? (
-                          <div style={S('max-width:72ch;background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:16px 18px')}>
-                            {m.parts.map((p, pi) => (
-                              <p key={pi} style={S(`margin:0;font-size:13.5px;line-height:1.7;${pi > 0 ? 'margin-top:11px' : ''};${p.startsWith('•') ? 'padding-left:4px' : ''}`)}>{p}</p>
-                            ))}
-                          </div>
-                        ) : (
-                          <div style={S('max-width:56ch;background:var(--s2);border:1px solid var(--rule2);padding:13px 16px')}>
-                            <p style={S('margin:0;font-size:13.5px;line-height:1.65;text-align:right')}>{m.text}</p>
-                          </div>
-                        )}
-
-                        {/* inline topic cards */}
-                        {m.inlineCards && (
-                          <div style={S('width:100%;max-width:820px;margin-top:14px;display:flex;flex-direction:column;gap:10px')}>
-                            {m.inlineCards.map((o, oi) => (
-                              <div key={o.id} style={S(`display:flex;border:1px solid var(--rule);background:var(--bg);animation:rise 0.25s ease`)}>
-                                <div style={S(`width:3px;flex:none;background:${o.riskColor}`)} />
-                                <div style={S('flex:1;padding:18px 22px')}>
-                                  <div style={S('display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px')}>
-                                    <span style={S('font:700 10px/1 var(--mono);color:var(--faint)')}>OPTION {String(oi + 1).padStart(2, '0')}</span>
-                                    <span style={S(`border:1px solid ${o.riskColor};color:${o.riskColor};padding:2px 7px;font:600 9px/1 Archivo;letter-spacing:0.1em`)}>{o.risk} RISK</span>
-                                    <span style={S('display:inline-block;border:1px solid var(--rule2);padding:2px 8px;font:600 9px/1 Archivo;letter-spacing:0.1em;color:var(--dim)')}>{o.angle}</span>
-                                    <span style={S('margin-left:auto;font:700 12px/1 var(--mono);color:var(--acc)')}>{o.strength} <span style={S('font:600 9px/1 Archivo;letter-spacing:0.08em;color:var(--faint)')}>EVIDENCE SCORE</span></span>
+                                {/* Flag warning */}
+                                {p.flag && (
+                                  <div style={S('margin:0 14px 10px;padding:7px 10px;border:1px solid var(--acc);background:rgba(30,64,175,0.07);font-size:10.5px;color:var(--acc);line-height:1.5')}>
+                                    ⚠ {p.flag}
                                   </div>
+                                )}
 
-                                  <div style={S('font-size:17px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px')}>{o.title}</div>
-                                  <div style={S('color:var(--dim);font-size:12.5px;line-height:1.6;margin-bottom:12px;max-width:70ch')}>{o.why}</div>
-
-                                  <div style={S('display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin-bottom:14px')}>
-                                    <div>
-                                      <div style={S('font:600 9px/1 Archivo;letter-spacing:0.11em;color:var(--faint);margin-bottom:7px')}>EVIDENCE SIGNALS</div>
-                                      <div style={S('display:flex;flex-wrap:wrap;gap:5px')}>
-                                        {o.signals.map((sg, si) => (
-                                          <span key={si} style={S('border:1px solid var(--rule);background:var(--s1);padding:3px 8px;font-size:10.5px;color:var(--dim)')}>{sg}</span>
-                                        ))}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div style={S('font:600 9px/1 Archivo;letter-spacing:0.11em;color:var(--faint);margin-bottom:7px')}>CONTENT FOCUS</div>
-                                      <div style={S('display:flex;flex-wrap:wrap;gap:5px')}>
-                                        {o.focus.map((f, fi) => (
-                                          <span key={fi} style={S('background:var(--s2);padding:3px 8px;font-size:10.5px;color:var(--ink)')}>{f}</span>
-                                        ))}
-                                      </div>
-                                    </div>
+                                {/* Excerpt toggle */}
+                                <Box
+                                  css={`margin:0 14px 0;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:${excOpen ? 'var(--s1)' : 'transparent'};border:1px solid var(--rule)`}
+                                  hover="background:var(--s1)"
+                                  onClick={() => v.toggleExcerpt(i)}
+                                >
+                                  <span style={S('font:700 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--dim)')}>Excerpt</span>
+                                  <span style={S('font-size:10px;color:var(--faint)')}>{excOpen ? '▲' : '▼'}</span>
+                                </Box>
+                                {excOpen && (
+                                  <div style={S('margin:0 14px;padding:10px 12px;background:var(--s1);border:1px solid var(--rule);border-top:none;animation:rise 0.18s ease')}>
+                                    <div style={S('font-size:11px;color:var(--dim);line-height:1.7;font-style:italic')}>{p.excerpt}</div>
+                                    <div style={S('font-size:10px;color:var(--faint);margin-top:6px')}>{p.excerptSrc}</div>
                                   </div>
+                                )}
 
-                                  <div style={S('display:flex;gap:8px;align-items:center')}>
-                                    <Box
-                                      css="display:inline-flex;align-items:center;gap:20px;background:var(--acc);color:#fff;font-weight:700;font-size:12px;padding:10px 16px;cursor:pointer"
-                                      hover="background:#dd2b0f"
-                                      onClick={o.select}
-                                    >
-                                      <span>Select this topic</span><span>→</span>
-                                    </Box>
-                                    <Box
-                                      css="border:1px solid var(--rule);padding:10px 14px;font-size:12px;color:var(--dim);cursor:pointer"
-                                      hover="border-color:var(--acc);color:var(--acc)"
-                                      onClick={() => v.useTopicsSuggestion(`Tell me more about Option ${oi + 1}`)}
-                                    >
-                                      Ask about this →
-                                    </Box>
-                                  </div>
+                                {/* Footer */}
+                                <div style={S('padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:10px')}>
+                                  {p.artifacts.map((a) => (
+                                    <span key={a} style={S('padding:2px 8px;font:600 9px/1 Archivo;border:1px solid var(--rule2);color:var(--faint)')}>{a}</span>
+                                  ))}
+                                  <span style={S(`padding:2px 8px;font:600 9px/1 Archivo;border:1px solid ${tc};color:${tc}`)}>{p.track.split(' ')[0]}</span>
+                                  <Box
+                                    css={`margin-left:auto;padding:7px 14px;font:700 10.5px/1 Archivo;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok)`}
+                                    hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
+                                    onClick={() => v.toggleAccept(i)}
+                                  >
+                                    {accepted ? '✓ Accepted' : 'Accept paper'}
+                                  </Box>
                                 </div>
                               </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* ===== STICKY FOOTER ===== */}
+                      {(() => {
+                        const acceptedCount = Object.values(v.acceptedPapers).filter(Boolean).length;
+                        const acceptedList = RESEARCH_PAPERS.filter((_, idx) => v.acceptedPapers[idx]);
+                        return (
+                          <div style={S('flex:none;border-top:2px solid var(--rule2);background:var(--bg)')}>
+                            {/* Accepted papers row */}
+                            <div
+                              style={S('padding:0 16px;border-bottom:1px solid var(--rule);cursor:pointer;display:flex;align-items:center;gap:10px')}
+                              onClick={v.toggleAcceptedDrawer}
+                            >
+                              <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);padding:10px 0')}>SHARED ACROSS EVERY RESEARCH TAB</span>
+                              <div style={S('flex:1;display:flex;align-items:center;justify-content:space-between;padding:10px 0')}>
+                                <span style={S('font:600 11.5px/1 Archivo;color:var(--dim)')}>
+                                  Accepted papers
+                                  <span style={S('display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;margin-left:8px;background:var(--ok);color:#fff;font:700 10px/1 Archivo;border-radius:2px')}>{acceptedCount}</span>
+                                </span>
+                                <span style={S('font-size:11px;color:var(--faint)')}>{v.acceptedDrawerOpen ? '▲' : '▼'}</span>
+                              </div>
+                            </div>
+
+                            {/* Expanded accepted list */}
+                            {v.acceptedDrawerOpen && acceptedList.length > 0 && (
+                              <div style={S('max-height:140px;overflow-y:auto;border-bottom:1px solid var(--rule);animation:rise 0.18s ease')}>
+                                {acceptedList.map((p, idx) => (
+                                  <div key={idx} style={S('display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--rule)')}>
+                                    <span style={S('width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none')} />
+                                    <span style={S('font:600 11px/1.4 Archivo;color:var(--dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{p.title}</span>
+                                    <span style={S('font:500 10px/1 Archivo;color:var(--faint);flex:none')}>{p.year}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Action buttons */}
+                            <div style={S('padding:12px 16px;display:flex;align-items:center;gap:10px')}>
+                              <Box
+                                css="padding:8px 14px;font:600 11px/1 Archivo;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;white-space:nowrap"
+                                hover="border-color:var(--ink);color:var(--ink)"
+                              >
+                                + Upload or link a paper to evaluate
+                              </Box>
+                              <Box
+                                css="padding:8px 14px;font:600 11px/1 Archivo;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;white-space:nowrap"
+                                hover="border-color:var(--ink);color:var(--ink)"
+                              >
+                                + Add additional topic for research
+                              </Box>
+                              <Box
+                                css="margin-left:auto;padding:8px 18px;font:700 11px/1 Archivo;background:var(--acc);color:#fff;cursor:pointer;white-space:nowrap;border:1px solid transparent"
+                                hover="background:var(--acc)"
+                                onClick={() => this.go('organize')}
+                              >
+                                Continue to next screen →
+                              </Box>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                    </div>
+                  ) : (
+                    /* ===== LOADING STATE: Animated Feed ===== */
+                    <div style={S('display:flex;flex-direction:column;height:100%;overflow:hidden')}>
+
+                      {/* Header */}
+                      <div style={S('padding:14px 22px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:12px;flex:none;background:var(--bg)')}>
+                        <div style={S('width:9px;height:9px;border-radius:50%;flex:none;background:var(--acc);animation:puls 1.1s infinite')} />
+                        <div>
+                          <div style={S('font:700 9.5px/1 Archivo;letter-spacing:0.15em;color:var(--faint);margin-bottom:3px')}>RESEARCH AGENT</div>
+                          <div style={S('font-weight:800;font-size:14px;letter-spacing:-0.01em')}>
+                            {rN >= INDEX_STEP ? 'Building evidence index…' : rN >= DEDUP_STEP ? 'Deduplicating results…' : rN >= PAPER_START ? `Retrieving papers — ${visiblePapers} of ${RESEARCH_PAPERS.length} found` : 'Connecting to databases…'}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Progress bar */}
+                      <div style={S('height:3px;background:var(--rule);flex:none')}>
+                        <div style={S(`height:3px;background:var(--acc);width:${pct}%;transition:width 0.5s ease`)} />
+                      </div>
+
+                      <div style={S('flex:1;overflow-y:auto;padding:20px 22px')}>
+
+                        {/* Evidence Collector compact strip */}
+                        <div style={S('display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--rule);background:var(--bg);margin-bottom:16px')}>
+                          <div style={S('display:flex;gap:3px;align-items:center')}>
+                            {[0,1,2].map((d) => (
+                              <div key={d} style={{ width:5, height:5, borderRadius:'50%', background:'var(--acc)', animation:'dotBounce 1.3s ease-in-out infinite', animationDelay:`${d*0.18}s` }} />
                             ))}
                           </div>
-                        )}
-
-                        <div style={S('font:11px/1 var(--mono);color:var(--faint);margin-top:5px')}>{m.time}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* suggestions + input */}
-                  <div style={S('border-top:2px solid var(--rule2);padding:14px 32px 18px;flex:none')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:8px')}>QUICK QUESTIONS</div>
-                    <div style={S('display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px')}>
-                      {v.topicsSuggestions.map((sg, si) => (
-                        <Box
-                          key={si}
-                          css="border:1px solid var(--rule);padding:5px 11px;font-size:11px;color:var(--dim);cursor:pointer;white-space:nowrap"
-                          hover="border-color:var(--acc);color:var(--acc)"
-                          onClick={() => v.useTopicsSuggestion(sg)}
-                        >
-                          {sg}
-                        </Box>
-                      ))}
-                    </div>
-                    <div style={S('display:flex;gap:10px;align-items:flex-end')}>
-                      <textarea
-                        value={v.topicsInput}
-                        onChange={v.onTopicsInput}
-                        onKeyDown={v.onTopicsKey}
-                        placeholder="Ask the agent to explain an option, compare them, adjust the focus, or show alternatives… (Enter to send)"
-                        rows={2}
-                        style={S('flex:1;background:var(--s1);border:1px solid var(--rule);padding:11px 14px;font-size:13px;line-height:1.5;resize:none')}
-                      />
-                      <Box
-                        css="background:var(--acc);color:#fff;font-weight:700;padding:11px 16px;cursor:pointer;flex:none;height:fit-content"
-                        hover="background:#dd2b0f"
-                        onClick={v.doSendTopics}
-                      >
-                        Send →
-                      </Box>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ---- right rail ---- */}
-                <div style={S('background:var(--s1);overflow-y:auto;display:flex;flex-direction:column')}>
-                  <div style={S('padding:16px 18px;border-bottom:1px solid var(--rule)')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:10px')}>CURRENT OPTIONS</div>
-                    <div style={S('display:flex;flex-direction:column;gap:8px')}>
-                      {v.currentRailCards.map((o, oi) => (
-                        <div key={o.id} style={S('display:flex;border:1px solid var(--rule);background:var(--bg)')}>
-                          <div style={S(`width:2px;flex:none;background:${o.riskColor}`)} />
-                          <div style={S('flex:1;padding:10px 12px')}>
-                            <div style={S('display:flex;align-items:center;gap:7px;margin-bottom:5px')}>
-                              <span style={S('font:700 9px/1 var(--mono);color:var(--faint)')}>OPT {oi + 1}</span>
-                              <span style={S(`font:700 10px/1 var(--mono);color:var(--acc);margin-left:auto`)}>{o.strength}</span>
-                            </div>
-                            <div style={S('font-size:12px;font-weight:700;line-height:1.35;margin-bottom:7px')}>{o.title}</div>
-                            <Box
-                              css="font-size:11px;color:var(--dim);cursor:pointer;font-weight:600;display:flex;align-items:center;gap:6px"
-                              hover="color:var(--acc)"
-                              onClick={o.select}
-                            >
-                              Select <span>→</span>
-                            </Box>
-                          </div>
+                          <div style={S('font:600 10px/1 Archivo;letter-spacing:0.1em;color:var(--faint)')}>EVIDENCE COLLECTOR</div>
+                          <div style={S('font-size:11.5px;color:var(--dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')} key={thinkingMsg}>{thinkingMsg}</div>
+                          <div style={S('font:600 10px/1 var(--mono);color:var(--faint);flex:none')}>{pct}%</div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  <div style={S('padding:16px 18px;border-bottom:1px solid var(--rule)')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:10px')}>BRAND CONTEXT</div>
-                    {[
-                      ['Topic', v.topic.length > 28 ? v.topic.slice(0, 28) + '…' : v.topic],
-                      ['Audience', v.aud],
-                      ['Region', v.region],
-                      ['Duration', `${v.dur} min`],
-                    ].map(([lbl, val]) => (
-                      <div key={lbl} style={S('display:flex;justify-content:space-between;margin-bottom:8px;font-size:11.5px')}>
-                        <span style={S('color:var(--faint)')}>{lbl}</span>
-                        <span style={S('font-weight:600;text-align:right;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{val}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div style={S('padding:16px 18px')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:10px')}>CRITERIA ANALYSED</div>
-                    {[
-                      'Clinical experience signals', 'Practitioner questions', 'Conference & trend signals',
-                      'Hero product relevance', 'Evidence strength', 'Evidence timeliness', 'Human discussion signals',
-                    ].map((c, ci) => (
-                      <div key={ci} style={S('display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:11.5px;color:var(--dim)')}>
-                        <span style={S('color:var(--ok);flex:none;font-size:10px')}>✓</span>{c}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ============ 4 · PROJECT BRIEF CHAT ============ */}
-          {v.isChat && (
-            <div style={S('display:flex;flex-direction:column;height:100%')}>
-              {/* header */}
-              <div style={S('padding:16px 32px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:20px;flex:none')}>
-                <Box css="color:var(--faint);font-size:12px;cursor:pointer" hover="color:var(--acc)" onClick={v.goTopics}>← Back</Box>
-                <div style={S('width:1px;height:20px;background:var(--rule)')} />
-                <div style={S('min-width:0')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>PROJECT BRIEF</div>
-                  <div style={S('font-weight:700;font-size:15px;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{v.topic}</div>
-                </div>
-                {v.chatReady && (
-                  <Box
-                    css="margin-left:auto;background:var(--ok);color:#0d0f0d;font-weight:700;padding:11px 18px;cursor:pointer;display:flex;align-items:center;gap:24px;flex:none"
-                    hover="opacity:0.88"
-                    onClick={v.proceedToGen}
-                  >
-                    <span>Proceed to Generation</span><span>→</span>
-                  </Box>
-                )}
-              </div>
-
-              <div style={S('flex:1;display:grid;grid-template-columns:284px 1fr;min-height:0')}>
-                {/* left context panel */}
-                <div style={S('border-right:2px solid var(--rule2);background:var(--s1);overflow-y:auto;display:flex;flex-direction:column')}>
-                  <div style={S('padding:18px 20px;border-bottom:1px solid var(--rule)')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:10px')}>SELECTED TOPIC</div>
-                    <div style={S('font-weight:700;font-size:13.5px;line-height:1.4;margin-bottom:6px')}>{v.chosenTopic.title}</div>
-                    <div style={S(`display:inline-block;border:1px solid ${v.chosenTopic.riskColor || 'var(--ok)'};color:${v.chosenTopic.riskColor || 'var(--ok)'};padding:3px 8px;font:600 9.5px/1 Archivo;letter-spacing:0.1em`)}>{v.chosenTopic.risk} RISK</div>
-                  </div>
-
-                  <div style={S('padding:18px 20px;border-bottom:1px solid var(--rule)')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:12px')}>BRIEF PARAMETERS</div>
-                    {[
-                      ['Audience', v.aud],
-                      ['Region', v.region],
-                      ['Duration', `${v.dur} min`],
-                    ].map(([lbl, val]) => (
-                      <div key={lbl} style={S('display:flex;justify-content:space-between;margin-bottom:9px;font-size:12.5px')}>
-                        <span style={S('color:var(--faint)')}>{lbl}</span>
-                        <span style={S('font-weight:600')}>{val}</span>
-                      </div>
-                    ))}
-                    {v.cover.length > 0 && (
-                      <div style={S('margin-top:10px')}>
-                        <div style={S('font:600 9px/1 Archivo;letter-spacing:0.1em;color:var(--faint);margin-bottom:6px')}>MUST COVER</div>
-                        <div style={S('display:flex;flex-wrap:wrap;gap:5px')}>
-                          {v.cover.map((c, i) => <span key={i} style={S('background:var(--s2);padding:3px 8px;font-size:11px')}>{c.label}</span>)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={S('padding:18px 20px')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:10px')}>CONTENT FOCUS AREAS</div>
-                    <div style={S('display:flex;flex-direction:column;gap:5px')}>
-                      {(v.chosenTopic.focus || []).map((f, i) => (
-                        <div key={i} style={S('font-size:12px;color:var(--dim);display:flex;gap:8px;align-items:flex-start')}>
-                          <span style={S('color:var(--ok);flex:none;margin-top:1px')}>✓</span>{f}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* chat area */}
-                <div style={S('display:flex;flex-direction:column;min-height:0')}>
-                  {/* messages */}
-                  <div style={S('flex:1;overflow-y:auto;padding:28px 36px;display:flex;flex-direction:column;gap:20px')}>
-                    {v.chatMessages.length === 0 && (
-                      <div style={S('color:var(--faint);font-size:13px;text-align:center;margin-top:60px')}>Starting conversation…</div>
-                    )}
-                    {v.chatMessages.map((m, i) => (
-                      <div key={i} style={S(`display:flex;flex-direction:column;align-items:${m.isAgent ? 'flex-start' : 'flex-end'};animation:rise 0.2s ease`)}>
-                        <div style={S(`font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:7px;${m.isAgent ? '' : 'text-align:right'}`)}>
-                          {m.isAgent ? 'CONTENT AGENT' : 'YOU'}
-                        </div>
-                        <div style={S(`max-width:68ch;padding:16px 18px;${m.isAgent ? 'background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc)' : 'background:var(--s2);border:1px solid var(--rule2)'}`)}>
-                          {m.parts.map((p, j) => (
-                            <p key={j} style={S(`margin:0;font-size:14px;line-height:1.65;${j > 0 ? 'margin-top:12px' : ''};${m.isAgent ? '' : 'text-align:right'}`)}>{p.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
-                          ))}
-                        </div>
-                        <div style={S('font:11px/1 var(--mono);color:var(--faint);margin-top:5px')}>{m.time}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* suggestions + input */}
-                  <div style={S('border-top:2px solid var(--rule2);padding:16px 36px 20px;flex:none')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:9px')}>QUICK RESPONSES</div>
-                    <div style={S('display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px')}>
-                      {v.chatSuggestions.map((s, i) => (
-                        <Box key={i} css="border:1px solid var(--rule);padding:5px 12px;font-size:11.5px;color:var(--dim);cursor:pointer" hover="border-color:var(--acc);color:var(--acc)" onClick={() => v.useSuggestion(s)}>{s}</Box>
-                      ))}
-                    </div>
-                    <div style={S('display:flex;gap:10px;align-items:flex-end')}>
-                      <textarea
-                        value={v.chatInput}
-                        onChange={v.onChatInput}
-                        onKeyDown={v.onChatKey}
-                        placeholder="Type your response… (Enter to send, Shift+Enter for new line)"
-                        rows={3}
-                        style={S('flex:1;background:var(--s1);border:1px solid var(--rule);padding:12px 14px;font-size:13.5px;line-height:1.55;resize:none')}
-                      />
-                      <Box css="background:var(--acc);color:#fff;font-weight:700;padding:12px 16px;cursor:pointer;height:fit-content;flex:none" hover="background:#dd2b0f" onClick={v.sendChat}>Send →</Box>
-                    </div>
-                    {!v.chatReady && (
-                      <div style={S('margin-top:10px;color:var(--faint);font-size:11.5px')}>Answer at least 2 questions to unlock "Proceed to Generation"</div>
-                    )}
-                    {v.chatReady && (
-                      <div style={S('margin-top:12px;display:flex;align-items:center;gap:12px')}>
-                        <div style={S('color:var(--ok);font-size:11.5px;font-weight:600')}>✓ Brief is ready</div>
-                        <Box css="background:var(--ok);color:#0d0f0d;font-weight:700;padding:10px 16px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:20px" hover="opacity:0.88" onClick={v.proceedToGen}>
-                          <span>Proceed to Generation</span><span>→</span>
-                        </Box>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ============ 5 · PIPELINE ============ */}
-          {v.isPipe && (
-            <div style={S('display:flex;flex-direction:column;min-height:100%')}>
-              <div style={S('padding:26px 40px 0')}>
-                <div style={S('display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px')}>
-                  <div>
-                    <div style={merge(kicker, 'margin-bottom:10px')}>PIPELINE · RUN #2418</div>
-                    <h1 style={S('font-size:24px;font-weight:800;letter-spacing:-0.025em;margin:0')}>{v.topic}</h1>
-                  </div>
-                  <div style={S('text-align:right')}>
-                    <div style={S('font:700 22px/1 var(--mono);color:var(--acc)')}>{v.pctLabel}</div>
-                    <div style={S('color:var(--faint);font-size:11.5px;margin-top:6px')}>{v.etaLabel}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div style={S('display:grid;grid-template-columns:repeat(7,1fr);border-top:2px solid var(--rule2);border-bottom:2px solid var(--rule2)')}>
-                {v.stages.map((s, i) => (
-                  <div key={i} style={S(s.style)}>
-                    <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:12px')}>
-                      <span style={S(s.icon)}>{s.glyph}</span>
-                      <span style={S('font:700 10px/1 var(--mono);color:var(--faint)')}>{s.i}</span>
-                    </div>
-                    <div style={S(s.label)}>{s.name}</div>
-                    <div style={S('color:var(--faint);font-size:10.5px;margin-top:5px')}>{s.note}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={S('flex:1;display:grid;grid-template-columns:1fr 372px')}>
-                <div style={S('border-right:2px solid var(--rule2);display:flex;flex-direction:column')}>
-                  <div style={S('padding:16px 40px 12px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px')}>
-                    <div style={S('font:600 10px/1 Archivo;letter-spacing:0.14em;color:var(--dim)')}>ACTIVITY LOG</div>
-                    <div style={S('width:6px;height:6px;background:var(--acc);animation:puls 1.1s infinite')} />
-                    <Box css="margin-left:auto;font-size:11.5px;color:var(--faint);cursor:pointer" hover="color:var(--acc)" onClick={v.skipPipe}>
-                      skip to validation →
-                    </Box>
-                  </div>
-                  <div style={S('padding:14px 40px 30px;font:12px/1.9 var(--mono);color:var(--dim)')}>
-                    {v.logs.map((l, i) => (
-                      <div key={i} style={S(l.style)}>
-                        <span style={S('color:var(--faint)')}>{l.t}</span>{'  '}{l.text}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={S('background:var(--s1)')}>
-                  <div style={S('padding:16px 20px 12px;border-bottom:1px solid var(--rule)')}>
-                    <div style={S('font:600 10px/1 Archivo;letter-spacing:0.14em;color:var(--dim);margin-bottom:4px')}>EVIDENCE STORE</div>
-                    <div style={S('color:var(--faint);font-size:11.5px')}>{v.chunkLabel}</div>
-                  </div>
-                  {v.evidence.map((e, i) => (
-                    <div key={i} style={S('padding:14px 20px;border-bottom:1px solid var(--rule);animation:rise 0.25s ease')}>
-                      <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:7px')}>
-                        <span style={S(e.badge)}>{e.type}</span>
-                        <span style={S('font:600 10.5px/1 var(--mono);color:var(--faint)')}>{e.year}</span>
-                        <span style={S('margin-left:auto;display:flex;gap:2px')}>
-                          {e.conf.map((c, j) => <span key={j} style={S(c.style)} />)}
-                        </span>
-                      </div>
-                      <div style={S('font-size:12px;font-weight:500;line-height:1.4')}>{e.title}</div>
-                      <div style={S('color:var(--faint);font-size:11px;margin-top:4px')}>{e.src}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={S('border-top:2px solid var(--rule2);padding:14px 40px;display:flex;align-items:center;gap:20px')}>
-                <div style={S('flex:1;height:3px;background:var(--s2)')}><div style={S(v.progStyle)} /></div>
-                <div style={S('font:600 11.5px/1 var(--mono);color:var(--dim);flex:none')}>{v.etaLabel}</div>
-              </div>
-            </div>
-          )}
-
-          {/* ============ 4 · VALIDATION REPORT ============ */}
-          {v.isValid && (
-            <div style={S('padding:34px 40px 50px')}>
-              <div style={S('display:flex;justify-content:space-between;align-items:flex-start;gap:30px;padding-bottom:24px;border-bottom:2px solid var(--rule2)')}>
-                <div>
-                  <div style={merge(kicker, 'margin-bottom:11px')}>SCIENTIFIC VALIDATION REPORT</div>
-                  <h1 style={S('font-size:26px;font-weight:800;letter-spacing:-0.025em;margin:0 0 8px')}>{v.topic}</h1>
-                  <div style={S('color:var(--faint);font-size:12px')}>Run #2418 · 40 slides · 118 claims checked · completed 09:41</div>
-                </div>
-                <div style={S('border:2px solid var(--warn);color:var(--warn);padding:11px 16px;font:800 14px/1 Archivo;letter-spacing:0.08em;flex:none')}>PARTIAL</div>
-              </div>
-
-              <div style={S('display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:2px solid var(--rule2)')}>
-                {v.checks.map((c, i) => (
-                  <div key={i} style={S(c.style)}>
-                    <div style={S('display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:16px')}>
-                      <div style={S('font-weight:700;font-size:14px')}>{c.name}</div>
-                      <div style={S(c.tag)}>{c.verdict}</div>
-                    </div>
-                    <div style={S('display:flex;align-items:baseline;gap:10px;margin-bottom:14px')}>
-                      <div style={S(c.numStyle)}>{c.score}</div>
-                      <div style={S('color:var(--dim);font-size:12px')}>{c.unit}</div>
-                    </div>
-                    <div style={S('height:3px;background:var(--s2);margin-bottom:12px')}><div style={S(c.bar)} /></div>
-                    <div style={S('color:var(--dim);font-size:11.5px')}>{c.note}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={S('padding:26px 0 12px;display:flex;align-items:baseline;gap:14px')}>
-                <h2 style={S('font-size:13px;font-weight:700;letter-spacing:0.1em;margin:0')}>FLAGGED ITEMS</h2>
-                <span style={S('color:var(--faint);font-size:12px')}>3 items · 2 auto-repaired · 1 escalated</span>
-              </div>
-
-              {v.flags.map((f, i) => (
-                <div key={i} style={S(f.style)}>
-                  <div style={S('display:flex;align-items:center;gap:12px;margin-bottom:12px')}>
-                    <span style={S('font:700 11px/1 var(--mono);color:var(--faint)')}>SLIDE {f.slide}</span>
-                    <span style={S('font-weight:600;font-size:13px')}>{f.title}</span>
-                    <span style={S(f.typeTag)}>{f.type}</span>
-                    <span style={S(f.statusTag)}>{f.status}</span>
-                  </div>
-                  <div style={S('border-left:2px solid var(--warn);padding:2px 0 2px 14px;font-size:13.5px;line-height:1.55;margin-bottom:14px')}>{f.sentence}</div>
-                  <div style={S('display:flex;gap:10px;align-items:flex-start')}>
-                    <div style={S('font:600 9.5px/1.6 Archivo;letter-spacing:0.13em;color:var(--faint);flex:none;width:74px')}>{f.fixLabel}</div>
-                    <div style={S('color:var(--dim);font-size:12.5px;line-height:1.5')}>{f.fix}</div>
-                  </div>
-                </div>
-              ))}
-
-              {v.pptStatus === 'sent-to-ma' && (
-                <div style={S('display:flex;align-items:center;gap:12px;margin-top:28px;padding:14px 18px;background:#0d2b1f;border-left:3px solid var(--ok)')}>
-                  <span style={S('color:var(--ok);font-size:16px')}>✓</span>
-                  <div>
-                    <div style={S('font-weight:700;font-size:13px;color:var(--ok)')}>Sent to Medical Affairs Review</div>
-                    <div style={S('color:var(--dim);font-size:12px;margin-top:2px')}>You'll be notified when the reviewer responds. Switch to Medical Affairs role to see the review in progress.</div>
-                  </div>
-                </div>
-              )}
-              {v.pptStatus === 'ma-rejected' && (
-                <div style={S('display:flex;align-items:center;gap:12px;margin-top:28px;padding:14px 18px;background:#2b1212;border-left:3px solid var(--acc)')}>
-                  <span style={S('color:var(--acc);font-size:16px')}>!</span>
-                  <div style={S('flex:1')}>
-                    <div style={S('font-weight:700;font-size:13px;color:var(--acc)')}>Sent Back by Medical Affairs — {v.maTotalComments} comment{v.maTotalComments !== 1 ? 's' : ''} across {v.maCommentSlideCount} slide{v.maCommentSlideCount !== 1 ? 's' : ''}</div>
-                    <div style={S('color:var(--dim);font-size:12px;margin-top:2px')}>Review the comments in the Review Workspace, make revisions, then re-submit.</div>
-                  </div>
-                  <Box css="background:var(--acc);color:#fff;font-weight:700;padding:11px 18px;cursor:pointer;white-space:nowrap;font-size:13px" hover="background:#dd2b0f" onClick={v.doResubmitToMA}>Re-submit to MA →</Box>
-                </div>
-              )}
-              {(v.pptStatus === 'draft' || !v.pptStatus) && (
-                <div style={S('display:flex;gap:12px;margin-top:28px')}>
-                  <Box css="background:var(--acc);color:#fff;font-weight:700;padding:15px 20px;cursor:pointer;display:flex;align-items:center;gap:40px;min-width:280px" hover="background:#dd2b0f" onClick={v.doSendToMA}>
-                    <span>Send to Reviewer</span><span style={S('margin-left:auto')}>→</span>
-                  </Box>
-                  <Box css="border:1px solid var(--rule2);padding:15px 20px;cursor:pointer;color:var(--dim)" hover="color:var(--ink);border-color:var(--ink)">Re-run validation</Box>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ============ 5 · REVIEW WORKSPACE ============ */}
-          {v.isReview && (() => {
-            const isSentBack = v.pptStatus === 'ma-rejected' || v.pptStatus === 'sci-rejected';
-            const sentBackBy = v.pptStatus === 'sci-rejected' ? 'Scientific Reviewer' : 'Medical Affairs';
-            const sentBackColor = v.pptStatus === 'sci-rejected' ? 'var(--ok)' : 'var(--warn)';
-            const activeComments = v.pptStatus === 'sci-rejected'
-              ? (v.sciAllComments[v.slides[v.slideIdx]?.n] || [])
-              : (v.maAllComments[v.slides[v.slideIdx]?.n] || []);
-            const allComments = v.pptStatus === 'sci-rejected' ? v.sciAllComments : v.maAllComments;
-            const slidesWithComments = v.slides.filter(s => (allComments[s.n] || []).some(c => !c.resolved));
-            const totalReviewerComments = Object.values(allComments).reduce((a, arr) => a + arr.filter(c => !c.resolved).length, 0);
-            return (
-            <div style={S('display:flex;flex-direction:column;height:100%')}>
-
-              {/* sent-back alert banner */}
-              {isSentBack && (
-                <div style={S(`padding:12px 26px;background:#1e1000;border-bottom:2px solid ${sentBackColor};display:flex;align-items:center;gap:14px;flex:none`)}>
-                  <div style={S(`width:28px;height:28px;border-radius:50%;background:${sentBackColor};display:grid;place-items:center;font:700 13px/1 Archivo;color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'};flex:none`)}>!</div>
-                  <div style={S('flex:1')}>
-                    <div style={S(`font-weight:700;font-size:13px;color:${sentBackColor}`)}>Sent back by {sentBackBy} — {totalReviewerComments} unresolved comment{totalReviewerComments !== 1 ? 's' : ''} across {slidesWithComments.length} slide{slidesWithComments.length !== 1 ? 's' : ''}</div>
-                    <div style={S('color:var(--dim);font-size:12px;margin-top:2px')}>Review each comment in the right panel, make your edits, then re-submit for approval.</div>
-                  </div>
-                  <Box
-                    css={`background:${sentBackColor};color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'};font-weight:700;padding:9px 16px;cursor:pointer;font-size:12.5px;flex:none`}
-                    hover="opacity:0.85"
-                    onClick={v.doResubmitToMA}
-                  >Re-submit to {v.pptStatus === 'sci-rejected' ? 'Sci' : 'MA'} →</Box>
-                </div>
-              )}
-
-              <div style={S('padding:14px 26px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:22px;flex:none')}>
-                <div style={S('min-width:0')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:6px')}>{isSentBack ? `REVISION ROUND · ${sentBackBy.toUpperCase()} COMMENTS` : `HUMAN REVIEW · REVIEWER ${v.reviewer}`}</div>
-                  <div style={S('font-weight:700;font-size:16px;letter-spacing:-0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{v.topic}</div>
-                </div>
-                <div style={S('flex:none;display:flex;align-items:center;gap:12px;padding-left:22px;border-left:1px solid var(--rule)')}>
-                  <div style={S('font:700 13px/1 var(--mono)')}>{v.reviewedLabel}</div>
-                  <div style={S('width:92px;height:3px;background:var(--s2)')}><div style={S(v.reviewProg)} /></div>
-                </div>
-                <div style={S('margin-left:auto;display:flex;gap:10px;flex:none')}>
-                  <Box css="border:1px solid var(--rule);padding:10px 15px;font-size:12.5px;cursor:pointer;color:var(--dim)" hover="color:var(--ink);border-color:var(--ink)">Save Draft</Box>
-                  {!isSentBack && <Box css="background:var(--acc);color:#fff;font-weight:700;padding:10px 16px;font-size:12.5px;cursor:pointer" hover="background:#dd2b0f" onClick={v.approveAll}>Approve All</Box>}
-                  {isSentBack && (
-                    <Box css={`background:${sentBackColor};color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'};font-weight:700;padding:10px 16px;font-size:12.5px;cursor:pointer`} hover="opacity:0.85" onClick={v.doResubmitToMA}>
-                      Re-submit to {v.pptStatus === 'sci-rejected' ? 'Scientific Review' : 'MA Review'} →
-                    </Box>
-                  )}
-                </div>
-              </div>
-
-              <div style={S('flex:1;display:grid;grid-template-columns:236px 1fr 348px;min-height:0')}>
-                {/* slide rail */}
-                <div style={S('border-right:2px solid var(--rule2);overflow-y:auto;background:var(--bg)')}>
-                  <div style={S('padding:14px 18px 10px;font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--bg)')}>SLIDES · 40</div>
-                  {v.slideNav.map((s, i) => {
-                    const slideComments = (allComments[s.n] || []).filter(c => !c.resolved);
-                    return (
-                    <Box key={i} css={s.style} hover="background:var(--s1)" onClick={s.pick}>
-                      <div style={S('display:flex;align-items:center;gap:9px;margin-bottom:7px')}>
-                        <span style={S('font:700 10px/1 var(--mono);color:var(--faint)')}>{s.num}</span>
-                        <span style={S(s.dot)} />
-                        <span style={merge('font:600 9px/1 Archivo;letter-spacing:0.1em', s.stColor)}>{s.st}</span>
-                        {isSentBack && slideComments.length > 0 && (
-                          <span style={S(`margin-left:auto;background:${sentBackColor};color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'};font:700 9px/1 Archivo;padding:2px 5px`)}>{slideComments.length}</span>
-                        )}
-                      </div>
-                      <div style={S(s.titleStyle)}>{s.title}</div>
-                      <div style={S(s.thumb)} />
-                    </Box>
-                    );
-                  })}
-                </div>
-
-                {/* slide canvas */}
-                <div style={S('overflow-y:auto;min-width:0;display:flex;flex-direction:column')}>
-                  <div style={S('flex:1;padding:28px 34px 20px')}>
-                    <div style={S('font:600 10px/1 var(--mono);color:var(--faint);margin-bottom:12px')}>
-                      SLIDE {v.activeNum} / 40 · {v.activeLayout}
-                    </div>
-                    <Box
-                      as="input"
-                      value={v.activeTitle}
-                      onChange={v.onTitle}
-                      css="width:100%;background:transparent;border:0;border-bottom:2px solid var(--rule2);padding:0 0 12px;font-size:25px;font-weight:800;letter-spacing:-0.025em;margin-bottom:26px"
-                      hover="border-color:var(--acc)"
-                    />
-                    {v.blocks.map((b, i) => (
-                      <Box key={i} css={b.style} hover="border-color:var(--rule2)" onClick={b.select}>
-                        <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:10px')}>
-                          <span style={S('font:600 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>{b.kind}</span>
-                          {b.flagged && (
-                            <span style={S('display:inline-flex;align-items:center;gap:6px;color:var(--warn);font:600 10px/1 Archivo;letter-spacing:0.08em')}>
-                              <span style={S('width:0;height:0;border-left:6px solid var(--warn);border-top:4px solid transparent;border-bottom:4px solid transparent')} />
-                              {b.flagType}
-                            </span>
-                          )}
-                          <span style={S('margin-left:auto;display:flex;gap:12px;font-size:11px;color:var(--faint)')}>
-                            <Box as="span" css="cursor:pointer" hover="color:var(--acc)">edit</Box>
-                            <Box as="span" css="cursor:pointer" hover="color:var(--acc)">note</Box>
-                            <Box as="span" css="cursor:pointer" hover="color:var(--acc)">delete</Box>
-                          </span>
-                        </div>
-                        <div style={S('font-size:14.5px;line-height:1.6;text-wrap:pretty')}>{b.text}</div>
-                        {b.flagged && (
-                          <div style={S('margin-top:11px;padding:9px 12px;background:rgba(207,154,43,.1);border-left:2px solid var(--warn);color:var(--warn);font-size:11.5px;line-height:1.5')}>
-                            {b.flagReason}
-                          </div>
-                        )}
-                        <div style={S('display:flex;gap:6px;margin-top:13px')}>
-                          {b.cites.map((c, j) => (
-                            <Box
-                              key={j}
-                              css="border:1px solid var(--rule);padding:3px 8px;font:600 10.5px/1.5 var(--mono);color:var(--dim);cursor:pointer"
-                              hover="border-color:var(--acc);color:var(--acc)"
-                              onClick={(e) => { e.stopPropagation(); c.open(); }}
-                            >
-                              [{c.n}]
-                            </Box>
-                          ))}
-                        </div>
-                      </Box>
-                    ))}
-                  </div>
-
-                  <div style={S('border-top:2px solid var(--rule2);padding:13px 34px;display:flex;align-items:center;gap:14px;position:sticky;bottom:0;background:var(--bg)')}>
-                    <Box css="border:1px solid var(--rule);padding:9px 14px;font-size:12.5px;cursor:pointer;color:var(--dim)" hover="color:var(--ink);border-color:var(--ink)" onClick={v.prevSlide}>← Previous</Box>
-                    <Box css="border:1px solid var(--rule);padding:9px 14px;font-size:12.5px;cursor:pointer;color:var(--dim)" hover="color:var(--ink);border-color:var(--ink)" onClick={v.nextSlide}>Next →</Box>
-                    <Box css="margin-left:auto;background:var(--ok);color:#0d0f0d;font-weight:700;padding:10px 18px;font-size:12.5px;cursor:pointer" hover="opacity:0.85" onClick={v.approveSlide}>Approve This Slide</Box>
-                  </div>
-                </div>
-
-                {/* edit / instruct / reviewer-comments panel */}
-                <div style={S('border-left:2px solid var(--rule2);background:var(--s1);overflow-y:auto;display:flex;flex-direction:column')}>
-                  <div style={S(`display:grid;grid-template-columns:${isSentBack ? '1fr 1fr 1fr' : '1fr 1fr'};border-bottom:2px solid var(--rule2)`)}>
-                    <div style={S(v.tabEditStyle)} onClick={v.tabEdit}>Direct Edit</div>
-                    <div style={S(v.tabInstrStyle)} onClick={v.tabInstr}>Instruction</div>
-                    {isSentBack && (
-                      <div
-                        style={S(`padding:13px 10px;text-align:center;font:600 10px/1 Archivo;letter-spacing:0.08em;cursor:pointer;position:relative;background:${v.tab === 'comments' ? 'var(--s2)' : 'transparent'};color:${v.tab === 'comments' ? sentBackColor : 'var(--dim)'};border-bottom:${v.tab === 'comments' ? `2px solid ${sentBackColor}` : '2px solid transparent'}`)}
-                        onClick={() => this.setState({ tab: 'comments' })}
-                      >
-                        Reviewer Comments
-                        {activeComments.filter(c => !c.resolved).length > 0 && (
-                          <span style={S(`position:absolute;top:6px;right:6px;background:${sentBackColor};color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'};font:700 8px/1 Archivo;padding:2px 4px`)}>{activeComments.filter(c => !c.resolved).length}</span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* reviewer comments tab content */}
-                  {isSentBack && v.tab === 'comments' && (
-                    <div style={S('padding:16px 18px;flex:1')}>
-                      <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:12px')}>
-                        {sentBackBy.toUpperCase()} COMMENTS · SLIDE {v.slides[v.slideIdx]?.n}
-                      </div>
-                      {activeComments.length === 0 ? (
-                        <div style={S('color:var(--ok);font-size:13px;padding:18px 0;text-align:center')}>
-                          ✓ No comments on this slide
-                        </div>
-                      ) : activeComments.map((c) => (
-                        <div key={c.id} style={S(`margin-bottom:14px;border:1px solid ${c.resolved ? 'var(--rule)' : sentBackColor};padding:13px;background:${c.resolved ? 'transparent' : 'rgba(207,154,43,0.04)'}`)}>
-                          <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:8px')}>
-                            <div style={S(`width:20px;height:20px;border-radius:50%;background:${sentBackColor};color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'};font:700 10px/20px Archivo;text-align:center;flex:none`)}>{c.id}</div>
-                            <div style={S('font-weight:600;font-size:12px')}>{c.author}</div>
-                            <div style={S('margin-left:auto;color:var(--faint);font-size:11px')}>{c.time}</div>
-                          </div>
-                          <div style={S('font-size:12.5px;line-height:1.55;color:var(--ink);margin-bottom:10px')}>{c.text}</div>
-                          {c.resolved
-                            ? <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--ok)')}>✓ ADDRESSED</div>
-                            : (
-                              <div style={S('display:flex;gap:7px')}>
-                                <Box
-                                  css={`flex:1;border:1px solid ${sentBackColor};padding:6px 10px;text-align:center;cursor:pointer;color:${sentBackColor};font:600 10px/1 Archivo`}
-                                  hover={`background:${sentBackColor};color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'}`}
-                                  onClick={() => v.resolvePin(v.pptStatus === 'sci-rejected' ? 'sci' : 'ma', v.slides[v.slideIdx]?.n, c.id)}
-                                >Mark Addressed</Box>
-                                <Box
-                                  css="border:1px solid var(--rule);padding:6px 10px;cursor:pointer;color:var(--dim);font:600 10px/1 Archivo"
-                                  hover="color:var(--ink)"
-                                  onClick={() => { this.setState({ tab: 'instr', instr: `Address reviewer comment: "${c.text}"` }); }}
-                                >Fix with AI</Box>
-                              </div>
-                            )
-                          }
-                        </div>
-                      ))}
-
-                      {/* overview of all slides */}
-                      <div style={S('margin-top:20px;padding-top:16px;border-top:1px solid var(--rule)')}>
-                        <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:10px')}>ALL SLIDES OVERVIEW</div>
-                        {v.slides.map((sl) => {
-                          const slComments = (allComments[sl.n] || []);
-                          const open = slComments.filter(c => !c.resolved).length;
-                          const done = slComments.filter(c => c.resolved).length;
-                          if (slComments.length === 0) return null;
+                    {/* Database sources */}
+                    <div style={S('margin-bottom:20px')}>
+                      <div style={S('font:700 9px/1 Archivo;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>SOURCES</div>
+                      <div style={S('display:flex;flex-wrap:wrap;gap:7px')}>
+                        {RESEARCH_DBS.map((db, i) => {
+                          const connected = rN > i;
                           return (
-                            <div key={sl.n} style={S('display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--rule)')}>
-                              <div style={S('font:700 10px/1 var(--mono);color:var(--faint);flex:none;width:20px')}>S{sl.n}</div>
-                              <div style={S('font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dim)')}>{sl.title}</div>
-                              {open > 0 && <span style={S(`background:${sentBackColor};color:${sentBackColor === 'var(--warn)' ? '#000' : '#fff'};font:700 8.5px/1 Archivo;padding:2px 5px`)}>{open} open</span>}
-                              {done > 0 && <span style={S('background:var(--s2);color:var(--ok);font:700 8.5px/1 Archivo;padding:2px 5px')}>{done} done</span>}
+                            <div key={db} style={S(`display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid ${connected ? 'var(--ok)' : 'var(--rule)'};background:${connected ? 'rgba(22,101,52,0.08)' : 'var(--bg)'};font-size:11.5px;font-weight:600;color:${connected ? 'var(--ok)' : 'var(--faint)'};${connected ? 'animation:rise 0.2s ease' : ''}`)}>
+                              <span style={S(`width:5px;height:5px;border-radius:50%;flex:none;background:${connected ? 'var(--ok)' : 'var(--rule)'}`)}>
+                              </span>
+                              {db}
                             </div>
                           );
                         })}
                       </div>
                     </div>
-                  )}
 
-
-                  {v.isTabEdit && (
-                    <div style={S('padding:18px 20px;border-bottom:1px solid var(--rule)')}>
-                      <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:11px')}>SELECTED BLOCK · {v.selLabel}</div>
-                      <textarea value={v.editDraft} onChange={v.onEditDraft} style={S('width:100%;height:172px;background:var(--bg);border:1px solid var(--rule);padding:13px;font-size:13px;line-height:1.6;resize:vertical')} />
-                      <Box css="background:var(--acc);color:#fff;font-weight:700;padding:11px 15px;font-size:12.5px;cursor:pointer;margin-top:12px" hover="background:#dd2b0f" onClick={v.saveEdit}>Save Changes</Box>
-                    </div>
-                  )}
-
-                  {v.isTabInstr && (
-                    <div style={S('padding:18px 20px;border-bottom:1px solid var(--rule)')}>
-                      <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:11px')}>INSTRUCT THE AGENT</div>
-                      <textarea value={v.instr} onChange={v.onInstr} placeholder="Tell the AI what to change..." style={S('width:100%;height:96px;background:var(--bg);border:1px solid var(--rule);padding:13px;font-size:13px;line-height:1.6;resize:vertical')} />
-                      <div style={S('margin:14px 0 10px;font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint)')}>EXAMPLES</div>
-                      {v.examples.map((e, i) => (
-                        <Box key={i} css="border:1px solid var(--rule);padding:9px 11px;font-size:11.5px;color:var(--dim);cursor:pointer;margin-bottom:7px;line-height:1.45" hover="border-color:var(--acc);color:var(--ink)" onClick={e.use}>
-                          {e.text}
-                        </Box>
-                      ))}
-                      <Box css="background:var(--acc);color:#fff;font-weight:700;padding:11px 15px;font-size:12.5px;cursor:pointer;margin-top:8px;display:flex;align-items:center" hover="background:#dd2b0f" onClick={v.sendAI}>
-                        <span>Send to AI</span><span style={S('margin-left:auto')}>→</span>
-                      </Box>
-                    </div>
-                  )}
-
-                  <div style={S('padding:18px 20px')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:14px')}>REVISION HISTORY · THIS SLIDE</div>
-                    {v.history.map((h, i) => (
-                      <div key={i} style={S('display:flex;gap:11px;padding-bottom:15px')}>
-                        <div style={merge('flex:none;width:6px;height:6px;margin-top:5px', h.dot)} />
-                        <div style={S('min-width:0')}>
-                          <div style={S('font-size:12px;line-height:1.45')}>{h.text}</div>
-                          <div style={S('color:var(--faint);font:10.5px/1 var(--mono);margin-top:5px')}>{h.meta}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* citation drawer */}
-              {v.citOpen && (
-                <div onClick={v.closeCit} style={S('position:absolute;inset:0;background:rgba(10,9,9,.55);display:flex;justify-content:flex-end;animation:rise 0.16s ease')}>
-                  <div onClick={(e) => e.stopPropagation()} style={S('width:452px;background:var(--bg);border-left:2px solid var(--acc);padding:26px 28px;overflow-y:auto')}>
-                    <div style={S('display:flex;justify-content:space-between;align-items:center;margin-bottom:22px')}>
-                      <div style={S('font:700 13px/1 var(--mono);color:var(--acc)')}>SOURCE [{v.cit.n}]</div>
-                      <div onClick={v.closeCit} style={S('color:var(--faint);cursor:pointer;font-size:16px')}>×</div>
-                    </div>
-                    <div style={S('display:flex;gap:9px;align-items:center;margin-bottom:14px')}>
-                      <span style={S(v.cit.badge)}>{v.cit.type}</span>
-                      <span style={S('font:600 11px/1 var(--mono);color:var(--faint)')}>{v.cit.year}</span>
-                    </div>
-                    <div style={S('font-size:18px;font-weight:700;letter-spacing:-0.02em;line-height:1.3;margin-bottom:8px')}>{v.cit.title}</div>
-                    <div style={S('color:var(--dim);font-size:12.5px;margin-bottom:22px')}>{v.cit.src}</div>
-                    <div style={S('border-top:2px solid var(--rule2);padding-top:18px;font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:12px')}>RETRIEVED SNIPPET</div>
-                    <div style={S('border-left:2px solid var(--rule2);padding-left:15px;font-size:13.5px;line-height:1.65;color:var(--dim)')}>{v.cit.snippet}</div>
-                    <div style={S('display:flex;gap:26px;margin-top:26px;padding-top:18px;border-top:1px solid var(--rule)')}>
+                    {/* Papers feed */}
+                    {visiblePapers > 0 && (
                       <div>
-                        <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:7px')}>ENTAILMENT</div>
-                        <div style={S('font:700 14px/1 var(--mono);color:var(--ok)')}>{v.cit.entail}</div>
-                      </div>
-                      <div>
-                        <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:7px')}>CHUNK ID</div>
-                        <div style={S('font:700 14px/1 var(--mono);color:var(--dim)')}>{v.cit.chunk}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            );
-          })()}
-
-          {/* ============ 6 · REVISION DIFF ============ */}
-          {v.isDiff && (
-            <div style={S('padding:34px 40px 50px;max-width:1180px')}>
-              <div style={merge(kicker, 'margin-bottom:12px')}>REVISION · SLIDE {v.activeNum} · BLOCK {v.selLabel}</div>
-              <h1 style={S('font-size:25px;font-weight:800;letter-spacing:-0.025em;margin:0 0 8px')}>AI returned a revision</h1>
-              <div style={S('color:var(--dim);margin-bottom:26px')}>Instruction: “{v.diffInstr}”</div>
-
-              <div style={S('display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--rule2);border-bottom:2px solid var(--rule2)')}>
-                <div style={S('padding:20px 24px 24px;border-right:1px solid var(--rule)')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:14px')}>PREVIOUS VERSION</div>
-                  <div style={S('font-size:14.5px;line-height:1.65')}>
-                    {v.diffLeft.map((p, i) => <span key={i} style={S(p.style)}>{p.text}</span>)}
-                  </div>
-                </div>
-                <div style={S('padding:20px 24px 24px;background:var(--s1)')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--ok);margin-bottom:14px')}>AI REVISED VERSION</div>
-                  <div style={S('font-size:14.5px;line-height:1.65')}>
-                    {v.diffRight.map((p, i) => <span key={i} style={S(p.style)}>{p.text}</span>)}
-                  </div>
-                </div>
-              </div>
-
-              <div style={S('display:grid;grid-template-columns:1fr 300px;gap:0;border-bottom:2px solid var(--rule2)')}>
-                <div style={S('padding:22px 24px;border-right:1px solid var(--rule)')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:12px')}>WHAT CHANGED</div>
-                  <div style={S('font-size:13.5px;line-height:1.6;color:var(--dim);max-width:74ch')}>{v.diffWhy}</div>
-                </div>
-                <div style={S('padding:22px 24px')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:12px')}>RE-VALIDATION</div>
-                  <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:10px')}>
-                    <span style={S('border:2px solid var(--ok);color:var(--ok);padding:5px 10px;font:800 11px/1 Archivo;letter-spacing:0.08em')}>PASS</span>
-                    <span style={S('color:var(--dim);font-size:12px')}>3 checks, 2 new citations</span>
-                  </div>
-                  <div style={S('color:var(--faint);font:11px/1.7 var(--mono)')}>grounding ✓ · entailment ✓ · numeric ✓</div>
-                </div>
-              </div>
-
-              <div style={S('display:flex;gap:12px;margin-top:26px;align-items:center')}>
-                <Box css="background:var(--ok);color:#0d0f0d;font-weight:700;padding:15px 22px;cursor:pointer;min-width:230px;display:flex;align-items:center" hover="opacity:0.85" onClick={v.acceptDiff}>
-                  <span>Accept Changes</span><span style={S('margin-left:auto')}>✓</span>
-                </Box>
-                <Box css="border:1px solid var(--rule2);padding:15px 22px;cursor:pointer;color:var(--dim)" hover="color:var(--acc);border-color:var(--acc)" onClick={v.rejectDiff}>
-                  Reject &amp; Try Again
-                </Box>
-                {['ma-rejected','sci-rejected'].includes(v.pptStatus) && (
-                  <Box
-                    css="margin-left:auto;background:var(--warn);color:#000;font-weight:700;padding:15px 22px;cursor:pointer;display:flex;align-items:center;gap:12px"
-                    hover="opacity:0.88"
-                    onClick={v.doResubmitToMA}
-                  >
-                    <span>Accept &amp; Re-submit to {v.pptStatus === 'sci-rejected' ? 'Sci' : 'MA'}</span><span>→</span>
-                  </Box>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* ============ 7 · RENDERING ============ */}
-          {v.isRender && (
-            <div style={S('padding:34px 40px 50px;display:flex;flex-direction:column;min-height:100%')}>
-              <div style={S('display:flex;justify-content:space-between;align-items:baseline;padding-bottom:24px;border-bottom:2px solid var(--rule2)')}>
-                <div>
-                  <div style={merge(kicker, 'margin-bottom:11px')}>PRESENTATION RENDERING</div>
-                  <h1 style={S('font-size:26px;font-weight:800;letter-spacing:-0.025em;margin:0')}>Building your presentation…</h1>
-                </div>
-                <div style={S('text-align:right')}>
-                  <div style={S('font:700 20px/1 var(--mono);color:var(--acc)')}>{v.renderPct}</div>
-                  <div style={S('color:var(--faint);font-size:11.5px;margin-top:6px')}>{v.renderEta}</div>
-                </div>
-              </div>
-
-              <div style={S('display:grid;grid-template-columns:390px 1fr;flex:1;min-height:0')}>
-                <div style={S('border-right:2px solid var(--rule2);padding:22px 26px 22px 0')}>
-                  {v.renderSteps.map((r, i) => (
-                    <div key={i} style={S(r.style)}>
-                      <span style={S(r.icon)}>{r.glyph}</span>
-                      <div style={S('min-width:0')}>
-                        <div style={S(r.label)}>{r.name}</div>
-                        <div style={S('color:var(--faint);font:10.5px/1.5 var(--mono);margin-top:4px')}>{r.note}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div style={S('padding:22px 0 22px 30px')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:16px')}>ASSEMBLY PREVIEW · {v.builtLabel}</div>
-                  <div style={S('display:grid;grid-template-columns:repeat(5,1fr);gap:12px')}>
-                    {v.tiles.map((t, i) => (
-                      <div key={i} style={S(t.style)}>
-                        <div style={S(t.bar1)} /><div style={S(t.bar2)} /><div style={S(t.bar3)} />
-                        <div style={S('position:absolute;bottom:5px;right:6px;font:700 8px/1 var(--mono);color:var(--faint)')}>{t.n}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div style={S('border-top:2px solid var(--rule2);padding-top:16px;display:flex;align-items:center;gap:20px')}>
-                <div style={S('flex:1;height:3px;background:var(--s2)')}><div style={S(v.renderBar)} /></div>
-                <Box css="font-size:11.5px;color:var(--faint);cursor:pointer;flex:none" hover="color:var(--acc)" onClick={v.goDeliver}>skip to delivery →</Box>
-              </div>
-            </div>
-          )}
-
-          {/* ============ 8 · DELIVERY ============ */}
-          {v.isDeliver && (
-            <div style={S('padding:34px 40px 60px;max-width:1180px')}>
-              <div style={S('display:flex;justify-content:space-between;align-items:flex-end;gap:30px;padding-bottom:26px;border-bottom:2px solid var(--rule2)')}>
-                <div>
-                  <div style={S('font:600 10px/1 Archivo;letter-spacing:0.16em;color:var(--ok);margin-bottom:12px')}>DELIVERY · RUN #2418 COMPLETE</div>
-                  <h1 style={S('font-size:34px;font-weight:800;letter-spacing:-0.03em;margin:0 0 8px')}>Your deck is ready</h1>
-                  <div style={S('color:var(--dim)')}>Approved by Munal Sharma at 14:26 · integrity gate verified against the approved content hash.</div>
-                </div>
-              </div>
-
-              <div style={S('display:grid;grid-template-columns:1fr 340px;gap:0;border-bottom:2px solid var(--rule2)')}>
-                <div style={S('padding:26px 30px 26px 0;border-right:1px solid var(--rule)')}>
-                  <div style={S('background:var(--s1);border:1px solid var(--rule);aspect-ratio:16/9;padding:38px 42px;display:flex;flex-direction:column;justify-content:space-between')}>
-                    <div style={S('display:flex;align-items:center;gap:10px')}>
-                      <div style={S('width:12px;height:12px;background:var(--acc)')} />
-                      <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.16em;color:var(--dim)')}>MEDICAL AFFAIRS · SCIENTIFIC EXCHANGE</div>
-                    </div>
-                    <div>
-                      <div style={S('font-size:40px;font-weight:800;letter-spacing:-0.035em;line-height:1.05;max-width:22ch')}>{v.topic}</div>
-                      <div style={S('color:var(--dim);margin-top:16px;font-size:14px')}>45-minute HCP presentation · EU (EMA) compliance ruleset</div>
-                    </div>
-                    <div style={S('display:flex;justify-content:space-between;color:var(--faint);font:10.5px/1 var(--mono)')}>
-                      <span>v1.0 · 2 SEP 2026</span><span>SLIDE 1 / 40</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div style={S('padding:26px 0 26px 30px;display:flex;flex-direction:column;gap:10px')}>
-                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:4px')}>EXPORT</div>
-                  <Box css="background:var(--acc);color:#fff;font-weight:700;padding:14px 16px;cursor:pointer;display:flex;align-items:center" hover="background:#dd2b0f">
-                    <span>Download .pptx</span><span style={S('margin-left:auto')}>↓</span>
-                  </Box>
-                  <Box css="border:1px solid var(--rule2);padding:14px 16px;cursor:pointer;display:flex;align-items:center;color:var(--dim)" hover="color:var(--ink);border-color:var(--ink)">
-                    <span>Download Reference Pack</span><span style={S('margin-left:auto')}>↓</span>
-                  </Box>
-                  <Box css="border:1px solid var(--rule);padding:14px 16px;cursor:pointer;display:flex;align-items:center;color:var(--dim)" hover="color:var(--ink);border-color:var(--ink)">
-                    <span>View Audit Log</span><span style={S('margin-left:auto')}>→</span>
-                  </Box>
-                  <div style={S('margin-top:16px;padding-top:16px;border-top:1px solid var(--rule);font:600 9.5px/1 Archivo;letter-spacing:0.13em;color:var(--faint);margin-bottom:4px')}>SHARE</div>
-                  <div style={S('display:flex;gap:8px;flex-wrap:wrap')}>
-                    {['Copy link', 'SharePoint', 'Google Drive'].map((s) => (
-                      <Box key={s} css="border:1px solid var(--rule);padding:9px 12px;font-size:11.5px;color:var(--dim);cursor:pointer" hover="border-color:var(--acc);color:var(--acc)">{s}</Box>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div style={S('display:grid;grid-template-columns:repeat(5,1fr);border-bottom:2px solid var(--rule2)')}>
-                {v.deliverStats.map((s, i) => (
-                  <div key={i} style={S(s.style)}>
-                    <div style={S(s.numStyle)}>{s.value}</div>
-                    <div style={S('font:600 9.5px/1.4 Archivo;letter-spacing:0.13em;color:var(--faint);margin-top:10px')}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={S('padding:26px 0 12px;display:flex;align-items:baseline;gap:14px')}>
-                <h2 style={S('font-size:13px;font-weight:700;letter-spacing:0.1em;margin:0')}>AUDIT LOG</h2>
-                <span style={S('color:var(--faint);font-size:12px')}>48 events · showing 7</span>
-              </div>
-              <div style={S('border-top:2px solid var(--rule2);max-height:290px;overflow-y:auto')}>
-                {v.audit.map((a, i) => (
-                  <div key={i} style={S('display:grid;grid-template-columns:96px 130px 1fr 130px;gap:20px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--rule);font-size:12.5px')}>
-                    <div style={S('font:11px/1 var(--mono);color:var(--faint)')}>{a.time}</div>
-                    <div style={S('font-weight:600')}>{a.who}</div>
-                    <div style={S('color:var(--dim);line-height:1.45')}>{a.what}</div>
-                    <div style={S(a.tag)}>{a.result}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={S('margin-top:22px;padding:16px 18px;background:var(--s1);border-left:2px solid var(--ok);font:11.5px/1.7 var(--mono);color:var(--dim);word-break:break-all')}>
-                FINAL CONTENT HASH · sha256:9f2c41ab7de0c8551f6b3a94e77d20c1b8e5a6f30d94c72be1f8a05c6d3e4471
-              </div>
-            </div>
-          )}
-
-          {/* ============ MA DASHBOARD ============ */}
-          {v.isMaDash && (() => {
-            const stats = [
-              { label: 'PENDING REVIEW', value: v.maInbox.filter(r => r.live && r.status === 'sent-to-ma').length, delta: '+1 this week', color: 'var(--warn)' },
-              { label: 'APPROVED THIS MONTH', value: 4, delta: '+1 vs last month', color: 'var(--ok)' },
-              { label: 'SENT BACK', value: 2, delta: 'avg 1.4 days to resubmit', color: 'var(--acc)' },
-            ];
-            return (
-              <div style={S('padding:34px 40px;min-height:100%')}>
-                <div style={merge(kicker, 'margin-bottom:14px')}>MEDICAL AFFAIRS REVIEW HUB</div>
-                <h1 style={S('font-size:30px;font-weight:800;letter-spacing:-0.03em;margin:0 0 8px')}>Welcome back, Dr. Priya</h1>
-                <div style={S('color:var(--dim);margin-bottom:34px')}>Your review queue for September 2026.</div>
-
-                <div style={S('display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:34px')}>
-                  {stats.map((s, i) => (
-                    <div key={i} style={S('border:1px solid var(--rule);padding:22px 24px;background:var(--s1)')}>
-                      <div style={S(`font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:${s.color};margin-bottom:14px`)}>{s.label}</div>
-                      <div style={S('font-size:34px;font-weight:800;letter-spacing:-0.03em;margin-bottom:6px')}>{s.value}</div>
-                      <div style={S('color:var(--faint);font-size:12px')}>{s.delta}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div style={S('font:700 11px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:14px')}>REVIEW INBOX</div>
-                <div style={S('border:1px solid var(--rule);overflow:hidden')}>
-                  <div style={S('display:grid;grid-template-columns:1fr 160px 140px 130px 140px;border-bottom:1px solid var(--rule);padding:10px 18px;background:var(--s1)')}>
-                    {['DECK TITLE', 'SUBMITTED BY', 'DATE', 'STATUS', ''].map((h, i) => (
-                      <div key={i} style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>{h}</div>
-                    ))}
-                  </div>
-                  {v.maInbox.map((row, i) => (
-                    <div key={i} style={S(`display:grid;grid-template-columns:1fr 160px 140px 130px 140px;padding:14px 18px;border-bottom:1px solid var(--rule);background:${row.live ? 'var(--s1)' : 'transparent'};align-items:center`)}>
-                      <div>
-                        <div style={S('font-weight:600;font-size:13px;margin-bottom:2px')}>{row.topic}</div>
-                        {row.live && row.status === 'sent-to-ma' && <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--warn)')}>● AWAITING YOUR REVIEW</div>}
-                      </div>
-                      <div style={S('color:var(--dim);font-size:12.5px')}>{row.by}</div>
-                      <div style={S('color:var(--dim);font-size:12.5px')}>{row.date}</div>
-                      <div style={S(`display:inline-flex;align-items:center;gap:6px;font:600 11px/1 Archivo;padding:4px 10px;width:fit-content;background:${row.statusLabel === 'Pending Review' ? '#2b2200' : row.statusLabel === 'Approved' ? '#0d2b1f' : '#2b0d0d'};color:${row.statusLabel === 'Pending Review' ? 'var(--warn)' : row.statusLabel === 'Approved' ? 'var(--ok)' : 'var(--acc)'}`)}>
-                        <span style={S('width:5px;height:5px;border-radius:50%;background:currentColor')} />{row.statusLabel}
-                      </div>
-                      <div>
-                        {row.live && row.status === 'sent-to-ma' && (
-                          <Box css="background:var(--warn);color:#000;font-weight:700;font-size:12px;padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:8px" hover="opacity:0.85" onClick={() => this.go('ma-review')}>
-                            Open Review →
-                          </Box>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ============ MA REVIEW SCREEN ============ */}
-          {v.isMAReview && (() => {
-            const slideData = v.slides;
-            const currentSlide = slideData.find(s => s.n === v.currentSlideNum) || slideData[0];
-            const currentComments = v.maCurrentComments;
-            return (
-              <div style={S('display:flex;flex-direction:column;height:100%;overflow:hidden')}>
-                {/* header */}
-                <div style={S('padding:14px 22px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:18px;flex:none')}>
-                  <div style={S('flex:1;min-width:0')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--warn);margin-bottom:5px')}>MEDICAL AFFAIRS REVIEW</div>
-                    <div style={S('font-weight:700;font-size:15px;letter-spacing:-0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{v.topic}</div>
-                  </div>
-                  <div style={S('display:flex;gap:10px;align-items:center')}>
-                    <Box
-                      css="border:1px solid var(--rule2);padding:10px 18px;cursor:pointer;color:var(--dim);font-weight:600;font-size:13px"
-                      hover="color:var(--ink);border-color:var(--ink)"
-                      onClick={v.openSendBack}
-                    >Send Back with Comments</Box>
-                    <Box
-                      css="background:var(--warn);color:#000;font-weight:700;padding:11px 18px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px"
-                      hover="opacity:0.88"
-                      onClick={v.doMAApprove}
-                    >
-                      Approve & Pass to Sci Review →
-                    </Box>
-                  </div>
-                </div>
-
-                {/* three-column body */}
-                <div style={S('flex:1;display:flex;overflow:hidden')}>
-
-                  {/* left — slide rail */}
-                  <div style={S('width:168px;flex:none;border-right:1px solid var(--rule);overflow-y:auto;padding:12px 8px')}>
-                    {slideData.map((sl, i) => {
-                      const sNum = i + 1;
-                      const hasPins = (v.maAllComments[sNum] || []).filter(c => !c.resolved).length;
-                      return (
-                        <div
-                          key={i}
-                          style={S(`margin-bottom:8px;cursor:pointer;border:2px solid ${v.currentSlideNum === sNum ? 'var(--warn)' : 'transparent'};padding:2px;position:relative`)}
-                          onClick={() => v.pickSlideN(sNum)}
-                        >
-                          <div style={S('background:var(--s2);aspect-ratio:16/9;padding:6px 8px;position:relative')}>
-                            <div style={S('font:700 6px/1 Archivo;color:var(--acc);letter-spacing:0.1em;margin-bottom:4px')}>SLIDE {sNum}</div>
-                            <div style={S('font-size:6.5px;font-weight:700;line-height:1.3;color:var(--ink)')}>{sl.title}</div>
-                          </div>
-                          {hasPins > 0 && <div style={S('position:absolute;top:4px;right:4px;background:var(--warn);color:#000;font:700 9px/1 Archivo;padding:2px 5px')}>{hasPins}</div>}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* center — canvas */}
-                  <div style={S('flex:1;min-width:0;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:28px;background:#0c0b0a')}>
-                    <div style={S('width:100%;max-width:800px')}>
-                      <div style={S('font:600 10px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:12px;text-align:center')}>
-                        SLIDE {v.currentSlideNum} OF {slideData.length} · CLICK ANYWHERE TO ADD A COMMENT
-                      </div>
-                      <div
-                        style={S('aspect-ratio:16/9;background:var(--s2);position:relative;cursor:crosshair;border:1px solid var(--rule)')}
-                        onClick={(e) => v.onSlideCanvasClick(e, v.currentSlideNum, 'ma')}
-                      >
-                        {/* slide content */}
-                        <div style={S('position:absolute;inset:0;padding:24px 28px;display:flex;flex-direction:column')}>
-                          <div style={S('font:700 10px/1 Archivo;letter-spacing:0.12em;color:var(--acc);margin-bottom:10px')}>SLIDE {v.currentSlideNum}</div>
-                          <div style={S('font-size:18px;font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.2')}>{currentSlide.title}</div>
-                          {currentSlide.bullets && currentSlide.bullets.map((b, bi) => (
-                            <div key={bi} style={S('display:flex;gap:8px;align-items:flex-start;margin-bottom:6px')}>
-                              <div style={S('width:5px;height:5px;background:var(--acc);flex:none;margin-top:5px')} />
-                              <div style={S('font-size:12px;line-height:1.5;color:var(--dim)')}>{b}</div>
+                        <div style={S('font:700 9px/1 Archivo;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>EVIDENCE RETRIEVED · {visiblePapers}</div>
+                        <div style={S('display:flex;flex-direction:column;gap:8px')}>
+                          {RESEARCH_PAPERS.slice(0, visiblePapers).map((p, i) => (
+                            <div key={i} style={S('background:var(--bg);border:1px solid var(--rule);border-left:2px solid var(--rule2);padding:12px 14px;animation:rise 0.22s ease')}>
+                              <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
+                                <span style={S(`border:1px solid ${typeColor(p.type)};color:${typeColor(p.type)};padding:2px 6px;font:600 8.5px/1 Archivo;letter-spacing:0.09em`)}>{p.type.toUpperCase()}</span>
+                                <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
+                                <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
+                                <span style={S('margin-left:auto;font:700 11px/1 var(--mono);color:var(--acc)')}>{p.score.toFixed(2)} <span style={S('font:500 9px/1 Archivo;color:var(--faint)')}>REL</span></span>
+                              </div>
+                              <div style={S('font-weight:700;font-size:12.5px;margin-bottom:5px;line-height:1.3;letter-spacing:-0.01em')}>{p.title}</div>
+                              <div style={S('font-size:11px;color:var(--dim);line-height:1.55;font-style:italic;margin-bottom:4px')}>{p.journal}</div>
+                              <div style={S('font-size:11.5px;color:var(--dim);line-height:1.55')}>{p.snippet}</div>
                             </div>
                           ))}
                         </div>
-
-                        {/* existing comment pins */}
-                        {currentComments.map((pin) => !pin.resolved && (
-                          <div
-                            key={pin.id}
-                            style={S(`position:absolute;left:${pin.x}%;top:${pin.y}%;transform:translate(-50%,-50%);z-index:10;cursor:pointer`)}
-                            onClick={(e) => { e.stopPropagation(); v.setOpenPin(v.currentSlideNum, pin.id, 'ma'); }}
-                          >
-                            <div style={S('width:22px;height:22px;border-radius:50%;background:var(--warn);color:#000;font:700 11px/22px Archivo;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.6)')}>
-                              {pin.id}
-                            </div>
-                          </div>
-                        ))}
-
-                        {/* pending pin pulse */}
-                        {v.pendingPin && v.pendingPin.slideNum === v.currentSlideNum && (
-                          <div style={S(`position:absolute;left:${v.pendingPin.x}%;top:${v.pendingPin.y}%;transform:translate(-50%,-50%);z-index:10`)}
-                               onClick={(e) => e.stopPropagation()}>
-                            <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--warn)', opacity: 0.7, animation: 'puls 1s infinite', border: '2px solid var(--warn)' }} />
-                          </div>
-                        )}
-
-                        {/* open pin popup */}
-                        {v.openPinData && v.openPin && v.openPin.slideNum === v.currentSlideNum && v.openPin.role === 'ma' && (
-                          <div
-                            style={S(`position:absolute;left:${v.openPinData.x}%;top:${v.openPinData.y}%;z-index:20;transform:translate(${v.openPinData.x > 70 ? '-105%' : '12px'},${v.openPinData.y > 70 ? '-105%' : '0%'})`)}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <div style={S('background:var(--bg);border:1px solid var(--warn);padding:14px;min-width:240px;max-width:280px;box-shadow:0 4px 18px rgba(0,0,0,0.7)')}>
-                              <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:10px')}>
-                                <div style={S('width:20px;height:20px;border-radius:50%;background:var(--warn);color:#000;font:700 10px/20px Archivo;text-align:center')}>{v.openPinData.id}</div>
-                                <div style={S('font:700 11px/1 Archivo;color:var(--warn)')}>{v.openPinData.author}</div>
-                                <div style={S('margin-left:auto;color:var(--faint);font-size:11px')}>{v.openPinData.time}</div>
-                              </div>
-                              <div style={S('font-size:12.5px;line-height:1.55;color:var(--ink);margin-bottom:12px')}>{v.openPinData.text}</div>
-                              <div style={S('display:flex;gap:8px')}>
-                                <Box css="flex:1;border:1px solid var(--warn);padding:7px 10px;text-align:center;cursor:pointer;color:var(--warn);font:700 11px/1 Archivo" hover="background:var(--warn);color:#000" onClick={() => v.resolvePin('ma', v.currentSlideNum, v.openPinData.id)}>Resolve</Box>
-                                <Box css="border:1px solid var(--rule);padding:7px 10px;cursor:pointer;color:var(--dim);font-size:12px" hover="color:var(--ink)" onClick={v.closePin}>✕</Box>
-                              </div>
-                            </div>
-                          </div>
-                        )}
                       </div>
+                    )}
 
-                      {/* pending pin comment box */}
-                      {v.pendingPin && v.pendingPin.slideNum === v.currentSlideNum && (
-                        <div style={S('margin-top:16px;border:1px solid var(--warn);padding:14px;background:var(--s1)')}>
-                          <div style={S('font:700 11px/1 Archivo;letter-spacing:0.12em;color:var(--warn);margin-bottom:10px')}>ADD COMMENT AT THIS POSITION</div>
-                          <textarea
-                            rows={3}
-                            style={S('width:100%;background:var(--bg);border:1px solid var(--rule);color:var(--ink);padding:10px;font-size:13px;resize:vertical;display:block')}
-                            placeholder="Type your comment…"
-                            value={v.commentDraft}
-                            onChange={v.onCommentDraft}
-                            onKeyDown={(e) => v.onCommentKey(e, 'ma')}
-                            autoFocus
-                          />
-                          <div style={S('display:flex;gap:8px;margin-top:10px')}>
-                            <Box css="background:var(--warn);color:#000;font-weight:700;padding:9px 16px;cursor:pointer;font-size:13px" hover="opacity:0.85" onClick={v.doAddComment}>Add Comment</Box>
-                            <Box css="border:1px solid var(--rule);padding:9px 14px;cursor:pointer;color:var(--dim);font-size:13px" hover="color:var(--ink)" onClick={v.cancelPin}>Cancel</Box>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* right — comments panel */}
-                  <div style={S('width:280px;flex:none;border-left:1px solid var(--rule);display:flex;flex-direction:column;overflow:hidden')}>
-                    <div style={S('padding:14px 16px;border-bottom:1px solid var(--rule);flex:none')}>
-                      <div style={S('font:700 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint)')}>
-                        COMMENTS · SLIDE {v.currentSlideNum} · {currentComments.length} COMMENT{currentComments.length !== 1 ? 'S' : ''}
+                    {rN >= DEDUP_STEP && (
+                      <div style={S('margin-top:12px;padding:12px 14px;border:1px solid var(--ok);background:rgba(22,101,52,0.06);display:flex;align-items:center;gap:10px;animation:rise 0.2s ease')}>
+                        <span style={S('font-size:14px')}>✓</span>
+                        <div style={S('font-size:12px;color:var(--ok);font-weight:600')}>Deduplication complete — 71 raw results → {RESEARCH_PAPERS.length} unique papers retained</div>
                       </div>
-                    </div>
-                    <div style={S('flex:1;overflow-y:auto;padding:12px')}>
-                      {currentComments.length === 0 ? (
-                        <div style={S('color:var(--faint);font-size:12.5px;text-align:center;padding:24px 0')}>
-                          No comments on this slide yet.<br />Click the canvas to add one.
-                        </div>
-                      ) : currentComments.map((c) => (
-                        <div key={c.id} style={S(`margin-bottom:14px;border:1px solid ${c.resolved ? 'var(--rule)' : 'var(--warn)'};padding:12px;background:${c.resolved ? 'transparent' : 'rgba(207,154,43,0.04)'}`)}>
-                          <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:8px')}>
-                            <div style={S('width:22px;height:22px;border-radius:50%;background:var(--warn);color:#000;font:700 10px/22px Archivo;text-align:center;flex:none')}>{c.id}</div>
-                            <div style={S('font-weight:600;font-size:12px')}>{c.author}</div>
-                            <div style={S('margin-left:auto;color:var(--faint);font-size:11px')}>{c.time}</div>
-                          </div>
-                          <div style={S('font-size:12.5px;line-height:1.55;color:var(--ink);margin-bottom:8px')}>{c.text}</div>
-                          {c.resolved
-                            ? <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--ok)')}>✓ RESOLVED</div>
-                            : <Box css="font:600 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--warn);cursor:pointer" hover="color:var(--ok)" onClick={() => v.resolvePin('ma', v.currentSlideNum, c.id)}>RESOLVE</Box>
-                          }
-                        </div>
-                      ))}
-                    </div>
-                    <div style={S('padding:12px;border-top:1px solid var(--rule);flex:none')}>
-                      <Box
-                        css="width:100%;border:1px solid var(--warn);padding:10px;text-align:center;cursor:pointer;color:var(--warn);font:700 11px/1 Archivo"
-                        hover="background:var(--warn);color:#000"
-                        onClick={() => v.addCenterPin(v.currentSlideNum, 'ma')}
-                      >+ Add Comment to Slide</Box>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Send Back modal */}
-                {v.sendBackOpen && (
-                  <div style={S('position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:100;display:flex;align-items:center;justify-content:center')} onClick={v.closeSendBack}>
-                    <div style={S('background:var(--bg);border:1px solid var(--rule2);padding:28px;width:440px')} onClick={(e) => e.stopPropagation()}>
-                      <div style={S('font:700 11px/1 Archivo;letter-spacing:0.14em;color:var(--acc);margin-bottom:14px')}>SEND BACK FOR REVISION</div>
-                      <div style={S('font-size:15px;font-weight:700;letter-spacing:-0.01em;margin-bottom:6px')}>Send to Content Team?</div>
-                      <div style={S('color:var(--dim);font-size:13px;margin-bottom:18px')}>
-                        {v.maTotalComments} comment{v.maTotalComments !== 1 ? 's' : ''} across {v.maCommentSlideCount} slide{v.maCommentSlideCount !== 1 ? 's' : ''} will be sent to Mayank Gupta.
-                      </div>
-                      <textarea
-                        rows={3}
-                        style={S('width:100%;background:var(--s1);border:1px solid var(--rule);color:var(--ink);padding:10px;font-size:13px;resize:vertical;display:block;margin-bottom:16px')}
-                        placeholder="Optional message to the content team…"
-                        value={v.sendBackNote}
-                        onChange={(e) => this.setState({ sendBackNote: e.target.value })}
-                      />
-                      <div style={S('display:flex;gap:10px')}>
-                        <Box css="flex:1;background:var(--acc);color:#fff;font-weight:700;padding:12px;text-align:center;cursor:pointer" hover="background:#dd2b0f" onClick={v.doMASendBack}>Send Back</Box>
-                        <Box css="border:1px solid var(--rule2);padding:12px 18px;cursor:pointer;color:var(--dim)" hover="color:var(--ink)" onClick={v.closeSendBack}>Cancel</Box>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })()}
-
-          {/* ============ SCI DASHBOARD ============ */}
-          {v.isSciDash && (() => {
-            const isLocked = !['ma-approved', 'sent-to-sci', 'sci-rejected', 'sci-approved'].includes(v.pptStatus);
-            const stats = [
-              { label: 'PENDING REVIEW', value: v.sciInbox.filter(r => r.live && r.status === 'ma-approved').length, delta: '+1 this week', color: 'var(--ok)' },
-              { label: 'APPROVED THIS MONTH', value: 3, delta: '+2 vs last month', color: 'var(--ok)' },
-              { label: 'SENT BACK', value: 1, delta: 'avg 2.1 days to resubmit', color: 'var(--acc)' },
-            ];
-            return (
-              <div style={S('padding:34px 40px;min-height:100%')}>
-                <div style={merge(kicker, 'margin-bottom:14px;color:var(--ok)')}>SCIENTIFIC REVIEW HUB</div>
-                <h1 style={S('font-size:30px;font-weight:800;letter-spacing:-0.03em;margin:0 0 8px')}>Welcome back, Dr. Arjun</h1>
-                <div style={S('color:var(--dim);margin-bottom:34px')}>Your scientific review queue for September 2026.</div>
-
-                {isLocked && (
-                  <div style={S('padding:20px 22px;background:var(--s1);border-left:3px solid var(--faint);margin-bottom:28px;display:flex;align-items:center;gap:14px')}>
-                    <div style={S('font-size:22px;color:var(--faint)')}>🔒</div>
-                    <div>
-                      <div style={S('font-weight:700;margin-bottom:3px')}>Waiting for Medical Affairs Approval</div>
-                      <div style={S('color:var(--dim);font-size:13px')}>The GLP-1 RA deck is currently under Medical Affairs review. You'll be notified once it's cleared.</div>
-                    </div>
-                  </div>
-                )}
-
-                <div style={S('display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:34px')}>
-                  {stats.map((s, i) => (
-                    <div key={i} style={S('border:1px solid var(--rule);padding:22px 24px;background:var(--s1)')}>
-                      <div style={S(`font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:${s.color};margin-bottom:14px`)}>{s.label}</div>
-                      <div style={S('font-size:34px;font-weight:800;letter-spacing:-0.03em;margin-bottom:6px')}>{s.value}</div>
-                      <div style={S('color:var(--faint);font-size:12px')}>{s.delta}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div style={S('font:700 11px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:14px')}>REVIEW INBOX</div>
-                <div style={S('border:1px solid var(--rule);overflow:hidden')}>
-                  <div style={S('display:grid;grid-template-columns:1fr 160px 140px 130px 140px;border-bottom:1px solid var(--rule);padding:10px 18px;background:var(--s1)')}>
-                    {['DECK TITLE', 'MA REVIEWER', 'DATE', 'STATUS', ''].map((h, i) => (
-                      <div key={i} style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>{h}</div>
-                    ))}
-                  </div>
-                  {v.sciInbox.map((row, i) => {
-                    const locked = row.live && isLocked;
-                    return (
-                    <div key={i} style={S(`display:grid;grid-template-columns:1fr 160px 140px 130px 140px;padding:14px 18px;border-bottom:1px solid var(--rule);background:${row.live ? 'var(--s1)' : 'transparent'};align-items:center;opacity:${locked ? 0.5 : 1}`)}>
-                      <div>
-                        <div style={S('font-weight:600;font-size:13px;margin-bottom:2px')}>{row.topic}</div>
-                        {row.live && !locked && <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--ok)')}>● AWAITING YOUR REVIEW</div>}
-                        {locked && <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>🔒 PENDING MA REVIEW</div>}
-                      </div>
-                      <div style={S('color:var(--dim);font-size:12.5px')}>{row.by}</div>
-                      <div style={S('color:var(--dim);font-size:12.5px')}>{row.date}</div>
-                      <div style={S(`display:inline-flex;align-items:center;gap:6px;font:600 11px/1 Archivo;padding:4px 10px;width:fit-content;background:${row.statusLabel === 'Pending Review' ? (locked ? '#1a1a1a' : '#0d1f0d') : row.statusLabel === 'Approved' ? '#0d2b1f' : '#2b0d0d'};color:${row.statusLabel === 'Pending Review' ? (locked ? 'var(--faint)' : 'var(--ok)') : row.statusLabel === 'Approved' ? 'var(--ok)' : 'var(--acc)'}`)}>
-                        <span style={S('width:5px;height:5px;border-radius:50%;background:currentColor')} />{row.statusLabel}
-                      </div>
-                      <div>
-                        {row.live && !locked && (
-                          <Box css="background:var(--ok);color:#fff;font-weight:700;font-size:12px;padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:8px" hover="opacity:0.85" onClick={() => this.go('sci-review')}>
-                            Open Review →
-                          </Box>
-                        )}
-                      </div>
-                    </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* ============ SCI REVIEW SCREEN ============ */}
-          {v.isSciReview && (() => {
-            const slideData = v.slides;
-            const currentSlide = slideData.find(s => s.n === v.currentSlideNum) || slideData[0];
-            const currentSciComments = v.sciCurrentComments;
-            const currentMAComments = v.maCurrentComments;
-            return (
-              <div style={S('display:flex;flex-direction:column;height:100%;overflow:hidden')}>
-                {/* header */}
-                <div style={S('padding:14px 22px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:18px;flex:none')}>
-                  <div style={S('flex:1;min-width:0')}>
-                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--ok);margin-bottom:5px')}>SCIENTIFIC REVIEW · FINAL GATE</div>
-                    <div style={S('font-weight:700;font-size:15px;letter-spacing:-0.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{v.topic}</div>
-                  </div>
-                  <div style={S('display:flex;gap:10px;align-items:center')}>
-                    <Box
-                      css="border:1px solid var(--rule2);padding:10px 18px;cursor:pointer;color:var(--dim);font-weight:600;font-size:13px"
-                      hover="color:var(--ink);border-color:var(--ink)"
-                      onClick={v.openSendBack}
-                    >Send Back with Comments</Box>
-                    <Box
-                      css="background:var(--ok);color:#fff;font-weight:700;padding:11px 18px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px"
-                      hover="opacity:0.88"
-                      onClick={v.doSciApprove}
-                    >
-                      Final Approval — Publish →
-                    </Box>
-                  </div>
-                </div>
-
-                {/* three-column body */}
-                <div style={S('flex:1;display:flex;overflow:hidden')}>
-
-                  {/* left — slide rail */}
-                  <div style={S('width:168px;flex:none;border-right:1px solid var(--rule);overflow-y:auto;padding:12px 8px')}>
-                    {slideData.map((sl, i) => {
-                      const sNum = i + 1;
-                      const sciPins = (v.sciAllComments[sNum] || []).filter(c => !c.resolved).length;
-                      const maPins = (v.maAllComments[sNum] || []).filter(c => !c.resolved).length;
-                      return (
-                        <div
-                          key={i}
-                          style={S(`margin-bottom:8px;cursor:pointer;border:2px solid ${v.currentSlideNum === sNum ? 'var(--ok)' : 'transparent'};padding:2px;position:relative`)}
-                          onClick={() => v.pickSlideN(sNum)}
-                        >
-                          <div style={S('background:var(--s2);aspect-ratio:16/9;padding:6px 8px')}>
-                            <div style={S('font:700 6px/1 Archivo;color:var(--acc);letter-spacing:0.1em;margin-bottom:4px')}>SLIDE {sNum}</div>
-                            <div style={S('font-size:6.5px;font-weight:700;line-height:1.3;color:var(--ink)')}>{sl.title}</div>
-                          </div>
-                          <div style={S('display:flex;gap:4px;margin-top:2px')}>
-                            {sciPins > 0 && <div style={S('background:var(--ok);color:#fff;font:700 8px/1 Archivo;padding:2px 5px')}>{sciPins} sci</div>}
-                            {maPins > 0 && <div style={S('background:var(--warn);color:#000;font:700 8px/1 Archivo;padding:2px 5px')}>{maPins} ma</div>}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* center — canvas (green accent) */}
-                  <div style={S('flex:1;min-width:0;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:28px;background:#090c09')}>
-                    <div style={S('width:100%;max-width:800px')}>
-                      <div style={S('font:600 10px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:12px;text-align:center')}>
-                        SLIDE {v.currentSlideNum} OF {slideData.length}{v.reviewerTab === 'my' ? ' · CLICK ANYWHERE TO ADD A COMMENT' : ' · MA COMMENTS MODE — READ ONLY'}
-                      </div>
-                      <div
-                        style={S(`aspect-ratio:16/9;background:var(--s2);position:relative;cursor:${v.reviewerTab === 'my' ? 'crosshair' : 'default'};border:1px solid var(--rule)`)}
-                        onClick={(e) => v.reviewerTab === 'my' && v.onSlideCanvasClick(e, v.currentSlideNum, 'sci')}
-                      >
-                        <div style={S('position:absolute;inset:0;padding:24px 28px;display:flex;flex-direction:column')}>
-                          <div style={S('font:700 10px/1 Archivo;letter-spacing:0.12em;color:var(--acc);margin-bottom:10px')}>SLIDE {v.currentSlideNum}</div>
-                          <div style={S('font-size:18px;font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.2')}>{currentSlide.title}</div>
-                          {currentSlide.bullets && currentSlide.bullets.map((b, bi) => (
-                            <div key={bi} style={S('display:flex;gap:8px;align-items:flex-start;margin-bottom:6px')}>
-                              <div style={S('width:5px;height:5px;background:var(--acc);flex:none;margin-top:5px')} />
-                              <div style={S('font-size:12px;line-height:1.5;color:var(--dim)')}>{b}</div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* MA pins (amber, read-only) — shown only if MA Comments tab active */}
-                        {v.reviewerTab === 'ma' && currentMAComments.map((pin) => !pin.resolved && (
-                          <div key={`ma-${pin.id}`} style={S(`position:absolute;left:${pin.x}%;top:${pin.y}%;transform:translate(-50%,-50%);z-index:10;cursor:pointer`)}>
-                            <div style={S('width:22px;height:22px;border-radius:50%;background:var(--warn);color:#000;font:700 11px/22px Archivo;text-align:center;opacity:0.7')}>{pin.id}</div>
-                          </div>
-                        ))}
-
-                        {/* sci pins (green) */}
-                        {v.reviewerTab === 'my' && currentSciComments.map((pin) => !pin.resolved && (
-                          <div
-                            key={pin.id}
-                            style={S(`position:absolute;left:${pin.x}%;top:${pin.y}%;transform:translate(-50%,-50%);z-index:10;cursor:pointer`)}
-                            onClick={(e) => { e.stopPropagation(); v.setOpenPin(v.currentSlideNum, pin.id, 'sci'); }}
-                          >
-                            <div style={S('width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;font:700 11px/22px Archivo;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.6)')}>{pin.id}</div>
-                          </div>
-                        ))}
-
-                        {/* pending pin */}
-                        {v.pendingPin && v.pendingPin.slideNum === v.currentSlideNum && (
-                          <div style={S(`position:absolute;left:${v.pendingPin.x}%;top:${v.pendingPin.y}%;transform:translate(-50%,-50%);z-index:10`)}
-                               onClick={(e) => e.stopPropagation()}>
-                            <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--ok)', opacity: 0.7, animation: 'puls 1s infinite' }} />
-                          </div>
-                        )}
-
-                        {/* open sci pin popup */}
-                        {v.openPinData && v.openPin && v.openPin.slideNum === v.currentSlideNum && v.openPin.role === 'sci' && (
-                          <div
-                            style={S(`position:absolute;left:${v.openPinData.x}%;top:${v.openPinData.y}%;z-index:20;transform:translate(${v.openPinData.x > 70 ? '-105%' : '12px'},${v.openPinData.y > 70 ? '-105%' : '0%'})`)}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <div style={S('background:var(--bg);border:1px solid var(--ok);padding:14px;min-width:240px;max-width:280px;box-shadow:0 4px 18px rgba(0,0,0,0.7)')}>
-                              <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:10px')}>
-                                <div style={S('width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;font:700 10px/20px Archivo;text-align:center')}>{v.openPinData.id}</div>
-                                <div style={S('font:700 11px/1 Archivo;color:var(--ok)')}>{v.openPinData.author}</div>
-                                <div style={S('margin-left:auto;color:var(--faint);font-size:11px')}>{v.openPinData.time}</div>
-                              </div>
-                              <div style={S('font-size:12.5px;line-height:1.55;color:var(--ink);margin-bottom:12px')}>{v.openPinData.text}</div>
-                              <div style={S('display:flex;gap:8px')}>
-                                <Box css="flex:1;border:1px solid var(--ok);padding:7px 10px;text-align:center;cursor:pointer;color:var(--ok);font:700 11px/1 Archivo" hover="background:var(--ok);color:#fff" onClick={() => v.resolvePin('sci', v.currentSlideNum, v.openPinData.id)}>Resolve</Box>
-                                <Box css="border:1px solid var(--rule);padding:7px 10px;cursor:pointer;color:var(--dim);font-size:12px" hover="color:var(--ink)" onClick={v.closePin}>✕</Box>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* pending pin comment box */}
-                      {v.pendingPin && v.pendingPin.slideNum === v.currentSlideNum && v.reviewerTab === 'my' && (
-                        <div style={S('margin-top:16px;border:1px solid var(--ok);padding:14px;background:var(--s1)')}>
-                          <div style={S('font:700 11px/1 Archivo;letter-spacing:0.12em;color:var(--ok);margin-bottom:10px')}>ADD COMMENT AT THIS POSITION</div>
-                          <textarea
-                            rows={3}
-                            style={S('width:100%;background:var(--bg);border:1px solid var(--rule);color:var(--ink);padding:10px;font-size:13px;resize:vertical;display:block')}
-                            placeholder="Type your scientific comment…"
-                            value={v.commentDraft}
-                            onChange={v.onCommentDraft}
-                            onKeyDown={(e) => v.onCommentKey(e, 'sci')}
-                            autoFocus
-                          />
-                          <div style={S('display:flex;gap:8px;margin-top:10px')}>
-                            <Box css="background:var(--ok);color:#fff;font-weight:700;padding:9px 16px;cursor:pointer;font-size:13px" hover="opacity:0.85" onClick={v.doAddComment}>Add Comment</Box>
-                            <Box css="border:1px solid var(--rule);padding:9px 14px;cursor:pointer;color:var(--dim);font-size:13px" hover="color:var(--ink)" onClick={v.cancelPin}>Cancel</Box>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* right — dual tab comments panel */}
-                  <div style={S('width:280px;flex:none;border-left:1px solid var(--rule);display:flex;flex-direction:column;overflow:hidden')}>
-                    <div style={S('display:flex;border-bottom:1px solid var(--rule);flex:none')}>
-                      {[['my', 'My Comments'], ['ma', 'MA Comments']].map(([tab, label]) => (
-                        <div
-                          key={tab}
-                          style={S(`flex:1;padding:11px 12px;text-align:center;font:700 11px/1 Archivo;letter-spacing:0.1em;cursor:pointer;color:${v.reviewerTab === tab ? 'var(--ink)' : 'var(--faint)'};border-bottom:2px solid ${v.reviewerTab === tab ? (tab === 'my' ? 'var(--ok)' : 'var(--warn)') : 'transparent'}`)}
-                          onClick={() => tab === 'ma' ? v.switchToMAComments() : v.switchToMyComments()}
-                        >
-                          {label}
-                        </div>
-                      ))}
-                    </div>
-                    <div style={S('flex:1;overflow-y:auto;padding:12px')}>
-                      {v.reviewerTab === 'my' ? (
-                        currentSciComments.length === 0 ? (
-                          <div style={S('color:var(--faint);font-size:12.5px;text-align:center;padding:24px 0')}>No comments yet.<br />Click the canvas to add one.</div>
-                        ) : currentSciComments.map((c) => (
-                          <div key={c.id} style={S(`margin-bottom:14px;border:1px solid ${c.resolved ? 'var(--rule)' : 'var(--ok)'};padding:12px`)}>
-                            <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:8px')}>
-                              <div style={S('width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;font:700 10px/22px Archivo;text-align:center;flex:none')}>{c.id}</div>
-                              <div style={S('font-weight:600;font-size:12px')}>{c.author}</div>
-                              <div style={S('margin-left:auto;color:var(--faint);font-size:11px')}>{c.time}</div>
-                            </div>
-                            <div style={S('font-size:12.5px;line-height:1.55;color:var(--ink);margin-bottom:8px')}>{c.text}</div>
-                            {c.resolved
-                              ? <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--ok)')}>✓ RESOLVED</div>
-                              : <Box css="font:600 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--ok);cursor:pointer" hover="color:#fff" onClick={() => v.resolvePin('sci', v.currentSlideNum, c.id)}>RESOLVE</Box>
-                            }
-                          </div>
-                        ))
-                      ) : (
-                        currentMAComments.length === 0 ? (
-                          <div style={S('color:var(--faint);font-size:12.5px;text-align:center;padding:24px 0')}>No MA comments on this slide.</div>
-                        ) : currentMAComments.map((c) => (
-                          <div key={c.id} style={S('margin-bottom:14px;border:1px solid var(--warn);padding:12px;opacity:0.75')}>
-                            <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:8px')}>
-                              <div style={S('width:22px;height:22px;border-radius:50%;background:var(--warn);color:#000;font:700 10px/22px Archivo;text-align:center;flex:none')}>{c.id}</div>
-                              <div style={S('font-weight:600;font-size:12px')}>{c.author}</div>
-                              <div style={S('margin-left:auto;color:var(--faint);font-size:11px')}>{c.time}</div>
-                            </div>
-                            <div style={S('font-size:12.5px;line-height:1.55;color:var(--ink);margin-bottom:4px')}>{c.text}</div>
-                            <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--warn)')}>MA COMMENT — READ ONLY</div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                    {v.reviewerTab === 'my' && (
-                      <div style={S('padding:12px;border-top:1px solid var(--rule);flex:none')}>
-                        <Box
-                          css="width:100%;border:1px solid var(--ok);padding:10px;text-align:center;cursor:pointer;color:var(--ok);font:700 11px/1 Archivo"
-                          hover="background:var(--ok);color:#fff"
-                          onClick={() => v.addCenterPin(v.currentSlideNum, 'sci')}
-                        >+ Add Comment to Slide</Box>
+                    )}
+                    {rN >= INDEX_STEP && (
+                      <div style={S('margin-top:8px;padding:12px 14px;border:1px solid var(--ok);background:rgba(22,101,52,0.06);display:flex;align-items:center;gap:10px;animation:rise 0.2s ease')}>
+                        <span style={S('font-size:14px')}>✓</span>
+                        <div style={S('font-size:12px;color:var(--ok);font-weight:600')}>Evidence index built — {RESEARCH_PAPERS.length + 46} chunks · 1,204 spans · ready for content generation</div>
                       </div>
                     )}
                   </div>
                 </div>
-
-                {/* Send Back modal (sci) */}
-                {v.sendBackOpen && (
-                  <div style={S('position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:100;display:flex;align-items:center;justify-content:center')} onClick={v.closeSendBack}>
-                    <div style={S('background:var(--bg);border:1px solid var(--rule2);padding:28px;width:440px')} onClick={(e) => e.stopPropagation()}>
-                      <div style={S('font:700 11px/1 Archivo;letter-spacing:0.14em;color:var(--acc);margin-bottom:14px')}>SEND BACK FOR REVISION</div>
-                      <div style={S('font-size:15px;font-weight:700;letter-spacing:-0.01em;margin-bottom:6px')}>Send to Content Team?</div>
-                      <div style={S('color:var(--dim);font-size:13px;margin-bottom:18px')}>
-                        {v.sciTotalComments} scientific comment{v.sciTotalComments !== 1 ? 's' : ''} across {v.sciCommentSlideCount} slide{v.sciCommentSlideCount !== 1 ? 's' : ''} will be sent to Mayank Gupta.
-                      </div>
-                      <textarea
-                        rows={3}
-                        style={S('width:100%;background:var(--s1);border:1px solid var(--rule);color:var(--ink);padding:10px;font-size:13px;resize:vertical;display:block;margin-bottom:16px')}
-                        placeholder="Optional message to the content team…"
-                        value={v.sendBackNote}
-                        onChange={(e) => this.setState({ sendBackNote: e.target.value })}
-                      />
-                      <div style={S('display:flex;gap:10px')}>
-                        <Box css="flex:1;background:var(--acc);color:#fff;font-weight:700;padding:12px;text-align:center;cursor:pointer" hover="background:#dd2b0f" onClick={v.doSciSendBack}>Send Back</Box>
-                        <Box css="border:1px solid var(--rule2);padding:12px 18px;cursor:pointer;color:var(--dim)" hover="color:var(--ink)" onClick={v.closeSendBack}>Cancel</Box>
-                      </div>
-                    </div>
-                  </div>
-                )}
+              )}
+                </div>
               </div>
             );
           })()}
+
+          {/* ============ ORGANIZE RESEARCH ============ */}
+          {v.isOrganize && (() => {
+            const acceptedList = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter((p) => v.acceptedPapers[p._idx]);
+            const sel = v.organizeSelectedPaper;
+            const curView = v.organizeView || 'track';
+
+            const tc2 = (type) => {
+              if (type === 'RCT') return '#7eb8f7';
+              if (type === 'Systematic Review' || type === 'Meta-Analysis') return '#a78bfa';
+              if (type === 'Guideline') return '#4ade80';
+              if (type === 'Real-World') return '#fb923c';
+              if (type === 'Registry') return '#f97b7b';
+              return 'var(--dim)';
+            };
+
+            /* ---- SVG figure renders ---- */
+            const FigKM = () => (
+              <svg viewBox="0 0 220 140" style={{ width: '100%', height: 'auto', display: 'block' }}>
+                <rect width="220" height="140" fill="#16151400" />
+                {[0,1,2,3,4].map(i => <line key={i} x1="36" y1={18 + i*20} x2="210" y2={18 + i*20} stroke="#2a2828" strokeWidth="0.7" />)}
+                <line x1="36" y1="18" x2="36" y2="118" stroke="#4a4848" strokeWidth="1.2" />
+                <line x1="36" y1="118" x2="210" y2="118" stroke="#4a4848" strokeWidth="1.2" />
+                {/* treatment line stays high */}
+                <polyline points="36,22 65,22 65,24 95,24 95,26 125,26 130,28 160,28 165,31 200,31 205,33" fill="none" stroke="#7eb8f7" strokeWidth="2" strokeLinejoin="round" />
+                {/* placebo drops faster */}
+                <polyline points="36,22 60,22 60,28 85,28 85,36 110,36 115,46 140,46 145,58 170,58 175,72 205,75" fill="none" stroke="#f97b7b" strokeWidth="2" strokeLinejoin="round" />
+                <polygon points="36,22 65,22 65,24 95,24 95,26 125,26 130,28 160,28 165,31 200,31 205,33 205,75 175,72 170,58 145,58 140,46 115,46 110,36 85,36 85,28 60,28 60,22 36,22" fill="rgba(126,184,247,0.07)" />
+                {['1.00','0.95','0.90','0.85','0.80'].map((lbl, i) => (
+                  <text key={i} x="33" y={22 + i*20} fontSize="6.5" fill="#605d5d" textAnchor="end" dominantBaseline="middle">{lbl}</text>
+                ))}
+                {[0,12,24,36,48].map((m, mi) => (
+                  <text key={m} x={36 + mi*43.5} y="126" fontSize="7" fill="#605d5d" textAnchor="middle">{m}</text>
+                ))}
+                <text x="122" y="136" fontSize="7.5" fill="#605d5d" textAnchor="middle">Months from randomisation</text>
+                <line x1="90" y1="131" x2="105" y2="131" stroke="#7eb8f7" strokeWidth="2"/><text x="107" y="134" fontSize="7" fill="#9b9797">Treatment</text>
+                <line x1="148" y1="131" x2="163" y2="131" stroke="#f97b7b" strokeWidth="2"/><text x="165" y="134" fontSize="7" fill="#9b9797">Placebo</text>
+              </svg>
+            );
+
+            const FigForest = () => {
+              const studies = [
+                { name: 'SUSTAIN-6', rr: 0.74, lo: 0.58, hi: 0.95, w: 14 },
+                { name: 'SELECT', rr: 0.80, lo: 0.72, hi: 0.90, w: 22 },
+                { name: 'LEADER', rr: 0.87, lo: 0.78, hi: 0.97, w: 20 },
+                { name: 'HARMONY', rr: 0.78, lo: 0.68, hi: 0.90, w: 16 },
+                { name: 'EXSCEL', rr: 0.91, lo: 0.83, hi: 1.00, w: 18 },
+                { name: 'REWIND', rr: 0.88, lo: 0.79, hi: 0.99, w: 10 },
+              ];
+              const pooled = { rr: 0.86, lo: 0.82, hi: 0.94 };
+              const xScale = (rr) => 52 + (rr - 0.5) * 200;
+              return (
+                <svg viewBox="0 0 280 170" style={{ width: '100%', height: 'auto', display: 'block' }}>
+                  <rect width="280" height="170" fill="#16151400" />
+                  {/* null line */}
+                  <line x1={xScale(1.0)} y1="14" x2={xScale(1.0)} y2="148" stroke="#4a4848" strokeWidth="1" strokeDasharray="3,2" />
+                  {/* x-axis */}
+                  <line x1="52" y1="148" x2="252" y2="148" stroke="#4a4848" strokeWidth="1" />
+                  {[0.6,0.7,0.8,0.9,1.0,1.1].map((v2) => (
+                    <React.Fragment key={v2}>
+                      <line x1={xScale(v2)} y1="145" x2={xScale(v2)} y2="151" stroke="#4a4848" strokeWidth="1" />
+                      <text x={xScale(v2)} y="158" fontSize="6.5" fill="#605d5d" textAnchor="middle">{v2.toFixed(1)}</text>
+                    </React.Fragment>
+                  ))}
+                  <text x="152" y="167" fontSize="7" fill="#605d5d" textAnchor="middle">Risk Ratio (95% CI)</text>
+                  {studies.map((s, i) => {
+                    const cx = xScale(s.rr); const y2 = 22 + i * 20; const hw = Math.sqrt(s.w) * 1.8;
+                    return (
+                      <React.Fragment key={s.name}>
+                        <text x="50" y={y2} fontSize="7" fill="#9b9797" textAnchor="end" dominantBaseline="middle">{s.name}</text>
+                        <line x1={xScale(s.lo)} y1={y2} x2={xScale(s.hi)} y2={y2} stroke="#7eb8f7" strokeWidth="1.2" />
+                        <rect x={cx - hw / 2} y={y2 - hw / 2} width={hw} height={hw} fill="#7eb8f7" />
+                        <text x="254" y={y2} fontSize="6.5" fill="#7eb8f7" dominantBaseline="middle">{s.rr.toFixed(2)}</text>
+                      </React.Fragment>
+                    );
+                  })}
+                  {/* pooled diamond */}
+                  <polygon points={`${xScale(pooled.rr)},${148-8} ${xScale(pooled.hi)},${148-2} ${xScale(pooled.rr)},${148+4} ${xScale(pooled.lo)},${148-2}`} fill="#a78bfa" opacity="0.9" />
+                  <text x="50" y="146" fontSize="7" fill="#a78bfa" textAnchor="end" dominantBaseline="middle">Pooled</text>
+                  <text x="20" y="85" fontSize="7" fill="#4ade80" textAnchor="middle">Favours</text>
+                  <text x="20" y="93" fontSize="7" fill="#4ade80" textAnchor="middle">treatment</text>
+                  <text x="245" y="85" fontSize="7" fill="#f97b7b" textAnchor="middle">Favours</text>
+                  <text x="245" y="93" fontSize="7" fill="#f97b7b" textAnchor="middle">placebo</text>
+                </svg>
+              );
+            };
+
+            const FigBar = ({ variant = 0 }) => {
+              const sets = [
+                { bars: [{l:'CV death',v:3.2,c:'#f97b7b'},{l:'Nonfatal MI',v:4.1,c:'#fb923c'},{l:'Stroke',v:1.8,c:'#a78bfa'}], pair: true },
+                { bars: [{l:'<45',v:52,c:'#7eb8f7'},{l:'45–64',v:48,c:'#7eb8f7'},{l:'65–74',v:44,c:'#7eb8f7'},{l:'75+',v:38,c:'#7eb8f7'}], pair: false },
+                { bars: [{l:'2024',v:589,c:'#4ade80'},{l:'2030',v:643,c:'#fb923c'},{l:'2040',v:722,c:'#f97b7b'},{l:'2050',v:853,c:'#f97b7b'}], pair: false },
+              ][variant % 3];
+              const max = Math.max(...sets.bars.map(b => b.v)) * 1.15;
+              const bw = sets.bars.length <= 3 ? 28 : 20; const gap = sets.bars.length <= 3 ? 20 : 14;
+              const totalW = sets.bars.length * (bw + gap) + gap; const startX = (220 - totalW) / 2 + gap;
+              return (
+                <svg viewBox="0 0 220 130" style={{ width: '100%', height: 'auto', display: 'block' }}>
+                  <rect width="220" height="130" fill="#16151400" />
+                  <line x1="20" y1="15" x2="20" y2="105" stroke="#4a4848" strokeWidth="1" />
+                  <line x1="20" y1="105" x2="210" y2="105" stroke="#4a4848" strokeWidth="1" />
+                  {[0,0.25,0.5,0.75,1].map(f => {
+                    const y2 = 105 - f * 90;
+                    return <line key={f} x1="18" y1={y2} x2="210" y2={y2} stroke="#2a2828" strokeWidth="0.7" />;
+                  })}
+                  {sets.bars.map((b, i) => {
+                    const x = startX + i * (bw + gap); const h = (b.v / max) * 90; const y2 = 105 - h;
+                    return (
+                      <React.Fragment key={b.l}>
+                        <rect x={x} y={y2} width={bw} height={h} fill={b.c} opacity="0.85" rx="1" />
+                        <text x={x + bw/2} y="113" fontSize="6.5" fill="#605d5d" textAnchor="middle">{b.l}</text>
+                        <text x={x + bw/2} y={y2 - 3} fontSize="6.5" fill={b.c} textAnchor="middle">{b.v}</text>
+                      </React.Fragment>
+                    );
+                  })}
+                </svg>
+              );
+            };
+
+            const FigScatter = () => {
+              const pts = [[8,72,12],[15,58,22],[22,63,8],[28,51,30],[35,47,18],[42,44,35],[50,48,10],[55,40,45],[62,36,28],[70,38,15],[78,33,40],[85,30,20]];
+              return (
+                <svg viewBox="0 0 220 140" style={{ width: '100%', height: 'auto', display: 'block' }}>
+                  <rect width="220" height="140" fill="#16151400" />
+                  <line x1="28" y1="15" x2="28" y2="115" stroke="#4a4848" strokeWidth="1" />
+                  <line x1="28" y1="115" x2="212" y2="115" stroke="#4a4848" strokeWidth="1" />
+                  {[0,25,50,75,100].map(v2 => (
+                    <React.Fragment key={v2}>
+                      <line x1="26" y1={115 - v2 * 0.98} x2="212" y2={115 - v2 * 0.98} stroke="#2a2828" strokeWidth="0.7" />
+                      <text x="25" y={116 - v2 * 0.98} fontSize="6" fill="#605d5d" textAnchor="end">{v2}%</text>
+                    </React.Fragment>
+                  ))}
+                  <line x1="32" y1="108" x2="208" y2="28" stroke="#a78bfa" strokeWidth="1" strokeDasharray="3,2" opacity="0.5" />
+                  {pts.map(([x, y, r], i) => (
+                    <circle key={i} cx={28 + x * 1.96} cy={115 - y * 0.98} r={Math.sqrt(r) * 1.2} fill="#7eb8f7" opacity="0.65" />
+                  ))}
+                  <text x="120" y="128" fontSize="7" fill="#605d5d" textAnchor="middle">Follow-up duration (months)</text>
+                  <text x="12" y="65" fontSize="7" fill="#605d5d" textAnchor="middle" transform="rotate(-90,12,65)">Attainment %</text>
+                </svg>
+              );
+            };
+
+            const FigTable = () => {
+              const rows = [
+                ['Metformin', 'First-line', 'Grade A', '✓', '✓'],
+                ['GLP-1 RA', 'Add-on (ASCVD)', 'Grade A', '✓', '✓'],
+                ['SGLT2i', 'Add-on (CKD/HF)', 'Grade A', '✓', '✓'],
+                ['DPP-4i', 'Add-on (low risk)', 'Grade B', '✓', '—'],
+                ['Insulin', 'If HbA1c >10%', 'Grade A', '✓', '✓'],
+              ];
+              return (
+                <svg viewBox="0 0 260 140" style={{ width: '100%', height: 'auto', display: 'block' }}>
+                  <rect width="260" height="140" fill="#16151400" />
+                  <rect x="4" y="8" width="252" height="16" fill="rgba(79,82,216,0.25)" />
+                  {['Agent','Indication','Evidence','CV','Renal'].map((h, i) => (
+                    <text key={h} x={10 + i * 50} y="19" fontSize="6.5" fill="var(--acc)" fontWeight="700">{h}</text>
+                  ))}
+                  {rows.map((row, ri) => (
+                    <React.Fragment key={ri}>
+                      <rect x="4" y={26 + ri*22} width="252" height="21" fill={ri%2===0?'rgba(255,255,255,0.02)':'transparent'} />
+                      {row.map((cell, ci) => (
+                        <text key={ci} x={10 + ci*50} y={40 + ri*22} fontSize="6.5" fill={ci===0?'#f3f2f2':'#9b9797'}>{cell}</text>
+                      ))}
+                    </React.Fragment>
+                  ))}
+                  {[0,1,2,3,4,5].map(i => (
+                    <line key={i} x1="4" y1={26+i*22} x2="256" y2={26+i*22} stroke="#2a2828" strokeWidth="0.7"/>
+                  ))}
+                </svg>
+              );
+            };
+
+            const renderFigSVG = (type, pIdx) => {
+              if (type === 'km') return <FigKM />;
+              if (type === 'forest') return <FigForest />;
+              if (type === 'scatter') return <FigScatter />;
+              if (type === 'table') return <FigTable />;
+              return <FigBar variant={pIdx % 3} />;
+            };
+
+            const ART_COLORS = { Deck: '#7eb8f7', Blog: '#fb923c', Protocol: '#4ade80', Blurb: '#f97b7b', Facts: '#a78bfa' };
+            const totalExcerpts = acceptedList.length + v.customExcerpts.length;
+            const populatedTracks = CONTENT_TRACKS.filter((t) => acceptedList.some((p) => t.paperTracks.includes(p.track)) || v.customExcerpts.some((e) => e.tracks.includes(t.id))).length;
+
+            /* ---- shared excerpt card ---- */
+            const ExcerptCard = ({ p }) => (
+              <Box
+                css={`position:relative;background:var(--s2);border:1px solid ${sel && sel._idx === p._idx ? 'var(--acc)' : 'var(--rule)'};border-left:3px solid ${tc2(p.type)};padding:16px 18px;cursor:pointer;display:flex;flex-direction:column;gap:10px;transition:border-color 0.15s,background 0.15s`}
+                hover={`border-color:var(--acc);background:var(--s1)`}
+                onClick={() => v.setOrganizeSelected(p)}
+              >
+                {/* top row: db pill + type + year + score */}
+                <div style={S('display:flex;align-items:center;gap:8px')}>
+                  <span style={{ padding: '2px 8px', fontSize: 9, fontWeight: 700, fontFamily: 'Archivo', letterSpacing: '0.1em', border: `1px solid ${tc2(p.type)}`, color: tc2(p.type), background: `${tc2(p.type)}18` }}>{p.type}</span>
+                  <span style={S('font:500 10px/1 var(--mono);color:var(--faint)')}>{p.db} · {p.year}</span>
+                  <span style={S('margin-left:auto;font:700 11px/1 var(--mono);color:var(--ok)')}>{p.score.toFixed(2)}</span>
+                </div>
+                {/* title */}
+                <div style={S('font:700 13px/1.4 Archivo;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
+                {/* excerpt blockquote */}
+                <div style={S('border-left:2px solid var(--acc);padding:8px 14px;background:rgba(30,64,175,0.06)')}>
+                  <div style={S('font:400 11.5px/1.75 Archivo;color:var(--dim);font-style:italic')}>{p.excerpt}</div>
+                  <div style={S('font:600 9.5px/1 var(--mono);color:var(--faint);margin-top:7px;letter-spacing:0.04em')}>{p.excerptSrc}</div>
+                </div>
+                {/* artifact tags */}
+                <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
+                  {ALL_ARTIFACTS.map((a) => {
+                    const active = p.artifacts.includes(a);
+                    return <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Archivo', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
+                  })}
+                </div>
+              </Box>
+            );
+
+            /* ── Organize Agent Panel ── */
+            const visibleOrgMsgs = ORGANIZE_AGENT_MSGS.slice(0, v.organizeAgentMsgN);
+            const orgDone = v.organizeAgentMsgN >= ORGANIZE_AGENT_MSGS.length;
+
+            const organizeAgentPanel = (
+              <div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative', animation: 'fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both' }}>
+
+                {/* Status banner */}
+                <div style={S(`display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--rule);flex:none;background:${orgDone ? 'rgba(22,101,52,0.08)' : 'rgba(30,64,175,0.06)'}`)}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: orgDone ? 'var(--ok)' : 'var(--acc)', animation: orgDone ? '' : 'puls 1s infinite' }} />
+                  <div style={S(`font:700 10px/1 Archivo;letter-spacing:0.14em;color:${orgDone ? 'var(--ok)' : 'var(--acc)'}`)}>
+                    {orgDone ? 'ORGANISATION COMPLETE' : 'ORGANISE AGENT · RUNNING…'}
+                  </div>
+                  {!orgDone && <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{Math.round((v.organizeAgentMsgN / ORGANIZE_AGENT_MSGS.length) * 100)}%</div>}
+                </div>
+
+                {/* Thread header */}
+                <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule);flex:none')}>
+                  <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>RESEARCH ORGANISATION AGENT</div>
+                  <div style={S('font:700 14px/1 Archivo;letter-spacing:-0.01em;color:var(--ink)')}>Excerpt & Track Analysis</div>
+                </div>
+
+                {/* Messages */}
+                <div style={S('flex:1;overflow-y:auto;padding:20px')}>
+                  {visibleOrgMsgs.map((msg, i) => {
+                    const isGap = msg.text.startsWith('⚠');
+                    const accentVar = isGap ? 'var(--warn)' : 'var(--acc)';
+                    const parts = msg.text.replace(/^⚠\s*/, '').split(/(\*\*[^*]+\*\*)/g);
+                    return (
+                      <div key={i} style={{ ...S('display:flex;gap:10px;margin-bottom:22px;animation:rise 0.3s ease both'), animationDelay: `${i * 0.05}s` }}>
+                        <div style={{ width: 28, height: 28, flexShrink: 0, background: isGap ? 'var(--warn)' : 'var(--acc)', display: 'grid', placeItems: 'center', font: '700 10px/1 Archivo', color: '#fff' }}>
+                          {isGap ? '!' : 'AI'}
+                        </div>
+                        <div style={S('max-width:88%;flex:1')}>
+                          <div style={{ ...S('font:700 9.5px/1 Archivo;letter-spacing:0.12em;margin-bottom:6px'), color: isGap ? 'var(--warn)' : 'var(--acc)' }}>
+                            {isGap ? 'GAP DETECTED' : `STEP ${i + 1} · ANALYSIS`}
+                          </div>
+                          <div style={{ background: 'var(--s1)', border: '1px solid var(--rule)', borderLeft: `2px solid ${accentVar}`, padding: '12px 14px', fontSize: 12.5, color: 'var(--dim)', lineHeight: 1.65 }}>
+                            {parts.map((part, pi) =>
+                              part.startsWith('**') && part.endsWith('**')
+                                ? <strong key={pi} style={{ color: 'var(--ink)', fontWeight: 700 }}>{part.slice(2, -2)}</strong>
+                                : <span key={pi}>{part}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Thinking dots */}
+                  {v.organizeAgentThinking && (
+                    <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.25s ease')}>
+                      <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--acc);color:#fff')}>AI</div>
+                      <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:12px 14px')}>
+                        <div style={S('font:600 10px/1 Archivo;letter-spacing:0.1em;color:var(--acc);margin-bottom:8px')}>
+                          {visibleOrgMsgs.length === 0 ? 'LOADING EVIDENCE BASE…' : 'ANALYSING TRACKS…'}
+                        </div>
+                        <div style={S('display:flex;gap:5px')}>
+                          {[0,1,2].map((d) => <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Done bubble */}
+                  {orgDone && (
+                    <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
+                      <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--ok);color:#fff')}>AI</div>
+                      <div>
+                        <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--ok);margin-bottom:6px')}>ORGANISE AGENT · COMPLETE</div>
+                        <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--ok);padding:12px 14px;font-size:12.5px;color:var(--dim);line-height:1.65')}>
+                          Organisation complete. <strong style={S('color:var(--ink)')}>4 of 5 tracks</strong> have sufficient excerpt coverage. Ready to proceed.
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Input area */}
+                <div style={S('padding:12px 16px;border-top:1px solid var(--rule);flex:none;display:flex;gap:8px')}>
+                  <input
+                    value={v.organizeAgentInput}
+                    onChange={e => v.setOrganizeAgentInput(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && v.sendOrganizeMsg()}
+                    placeholder="Ask about track coverage, gaps, or excerpts…"
+                    style={S('flex:1;background:var(--s2);border:1px solid var(--rule2);color:var(--ink);padding:9px 13px;font:400 12.5px/1 Archivo;outline:none')}
+                  />
+                  <div onClick={v.sendOrganizeMsg} style={S('width:34px;height:34px;background:var(--acc);display:grid;place-items:center;cursor:pointer;flex:none')}>
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M15 1L7 9M15 1L10 15L7 9M15 1L1 6L7 9" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                </div>
+
+              </div>
+            );
+
+            return (
+              <ResizableSplit left={organizeAgentPanel} defaultLeftPct={36} minPct={24} maxPct={60}
+                right={<div style={S('display:flex;flex-direction:column;height:100%;overflow:hidden;animation:fadeUp 0.3s cubic-bezier(0.22,1,0.36,1) both')}>
+
+                {/* ══ TOP HEADER BAR ══ */}
+                <div style={S('padding:0 0 0;flex:none;border-bottom:1px solid var(--rule2)')}>
+                  <div style={S('padding:22px 40px 16px;display:flex;align-items:flex-end;gap:0')}>
+                    <div style={S('flex:1')}>
+                      <div style={S('font:800 22px/1.2 Archivo;letter-spacing:-0.03em;color:var(--ink);margin-bottom:5px')}>Organize Your Research</div>
+                      <div style={S('font:400 12px/1.6 Archivo;color:var(--faint);max-width:520px')}>
+                        Excerpts grouped by content track — a paper appears under every track its evidence serves. Select any excerpt to inspect the full card.
+                      </div>
+                    </div>
+                    {/* stat pills */}
+                    <div style={S('display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:24px')}>
+                      {[
+                        { label: 'Papers', val: acceptedList.length, color: 'var(--ok)' },
+                        { label: 'Excerpts', val: totalExcerpts, color: 'var(--acc)' },
+                        { label: 'Tracks', val: `${populatedTracks} / ${CONTENT_TRACKS.length}`, color: 'var(--warn)' },
+                      ].map(({ label, val, color }) => (
+                        <div key={label} style={S('text-align:center;padding:8px 16px;background:var(--s2);border:1px solid var(--rule)')}>
+                          <div style={{ font: '700 16px/1 Archivo', color, marginBottom: 3 }}>{val}</div>
+                          <div style={S('font:500 9px/1 Archivo;letter-spacing:0.1em;color:var(--faint)')}>{label.toUpperCase()}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tab bar */}
+                  <div style={S('padding:0 40px;display:flex;align-items:center;gap:0')}>
+                    {[
+                      { id: 'track', label: 'By Track' },
+                      { id: 'artifact', label: 'By Artifact' },
+                      { id: 'figures', label: '📊 Review Figures' },
+                    ].map((tab) => {
+                      const active = curView === tab.id;
+                      return (
+                        <Box key={tab.id}
+                          css={`padding:10px 20px;font:600 12px/1 Archivo;cursor:pointer;color:${active ? 'var(--ink)' : 'var(--faint)'};border-bottom:2px solid ${active ? 'var(--acc)' : 'transparent'};margin-bottom:-1px;transition:color 0.15s,border-color 0.15s`}
+                          hover={!active ? 'color:var(--dim)' : ''}
+                          onClick={() => v.setOrganizeView(tab.id)}
+                        >{tab.label}</Box>
+                      );
+                    })}
+                    <div style={S('flex:1')} />
+                    {/* Artifact filter */}
+                    <div style={S('display:flex;align-items:center;gap:4px;padding-bottom:10px')}>
+                      {ALL_ARTIFACTS.map((a) => {
+                        const on = v.organizeArtifactFilter[a];
+                        const c = ART_COLORS[a];
+                        return (
+                          <Box key={a}
+                            css={`padding:4px 10px;font:600 10px/1 Archivo;cursor:pointer;border:1px solid ${on ? c : 'var(--rule)'};background:${on ? `${c}18` : 'transparent'};color:${on ? c : 'var(--faint)'};transition:all 0.15s`}
+                            hover={!on ? `border-color:${c};color:${c}` : ''}
+                            onClick={() => v.toggleOrganizeArtifact(a)}
+                          >{a}</Box>
+                        );
+                      })}
+                      <div style={S('width:1px;height:16px;background:var(--rule);margin:0 6px')} />
+                      {curView !== 'figures' && <>
+                        <Box css="padding:4px 10px;font:600 10px/1 Archivo;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={() => v.setOrganizeExpandAll(true)}>Expand all</Box>
+                        <Box css="padding:4px 10px;font:600 10px/1 Archivo;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={() => v.setOrganizeExpandAll(false)}>Collapse all</Box>
+                      </>}
+                    </div>
+                  </div>
+                </div>
+
+                {/* ══ MAIN BODY ══ */}
+                {(() => {
+                  const trackList = (
+                    <div key={curView} style={S('flex:1;min-width:0;overflow-y:auto;padding:20px 40px 40px;animation:fadeUp 0.2s ease both')}>
+
+                      {/* BY TRACK */}
+                      {curView === 'track' && CONTENT_TRACKS.map((track, ti) => {
+                        const trackPapers = acceptedList.filter((p) => track.paperTracks.includes(p.track));
+                        const customHere = v.customExcerpts.filter((e) => e.tracks.includes(track.id));
+                        const count = trackPapers.length + customHere.length;
+                        const isOpen = !!v.organizeExpanded[track.id];
+                        return (
+                          <div key={track.id} style={{ borderLeft: `3px solid ${isOpen ? track.color : 'var(--rule)'}`, background: 'var(--bg)', marginBottom: 6, transition: 'border-color 0.2s', animation: `rise 0.22s ease both`, animationDelay: `${ti * 0.04}s` }}>
+                            <Box
+                              css={`display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;background:${isOpen ? 'var(--s2)' : 'var(--bg)'};transition:background 0.15s`}
+                              hover={!isOpen ? 'background:var(--s1)' : ''}
+                              onClick={() => v.toggleOrganizeTrack(track.id)}
+                            >
+                              <div style={{ width: 8, height: 8, borderRadius: '50%', background: track.color, flexShrink: 0 }} />
+                              <span style={{ font: '700 13px/1 Archivo', color: track.color }}>{track.label}</span>
+                              <span style={S('font:500 10px/1 Archivo;color:var(--faint)')}>{count} {count === 1 ? 'excerpt' : 'excerpts'}</span>
+                              {count > 0 && (
+                                <div style={S('display:flex;gap:3px')}>
+                                  {Array.from({ length: Math.min(count, 5) }).map((_, i) => (
+                                    <div key={i} style={{ width: 4, height: 14, background: track.color, opacity: 0.4 + i * 0.12 }} />
+                                  ))}
+                                </div>
+                              )}
+                              <Box
+                                css="margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px dashed var(--acc);color:var(--acc);font:600 10px/1 Archivo;cursor:pointer;transition:background 0.15s"
+                                hover="background:rgba(79,82,216,.14)"
+                                onClick={(e) => { e.stopPropagation(); v.openAddExcerpt(track.id); }}
+                              >+ Add excerpt</Box>
+                              <span style={{ color: 'var(--faint)', fontSize: 11, width: 18, textAlign: 'center', display: 'inline-block', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
+                            </Box>
+                            {isOpen && (
+                              <div style={S('padding:12px 18px 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--rule);animation:rise 0.18s ease')}>
+                                {count === 0
+                                  ? <div style={S('padding:20px;text-align:center;color:var(--faint);font:500 12px/1.6 Archivo;border:1px dashed var(--rule)')}>No excerpts yet in this track. Click <span style={{ color: 'var(--acc)' }}>+ Add excerpt</span> to add one.</div>
+                                  : trackPapers.map((p) => <ExcerptCard key={p._idx} p={p} />)
+                                }
+                                {customHere.map((e) => (
+                                  <div key={e.id} style={S('background:var(--s2);border:1px solid var(--rule);border-left:3px solid var(--acc);padding:14px 16px;display:flex;flex-direction:column;gap:8px;animation:rise 0.18s ease')}>
+                                    <div style={S('display:flex;align-items:center;gap:8px')}>
+                                      <span style={S('padding:2px 8px;border:1px solid var(--acc);background:rgba(30,64,175,0.16);font:700 8.5px/1 Archivo;letter-spacing:0.12em;color:var(--acc)')}>CUSTOM</span>
+                                      <span style={S('font:500 10px/1 Archivo;color:var(--faint)')}>Added manually</span>
+                                    </div>
+                                    <div style={S('border-left:2px solid var(--acc);padding:8px 12px;background:rgba(30,64,175,0.06);font:400 12px/1.75 Archivo;color:var(--dim);font-style:italic')}>{e.text}</div>
+                                    <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
+                                      {e.artifacts.map((a) => <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Archivo', border: `1px solid ${ART_COLORS[a]}`, color: ART_COLORS[a], background: `${ART_COLORS[a]}15` }}>{a}</span>)}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+
+                      {/* BY ARTIFACT */}
+                      {curView === 'artifact' && ALL_ARTIFACTS.map((art, ai) => {
+                        const artPapers = acceptedList.filter((p) => p.artifacts.includes(art));
+                        const isOpen = !!v.organizeExpanded[`art_${art}`];
+                        const c = ART_COLORS[art];
+                        return (
+                          <div key={art} style={{ borderLeft: `3px solid ${isOpen ? c : 'var(--rule)'}`, background: 'var(--bg)', marginBottom: 6, transition: 'border-color 0.2s', animation: `rise 0.22s ease both`, animationDelay: `${ai * 0.05}s` }}>
+                            <Box css={`display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;background:${isOpen ? 'var(--s2)' : 'var(--bg)'};transition:background 0.15s`} hover={!isOpen ? 'background:var(--s1)' : ''} onClick={() => v.toggleOrganizeTrack(`art_${art}`)}>
+                              <div style={{ width: 8, height: 8, borderRadius: '50%', background: c, flexShrink: 0 }} />
+                              <span style={{ font: '700 13px/1 Archivo', color: c }}>{art}</span>
+                              <span style={S('font:500 10px/1 Archivo;color:var(--faint)')}>{artPapers.length} {artPapers.length === 1 ? 'paper' : 'papers'}</span>
+                              <span style={{ marginLeft: 'auto', color: 'var(--faint)', fontSize: 11, display: 'inline-block', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
+                            </Box>
+                            {isOpen && (
+                              <div style={S('padding:12px 18px 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--rule);animation:rise 0.18s ease')}>
+                                {artPapers.length === 0
+                                  ? <div style={S('padding:20px;text-align:center;color:var(--faint);font:500 12px/1.6 Archivo;border:1px dashed var(--rule)')}>No accepted papers produce this artifact type.</div>
+                                  : artPapers.map((p) => <ExcerptCard key={p._idx} p={p} />)
+                                }
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+
+                      {/* REVIEW FIGURES */}
+                      {curView === 'figures' && (() => {
+                        const figCards = [];
+                        acceptedList.forEach((p) => { (PAPER_FIGURES[p._idx] || []).forEach((fig) => figCards.push({ ...fig, paper: p })); });
+                        if (figCards.length === 0) return (
+                          <div style={S('display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 32px;gap:12px')}>
+                            <div style={S('font-size:32px')}>📊</div>
+                            <div style={S('font:700 15px/1 Archivo;color:var(--dim)')}>No figures yet</div>
+                            <div style={S('font:400 12px/1.65 Archivo;color:var(--faint);text-align:center;max-width:320px')}>Accept RCTs, meta-analyses or registry papers — those come with embedded figures that appear here.</div>
+                          </div>
+                        );
+                        return (
+                          <div style={S('display:grid;grid-template-columns:repeat(2,1fr);gap:12px')}>
+                            {figCards.map(({ type, label, caption, paper }, i) => (
+                              <Box key={i}
+                                css={`display:flex;flex-direction:column;overflow:hidden;cursor:pointer;border:1px solid ${sel && sel._idx === paper._idx ? 'var(--acc)' : 'var(--rule)'};background:var(--bg);transition:border-color 0.15s,transform 0.15s`}
+                                hover="border-color:var(--acc);transform:translateY(-2px)"
+                                onClick={() => v.setOrganizeSelected(paper)}
+                                style={{ animation: `cardIn 0.25s ease both`, animationDelay: `${i * 0.045}s` }}
+                              >
+                                <div style={S('background:var(--s2);padding:16px 16px 10px;border-bottom:1px solid var(--rule)')}>
+                                  {renderFigSVG(type, paper._idx)}
+                                </div>
+                                <div style={S('padding:11px 14px;display:flex;flex-direction:column;gap:5px')}>
+                                  <div style={S('display:flex;align-items:center;gap:7px')}>
+                                    <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>{label.toUpperCase()}</span>
+                                    <span style={{ padding: '1px 6px', font: '600 8px/1 Archivo', border: `1px solid ${tc2(paper.type)}`, color: tc2(paper.type) }}>{type.toUpperCase()}</span>
+                                  </div>
+                                  <div style={S('font:600 11px/1.45 Archivo;color:var(--dim)')}>{caption}</div>
+                                  <div style={S('font:500 9.5px/1 Archivo;color:var(--faint)')}>{paper.title.length > 48 ? paper.title.slice(0, 48) + '…' : paper.title} · {paper.year}</div>
+                                </div>
+                              </Box>
+                            ))}
+                          </div>
+                        );
+                      })()}
+
+                    </div>
+                  );
+
+                  if (!sel) return <div style={S('display:flex;flex:1;min-height:0')}>{trackList}</div>;
+
+                  const detailPanel = (
+                    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--s1)', overflow: 'hidden', borderLeft: '1px solid var(--rule2)', animation: 'slideInRight 0.25s cubic-bezier(0.22,1,0.36,1) both' }}>
+                      <div key={sel._idx} style={S('flex:1;overflow-y:auto')}>
+                        {/* Panel header */}
+                        <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--rule2)', display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg)', position: 'sticky', top: 0, zIndex: 2 }}>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: tc2(sel.type), flexShrink: 0 }} />
+                          <span style={S('font:700 11px/1 Archivo;color:var(--ink);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{sel.type} · {sel.year}</span>
+                          <Box css="font-size:11px;color:var(--faint);cursor:pointer;padding:3px 8px;border:1px solid var(--rule)" hover="color:var(--ink);border-color:var(--dim)" onClick={() => v.setOrganizeSelected(null)}>✕</Box>
+                        </div>
+
+                        <div style={S('padding:16px;display:flex;flex-direction:column;gap:0')}>
+                          {/* Score bar */}
+                          <div style={S('display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--rule)')}>
+                            <span style={{ padding: '2px 8px', font: '700 9px/1 Archivo', border: `1px solid ${tc2(sel.type)}`, color: tc2(sel.type), background: `${tc2(sel.type)}15` }}>{sel.type}</span>
+                            <div style={S('flex:1;height:3px;background:var(--rule);overflow:hidden')}>
+                              <div style={{ width: `${sel.relevance}%`, height: '100%', background: 'var(--ok)' }} />
+                            </div>
+                            <span style={S('font:700 11px/1 var(--mono);color:var(--ok);flex-shrink:0')}>{sel.relevance}/100</span>
+                          </div>
+
+                          {/* Title + journal */}
+                          <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
+                            <div style={S('font:700 13px/1.45 Archivo;letter-spacing:-0.01em;color:var(--ink);margin-bottom:6px')}>{sel.title}</div>
+                            <div style={S('font:500 10px/1.4 Archivo;color:var(--faint)')}>{sel.journal}</div>
+                          </div>
+
+                          {/* Figures */}
+                          {(PAPER_FIGURES[sel._idx] || []).length > 0 && (
+                            <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
+                              <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>FIGURES</div>
+                              <div style={S('display:flex;flex-direction:column;gap:8px')}>
+                                {(PAPER_FIGURES[sel._idx] || []).map((fig, fi) => (
+                                  <div key={fi} style={S('border:1px solid var(--rule);overflow:hidden')}>
+                                    <div style={S('background:var(--bg);padding:10px')}>{renderFigSVG(fig.type, sel._idx)}</div>
+                                    <div style={S('padding:8px 10px;background:var(--s2)')}>
+                                      <div style={S('font:700 8.5px/1 Archivo;color:var(--faint);letter-spacing:0.1em;margin-bottom:3px')}>{fig.label}</div>
+                                      <div style={S('font:500 10px/1.45 Archivo;color:var(--dim)')}>{fig.caption}</div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Metadata table */}
+                          <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
+                            <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>EVIDENCE QUALITY</div>
+                            <div style={S('display:flex;flex-direction:column;gap:0')}>
+                              {[['Design', sel.designTier],['Appraisal', sel.appraisal],['GRADE', sel.grade],['Citations', sel.citations],['Funding', sel.funding],['Stat. rigor', sel.statRigor]].map(([lbl, val]) => (
+                                <div key={lbl} style={S('display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(243,242,242,0.05)')}>
+                                  <span style={S('font:500 9.5px/1.4 Archivo;color:var(--faint);width:72px;flex-shrink:0')}>{lbl}</span>
+                                  <span style={S('font:600 9.5px/1.4 Archivo;color:var(--dim);flex:1')}>{val}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Flag */}
+                          {sel.flag && (
+                            <div style={S('padding:10px 12px;border:1px solid var(--acc);background:rgba(30,64,175,0.06);font-size:10px;color:var(--acc);line-height:1.6;margin-top:14px')}>⚠ {sel.flag}</div>
+                          )}
+
+                          {/* Excerpt */}
+                          <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
+                            <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>KEY EXCERPT</div>
+                            <div style={S('border-left:2px solid var(--acc);padding:8px 12px;background:rgba(30,64,175,0.06);font:400 11px/1.75 Archivo;color:var(--dim);font-style:italic')}>{sel.excerpt}</div>
+                            <div style={S('font:600 9px/1 var(--mono);color:var(--faint);margin-top:7px;letter-spacing:0.04em')}>{sel.excerptSrc}</div>
+                          </div>
+
+                          {/* Artifacts */}
+                          <div style={S('padding:14px 0')}>
+                            <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>ARTIFACTS</div>
+                            <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
+                              {ALL_ARTIFACTS.map((a) => {
+                                const active = sel.artifacts.includes(a);
+                                return <span key={a} style={{ padding: '3px 10px', font: '600 9.5px/1 Archivo', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+
+                  return (
+                    <div style={S('display:flex;flex:1;min-height:0')}>
+                      <ResizableSplit left={trackList} right={detailPanel} defaultLeftPct={62} minPct={30} maxPct={78} />
+                    </div>
+                  );
+                })()}
+
+                {/* ══ STICKY FOOTER ══ */}
+                {(() => {
+                  const accepted = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter((p) => v.acceptedPapers[p._idx]);
+                  const totalEx = accepted.length + v.customExcerpts.length;
+                  const readiness = ALL_ARTIFACTS.map((a) => {
+                    const cur = accepted.filter((p) => p.artifacts.includes(a)).length;
+                    const tgt = ARTIFACT_TARGETS[a].target;
+                    return { a, cur, tgt, ok: cur >= tgt };
+                  });
+                  const allReady = readiness.every((r) => r.ok);
+                  return (
+                    <div style={S('flex:none;border-top:2px solid var(--rule2);background:var(--bg);padding:14px 40px;display:flex;align-items:center;gap:14px')}>
+                      {/* readiness pills */}
+                      <div style={S('display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap')}>
+                        {readiness.map(({ a, cur, tgt, ok }) => (
+                          <div key={a} style={S(`display:flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid ${ok ? 'var(--ok)' : 'var(--rule2)'};background:${ok ? 'rgba(22,101,52,0.1)' : 'var(--s2)'}`)}>
+                            <div style={{ width: 6, height: 6, borderRadius: '50%', background: ok ? 'var(--ok)' : 'var(--faint)' }} />
+                            <span style={{ font: '600 10px/1 Archivo', color: ok ? 'var(--ok)' : 'var(--faint)' }}>{a}</span>
+                            <span style={{ font: '500 10px/1 var(--mono)', color: ok ? 'var(--ok)' : 'var(--dim)' }}>{cur}/{tgt}</span>
+                          </div>
+                        ))}
+                        <span style={S('font:500 11px/1 Archivo;color:var(--faint);margin-left:4px')}>{totalEx} excerpts · {accepted.length} papers</span>
+                      </div>
+                      {/* CTA */}
+                      <Box
+                        css={`padding:11px 24px;font:700 12px/1 Archivo;cursor:pointer;background:${allReady ? 'var(--acc)' : 'var(--s2)'};color:${allReady ? '#fff' : 'var(--ink)'};border:1px solid ${allReady ? 'var(--acc)' : 'var(--rule2)'};white-space:nowrap;transition:background 0.15s`}
+                        hover={allReady ? 'background:var(--acc)' : 'border-color:var(--dim)'}
+                        onClick={v.openMAReview}
+                      >
+                        Run Medical Affairs Review {allReady ? '→' : '⚠'}
+                      </Box>
+                    </div>
+                  );
+                })()}
+
+                {/* ══ MA REVIEW READINESS MODAL ══ */}
+                {v.maReviewModal && (() => {
+                  const accepted = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter((p) => v.acceptedPapers[p._idx]);
+                  const readiness = ALL_ARTIFACTS.map((a) => {
+                    const cur = accepted.filter((p) => p.artifacts.includes(a)).length;
+                    const tgt = ARTIFACT_TARGETS[a].target;
+                    return { a, label: ARTIFACT_TARGETS[a].label, cur, tgt, ok: cur >= tgt };
+                  });
+                  const notReady = readiness.filter((r) => !r.ok);
+                  const allReady = notReady.length === 0;
+                  return (
+                    <div style={{ position: 'absolute', inset: 0, zIndex: 90, background: 'rgba(14,13,12,0.82)', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'rise 0.16s ease', backdropFilter: 'blur(3px)' }}
+                      onClick={(e) => { if (e.target === e.currentTarget) v.closeMAReview(); }}>
+                      <div style={{ width: 520, background: 'var(--s1)', border: '1px solid var(--rule2)', display: 'flex', flexDirection: 'column', animation: 'fadeUp 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
+
+                        {/* Header */}
+                        <div style={S('padding:22px 24px 18px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--rule)')}>
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                              <div style={{ width: 10, height: 10, borderRadius: '50%', background: allReady ? 'var(--ok)' : 'var(--warn)', flexShrink: 0, animation: allReady ? '' : 'puls 1.2s infinite' }} />
+                              <span style={S(`font:800 16px/1 Archivo;letter-spacing:-0.02em;color:var(--ink)`)}>{allReady ? 'Evidence base looks good' : 'Some artifacts aren\'t ready yet'}</span>
+                            </div>
+                            <div style={S('font:400 12px/1.6 Archivo;color:var(--faint);max-width:400px')}>
+                              {allReady
+                                ? 'All artifacts have enough accepted research behind them. You\'re ready to run the Medical Affairs review.'
+                                : 'The following artifacts don\'t have enough accepted research behind them yet:'}
+                            </div>
+                          </div>
+                          <Box css="width:26px;height:26px;border:1px solid var(--rule2);display:grid;place-items:center;cursor:pointer;font-size:12px;color:var(--faint);flex-shrink:0;margin-left:12px" hover="color:var(--ink);border-color:var(--dim)" onClick={v.closeMAReview}>✕</Box>
+                        </div>
+
+                        {/* Artifact readiness list */}
+                        <div style={S('padding:20px 24px;display:flex;flex-direction:column;gap:0')}>
+                          {notReady.length > 0 && (
+                            <div style={S('margin-bottom:18px')}>
+                              {notReady.map(({ a, label, cur, tgt }) => (
+                                <div key={a} style={S('display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule)')}>
+                                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--acc)', flexShrink: 0 }} />
+                                  <span style={S('font:600 13px/1 Archivo;color:var(--acc);flex:1')}>{label}</span>
+                                  <div style={S('display:flex;align-items:center;gap:8px')}>
+                                    {/* mini progress bar */}
+                                    <div style={{ width: 80, height: 4, background: 'var(--rule2)', overflow: 'hidden' }}>
+                                      <div style={{ width: `${(cur / tgt) * 100}%`, height: '100%', background: 'var(--acc)', transition: 'width 0.4s ease' }} />
+                                    </div>
+                                    <span style={S('font:700 12px/1 var(--mono);color:var(--acc);white-space:nowrap')}>{cur}/{tgt}</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Ready artifacts */}
+                          <div style={S('display:flex;flex-direction:column;gap:0')}>
+                            {readiness.filter((r) => r.ok).map(({ a, label, cur, tgt }) => (
+                              <div key={a} style={S('display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule)')}>
+                                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ok)', flexShrink: 0 }} />
+                                <span style={S('font:600 13px/1 Archivo;color:var(--dim);flex:1')}>{label}</span>
+                                <div style={S('display:flex;align-items:center;gap:8px')}>
+                                  <div style={{ width: 80, height: 4, background: 'var(--rule2)', overflow: 'hidden' }}>
+                                    <div style={{ width: '100%', height: '100%', background: 'var(--ok)' }} />
+                                  </div>
+                                  <span style={S('font:700 12px/1 var(--mono);color:var(--ok);white-space:nowrap')}>{cur}/{tgt}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {notReady.length > 0 && (
+                            <div style={S('margin-top:16px;font:400 12px/1.65 Archivo;color:var(--faint)')}>
+                              You can go back and accept more excerpts for these artifacts, or finalize anyway if you're satisfied with what's there.
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Footer buttons */}
+                        <div style={S('padding:16px 24px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:flex-end;gap:10px')}>
+                          <Box css="padding:10px 22px;font:600 12px/1 Archivo;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="border-color:var(--ink);color:var(--ink)" onClick={v.closeMAReview}>Go back</Box>
+                          <Box
+                            css="padding:10px 28px;font:700 12px/1 Archivo;background:var(--acc);color:#fff;cursor:pointer;border:1px solid var(--acc)"
+                            hover="background:var(--acc)"
+                            onClick={() => { v.closeMAReview(); this.go('med-review'); }}
+                          >
+                            {allReady ? 'Run review →' : 'Finalize anyway →'}
+                          </Box>
+                        </div>
+
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* ══ ADD EXCERPT MODAL ══ */}
+                {v.addExcerptModal && (
+                  <div style={{ position: 'absolute', inset: 0, zIndex: 80, background: 'rgba(14,13,12,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'rise 0.16s ease', backdropFilter: 'blur(2px)' }}
+                    onClick={(e) => { if (e.target === e.currentTarget) v.closeAddExcerpt(); }}>
+                    <div style={{ width: 560, background: 'var(--s1)', border: '1px solid var(--rule2)', display: 'flex', flexDirection: 'column', animation: 'fadeUp 0.22s cubic-bezier(0.22,1,0.36,1) both', maxHeight: '90vh', overflow: 'hidden' }}>
+
+                      <div style={S('padding:22px 26px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--rule2)')}>
+                        <div>
+                          <div style={S('font:800 17px/1 Archivo;letter-spacing:-0.02em;color:var(--ink);margin-bottom:4px')}>Add an excerpt</div>
+                          <div style={S('font:400 11px/1 Archivo;color:var(--faint)')}>Paste a key quote from a paper in your evidence base</div>
+                        </div>
+                        <Box css="width:28px;height:28px;border:1px solid var(--rule2);display:grid;place-items:center;cursor:pointer;font-size:13px;color:var(--faint);flex-shrink:0" hover="border-color:var(--dim);color:var(--ink)" onClick={v.closeAddExcerpt}>✕</Box>
+                      </div>
+
+                      <div style={S('padding:22px 26px;display:flex;flex-direction:column;gap:20px;overflow-y:auto')}>
+                        {/* Textarea */}
+                        <div>
+                          <div style={S('font:700 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:8px')}>EXCERPT TEXT</div>
+                          <textarea rows={5} autoFocus
+                            style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--acc)', color: 'var(--ink)', padding: '13px 14px', fontSize: 13, lineHeight: 1.65, resize: 'vertical', outline: 'none', fontFamily: 'Archivo,sans-serif', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
+                            placeholder="Paste or type the excerpt..."
+                            value={v.excerptModalText}
+                            onChange={(e) => v.setExcerptModalText(e.target.value)}
+                          />
+                          {v.excerptModalText.trim().length > 0 && (
+                            <div style={S('margin-top:6px;font:500 10px/1 Archivo;color:var(--faint)')}>
+                              {v.excerptModalText.trim().split(' ').length} words
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Artifacts */}
+                        <div>
+                          <div style={S('font:700 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:10px')}>USED IN ARTIFACTS</div>
+                          <div style={S('display:flex;gap:8px;flex-wrap:wrap')}>
+                            {ALL_ARTIFACTS.map((a) => {
+                              const on = v.excerptModalArtifacts[a];
+                              const c = ART_COLORS[a];
+                              return (
+                                <Box key={a}
+                                  css={`padding:7px 18px;border-radius:999px;border:1px solid ${on ? c : 'var(--rule)'};background:${on ? `${c}20` : 'transparent'};color:${on ? c : 'var(--faint)'};font:600 12px/1 Archivo;cursor:pointer;transition:all 0.15s`}
+                                  hover={!on ? `border-color:${c};color:${c}` : ''}
+                                  onClick={() => v.toggleExcerptModalArtifact(a)}
+                                >{a}</Box>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Tracks */}
+                        <div>
+                          <div style={S('font:700 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:10px')}>RELEVANT TRACKS</div>
+                          <div style={S('display:flex;gap:7px;flex-wrap:wrap')}>
+                            {CONTENT_TRACKS.map((t) => {
+                              const on = !!v.excerptModalTracks[t.id];
+                              return (
+                                <Box key={t.id}
+                                  css={`padding:7px 14px;border-radius:999px;border:1px solid ${on ? t.color : 'var(--rule)'};background:${on ? `${t.color}20` : 'transparent'};color:${on ? t.color : 'var(--faint)'};font:600 11px/1 Archivo;cursor:pointer;transition:all 0.15s`}
+                                  hover={!on ? `border-color:${t.color};color:${t.color}` : ''}
+                                  onClick={() => v.toggleExcerptModalTrack(t.id)}
+                                >{t.label}</Box>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={S('padding:16px 26px;border-top:1px solid var(--rule2);display:flex;align-items:center;justify-content:space-between')}>
+                        <Box css="padding:9px 18px;font:600 11px/1 Archivo;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={v.closeAddExcerpt}>Cancel</Box>
+                        <Box
+                          css={`padding:10px 28px;font:700 12px/1 Archivo;cursor:${v.excerptModalText.trim() ? 'pointer' : 'default'};background:${v.excerptModalText.trim() ? 'var(--acc)' : 'var(--s2)'};color:${v.excerptModalText.trim() ? '#fff' : 'var(--faint)'};border:1px solid ${v.excerptModalText.trim() ? 'var(--acc)' : 'var(--rule)'};transition:all 0.15s`}
+                          hover={v.excerptModalText.trim() ? 'background:var(--acc)' : ''}
+                          onClick={v.excerptModalText.trim() ? v.submitExcerpt : undefined}
+                        >Add excerpt</Box>
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
+              </div>}
+            />
+          );
+          })()}
+
+          {/* ============ MED REVIEW ============ */}
+          {v.isMedReview && (() => {
+            const rN = v.reviewN;
+            const isDone = rN > REVIEW_AGENT_MSGS.length;
+            const visibleMsgs = REVIEW_AGENT_MSGS.slice(0, rN);
+            const accepted = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter((p) => v.acceptedPapers[p._idx]);
+
+            const renderMD = (text) => {
+              const lines = text.split('\n\n');
+              return lines.map((line, li) => {
+                const parts = line.split(/(\*\*[^*]+\*\*)/g);
+                return (
+                  <p key={li} style={{ margin: '0 0 8px 0', lineHeight: 1.7 }}>
+                    {parts.map((p2, pi) =>
+                      p2.startsWith('**') && p2.endsWith('**')
+                        ? <strong key={pi} style={{ color: 'var(--ink)' }}>{p2.slice(2, -2)}</strong>
+                        : <span key={pi}>{p2}</span>
+                    )}
+                  </p>
+                );
+              });
+            };
+
+            const QualityRing = ({ score, color: _color }) => {
+              const r = 18; const circ = 2 * Math.PI * r;
+              const filled = (score / 100) * circ;
+              const qColor = score >= 80 ? 'var(--ok)' : score >= 50 ? 'var(--warn)' : 'var(--acc)';
+              return (
+                <svg width="44" height="44" viewBox="0 0 44 44" style={{ flexShrink: 0 }}>
+                  <circle cx="22" cy="22" r={r} fill="none" stroke="var(--rule2)" strokeWidth="3" />
+                  <circle cx="22" cy="22" r={r} fill="none" stroke={qColor} strokeWidth="3"
+                    strokeDasharray={`${filled} ${circ - filled}`} strokeLinecap="round"
+                    transform="rotate(-90 22 22)" style={{ transition: 'stroke-dasharray 0.6s ease' }} />
+                  <text x="22" y="26" textAnchor="middle" fontSize="9" fontWeight="700" fill={qColor} fontFamily="Archivo">{score}</text>
+                </svg>
+              );
+            };
+
+            const leftPanel = (<div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative', animation: 'fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both' }}>
+
+                  {/* Status banner */}
+                  <div style={S(`display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--rule);flex:none;background:${isDone ? 'rgba(22,101,52,0.08)' : 'rgba(30,64,175,0.06)'}`)}>
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: isDone ? 'var(--ok)' : 'var(--acc)', animation: isDone ? '' : 'puls 1s infinite' }} />
+                    <div style={S(`font:700 10px/1 Archivo;letter-spacing:0.14em;color:${isDone ? 'var(--ok)' : 'var(--acc)'}`)}>
+                      {isDone ? 'REVIEW COMPLETE — READY FOR CONTENT GENERATION' : 'MA REVIEW AGENT · RUNNING…'}
+                    </div>
+                    {!isDone && <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{Math.round((rN / (REVIEW_AGENT_MSGS.length + 1)) * 100)}%</div>}
+                  </div>
+
+                  {/* Thread header */}
+                  <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule);flex:none')}>
+                    <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>MEDICAL AFFAIRS REVIEW AGENT</div>
+                    <div style={S('font:700 14px/1 Archivo;letter-spacing:-0.01em;color:var(--ink)')}>Evidence Quality & Artifact Readiness</div>
+                  </div>
+
+                  {/* Messages */}
+                  <div style={S('flex:1;overflow-y:auto;padding:20px')}>
+                    {visibleMsgs.map((msg, i) => (
+                      <div key={i} style={{ ...S('display:flex;gap:10px;margin-bottom:22px;animation:rise 0.3s ease both'), animationDelay: `${i * 0.05}s` }}>
+                        <div style={{ width: 28, height: 28, flexShrink: 0, background: msg.color || 'var(--acc)', display: 'grid', placeItems: 'center', font: '700 10px/1 Archivo', color: msg.color ? '#000' : '#fff', fontSize: msg.color ? 11 : 10 }}>
+                          {msg.artifact ? msg.artifact[0] : 'AI'}
+                        </div>
+                        <div style={S('max-width:88%;flex:1')}>
+                          {msg.artifact && (
+                            <div style={{ ...S('font:700 9.5px/1 Archivo;letter-spacing:0.12em;margin-bottom:6px'), color: msg.color }}>
+                              {msg.artifact.toUpperCase()} · ANALYSIS
+                            </div>
+                          )}
+                          <div style={{ background: 'var(--s1)', border: '1px solid var(--rule)', borderLeft: `2px solid ${msg.color || 'var(--acc)'}`, padding: '12px 14px', fontSize: 12.5, color: 'var(--dim)' }}>
+                            {renderMD(msg.text)}
+                            {/* Sources */}
+                            {msg.sources && msg.sources.length > 0 && (
+                              <div style={S('display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule)')}>
+                                <span style={S('font:600 9px/1 Archivo;letter-spacing:0.1em;color:var(--faint);margin-right:2px')}>SOURCES</span>
+                                {msg.sources.map((s) => (
+                                  <span key={s} style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1 Archivo;color:var(--dim);cursor:pointer')}>{s}</span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Thinking indicator */}
+                    {!isDone && rN > 0 && (
+                      <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.25s ease')}>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--acc);color:#fff')}>AI</div>
+                        <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:12px 14px')}>
+                          <div style={S('font:600 10px/1 Archivo;letter-spacing:0.1em;color:var(--acc);margin-bottom:8px')}>
+                            {rN <= 1 ? 'LOADING EVIDENCE BASE…' : `ANALYSING ${REVIEW_AGENT_MSGS[rN]?.artifact?.toUpperCase() || 'EVIDENCE'}…`}
+                          </div>
+                          <div style={S('display:flex;gap:5px')}>
+                            {[0,1,2].map((d) => <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Done summary bubble */}
+                    {isDone && (
+                      <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--ok);color:#fff')}>AI</div>
+                        <div>
+                          <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--ok);margin-bottom:6px')}>MA REVIEW AGENT · COMPLETE</div>
+                          <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--ok);padding:12px 14px;font-size:12.5px;color:var(--dim);line-height:1.65')}>
+                            Review complete. Overall quality <strong style={S('color:var(--ink)')}>78/100</strong>. Download the evidence brief below or proceed directly to content generation.
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Download CTA */}
+                  {isDone && (
+                    <div style={S('padding:14px 20px;border-top:1px solid var(--rule);flex:none;display:flex;flex-direction:column;gap:8px')}>
+                      <div style={S('display:flex;gap:8px')}>
+                        <Box css="flex:1;padding:10px 0;text-align:center;font:700 11px/1 Archivo;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="border-color:var(--ink);color:var(--ink)">
+                          ↓ Download research JSON
+                        </Box>
+                        <Box css="flex:1;padding:10px 0;text-align:center;font:700 11px/1 Archivo;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="border-color:var(--ink);color:var(--ink)">
+                          ↓ Download evidence brief
+                        </Box>
+                      </div>
+                      {v.sciSubmitted ? (
+                        <div style={S('display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:rgba(22,101,52,0.1);border:1px solid var(--ok);font:700 11px/1 Archivo;color:var(--ok)')}>
+                          <span>✓</span> Sent for Scientific Review — awaiting Dr. Arjun Mehta
+                        </div>
+                      ) : (
+                        <Box css="padding:12px 0;text-align:center;font:700 12px/1 Archivo;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.85" onClick={v.submitToSci}>
+                          Submit for Scientific Review →
+                        </Box>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+            ); /* end leftPanel */
+
+            const rightPanel = (<div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideInRight 0.5s cubic-bezier(0.22,1,0.36,1) both', animationDelay: '0.08s' }}>
+
+                  {/* Header + tabs */}
+                  <div style={S('border-bottom:1px solid var(--rule2);flex:none;background:var(--bg)')}>
+                    <div style={S('padding:12px 20px 0;display:flex;align-items:center;gap:10px')}>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: isDone ? 'var(--ok)' : 'var(--warn)', animation: isDone ? '' : 'puls 1.1s infinite' }} />
+                      <div style={S('font:700 12px/1 Archivo;letter-spacing:-0.01em')}>Evidence Review</div>
+                      <span style={S('font:600 10px/1 var(--mono);color:var(--faint)')}>{accepted.length} papers · {visibleMsgs.filter(m => m.artifact).length} of 5 analysed</span>
+                    </div>
+                    <div style={S('display:flex;gap:0;padding:0 20px;margin-top:10px')}>
+                      {[['artifacts','Artifact Readiness'],['papers','Papers & Excerpts']].map(([tid, tlabel]) => (
+                        <div key={tid} onClick={() => v.setMedReviewTab(tid)}
+                          style={{ padding: '6px 14px 10px', font: '600 11px/1 Archivo', cursor: 'pointer', color: v.medReviewTab === tid ? 'var(--ink)' : 'var(--faint)', borderBottom: v.medReviewTab === tid ? '2px solid var(--acc)' : '2px solid transparent', transition: 'color 0.15s, border-color 0.15s', marginBottom: -1 }}>
+                          {tlabel}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* ── ARTIFACTS TAB ── */}
+                  {v.medReviewTab === 'artifacts' && <div key="artifacts" style={S('flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px')}>
+                    {REVIEW_AGENT_MSGS.filter(m => m.artifact).map((msg, i) => {
+                      const visible = rN > msg.step - 1;
+                      const cur = accepted.filter((p) => p.artifacts.includes(msg.artifact)).length;
+                      const tgt = ARTIFACT_TARGETS[msg.artifact]?.target || 5;
+                      if (!visible) return (
+                        <div key={i} style={S('border:1px solid var(--rule);padding:14px 16px;opacity:0.35;display:flex;align-items:center;gap:10px')}>
+                          <div style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid var(--faint)' }} />
+                          <span style={S('font:600 11px/1 Archivo;color:var(--faint)')}>{ARTIFACT_TARGETS[msg.artifact]?.label}</span>
+                          <span style={S('font:500 10px/1 Archivo;color:var(--faint);margin-left:auto')}>pending…</span>
+                        </div>
+                      );
+                      const qColor = msg.quality >= 80 ? 'var(--ok)' : msg.quality >= 50 ? 'var(--warn)' : 'var(--acc)';
+                      const qLabel = msg.quality >= 80 ? 'HIGH' : msg.quality >= 50 ? 'MODERATE' : 'LOW';
+                      return (
+                        <div key={i} style={{ border: `1px solid ${msg.color}44`, borderLeft: `3px solid ${msg.color}`, background: 'var(--bg)', animation: 'cardIn 0.3s ease both' }}>
+                          {/* Card header */}
+                          <div style={S('padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--rule)')}>
+                            <QualityRing score={msg.quality} color={msg.color} />
+                            <div style={S('flex:1;min-width:0')}>
+                              <div style={{ font: '700 12.5px/1 Archivo', color: msg.color, marginBottom: 4 }}>{ARTIFACT_TARGETS[msg.artifact]?.label}</div>
+                              <div style={S('font:500 10px/1 Archivo;color:var(--faint)')}>Evidence quality: <span style={{ color: qColor, fontWeight: 700 }}>{qLabel}</span></div>
+                            </div>
+                            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                              <div style={S('font:700 12px/1 var(--mono);color:var(--dim)')}>{cur}/{tgt}</div>
+                              <div style={S('font:500 9px/1 Archivo;color:var(--faint);margin-top:3px')}>excerpts</div>
+                            </div>
+                          </div>
+                          {/* Progress bar */}
+                          <div style={S('height:3px;background:var(--rule2)')}>
+                            <div style={{ width: `${Math.min(100, (cur / tgt) * 100)}%`, height: '100%', background: qColor, transition: 'width 0.5s ease' }} />
+                          </div>
+                          {/* Papers used */}
+                          <div style={S('padding:10px 14px;display:flex;flex-direction:column;gap:6px')}>
+                            <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:2px')}>SOURCES USED</div>
+                            {accepted.filter(p => p.artifacts.includes(msg.artifact)).slice(0, 3).map((p) => (
+                              <div key={p._idx} style={S('display:flex;align-items:center;gap:7px')}>
+                                <div style={{ width: 5, height: 5, borderRadius: '50%', background: msg.color, flexShrink: 0 }} />
+                                <span style={S('font:500 10.5px/1.4 Archivo;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1')}>{p.title}</span>
+                                <span style={S('font:500 9px/1 var(--mono);color:var(--faint);flex-shrink:0')}>{p.year}</span>
+                              </div>
+                            ))}
+                            {accepted.filter(p => p.artifacts.includes(msg.artifact)).length === 0 && (
+                              <div style={S('font:500 10.5px/1 Archivo;color:var(--faint)')}>No papers accepted for this artifact yet.</div>
+                            )}
+                          </div>
+                          {/* Gap indicator */}
+                          {msg.quality < 80 && (
+                            <div style={S('margin:0 14px 12px;padding:7px 10px;border:1px solid var(--warn);background:rgba(146,64,14,0.07);font:500 10.5px/1.5 Archivo;color:var(--warn)')}>
+                              ⚠ Gap detected — see chat for recommendations
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+
+                    {/* Overall score card (visible when done) */}
+                    {isDone && (
+                      <div style={S('border:1px solid var(--rule2);background:var(--s2);padding:16px;display:flex;align-items:center;gap:14px;animation:fadeUp 0.3s ease both')}>
+                        <QualityRing score={78} color="var(--acc)" />
+                        <div>
+                          <div style={S('font:700 13px/1 Archivo;color:var(--ink);margin-bottom:5px')}>Overall evidence quality</div>
+                          <div style={S('font:500 11px/1.5 Archivo;color:var(--faint)')}>4 of 5 artifacts ready · 1 needs more excerpts</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>}
+
+                  {/* ── PAPERS TAB ── */}
+                  {v.medReviewTab === 'papers' && (() => {
+                    const sel = v.medReviewPaper;
+                    const trackColor = (p) => {
+                      const tc = CONTENT_TRACKS.find(t => t.paperTracks.includes(p.track));
+                      return tc ? tc.color : 'var(--dim)';
+                    };
+                    return (
+                      <div key="papers" style={S('flex:1;display:flex;overflow:hidden')}>
+
+                        {/* Paper list */}
+                        <div style={{ width: sel ? '42%' : '100%', flexShrink: 0, overflowY: 'auto', borderRight: sel ? '1px solid var(--rule2)' : 'none', transition: 'width 0.25s ease', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                          <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>{accepted.length} ACCEPTED PAPERS</div>
+                          {accepted.length === 0 && (
+                            <div style={S('font:500 12px/1.6 Archivo;color:var(--faint);padding:20px 0')}>No papers accepted yet. Go back to Research to accept papers.</div>
+                          )}
+                          {accepted.map((p, i) => {
+                            const isSel = sel && sel._idx === p._idx;
+                            const tc = CONTENT_TRACKS.find(t => t.paperTracks.includes(p.track));
+                            const tColor = tc ? tc.color : 'var(--dim)';
+                            return (
+                              <div key={p._idx} onClick={() => v.setMedReviewPaper(isSel ? null : p)}
+                                style={{ border: `1px solid ${isSel ? tColor + '88' : 'var(--rule)'}`, borderLeft: `3px solid ${tColor}`, background: isSel ? 'var(--s2)' : 'var(--bg)', padding: '10px 12px', cursor: 'pointer', animation: 'cardIn 0.25s ease both', animationDelay: `${i * 0.04}s`, transition: 'background 0.15s, border-color 0.15s' }}>
+                                <div style={S('font:600 10.5px/1.4 Archivo;color:var(--ink);margin-bottom:5px')}>{p.title}</div>
+                                <div style={S('display:flex;flex-wrap:wrap;gap:5px;align-items:center')}>
+                                  <span style={{ padding: '1px 7px', border: `1px solid ${tColor}44`, font: '600 9px/1.6 Archivo', color: tColor }}>{p.track || 'Uncategorised'}</span>
+                                  <span style={S('font:500 9.5px/1 var(--mono);color:var(--faint)')}>{p.journal} · {p.year}</span>
+                                  {p.artifacts && p.artifacts.map(a => (
+                                    <span key={a} style={{ padding: '1px 6px', background: 'var(--s2)', font: '600 9px/1.6 Archivo', color: 'var(--faint)' }}>{a}</span>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Paper detail panel */}
+                        {sel && (
+                          <div key={sel._idx} style={{ flex: 1, minWidth: 0, overflowY: 'auto', padding: '16px 18px', animation: 'slideInRight 0.28s cubic-bezier(0.22,1,0.36,1) both' }}>
+                            {/* Close */}
+                            <div style={S('display:flex;align-items:flex-start;gap:8px;margin-bottom:12px')}>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ font: '700 8.5px/1 Archivo', letterSpacing: '0.14em', color: trackColor(sel), marginBottom: 5 }}>{sel.track || 'UNCATEGORISED'}</div>
+                                <div style={S('font:700 13px/1.45 Archivo;color:var(--ink)')}>{sel.title}</div>
+                              </div>
+                              <div onClick={() => v.setMedReviewPaper(null)} style={S('cursor:pointer;color:var(--faint);font-size:16px;padding:2px 4px;line-height:1')}>×</div>
+                            </div>
+
+                            {/* Meta row */}
+                            <div style={S('display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--rule)')}>
+                              <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Archivo;color:var(--dim)')}>{sel.journal}</span>
+                              <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Archivo;color:var(--dim)')}>{sel.year}</span>
+                              {sel.n && <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Archivo;color:var(--dim)')}>n={sel.n.toLocaleString()}</span>}
+                              {sel.phase && <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Archivo;color:var(--dim)')}>{sel.phase}</span>}
+                            </div>
+
+                            {/* Excerpt */}
+                            {sel.excerpt && (
+                              <div style={S('margin-bottom:16px')}>
+                                <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:8px')}>KEY EXCERPT</div>
+                                <div style={S('border-left:2px solid var(--rule2);padding:8px 12px;font:400 12px/1.65 Archivo;color:var(--dim);font-style:italic')}>&ldquo;{sel.excerpt}&rdquo;</div>
+                              </div>
+                            )}
+
+                            {/* Artifact pills */}
+                            {sel.artifacts && sel.artifacts.length > 0 && (
+                              <div style={S('margin-bottom:16px')}>
+                                <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:8px')}>USED IN ARTIFACTS</div>
+                                <div style={S('display:flex;flex-wrap:wrap;gap:6px')}>
+                                  {sel.artifacts.map(a => {
+                                    const am = REVIEW_AGENT_MSGS.find(m => m.artifact === a);
+                                    const aColor = am ? am.color : 'var(--dim)';
+                                    return <span key={a} style={{ padding: '3px 10px', border: `1px solid ${aColor}55`, font: '700 10px/1.6 Archivo', color: aColor }}>{a}</span>;
+                                  })}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Figures */}
+                            {PAPER_FIGURES[sel._idx] && PAPER_FIGURES[sel._idx].length > 0 && (
+                              <div>
+                                <div style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>FIGURES</div>
+                                <div style={S('display:flex;flex-direction:column;gap:10px')}>
+                                  {PAPER_FIGURES[sel._idx].map((fig, fi) => (
+                                    <div key={fi} style={S('border:1px solid var(--rule);padding:10px')}>
+                                      <div style={S('font:700 9.5px/1 Archivo;color:var(--dim);margin-bottom:6px')}>{fig.label}</div>
+                                      <div style={S('font:400 9.5px/1.5 Archivo;color:var(--faint);margin-bottom:8px')}>{fig.caption}</div>
+                                      <div style={S('background:var(--s2);height:90px;display:grid;place-items:center;font:500 10px/1 Archivo;color:var(--faint)')}>[{fig.type.toUpperCase()} FIGURE]</div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
+            </div>); /* end rightPanel */
+
+            return <ResizableSplit left={leftPanel} right={rightPanel} defaultLeftPct={46} />;
+          })()}
+
+          {/* ============ SCI DASHBOARD ============ */}
+          {v.isSciDash && (() => {
+            const deck = {
+              topic: 'Type 2 Diabetes — GLP-1 RA landscape',
+              product: 'Ozempic® (Semaglutide)',
+              submittedBy: 'Mayank Gupta (Medical Affairs)',
+              submittedAt: 'Today · 14:32',
+              papers: 12,
+              excerpts: 47,
+              artifacts: 5,
+              maQuality: 78,
+              status: 'Awaiting scientific review',
+            };
+            return (
+              <div style={S('padding:40px 48px;min-height:100%;animation:fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both')}>
+                {/* Header */}
+                <div style={S('display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px')}>
+                  <div>
+                    <div style={S('font:700 9.5px/1 Archivo;letter-spacing:0.16em;color:var(--ok);margin-bottom:10px')}>SCIENTIFIC REVIEW HUB</div>
+                    <h1 style={S('font:800 28px/1 Archivo;letter-spacing:-0.03em;margin:0 0 8px')}>Welcome, Dr. Arjun Mehta</h1>
+                    <div style={S('font:400 13.5px/1 Archivo;color:var(--dim)')}>Scientific Adviser · September 2026</div>
+                  </div>
+                  <div style={S('display:flex;align-items:center;gap:10px')}>
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--ok)', animation: 'puls 1.4s infinite' }} />
+                    <span style={S('font:600 10px/1 Archivo;letter-spacing:0.1em;color:var(--ok)')}>1 DECK AWAITING REVIEW</span>
+                  </div>
+                </div>
+
+                {/* Stats row */}
+                <div style={S('display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule2);margin-bottom:32px')}>
+                  {[
+                    { label: 'AWAITING REVIEW', value: '1', color: 'var(--warn)', delta: 'Submitted today' },
+                    { label: 'APPROVED THIS MONTH', value: '3', color: 'var(--ok)', delta: '+1 vs August' },
+                    { label: 'SENT BACK', value: '1', color: 'var(--acc)', delta: 'Avg 1.2 days to resubmit' },
+                  ].map((s, i) => (
+                    <div key={i} style={{ padding: '22px 28px', borderRight: i < 2 ? '1px solid var(--rule2)' : 'none', background: 'var(--s1)' }}>
+                      <div style={{ font: '700 9px/1 Archivo', letterSpacing: '0.14em', color: s.color, marginBottom: 12 }}>{s.label}</div>
+                      <div style={{ font: '800 36px/1 Archivo', letterSpacing: '-0.03em', marginBottom: 6 }}>{s.value}</div>
+                      <div style={S('font:400 11.5px/1 Archivo;color:var(--faint)')}>{s.delta}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Pending deck card */}
+                <div style={S('font:700 11px/1 Archivo;letter-spacing:0.1em;color:var(--faint);margin-bottom:14px')}>PENDING YOUR REVIEW</div>
+                <div style={S('border:1px solid var(--rule2);border-left:3px solid var(--ok);background:var(--s1);animation:cardIn 0.4s ease both;animation-delay:0.1s')}>
+                  {/* Deck header */}
+                  <div style={S('padding:18px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:16px')}>
+                    <div style={{ flexShrink: 0, width: 44, height: 44, background: 'var(--ok)', display: 'grid', placeItems: 'center', font: '700 16px/1 Archivo', color: '#fff' }}>D</div>
+                    <div style={S('flex:1;min-width:0')}>
+                      <div style={S('font:800 16px/1.3 Archivo;letter-spacing:-0.01em;margin-bottom:5px')}>{deck.topic}</div>
+                      <div style={S('font:500 12px/1 Archivo;color:var(--faint)')}>{deck.product}</div>
+                    </div>
+                    <div style={S('text-align:right;flex:none')}>
+                      <div style={S('display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-bottom:6px')}>
+                        <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--warn)', animation: 'puls 1.2s infinite' }} />
+                        <span style={S('font:700 10px/1 Archivo;letter-spacing:0.1em;color:var(--warn)')}>AWAITING REVIEW</span>
+                      </div>
+                      <div style={S('font:500 10.5px/1 Archivo;color:var(--faint)')}>{deck.submittedAt}</div>
+                    </div>
+                  </div>
+
+                  {/* Metadata grid */}
+                  <div style={S('display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--rule)')}>
+                    {[
+                      { label: 'SUBMITTED BY', value: deck.submittedBy },
+                      { label: 'PAPERS', value: `${deck.papers} accepted` },
+                      { label: 'EXCERPTS', value: `${deck.excerpts} across 5 artifacts` },
+                      { label: 'MA QUALITY SCORE', value: `${deck.maQuality}/100`, color: 'var(--warn)' },
+                    ].map((m, i) => (
+                      <div key={i} style={{ padding: '12px 18px', borderRight: i < 3 ? '1px solid var(--rule)' : 'none' }}>
+                        <div style={S('font:600 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-bottom:5px')}>{m.label}</div>
+                        <div style={{ font: '600 12.5px/1 Archivo', color: m.color || 'var(--ink)' }}>{m.value}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Artifact pills */}
+                  <div style={S('padding:12px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex-wrap:wrap')}>
+                    <span style={S('font:600 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint);margin-right:4px')}>ARTIFACTS</span>
+                    {[
+                      { name: 'HCP Deck', q: 89, color: '#7eb8f7' },
+                      { name: 'Blog', q: 100, color: '#fb923c' },
+                      { name: 'Protocol', q: 74, color: '#4ade80' },
+                      { name: 'Blurb ×5', q: 33, color: '#f97b7b' },
+                      { name: 'Fact Sheet', q: 100, color: '#a78bfa' },
+                    ].map((a) => (
+                      <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: `1px solid ${a.color}44`, background: `${a.color}0d` }}>
+                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: a.q >= 80 ? 'var(--ok)' : a.q >= 50 ? 'var(--warn)' : 'var(--acc)' }} />
+                        <span style={{ font: '600 11px/1 Archivo', color: a.color }}>{a.name}</span>
+                        <span style={S('font:500 10px/1 var(--mono);color:var(--faint)')}>{a.q}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <div style={S('padding:16px 24px;display:flex;align-items:center;gap:10px')}>
+                    <div style={S('flex:1;font:400 12px/1.5 Archivo;color:var(--faint)')}>All excerpts are approved by default. You only need to act on what you reject.</div>
+                    <Box css="padding:12px 28px;background:var(--ok);color:#fff;font:700 13px/1 Archivo;cursor:pointer;white-space:nowrap" hover="opacity:0.85" onClick={() => this.go('sci-review')}>
+                      Open for Review →
+                    </Box>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* ============ SCI REVIEW ============ */}
+          {v.isSciReview && (() => {
+            const accepted = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter((_, i) => v.acceptedPapers[i] || i < 7);
+            const comments = v.sciReviewComments;
+            const rejectedCount = Object.values(comments).filter(c => c.rejected).length;
+            const selPaper = v.sciSelectedPaper;
+
+            const artifactStatus = ALL_ARTIFACTS.map(a => {
+              const anyRejected = accepted.some((p) => {
+                const key = `${p._idx}-0`;
+                return (comments[key] || {}).rejected && p.artifacts && p.artifacts.includes(a);
+              });
+              const msg = REVIEW_AGENT_MSGS.find(m => m.artifact === a);
+              return { name: a, ok: !anyRejected, color: msg ? msg.color : 'var(--dim)' };
+            });
+
+            const trackGroups = CONTENT_TRACKS.map(tc => ({
+              ...tc,
+              papers: accepted.filter(p => tc.paperTracks.includes(p.track)),
+            })).filter(tc => tc.papers.length > 0);
+
+            return (
+              <div style={{ display: 'flex', height: '100%', overflow: 'hidden', animation: 'fadeUp 0.24s ease both' }}>
+
+                {/* ═══ LEFT: Paper List ═══ */}
+                <div style={{ width: selPaper ? 400 : '100%', flexShrink: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', transition: 'width 0.32s cubic-bezier(0.22,1,0.36,1)', borderRight: selPaper ? '1px solid rgba(13,31,78,0.12)' : 'none', background: 'var(--s1)' }}>
+
+                  {/* Header */}
+                  <div style={{ padding: '18px 22px', borderBottom: '1px solid rgba(13,31,78,0.12)', flexShrink: 0, background: '#fff' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                      <div style={{ flex: 1 }}>
+                        <h2 style={{ font: '800 20px/1 Archivo', letterSpacing: '-0.025em', color: '#0d1f4e', margin: '0 0 6px' }}>Scientific Review</h2>
+                        <div style={{ font: '500 13px/1 Archivo', color: '#1e3460' }}>
+                          {accepted.length} papers under review &middot;&nbsp;
+                          {rejectedCount > 0
+                            ? <span style={{ color: '#1e40af', fontWeight: 700 }}>{rejectedCount} rejected</span>
+                            : <span style={{ color: '#166534', fontWeight: 700 }}>none rejected</span>}
+                        </div>
+                      </div>
+                    </div>
+                    {/* Artifact readiness pills */}
+                    <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
+                      {artifactStatus.map(a => (
+                        <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 11px', border: `1px solid ${a.ok ? 'rgba(22,101,52,0.4)' : 'rgba(30,64,175,0.4)'}`, background: a.ok ? 'rgba(22,101,52,0.08)' : 'rgba(30,64,175,0.06)', borderRadius: 99 }}>
+                          <div style={{ width: 15, height: 15, borderRadius: '50%', background: a.ok ? '#166534' : '#1e40af', display: 'grid', placeItems: 'center', fontSize: 9, color: '#fff', fontWeight: 800 }}>{a.ok ? '✓' : '!'}</div>
+                          <span style={{ font: '600 12.5px/1 Archivo', color: '#0d1f4e' }}>{a.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Scrollable paper list */}
+                  <div style={{ flex: 1, overflowY: 'auto', padding: '20px 22px' }}>
+                    <div style={{ font: '700 11px/1 Archivo', letterSpacing: '0.1em', color: '#1e3460', marginBottom: 16, textTransform: 'uppercase' }}>Papers — click to open full view</div>
+                    {trackGroups.map((tc) => (
+                      <div key={tc.id} style={{ marginBottom: 24 }}>
+                        <div style={{ font: '800 12px/1 Archivo', letterSpacing: '0.08em', color: tc.color, marginBottom: 10, paddingBottom: 8, borderBottom: `2px solid ${tc.color}40`, textTransform: 'uppercase' }}>{tc.label}</div>
+                        {tc.papers.map((paper) => {
+                          const key = `${paper._idx}-0`;
+                          const cmt = comments[key] || {};
+                          const isRejected = cmt.rejected;
+                          const isSel = selPaper && selPaper._idx === paper._idx;
+                          const inlineCount = Object.entries(v.sciInlineComments).filter(([k]) => k.startsWith(`${paper._idx}-`)).flatMap(([, c]) => c).filter(c => !c.resolved).length;
+                          return (
+                            <div key={paper._idx} style={{ border: `1px solid ${isSel ? tc.color + '66' : 'rgba(13,31,78,0.12)'}`, borderLeft: `4px solid ${isRejected ? '#1e40af' : isSel ? tc.color : tc.color}`, background: isSel ? `${tc.color}0d` : '#fff', marginBottom: 10, borderRadius: '0 6px 6px 0', transition: 'all 0.15s', boxShadow: isSel ? `0 2px 12px ${tc.color}18` : 'none' }}>
+                              {/* Clickable title row */}
+                              <div style={{ padding: '14px 16px', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: 10 }}
+                                onClick={() => v.setSciSelectedPaper(isSel ? null : paper)}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ font: '700 15px/1.45 Archivo', color: '#0d1f4e', marginBottom: 5 }}>{paper.title}</div>
+                                  <div style={{ font: '500 12.5px/1 Archivo', color: '#1e3460' }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5, flexShrink: 0 }}>
+                                  {inlineCount > 0 && <span style={{ padding: '3px 8px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.35)', font: '700 10.5px/1.5 Archivo', color: '#92400e', borderRadius: 4 }}>{inlineCount} comment{inlineCount > 1 ? 's' : ''}</span>}
+                                  {isRejected && <span style={{ padding: '3px 8px', background: 'rgba(30,64,175,0.08)', border: '1px solid rgba(30,64,175,0.35)', font: '700 10.5px/1.5 Archivo', color: '#1e40af', borderRadius: 4 }}>REJECTED</span>}
+                                  <span style={{ font: '600 12px/1 Archivo', color: isSel ? tc.color : '#1e3460' }}>{isSel ? '← close' : 'open →'}</span>
+                                </div>
+                              </div>
+                              {/* Excerpt */}
+                              {paper.excerpt && (
+                                <div style={{ padding: '0 16px 12px', borderTop: '1px solid rgba(13,31,78,0.08)' }}>
+                                  <div style={{ paddingTop: 9, font: '400 13px/1.65 Archivo', color: '#1e3460', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>"{paper.excerpt}"</div>
+                                </div>
+                              )}
+                              {/* Reject / comment row */}
+                              <div style={{ padding: '8px 16px 12px', display: 'flex', gap: 8, alignItems: 'center', borderTop: '1px solid rgba(13,31,78,0.08)' }}>
+                                <input
+                                  placeholder={isRejected ? 'Rejection reason (required)…' : 'Optional comment…'}
+                                  value={cmt.text || ''}
+                                  onChange={(e) => v.setSciComment(key, e.target.value)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  style={{ flex: 1, background: '#f4f7fb', border: `1px solid ${isRejected ? 'rgba(30,64,175,0.4)' : 'rgba(13,31,78,0.14)'}`, color: '#0d1f4e', padding: '7px 11px', font: '400 13px/1 Archivo', outline: 'none', borderRadius: 4 }}
+                                />
+                                <Box
+                                  css={`padding:7px 13px;font:700 12px/1 Archivo;cursor:pointer;border:1px solid rgba(30,64,175,0.45);color:${isRejected ? '#fff' : '#1e40af'};background:${isRejected ? '#1e40af' : 'transparent'};white-space:nowrap;border-radius:4px`}
+                                  hover="opacity:0.82"
+                                  onClick={(e) => { e.stopPropagation(); v.toggleSciReject(key); }}>
+                                  {isRejected ? '✕ Rejected' : '✕ Reject'}
+                                </Box>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+
+                    {/* Final CTA */}
+                    <div style={{ marginTop: 16, paddingTop: 18, borderTop: '2px solid rgba(13,31,78,0.1)', display: 'flex', gap: 9 }}>
+                      <Box css="flex:1;padding:13px 0;text-align:center;font:600 13px/1 Archivo;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="background:var(--s2);color:var(--ink)">&#x2193; Download report</Box>
+                      <Box css="flex:2;padding:13px 0;text-align:center;font:700 13.5px/1 Archivo;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.87" onClick={v.sciApproveAll}>
+                        {rejectedCount > 0 ? `Send back · ${rejectedCount} rejection${rejectedCount > 1 ? 's' : ''} →` : 'Approve & finalise →'}
+                      </Box>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ═══ RIGHT: Paper Reader (stable module-level component) ═══ */}
+                {selPaper && (
+                  <SciPaperReader
+                    key={selPaper._idx}
+                    paper={selPaper}
+                    sciInlineComments={v.sciInlineComments}
+                    sciCommentDraft={v.sciCommentDraft}
+                    setSciSelectedPaper={v.setSciSelectedPaper}
+                    setSciCommentDraft={v.setSciCommentDraft}
+                    setSciCommentText={v.setSciCommentText}
+                    submitSciComment={v.submitSciComment}
+                    cancelSciComment={v.cancelSciComment}
+                    resolveSciComment={v.resolveSciComment}
+                  />
+                )}
+
+              </div>
+            );
+          })()}
+
         </main>
       </div>
     );
