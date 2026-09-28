@@ -269,6 +269,18 @@ const RESEARCH_PAPERS = [
   { db: 'EMBASE', type: 'RCT', title: 'Renal outcomes with GLP-1 RA in T2D and CKD', journal: 'N Engl J Med · post-hoc analysis', year: 2019, score: 0.82, artifacts: ['Deck', 'Protocol'], track: 'Renal outcomes evidence', designTier: 'Pre-specified post-hoc analysis of SUSTAIN-6', appraisal: 'CONSORT: 19/25 (post-hoc limitation noted)', grade: 'Moderate certainty', citations: '212 citations · 35.3/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,297 · CKD subgroup · post-hoc', relevance: 82, flag: null, excerpt: '"Treatment with semaglutide was associated with a lower rate of new or worsening nephropathy (3.8% vs 6.1%; HR 0.64; 95% CI 0.46–0.88), driven predominantly by a reduction in persistent macroalbuminuria."', excerptSrc: '— Secondary outcomes, p.14' },
 ];
 
+/* ---------- Expanded evidence batch (revealed on "show me more papers") ---------- */
+const EXTRA_PAPERS = [
+  { db: 'PubMed', type: 'RCT', title: 'PIONEER-6: Oral semaglutide and cardiovascular outcomes in T2D', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2019, score: 0.81, artifacts: ['Deck', 'Protocol'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 21/25 (good)', grade: 'High certainty', citations: '421 citations · 70.2/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,183 · ITT · 15.9 mo', relevance: 81, flag: null, excerpt: '"The rate of MACE was lower with oral semaglutide than with placebo, confirming cardiovascular non-inferiority (HR 0.79; 95% CI 0.57–1.11; P<0.001 for noninferiority). The oral formulation achieved equivalent CV safety to injectable GLP-1 RA."', excerptSrc: '— Primary outcome, p.7' },
+  { db: 'EMBASE', type: 'RCT', title: 'STEP-2: Semaglutide 2.4 mg in adults with obesity and type 2 diabetes', journal: 'Lancet · MEDLINE-indexed, high impact', year: 2021, score: 0.84, artifacts: ['Deck', 'Blog'], track: 'Real-world outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 23/25 (excellent)', grade: 'High certainty', citations: '318 citations · 63.6/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=1,210 · ITT · 68 wks', relevance: 84, flag: null, excerpt: '"Participants receiving semaglutide 2.4 mg had a mean weight change of −9.6% versus −3.4% for placebo at 68 weeks. 69% achieved ≥5% weight loss with semaglutide versus 28% with placebo (OR 4.88; 95% CI 3.58–6.64)."', excerptSrc: '— Weight outcomes, p.6' },
+  { db: 'PubMed', type: 'Real-World', title: 'GLP-1 RA treatment persistence in routine T2D care — multicentre registry', journal: 'Diabetes Obes Metab · MEDLINE-indexed', year: 2023, score: 0.76, artifacts: ['Deck', 'Protocol', 'Blog'], track: 'Real-world outcomes evidence', designTier: 'Prospective registry · 12 centres', appraisal: 'STROBE: 19/22 (good)', grade: 'Moderate certainty', citations: '28 citations · 9.3/yr', funding: 'Independent · public-health grant', statRigor: 'N=12,400 · 24 mo follow-up', relevance: 76, flag: null, excerpt: '"At 24 months, 58.4% of patients initiated on a GLP-1 RA remained on therapy versus 41.2% on DPP-4 inhibitors. Persistence was highest for semaglutide once-weekly (63.7%) and correlated positively with early HbA1c response at 3 months."', excerptSrc: '— Persistence analysis, p.4' },
+  { db: 'Cochrane', type: 'Systematic Review', title: 'GLP-1 RA versus insulin for glycaemic control in T2D — Cochrane review', journal: 'Cochrane Database Syst Rev · MEDLINE-indexed, high impact', year: 2022, score: 0.80, artifacts: ['Deck', 'Protocol'], track: 'General interventional evidence', designTier: 'Systematic review · 18 RCTs', appraisal: 'AMSTAR-2: 14/16 (high confidence)', grade: 'High certainty', citations: '66 citations · 22/yr', funding: 'Independent — Cochrane collaboration', statRigor: 'Pooled N=8,240, I²=22%', relevance: 80, flag: null, excerpt: '"GLP-1 RAs produced comparable HbA1c reductions to basal insulin (MD −0.08%; 95% CI −0.22 to 0.06) with significantly greater body weight reduction (MD −3.7 kg) and lower hypoglycaemia risk (RR 0.31; 95% CI 0.23–0.42)."', excerptSrc: '— Summary of findings, p.9' },
+  { db: 'ADA Guidelines', type: 'Guideline', title: 'Obesity management for the treatment of type 2 diabetes — ADA position statement', journal: 'Diabetes Care · ADA position statement', year: 2023, score: 0.77, artifacts: ['Deck', 'Blog'], track: 'Clinical practice guideline', designTier: 'Expert consensus · ADA position statement', appraisal: 'AGREE II: A-rated', grade: 'Grade A — Strong recommendation', citations: '140 citations · 46.7/yr', funding: 'ADA · public-health grant', statRigor: 'N/A · evidence synthesis', relevance: 77, flag: null, excerpt: '"For adults with T2D and BMI ≥27 kg/m², anti-obesity medications including GLP-1 receptor agonists are recommended as adjunct to lifestyle modification. Agents with demonstrated cardiovascular benefit should be preferred in patients with established ASCVD or high CV risk."', excerptSrc: '— Recommendation 3.2, p.S108' },
+  { db: 'EMBASE', type: 'Meta-Analysis', title: 'Patient-reported outcomes with GLP-1 RA therapy — synthesis of 22 RCTs', journal: 'BMJ Open · MEDLINE-indexed', year: 2024, score: 0.73, artifacts: ['Deck', 'Blog'], track: 'General interventional evidence', designTier: 'Meta-analysis · 22 RCTs, PRO endpoints', appraisal: 'AMSTAR-2: 12/16 (moderate confidence)', grade: 'Moderate certainty', citations: '19 citations · 19/yr', funding: 'Independent · academic consortium', statRigor: 'Pooled N=24,800, I²=31%', relevance: 73, flag: null, excerpt: '"GLP-1 RA therapy was associated with significant improvements in disease-specific quality of life (SMD 0.38; 95% CI 0.24–0.52) and treatment satisfaction (SMD 0.41; 95% CI 0.29–0.53), with once-weekly formulations showing superior adherence-related PRO scores versus daily injectables."', excerptSrc: '— Patient outcomes synthesis, p.7' },
+  { db: 'PubMed', type: 'RCT', title: 'SCALE: Liraglutide 3.0 mg for sustained weight management in obesity', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2015, score: 0.71, artifacts: ['Deck'], track: 'Real-world outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 20/25 (good)', grade: 'High certainty', citations: '1,840 citations · 183.4/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,731 · ITT · 56 wks', relevance: 71, flag: null, excerpt: '"63.2% of participants receiving liraglutide 3.0 mg lost ≥5% of body weight at 56 weeks versus 27.1% on placebo (OR 4.8; 95% CI 4.1–5.6). Mean weight loss was 8.0 kg with liraglutide versus 2.6 kg with placebo."', excerptSrc: '— Primary endpoint, p.8' },
+  { db: 'NICE', type: 'Real-World', title: 'Cost-effectiveness of semaglutide in T2D with high cardiovascular risk — NICE HTA', journal: 'NICE Health Technology Assessment · UK HTA', year: 2024, score: 0.75, artifacts: ['Protocol', 'Facts'], track: 'Clinical practice guideline', designTier: 'Health technology assessment · Markov modelling', appraisal: 'AGREE II: A-rated', grade: 'Grade A — NICE evidence review', citations: '31 citations · 31/yr', funding: 'NICE · UK government funded', statRigor: 'N/A · lifetime horizon Markov model', relevance: 75, flag: null, excerpt: '"Semaglutide 0.5 mg and 1.0 mg once-weekly were cost-effective versus standard of care for patients with T2D and established cardiovascular disease (ICER £18,400/QALY, below the £20,000–30,000 NICE threshold), driven primarily by MACE reduction and hospitalisation avoidance."', excerptSrc: '— Economic analysis, p.14' },
+];
+
 const RESEARCH_DBS = ['PubMed', 'EMBASE', 'ADA / EASD Guidelines', 'NICE / SIGN', 'Cochrane Library', 'IDF Atlas'];
 
 const CONTENT_TRACKS = [
@@ -653,6 +665,43 @@ const LIGHT_TOKENS = {
   '--rule2': 'rgba(13,31,78,0.2)', '--acc': '#1e40af', '--ok': '#166534', '--warn': '#92400e',
 };
 
+/* ---------- evidence helpers ---------- */
+
+function gradeLetterFromPaper(p) {
+  const g = p.grade.toLowerCase();
+  if (g.startsWith('high') || g.includes('grade a')) return 'A';
+  if (g.startsWith('moderate') || g.includes('grade b')) return 'B';
+  return 'C';
+}
+
+function evidenceSortFn(sortBy, sortDir) {
+  const dir = sortDir === 'desc' ? -1 : 1;
+  return (a, b) => {
+    switch (sortBy) {
+      case 'composite': return dir * (a.score - b.score);
+      case 'relevance':  return dir * (a.relevance - b.relevance);
+      case 'year':       return dir * (a.year - b.year);
+      case 'title':      return dir * a.title.localeCompare(b.title);
+      case 'citations': {
+        const nA = parseInt((a.citations.match(/^([\d,]+)/) || ['','0'])[1].replace(/,/g, ''));
+        const nB = parseInt((b.citations.match(/^([\d,]+)/) || ['','0'])[1].replace(/,/g, ''));
+        return dir * (nA - nB);
+      }
+      case 'grade': {
+        const order = { A: 0, B: 1, C: 2 };
+        return dir * ((order[gradeLetterFromPaper(a)] || 2) - (order[gradeLetterFromPaper(b)] || 2));
+      }
+      case 'funding': return dir * (a.funding.toLowerCase().includes('independent') ? -1 : 1);
+      case 'statRigor': {
+        const nA = parseInt(((a.statRigor.match(/N=([\d,]+)/) || ['','0'])[1]).replace(/,/g, ''));
+        const nB = parseInt(((b.statRigor.match(/N=([\d,]+)/) || ['','0'])[1]).replace(/,/g, ''));
+        return dir * (nA - nB);
+      }
+      default: return 0;
+    }
+  };
+}
+
 /* ---------- component ---------- */
 
 export default class MedFactory extends React.Component {
@@ -723,9 +772,21 @@ export default class MedFactory extends React.Component {
       reviewed: 12,
       diff: null,
       researchN: 0,
+      moreResearchActive: false,
+      moreResearchN: 0,
+      moreResearchDone: false,
       researchSourcesOpen: false,
       researchSrcExpanded: {},
       researchFilter: 'All',
+      trackFilter: 'All',
+      gradeFilter: [],
+      artifactFilter: 'All',
+      fundingFilter: 'All',
+      sortBy: 'composite',
+      sortDir: 'desc',
+      evidenceView: 'grid',
+      sortDropdownOpen: false,
+      chatCollapsed: false,
       acceptedPapers: {},
       excerptOpen: {},
       acceptedDrawerOpen: false,
@@ -942,9 +1003,26 @@ export default class MedFactory extends React.Component {
   };
 
   sendIntelMessage = () => {
-    const { projectInput, projectThreads, activeThreadId } = this.state;
+    const { projectInput, projectThreads, activeThreadId, moreResearchDone, moreResearchActive } = this.state;
     if (!projectInput.trim()) return;
     const userMsg = { from: 'user', text: projectInput.trim(), time: 'Just now' };
+
+    // Detect "show me more papers" intent
+    const wantsMore = /more paper|find more|show more|expand.*search|additional paper|search more|get more|more evidence/i.test(projectInput.trim());
+    if (wantsMore && !moreResearchDone && !moreResearchActive) {
+      const agentReply = { from: 'agent', text: `Running an expanded search across **Cochrane Library**, **NICE HTA database**, and supplementary PubMed queries for additional evidence on this topic.\n\nThis will take a moment — you'll see the new papers appear in the Evidence Review tab once the search is complete.`, time: 'Just now' };
+      this.setState((st) => ({
+        projectThreads: st.projectThreads.map((t) =>
+          t.id === activeThreadId
+            ? { ...t, messages: [...t.messages, userMsg, agentReply] }
+            : t
+        ),
+        projectInput: '',
+      }));
+      setTimeout(() => this.runMoreResearch(), 800);
+      return;
+    }
+
     const thread = projectThreads.find((t) => t.id === activeThreadId);
     if (!thread) return;
     const msgCount = thread.messages.filter((m) => m.from === 'user').length;
@@ -1187,6 +1265,31 @@ export default class MedFactory extends React.Component {
     }, 720);
   }
 
+  runMoreResearch = () => {
+    const threadId = this.state.activeThreadId;
+    this.setState({ moreResearchActive: true, moreResearchN: 0 });
+    const max = EXTRA_PAPERS.length + 4;
+    let n = 0;
+    const interval = setInterval(() => {
+      n++;
+      if (n >= max) {
+        clearInterval(interval);
+        this.setState({ moreResearchN: n, moreResearchActive: false, moreResearchDone: true });
+        setTimeout(() => {
+          this.setState((st) => ({
+            projectThreads: st.projectThreads.map((t) =>
+              t.id === threadId
+                ? { ...t, messages: [...t.messages, { from: 'agent', text: `Expanded search complete — **${EXTRA_PAPERS.length} additional papers** retrieved from Cochrane, NICE HTA, and supplementary PubMed queries.\n\nAll papers have been added to your **Evidence Review** tab. Total evidence base: **${RESEARCH_PAPERS.length + EXTRA_PAPERS.length} papers** across 8 sources.`, time: 'Just now' }] }
+                : t
+            ),
+          }));
+        }, 600);
+      } else {
+        this.setState({ moreResearchN: n });
+      }
+    }, 750);
+  };
+
   curBlocks() {
     const n = this.state.slides[this.state.slideIdx].n;
     return this.state.blocks || BLOCKS[n] || BLOCKS.DEFAULT;
@@ -1380,12 +1483,49 @@ export default class MedFactory extends React.Component {
       dirLabel: this.dirOf() === 'light' ? 'LIGHT' : 'DARK',
       toggleDir: () => this.setState({ dir: this.dirOf() === 'light' ? 'dark' : 'light' }),
       researchN: st.researchN,
+      moreResearchActive: st.moreResearchActive,
+      moreResearchN: st.moreResearchN,
+      moreResearchDone: st.moreResearchDone,
       researchSourcesOpen: st.researchSourcesOpen,
       toggleResearchSources: () => this.setState((s) => ({ researchSourcesOpen: !s.researchSourcesOpen })),
       researchSrcExpanded: st.researchSrcExpanded,
       toggleSrcExpanded: (i) => this.setState((s) => ({ researchSrcExpanded: { ...s.researchSrcExpanded, [i]: !s.researchSrcExpanded[i] } })),
       researchFilter: st.researchFilter,
       setResearchFilter: (f) => this.setState({ researchFilter: f }),
+      trackFilter: st.trackFilter,
+      setTrackFilter: (f) => this.setState({ trackFilter: f, sortDropdownOpen: false }),
+      gradeFilter: st.gradeFilter,
+      toggleGradeFilter: (g) => this.setState((s) => ({
+        gradeFilter: s.gradeFilter.includes(g) ? s.gradeFilter.filter((x) => x !== g) : [...s.gradeFilter, g],
+      })),
+      artifactFilter: st.artifactFilter,
+      setArtifactFilter: (f) => this.setState({ artifactFilter: f }),
+      fundingFilter: st.fundingFilter,
+      setFundingFilter: (f) => this.setState({ fundingFilter: f }),
+      sortBy: st.sortBy,
+      setSortBy: (sb) => this.setState({ sortBy: sb, sortDropdownOpen: false }),
+      sortDir: st.sortDir,
+      toggleSortDir: () => this.setState((s) => ({ sortDir: s.sortDir === 'desc' ? 'asc' : 'desc' })),
+      evidenceView: st.evidenceView,
+      setEvidenceView: (vw) => this.setState({ evidenceView: vw }),
+      sortDropdownOpen: st.sortDropdownOpen,
+      toggleSortDropdown: () => this.setState((s) => ({ sortDropdownOpen: !s.sortDropdownOpen })),
+      clearEvidenceFilters: () => this.setState({
+        trackFilter: 'All', gradeFilter: [], artifactFilter: 'All',
+        fundingFilter: 'All', sortBy: 'composite', sortDir: 'desc', sortDropdownOpen: false,
+      }),
+      quickAccept: (preset) => this.setState((s) => {
+        const acc = { ...s.acceptedPapers };
+        RESEARCH_PAPERS.forEach((p, i) => {
+          if (preset === 'grade-ab' && (gradeLetterFromPaper(p) === 'A' || gradeLetterFromPaper(p) === 'B')) acc[i] = true;
+          if (preset === 'independent' && p.funding.toLowerCase().includes('independent')) acc[i] = true;
+          if (preset === 'relevance80' && p.relevance >= 80) acc[i] = true;
+          if (preset === 'journal' && (p.journal.toLowerCase().includes('high impact') || p.journal.toLowerCase().includes('medline'))) acc[i] = true;
+        });
+        return { acceptedPapers: acc };
+      }),
+      chatCollapsed: st.chatCollapsed,
+      setChatCollapsed: (b) => this.setState({ chatCollapsed: b }),
       acceptedPapers: st.acceptedPapers,
       acceptedDrawerOpen: st.acceptedDrawerOpen,
       toggleAcceptedDrawer: () => this.setState((s) => ({ acceptedDrawerOpen: !s.acceptedDrawerOpen })),
@@ -2257,11 +2397,8 @@ export default class MedFactory extends React.Component {
               );
             };
 
-            return (
-              <div style={S('display:flex;height:100%;overflow:hidden')}>
-
-                {/* ============ LEFT: Brand Intelligence Chat ============ */}
-                <div style={S('width:48%;flex:none;border-right:2px solid var(--rule2);display:flex;flex-direction:column;overflow:hidden;position:relative')}>
+            const chatPanelJSX = (
+              <div style={S('height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative')}>
 
                   {/* Running Research banner */}
                   <div style={S(`display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--rule);flex:none;background:${isDone ? 'rgba(22,101,52,0.08)' : 'rgba(30,64,175,0.06)'}`)}>
@@ -2273,6 +2410,14 @@ export default class MedFactory extends React.Component {
                     {!isDone && (
                       <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{pct}%</div>
                     )}
+                    <Box
+                      css={`${isDone ? 'margin-left:auto;' : ''}flex-shrink:0;padding:3px 9px;font:600 9px/1 Archivo;letter-spacing:0.1em;color:var(--faint);cursor:pointer;border:1px solid var(--rule);display:flex;align-items:center;gap:5px`}
+                      hover="color:var(--ink);border-color:var(--rule2);background:var(--s2)"
+                      onClick={() => this.setState({ chatCollapsed: true })}
+                    >
+                      <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M5 4L2 1.5V6.5L5 4z"/><rect x="5.5" y="1" width="1" height="6"/></svg>
+                      HIDE
+                    </Box>
                   </div>
 
                   {/* Thread header */}
@@ -2329,7 +2474,28 @@ export default class MedFactory extends React.Component {
                           <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--ok);margin-bottom:7px')}>RESEARCH AGENT · COMPLETE</div>
                           <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--ok);padding:13px 15px;font-size:12.5px;line-height:1.6;color:var(--dim)')}>
                             Research complete — <strong style={S('color:var(--ink)')}>12 papers retrieved</strong> across 6 databases. Evidence is indexed and ready for content generation.<br /><br />
-                            While you wait, share any clinical context below — it will sharpen the topic options on the next screen.
+                            While you wait, share any clinical context below — or type <strong style={S('color:var(--ink)')}>"show me more papers"</strong> to expand the search.
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* More research thinking bubble */}
+                    {v.moreResearchActive && (
+                      <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Archivo;background:var(--acc);color:#fff')}>AI</div>
+                        <div style={S('max-width:85%')}>
+                          <div style={S('font:600 9.5px/1 Archivo;letter-spacing:0.12em;color:var(--acc);margin-bottom:7px')}>RESEARCH AGENT · EXPANDING</div>
+                          <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:13px 15px')}>
+                            <div style={S('font-size:12px;color:var(--dim);margin-bottom:10px;line-height:1.5')}>
+                              {['Querying Cochrane Library…', 'Scanning NICE HTA database…', 'Deep-searching supplementary PubMed…', 'Extracting and scoring new evidence…', 'Indexing additional papers…'][Math.min(Math.floor(v.moreResearchN / 2), 4)]}
+                            </div>
+                            <div style={S('display:flex;gap:5px;align-items:center')}>
+                              {[0, 1, 2].map((d) => (
+                                <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
+                              ))}
+                              <span style={S('font:600 10px/1 Archivo;letter-spacing:0.1em;color:var(--faint);margin-left:8px')}>{v.moreResearchN} / {EXTRA_PAPERS.length + 4}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2427,10 +2593,10 @@ export default class MedFactory extends React.Component {
                       >Send</Box>
                     </div>
                   </div>
-                </div>
-
-                {/* ============ RIGHT: Research Panel ============ */}
-                <div style={{ ...S('flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:var(--s1)'), animation: 'slideInRight 0.55s cubic-bezier(0.22,1,0.36,1) both', animationDelay: '0.08s' }}>
+              </div>
+            );
+            const researchPanelJSX = (
+              <div style={S('height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--s1)')}>
 
                   {isDone ? (
                     /* ===== DONE STATE: Card Grid View ===== */
@@ -2440,7 +2606,10 @@ export default class MedFactory extends React.Component {
                       <div style={S('padding:13px 18px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:10px;flex:none;background:var(--bg)')}>
                         <span style={S('width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none')} />
                         <div style={S('font:700 12px/1 Archivo;letter-spacing:-0.01em')}>Research Papers</div>
-                        <span style={S('font:600 10px/1 var(--mono);color:var(--faint)')}>{RESEARCH_PAPERS.length} sources</span>
+                        <span style={S('font:600 10px/1 var(--mono);color:var(--faint)')}>{RESEARCH_PAPERS.length + (v.moreResearchDone ? EXTRA_PAPERS.length : 0)} sources</span>
+                        {v.moreResearchDone && (
+                          <span style={S('padding:2px 7px;font:700 8.5px/1 Archivo;letter-spacing:0.1em;color:var(--ok);border:1px solid var(--ok);background:rgba(22,101,52,0.07)')}>+{EXTRA_PAPERS.length} EXPANDED</span>
+                        )}
                         {/* Sources toggle */}
                         <Box
                           css="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--rule2);cursor:pointer;font:600 10.5px/1 Archivo;color:var(--dim)"
@@ -2506,10 +2675,13 @@ export default class MedFactory extends React.Component {
                                         {/* Journal */}
                                         <div style={{ font: '400 12px/1.3 Archivo', color: '#4a6896' }}>{p.journal}</div>
                                       </div>
-                                      {/* Score */}
-                                      <div style={{ flexShrink: 0, textAlign: 'right' }}>
-                                        <div style={{ font: '800 17px/1 Archivo', color: '#0d1f4e', letterSpacing: '-0.02em' }}>{p.score.toFixed(2)}</div>
-                                        <div style={{ font: '700 8.5px/1 Archivo', color: '#4a6896', letterSpacing: '0.1em', marginTop: 2 }}>REL</div>
+                                      {/* Relevance */}
+                                      <div style={{ flexShrink: 0, width: 64, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, paddingTop: 2 }}>
+                                        <span style={{ font: '700 12px/1 var(--mono)', color: p.relevance >= 80 ? '#166534' : p.relevance >= 60 ? '#92400e' : '#1e40af' }}>{p.relevance}/100</span>
+                                        <div style={{ width: 64, height: 4, background: 'rgba(13,31,78,0.1)', overflow: 'hidden' }}>
+                                          <div style={{ width: `${p.relevance}%`, height: '100%', background: p.relevance >= 80 ? '#166534' : p.relevance >= 60 ? '#92400e' : '#1e40af' }} />
+                                        </div>
+                                        <span style={{ font: '700 8px/1 Archivo', letterSpacing: '0.12em', color: '#4a6896' }}>RELEVANCE</span>
                                       </div>
                                     </div>
 
@@ -2550,106 +2722,427 @@ export default class MedFactory extends React.Component {
                         );
                       })()}
 
-                      {/* Filter chips */}
-                      <div style={S('padding:10px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:6px;flex:none;flex-wrap:wrap;background:var(--bg)')}>
-                        {['All', 'RCT', 'Guideline', 'Meta-Analysis', 'Systematic Review', 'Real-World', 'Registry'].map((f) => (
-                          <Box
-                            key={f}
-                            css={`padding:4px 10px;font:600 10px/1 Archivo;letter-spacing:0.08em;cursor:pointer;border:1px solid ${v.researchFilter === f ? 'var(--acc)' : 'var(--rule)'};background:${v.researchFilter === f ? 'rgba(30,64,175,0.1)' : 'transparent'};color:${v.researchFilter === f ? 'var(--acc)' : 'var(--faint)'}`}
-                            hover={v.researchFilter !== f ? 'border-color:var(--rule2);color:var(--dim)' : ''}
-                            onClick={() => v.setResearchFilter(f)}
-                          >{f}</Box>
-                        ))}
-                      </div>
+                      {/* ===== MORE-RESEARCH LOADING STATE ===== */}
+                      {v.moreResearchActive && (() => {
+                        const morePct = Math.round((v.moreResearchN / (EXTRA_PAPERS.length + 4)) * 100);
+                        const visibleExtra = Math.max(0, v.moreResearchN - 3);
+                        const EXTRA_DBS = ['Cochrane (extended)', 'NICE HTA', 'Supplementary PubMed'];
+                        const thinkLabel = ['Scanning additional sources…', 'Retrieving new papers…', 'Scoring relevance…', 'Cross-referencing evidence…', 'Indexing batch 2…'][Math.min(Math.floor(v.moreResearchN / 2.5), 4)];
+                        return (
+                          <div style={S('flex:1;display:flex;flex-direction:column;overflow:hidden;animation:rise 0.25s ease')}>
+                            {/* Progress header */}
+                            <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule2);flex:none;background:rgba(30,64,175,0.04)')}>
+                              <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:8px')}>
+                                <div style={S('width:9px;height:9px;border-radius:50%;flex:none;background:var(--acc);animation:puls 1.1s infinite')} />
+                                <span style={S('font:700 9.5px/1 Archivo;letter-spacing:0.15em;color:var(--acc)')}>EXPANDING SEARCH · BATCH 2</span>
+                                <span style={S('margin-left:auto;font:700 11px/1 var(--mono);color:var(--faint)')}>{morePct}%</span>
+                              </div>
+                              <div style={S('height:3px;background:var(--rule);overflow:hidden')}>
+                                <div style={{ height: '100%', background: 'var(--acc)', width: `${morePct}%`, transition: 'width 0.6s ease' }} />
+                              </div>
+                            </div>
 
-                      {/* Card list */}
-                      <div style={S('flex:1;overflow-y:auto;padding:14px 16px')}>
-                        <div style={S('display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:start')}>
-                          {RESEARCH_PAPERS.filter((p) => v.researchFilter === 'All' || p.type === v.researchFilter).map((p, i) => {
-                            const tc = typeColor(p.type);
-                            const accepted = v.acceptedPapers[i];
-                            const excOpen = v.excerptOpen[i];
-                            return (
-                              <div key={i} style={{ ...S(`background:var(--bg);border:1px solid ${accepted ? 'var(--ok)' : 'var(--rule)'};border-left:3px solid ${tc};display:flex;flex-direction:column`), animation: `cardIn 0.32s ease both`, animationDelay: `${i * 0.04}s` }}>
-
-                                {/* ARTIFACTS row */}
-                                <div style={S('padding:10px 14px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap')}>
-                                  <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>ARTIFACTS</span>
-                                  {p.artifacts.map((a) => (
-                                    <span key={a} style={S('padding:2px 8px;font:600 9.5px/1 Archivo;border:1px solid var(--rule2);color:var(--dim)')}>{a}</span>
-                                  ))}
-                                </div>
-
-                                {/* TRACK */}
-                                <div style={S('padding:5px 14px 0;display:flex;align-items:center;gap:6px')}>
-                                  <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>TRACK</span>
-                                  <span style={S(`padding:2px 8px;font:600 9.5px/1 Archivo;border:1px solid ${tc};color:${tc}`)}>{p.track}</span>
-                                </div>
-
-                                {/* Title */}
-                                <div style={S('padding:10px 14px 0;font:700 13px/1.4 Archivo;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
-
-                                {/* Metadata grid */}
-                                <div style={S('padding:10px 14px;display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;align-items:baseline')}>
-                                  {[
-                                    ['Design tier', p.designTier],
-                                    ['Appraisal score', p.appraisal],
-                                    ['GRADE certainty', p.grade],
-                                    ['Journal', p.journal.split('·')[0].trim() + (p.journal.includes('·') ? ' · ' + p.journal.split('·')[1].trim() : '')],
-                                    ['Citations', p.citations],
-                                    ['Funding / COI', p.funding],
-                                    ['Stat. rigor', p.statRigor],
-                                    ['Relevance', `${p.relevance}/100`],
-                                  ].map(([label, val]) => (
-                                    <React.Fragment key={label}>
-                                      <div style={S('font:500 10.5px/1.5 Archivo;color:var(--faint);white-space:nowrap')}>{label}</div>
-                                      <div style={S('font:600 10.5px/1.5 Archivo;color:var(--dim);text-align:right')}>{val}</div>
-                                    </React.Fragment>
-                                  ))}
-                                </div>
-
-                                {/* Flag warning */}
-                                {p.flag && (
-                                  <div style={S('margin:0 14px 10px;padding:7px 10px;border:1px solid var(--acc);background:rgba(30,64,175,0.07);font-size:10.5px;color:var(--acc);line-height:1.5')}>
-                                    ⚠ {p.flag}
-                                  </div>
-                                )}
-
-                                {/* Excerpt toggle */}
-                                <Box
-                                  css={`margin:0 14px 0;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:${excOpen ? 'var(--s1)' : 'transparent'};border:1px solid var(--rule)`}
-                                  hover="background:var(--s1)"
-                                  onClick={() => v.toggleExcerpt(i)}
-                                >
-                                  <span style={S('font:700 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--dim)')}>Excerpt</span>
-                                  <span style={S('font-size:10px;color:var(--faint)')}>{excOpen ? '▲' : '▼'}</span>
-                                </Box>
-                                {excOpen && (
-                                  <div style={S('margin:0 14px;padding:10px 12px;background:var(--s1);border:1px solid var(--rule);border-top:none;animation:rise 0.18s ease')}>
-                                    <div style={S('font-size:11px;color:var(--dim);line-height:1.7;font-style:italic')}>{p.excerpt}</div>
-                                    <div style={S('font-size:10px;color:var(--faint);margin-top:6px')}>{p.excerptSrc}</div>
-                                  </div>
-                                )}
-
-                                {/* Footer */}
-                                <div style={S('padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:10px')}>
-                                  {p.artifacts.map((a) => (
-                                    <span key={a} style={S('padding:2px 8px;font:600 9px/1 Archivo;border:1px solid var(--rule2);color:var(--faint)')}>{a}</span>
-                                  ))}
-                                  <span style={S(`padding:2px 8px;font:600 9px/1 Archivo;border:1px solid ${tc};color:${tc}`)}>{p.track.split(' ')[0]}</span>
-                                  <Box
-                                    css={`margin-left:auto;padding:7px 14px;font:700 10.5px/1 Archivo;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok)`}
-                                    hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
-                                    onClick={() => v.toggleAccept(i)}
-                                  >
-                                    {accepted ? '✓ Accepted' : 'Accept paper'}
-                                  </Box>
+                            {/* Feed */}
+                            <div style={S('flex:1;overflow-y:auto;padding:18px 20px')}>
+                              {/* New DB connections */}
+                              <div style={S('margin-bottom:16px')}>
+                                <div style={S('font:700 9px/1 Archivo;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>ADDITIONAL SOURCES</div>
+                                <div style={S('display:flex;gap:8px;flex-wrap:wrap')}>
+                                  {EXTRA_DBS.map((db, i) => {
+                                    const connected = v.moreResearchN > i;
+                                    return (
+                                      <div key={db} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 11px', border: `1px solid ${connected ? 'var(--ok)' : 'var(--rule)'}`, background: connected ? 'rgba(22,101,52,0.08)' : 'var(--bg)', font: '600 11px/1 Archivo', color: connected ? 'var(--ok)' : 'var(--faint)', animation: connected ? 'rise 0.22s ease' : '' }}>
+                                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: connected ? 'var(--ok)' : 'var(--rule2)', flexShrink: 0 }} />
+                                        {db}
+                                      </div>
+                                    );
+                                  })}
                                 </div>
                               </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+
+                              {/* Status label */}
+                              <div style={S('font:700 9px/1 Archivo;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>
+                                PAPERS FOUND · {visibleExtra} of {EXTRA_PAPERS.length}
+                              </div>
+
+                              {/* Papers appearing one by one */}
+                              {EXTRA_PAPERS.slice(0, visibleExtra).map((p, i) => {
+                                const tc = typeColor(p.type);
+                                const relColor = p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)';
+                                return (
+                                  <div key={i} style={{ background: 'var(--bg)', border: '1px solid rgba(30,64,175,0.2)', borderLeft: '2px solid var(--acc)', padding: '12px 14px', marginBottom: 8, animation: 'cardIn 0.38s cubic-bezier(0.22,1,0.36,1) both' }}>
+                                    <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
+                                      <span style={{ padding: '2px 6px', font: '700 8.5px/1 Archivo', border: `1px solid ${tc}`, color: tc, letterSpacing: '0.09em' }}>{p.type.toUpperCase()}</span>
+                                      <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
+                                      <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
+                                      <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
+                                        <span style={{ font: '700 11px/1 var(--mono)', color: relColor }}>{p.relevance}/100</span>
+                                        <div style={{ width: 48, height: 3, background: 'var(--rule2)', overflow: 'hidden' }}>
+                                          <div style={{ width: `${p.relevance}%`, height: '100%', background: relColor }} />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div style={S('font:700 12.5px/1.35 Archivo;color:var(--ink);letter-spacing:-0.01em;margin-bottom:4px')}>{p.title}</div>
+                                    <div style={S('font:400 11px/1.55 Archivo;color:var(--dim);font-style:italic')}>{p.journal}</div>
+                                  </div>
+                                );
+                              })}
+
+                              {/* Thinking dots while still running */}
+                              {visibleExtra < EXTRA_PAPERS.length && (
+                                <div style={S('display:flex;gap:5px;align-items:center;padding:12px 0')}>
+                                  {[0, 1, 2].map((d) => (
+                                    <div key={d} style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
+                                  ))}
+                                  <span style={S('font:600 10px/1 Archivo;color:var(--faint);margin-left:8px;letter-spacing:0.1em')}>{thinkLabel}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* ===== FILTER / SORT BAR ===== */}
+                      {!v.moreResearchActive && (() => {
+                        // Precompute counts
+                        const artifactCounts = {};
+                        RESEARCH_PAPERS.forEach((p) => p.artifacts.forEach((a) => { artifactCounts[a] = (artifactCounts[a] || 0) + 1; }));
+                        const gradeCounts = { A: 0, B: 0, C: 0, D: 0, F: 0 };
+                        RESEARCH_PAPERS.forEach((p) => { const g = gradeLetterFromPaper(p); if (g in gradeCounts) gradeCounts[g]++; });
+
+                        const SORT_OPTIONS = [
+                          { key: 'composite', label: 'Composite score' },
+                          { key: 'designTier', label: 'Design tier' },
+                          { key: 'appraisal', label: 'Appraisal score' },
+                          { key: 'grade', label: 'GRADE certainty' },
+                          { key: 'journal', label: 'Journal credibility' },
+                          { key: 'citations', label: 'Citation count' },
+                          { key: 'funding', label: 'Funding transparency' },
+                          { key: 'statRigor', label: 'Statistical rigor' },
+                          { key: 'relevance', label: 'Relevance' },
+                          { key: 'year', label: 'Publication year' },
+                          { key: 'title', label: 'Title (A–Z)' },
+                        ];
+                        const sortLabel = (SORT_OPTIONS.find((o) => o.key === v.sortBy) || SORT_OPTIONS[0]).label;
+
+                        // Combine base + extra papers when expanded search is done
+                        const allEvidencePapers = [
+                          ...RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i, _batch: 1 })),
+                          ...(v.moreResearchDone ? EXTRA_PAPERS.map((p, i) => ({ ...p, _idx: RESEARCH_PAPERS.length + i, _batch: 2 })) : []),
+                        ];
+
+                        // Filtered + sorted papers
+                        const filteredPapers = allEvidencePapers
+                          .map((p) => p)
+                          .filter((p) => {
+                            if (v.trackFilter !== 'All') {
+                              const trk = CONTENT_TRACKS.find((t) => t.label === v.trackFilter);
+                              if (!trk || !trk.paperTracks.includes(p.track)) return false;
+                            }
+                            if (v.gradeFilter.length > 0 && !v.gradeFilter.includes(gradeLetterFromPaper(p))) return false;
+                            if (v.artifactFilter !== 'All' && !p.artifacts.includes(v.artifactFilter)) return false;
+                            if (v.fundingFilter === 'Independent' && !p.funding.toLowerCase().includes('independent')) return false;
+                            if (v.fundingFilter === 'Industry' && !p.funding.toLowerCase().includes('industry')) return false;
+                            return true;
+                          })
+                          .sort(evidenceSortFn(v.sortBy, v.sortDir));
+
+                        const isFiltered = v.trackFilter !== 'All' || v.gradeFilter.length > 0 || v.artifactFilter !== 'All' || v.fundingFilter !== 'All' || v.sortBy !== 'composite';
+
+                        return (
+                          <>
+                            {/* Row 1: Track chips + Grid/List toggle */}
+                            <div style={S('padding:10px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:6px;flex:none;flex-wrap:wrap;background:var(--bg)')}>
+                              {[{ label: 'All papers', id: 'All' }, ...CONTENT_TRACKS.map((t) => ({ label: t.label, id: t.label }))].map(({ label, id }) => {
+                                const active = v.trackFilter === id;
+                                return (
+                                  <Box
+                                    key={id}
+                                    css={`padding:4px 10px;font:600 10px/1 Archivo;letter-spacing:0.06em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(30,64,175,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
+                                    hover={!active ? 'border-color:var(--rule2);color:var(--dim)' : ''}
+                                    onClick={() => v.setTrackFilter(id)}
+                                  >{label}</Box>
+                                );
+                              })}
+                              <div style={S('margin-left:auto;display:flex;gap:0;border:1px solid var(--rule);flex-shrink:0')}>
+                                {[['grid', (<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" fill="currentColor" opacity=".9"/><rect x="8" y="1" width="5" height="5" fill="currentColor" opacity=".9"/><rect x="1" y="8" width="5" height="5" fill="currentColor" opacity=".9"/><rect x="8" y="8" width="5" height="5" fill="currentColor" opacity=".9"/></svg>)], ['list', (<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2.5" width="12" height="2" fill="currentColor"/><rect x="1" y="6" width="12" height="2" fill="currentColor"/><rect x="1" y="9.5" width="12" height="2" fill="currentColor"/></svg>)]].map(([mode, icon]) => {
+                                  const active = v.evidenceView === mode;
+                                  return (
+                                    <Box
+                                      key={mode}
+                                      css={`padding:6px 8px;cursor:pointer;display:flex;align-items:center;background:${active ? 'rgba(30,64,175,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
+                                      hover={!active ? 'background:var(--s2);color:var(--dim)' : ''}
+                                      onClick={() => v.setEvidenceView(mode)}
+                                    >{icon}</Box>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Row 2: Grade · Artifact · Funding · Sort · Clear */}
+                            <div style={S('padding:8px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;background:var(--bg);position:relative')}>
+                              <span style={S('font:700 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>GRADE</span>
+                              {['A', 'B', 'C', 'D', 'F'].map((g) => {
+                                const active = v.gradeFilter.includes(g);
+                                const count = gradeCounts[g] || 0;
+                                return (
+                                  <Box
+                                    key={g}
+                                    css={`width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;font:700 10px/1 Archivo;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'var(--acc)' : 'transparent'};color:${active ? '#fff' : count > 0 ? 'var(--dim)' : 'var(--rule2)'}`}
+                                    hover={!active && count > 0 ? 'border-color:var(--acc);color:var(--acc)' : ''}
+                                    onClick={() => count > 0 && v.toggleGradeFilter(g)}
+                                  >{g}</Box>
+                                );
+                              })}
+
+                              <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
+
+                              <span style={S('font:700 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>ARTIFACT</span>
+                              {['All', ...ALL_ARTIFACTS].map((a) => {
+                                const active = v.artifactFilter === a;
+                                const count = a === 'All' ? RESEARCH_PAPERS.length : (artifactCounts[a] || 0);
+                                return (
+                                  <Box
+                                    key={a}
+                                    css={`padding:3px 9px;font:600 10px/1 Archivo;letter-spacing:0.04em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(30,64,175,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
+                                    hover={!active ? 'border-color:var(--rule2);color:var(--dim)' : ''}
+                                    onClick={() => v.setArtifactFilter(a)}
+                                  >{a}{a !== 'All' ? ` (${count})` : ''}</Box>
+                                );
+                              })}
+
+                              <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
+
+                              <span style={S('font:700 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>FUNDING</span>
+                              <select
+                                value={v.fundingFilter}
+                                onChange={(e) => v.setFundingFilter(e.target.value)}
+                                style={{ font: '600 10px/1 Archivo', color: 'var(--dim)', background: 'var(--bg)', border: '1px solid var(--rule)', padding: '4px 6px', cursor: 'pointer', outline: 'none' }}
+                              >
+                                <option value="All">All</option>
+                                <option value="Independent">Independent</option>
+                                <option value="Industry">Industry</option>
+                              </select>
+
+                              <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
+
+                              <span style={S('font:700 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint)')}>SORT BY</span>
+                              <div style={{ position: 'relative' }}>
+                                <Box
+                                  css="padding:4px 8px;font:600 10px/1 Archivo;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:5px"
+                                  hover="border-color:var(--acc);color:var(--acc)"
+                                  onClick={() => v.toggleSortDropdown()}
+                                >
+                                  {sortLabel}
+                                  <svg width="8" height="5" viewBox="0 0 8 5" fill="currentColor"><path d="M0 0l4 5 4-5z"/></svg>
+                                </Box>
+                                {v.sortDropdownOpen && (
+                                  <div style={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, background: 'var(--s1)', border: '1px solid var(--rule2)', zIndex: 20, minWidth: 180, boxShadow: '0 4px 16px rgba(13,31,78,0.12)', animation: 'fadeUp 0.12s ease' }}>
+                                    {SORT_OPTIONS.map((o) => (
+                                      <Box
+                                        key={o.key}
+                                        css={`padding:8px 12px;font:${v.sortBy === o.key ? '700' : '500'} 11px/1 Archivo;cursor:pointer;color:${v.sortBy === o.key ? 'var(--acc)' : 'var(--dim)'};display:flex;align-items:center;gap:8px`}
+                                        hover="background:var(--s2)"
+                                        onClick={() => v.setSortBy(o.key)}
+                                      >
+                                        {v.sortBy === o.key && <span style={{ color: 'var(--acc)', fontSize: 10 }}>✓</span>}
+                                        {v.sortBy !== o.key && <span style={{ width: 10 }} />}
+                                        {o.label}
+                                      </Box>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                              <Box
+                                css="padding:4px 8px;font:600 10px/1 Archivo;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:4px"
+                                hover="border-color:var(--rule2);color:var(--ink)"
+                                onClick={() => v.toggleSortDir()}
+                              >
+                                {v.sortDir === 'desc' ? '↓' : '↑'} {v.sortDir === 'desc' ? 'High to low' : 'Low to high'}
+                              </Box>
+
+                              {isFiltered && (
+                                <Box
+                                  css="margin-left:auto;font:600 10px/1 Archivo;color:var(--faint);cursor:pointer;text-decoration:underline;text-underline-offset:2px"
+                                  hover="color:var(--ink)"
+                                  onClick={() => v.clearEvidenceFilters()}
+                                >Clear filters</Box>
+                              )}
+                            </div>
+
+                            {/* Row 3: Quick accept */}
+                            <div style={S('padding:8px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;background:var(--s2)')}>
+                              <span style={S('font:700 9px/1 Archivo;letter-spacing:0.12em;color:var(--faint);flex-shrink:0')}>QUICK ACCEPT</span>
+                              {[
+                                { key: 'grade-ab', label: 'Grade A & B' },
+                                { key: 'independent', label: 'Independent funding' },
+                                { key: 'relevance80', label: 'Relevance ≥ 80' },
+                                { key: 'journal', label: 'Strong journal credibility' },
+                              ].map(({ key, label }) => (
+                                <Box
+                                  key={key}
+                                  css="padding:4px 11px;font:600 10px/1 Archivo;cursor:pointer;border:1px solid var(--rule2);color:var(--dim);background:var(--s1)"
+                                  hover="border-color:var(--ok);color:var(--ok);background:rgba(22,101,52,0.06)"
+                                  onClick={() => v.quickAccept(key)}
+                                >{label}</Box>
+                              ))}
+                            </div>
+
+                            {/* Card list */}
+                            <div style={S('flex:1;overflow-y:auto;padding:14px 16px')}>
+                              <div style={S('font:600 10px/1 Archivo;color:var(--faint);letter-spacing:0.08em;margin-bottom:12px')}>
+                                SHOWING {filteredPapers.length} {filteredPapers.length === 1 ? 'PAPER' : 'PAPERS'}
+                                {isFiltered && <span style={{ color: 'var(--acc)', marginLeft: 6 }}>· filtered</span>}
+                              </div>
+
+                              {filteredPapers.length === 0 && (
+                                <div style={S('padding:32px;text-align:center;color:var(--faint);font:500 13px/1.6 Archivo;border:1px dashed var(--rule2)')}>
+                                  No papers match the current filters.<br />
+                                  <span style={{ color: 'var(--acc)', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => v.clearEvidenceFilters()}>Clear filters</span>
+                                </div>
+                              )}
+
+                              {v.evidenceView === 'grid' ? (
+                                <div style={S('display:grid;grid-template-columns:repeat(2,1fr);gap:10px;align-items:start')}>
+                                  {filteredPapers.map((p, idx) => {
+                                    const tc = typeColor(p.type);
+                                    const accepted = v.acceptedPapers[p._idx];
+                                    const excOpen = v.excerptOpen[p._idx];
+                                    const isBatch2 = p._batch === 2;
+                                    const cardAnim = isBatch2
+                                      ? { animation: 'batchIn 0.55s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${(p._idx - RESEARCH_PAPERS.length) * 0.08}s` }
+                                      : { animation: 'cardIn 0.32s ease both', animationDelay: `${idx * 0.04}s` };
+                                    return (
+                                      <div key={p._idx} style={{ ...S(`background:var(--bg);border:1px solid ${isBatch2 ? 'rgba(30,64,175,0.3)' : accepted ? 'var(--ok)' : 'var(--rule)'};border-left:3px solid ${isBatch2 ? 'var(--acc)' : accepted ? 'var(--ok)' : tc};display:flex;flex-direction:column`), ...cardAnim }}>
+
+                                        {/* ARTIFACTS row */}
+                                        <div style={S('padding:10px 14px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap')}>
+                                          <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>ARTIFACTS</span>
+                                          {p.artifacts.map((a) => (
+                                            <span key={a} style={S('padding:2px 8px;font:600 9.5px/1 Archivo;border:1px solid var(--rule2);color:var(--dim)')}>{a}</span>
+                                          ))}
+                                          {p._batch === 2 && (
+                                            <span style={{ marginLeft: 'auto', padding: '2px 6px', font: '700 8px/1 Archivo', letterSpacing: '0.1em', color: 'var(--acc)', border: '1px solid var(--acc)', background: 'rgba(30,64,175,0.07)' }}>EXPANDED</span>
+                                          )}
+                                        </div>
+
+                                        {/* TRACK */}
+                                        <div style={S('padding:5px 14px 0;display:flex;align-items:center;gap:6px')}>
+                                          <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>TRACK</span>
+                                          <span style={S(`padding:2px 8px;font:600 9.5px/1 Archivo;border:1px solid ${tc};color:${tc}`)}>{p.track}</span>
+                                        </div>
+
+                                        {/* Title */}
+                                        <div style={S('padding:10px 14px 0;font:700 13px/1.4 Archivo;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
+
+                                        {/* Relevance bar */}
+                                        <div style={S('padding:8px 14px 10px')}>
+                                          <div style={S('display:flex;align-items:center;gap:8px')}>
+                                            <span style={S('font:700 8.5px/1 Archivo;letter-spacing:0.14em;color:var(--faint);flex-shrink:0')}>RELEVANCE</span>
+                                            <div style={S('flex:1;height:4px;background:var(--rule);overflow:hidden')}>
+                                              <div style={{ width: `${p.relevance}%`, height: '100%', background: p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }} />
+                                            </div>
+                                            <span style={{ font: '700 11px/1 var(--mono)', color: p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)', flexShrink: 0 }}>{p.relevance}/100</span>
+                                          </div>
+                                        </div>
+
+                                        {/* Metadata grid */}
+                                        <div style={S('padding:0 14px 10px;display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;align-items:baseline')}>
+                                          {[
+                                            ['Design tier', p.designTier],
+                                            ['Appraisal score', p.appraisal],
+                                            ['GRADE certainty', p.grade],
+                                            ['Journal', p.journal.split('·')[0].trim() + (p.journal.includes('·') ? ' · ' + p.journal.split('·')[1].trim() : '')],
+                                            ['Citations', p.citations],
+                                            ['Funding / COI', p.funding],
+                                            ['Stat. rigor', p.statRigor],
+                                          ].map(([label, val]) => (
+                                            <React.Fragment key={label}>
+                                              <div style={S('font:500 10.5px/1.5 Archivo;color:var(--faint);white-space:nowrap')}>{label}</div>
+                                              <div style={S('font:600 10.5px/1.5 Archivo;color:var(--dim);text-align:right')}>{val}</div>
+                                            </React.Fragment>
+                                          ))}
+                                        </div>
+
+                                        {/* Flag warning */}
+                                        {p.flag && (
+                                          <div style={S('margin:0 14px 10px;padding:7px 10px;border:1px solid var(--acc);background:rgba(30,64,175,0.07);font-size:10.5px;color:var(--acc);line-height:1.5')}>
+                                            ⚠ {p.flag}
+                                          </div>
+                                        )}
+
+                                        {/* Excerpt toggle */}
+                                        <Box
+                                          css={`margin:0 14px 0;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:${excOpen ? 'var(--s1)' : 'transparent'};border:1px solid var(--rule)`}
+                                          hover="background:var(--s1)"
+                                          onClick={() => v.toggleExcerpt(p._idx)}
+                                        >
+                                          <span style={S('font:700 9.5px/1 Archivo;letter-spacing:0.1em;color:var(--dim)')}>Excerpt</span>
+                                          <span style={S('font-size:10px;color:var(--faint)')}>{excOpen ? '▲' : '▼'}</span>
+                                        </Box>
+                                        {excOpen && (
+                                          <div style={S('margin:0 14px;padding:10px 12px;background:var(--s1);border:1px solid var(--rule);border-top:none;animation:rise 0.18s ease')}>
+                                            <div style={S('font-size:11px;color:var(--dim);line-height:1.7;font-style:italic')}>{p.excerpt}</div>
+                                            <div style={S('font-size:10px;color:var(--faint);margin-top:6px')}>{p.excerptSrc}</div>
+                                          </div>
+                                        )}
+
+                                        {/* Footer */}
+                                        <div style={S('padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:10px')}>
+                                          {p.artifacts.map((a) => (
+                                            <span key={a} style={S('padding:2px 8px;font:600 9px/1 Archivo;border:1px solid var(--rule2);color:var(--faint)')}>{a}</span>
+                                          ))}
+                                          <span style={S(`padding:2px 8px;font:600 9px/1 Archivo;border:1px solid ${tc};color:${tc}`)}>{p.track.split(' ')[0]}</span>
+                                          <Box
+                                            css={`margin-left:auto;padding:7px 14px;font:700 10.5px/1 Archivo;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok)`}
+                                            hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
+                                            onClick={() => v.toggleAccept(p._idx)}
+                                          >
+                                            {accepted ? '✓ Accepted' : 'Accept paper'}
+                                          </Box>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                /* List view */
+                                <div style={S('display:flex;flex-direction:column;gap:6px')}>
+                                  {filteredPapers.map((p, idx) => {
+                                    const tc = typeColor(p.type);
+                                    const accepted = v.acceptedPapers[p._idx];
+                                    const relColor = p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)';
+                                    const isBatch2List = p._batch === 2;
+                                    const listAnim = isBatch2List
+                                      ? { animation: 'batchIn 0.5s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${(p._idx - RESEARCH_PAPERS.length) * 0.07}s` }
+                                      : { animation: 'cardIn 0.28s ease both', animationDelay: `${idx * 0.03}s` };
+                                    return (
+                                      <div key={p._idx} style={{ ...S(`background:var(--bg);border:1px solid ${isBatch2List ? 'rgba(30,64,175,0.3)' : accepted ? 'var(--ok)' : 'var(--rule)'};border-left:3px solid ${isBatch2List ? 'var(--acc)' : accepted ? 'var(--ok)' : tc};display:flex;align-items:center;gap:12px;padding:10px 14px`), ...listAnim }}>
+                                        <span style={{ padding: '2px 7px', font: '700 9px/1 Archivo', border: `1px solid ${tc}`, color: tc, flexShrink: 0, letterSpacing: '0.06em' }}>{p.type.toUpperCase()}</span>
+                                        <span style={S('font:600 10px/1 var(--mono);color:var(--faint);flex-shrink:0')}>{p.year}</span>
+                                        <div style={S('font:600 12.5px/1.3 Archivo;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{p.title}</div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                                          <div style={{ width: 72, height: 4, background: 'var(--rule)', overflow: 'hidden' }}>
+                                            <div style={{ width: `${p.relevance}%`, height: '100%', background: relColor }} />
+                                          </div>
+                                          <span style={{ font: '700 10px/1 var(--mono)', color: relColor }}>{p.relevance}/100</span>
+                                        </div>
+                                        <Box
+                                          css={`padding:5px 12px;font:700 10px/1 Archivo;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);flex-shrink:0`}
+                                          hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
+                                          onClick={() => v.toggleAccept(p._idx)}
+                                        >
+                                          {accepted ? '✓' : 'Accept'}
+                                        </Box>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        );
+                      })()}
 
                       {/* ===== STICKY FOOTER ===== */}
                       {(() => {
@@ -2774,13 +3267,54 @@ export default class MedFactory extends React.Component {
                                 <span style={S(`border:1px solid ${typeColor(p.type)};color:${typeColor(p.type)};padding:2px 6px;font:600 8.5px/1 Archivo;letter-spacing:0.09em`)}>{p.type.toUpperCase()}</span>
                                 <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
                                 <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
-                                <span style={S('margin-left:auto;font:700 11px/1 var(--mono);color:var(--acc)')}>{p.score.toFixed(2)} <span style={S('font:500 9px/1 Archivo;color:var(--faint)')}>REL</span></span>
+                                <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
+                                  <span style={{ font: '700 11px/1 var(--mono)', color: p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }}>{p.relevance}/100</span>
+                                  <div style={{ width: 48, height: 3, background: 'var(--rule2)', overflow: 'hidden' }}>
+                                    <div style={{ width: `${p.relevance}%`, height: '100%', background: p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }} />
+                                  </div>
+                                </div>
                               </div>
                               <div style={S('font-weight:700;font-size:12.5px;margin-bottom:5px;line-height:1.3;letter-spacing:-0.01em')}>{p.title}</div>
                               <div style={S('font-size:11px;color:var(--dim);line-height:1.55;font-style:italic;margin-bottom:4px')}>{p.journal}</div>
-                              <div style={S('font-size:11.5px;color:var(--dim);line-height:1.55')}>{p.snippet}</div>
                             </div>
                           ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Expanded batch papers — dramatic reveal after loading */}
+                    {v.moreResearchDone && (
+                      <div key="batch2-sources" style={S('margin-top:20px')}>
+                        {/* Separator banner */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, animation: 'batchBanner 0.5s cubic-bezier(0.22,1,0.36,1) both' }}>
+                          <div style={{ flex: 1, height: 1, background: 'linear-gradient(to right, var(--acc), transparent)' }} />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 12px', background: 'rgba(30,64,175,0.08)', border: '1px solid var(--acc)' }}>
+                            <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'puls 1.4s infinite' }} />
+                            <span style={{ font: '700 9.5px/1 Archivo', letterSpacing: '0.14em', color: 'var(--acc)' }}>BATCH 2 — {EXTRA_PAPERS.length} NEW PAPERS</span>
+                          </div>
+                          <div style={{ flex: 1, height: 1, background: 'linear-gradient(to left, var(--acc), transparent)' }} />
+                        </div>
+                        <div style={S('display:flex;flex-direction:column;gap:8px')}>
+                          {EXTRA_PAPERS.map((p, i) => {
+                            const relColor = p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)';
+                            return (
+                              <div key={i} style={{ background: 'var(--bg)', border: '1px solid rgba(30,64,175,0.25)', borderLeft: '2px solid var(--acc)', padding: '12px 14px', animation: 'batchIn 0.55s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${i * 0.07}s` }}>
+                                <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
+                                  <span style={{ padding: '2px 6px', font: '700 8.5px/1 Archivo', border: `1px solid ${typeColor(p.type)}`, color: typeColor(p.type), letterSpacing: '0.09em' }}>{p.type.toUpperCase()}</span>
+                                  <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
+                                  <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
+                                  <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
+                                    <span style={{ font: '700 11px/1 var(--mono)', color: relColor }}>{p.relevance}/100</span>
+                                    <div style={{ width: 48, height: 3, background: 'var(--rule2)', overflow: 'hidden' }}>
+                                      <div style={{ width: `${p.relevance}%`, height: '100%', background: relColor }} />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div style={S('font-weight:700;font-size:12.5px;margin-bottom:4px;line-height:1.35;letter-spacing:-0.01em')}>{p.title}</div>
+                                <div style={S('font-size:11px;color:var(--dim);line-height:1.55;font-style:italic')}>{p.journal}</div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -2800,7 +3334,33 @@ export default class MedFactory extends React.Component {
                   </div>
                 </div>
               )}
-                </div>
+              </div>
+            );
+            return (
+              <div style={S('height:100%;overflow:hidden;position:relative')}>
+                {v.chatCollapsed ? (
+                  <>
+                    <div style={S('height:100%;display:flex;flex-direction:column;overflow:hidden')}>
+                      {researchPanelJSX}
+                    </div>
+                    <Box
+                      css="position:absolute;right:0;top:50%;transform:translateY(-50%);z-index:10;padding:14px 7px;background:var(--s1);border:1px solid var(--rule2);border-right:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px"
+                      hover="background:var(--s2)"
+                      onClick={() => this.setState({ chatCollapsed: false })}
+                    >
+                      <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor"><path d="M3 4.5L6.5 1.5V7.5L3 4.5z"/></svg>
+                      <span style={{ font: '700 8px/1 Archivo', letterSpacing: '0.12em', color: 'var(--faint)', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>CHAT</span>
+                    </Box>
+                  </>
+                ) : (
+                  <ResizableSplit
+                    left={researchPanelJSX}
+                    right={chatPanelJSX}
+                    defaultLeftPct={60}
+                    minPct={32}
+                    maxPct={82}
+                  />
+                )}
               </div>
             );
           })()}
@@ -3320,10 +3880,10 @@ export default class MedFactory extends React.Component {
                           {/* Score bar */}
                           <div style={S('display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--rule)')}>
                             <span style={{ padding: '2px 8px', font: '700 9px/1 Archivo', border: `1px solid ${tc2(sel.type)}`, color: tc2(sel.type), background: `${tc2(sel.type)}15` }}>{sel.type}</span>
-                            <div style={S('flex:1;height:3px;background:var(--rule);overflow:hidden')}>
-                              <div style={{ width: `${sel.relevance}%`, height: '100%', background: 'var(--ok)' }} />
+                            <div style={S('flex:1;height:4px;background:var(--rule);overflow:hidden')}>
+                              <div style={{ width: `${sel.relevance}%`, height: '100%', background: sel.relevance >= 80 ? 'var(--ok)' : sel.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }} />
                             </div>
-                            <span style={S('font:700 11px/1 var(--mono);color:var(--ok);flex-shrink:0')}>{sel.relevance}/100</span>
+                            <span style={{ font: '700 11px/1 var(--mono)', color: sel.relevance >= 80 ? 'var(--ok)' : sel.relevance >= 60 ? 'var(--warn)' : 'var(--acc)', flexShrink: 0 }}>{sel.relevance}/100</span>
                           </div>
 
                           {/* Title + journal */}
