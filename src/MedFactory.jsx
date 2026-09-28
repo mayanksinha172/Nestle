@@ -2411,12 +2411,12 @@ export default class MedFactory extends React.Component {
                       <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{pct}%</div>
                     )}
                     <Box
-                      css={`${isDone ? 'margin-left:auto;' : ''}flex-shrink:0;padding:3px 9px;font:600 9px/1 Archivo;letter-spacing:0.1em;color:var(--faint);cursor:pointer;border:1px solid var(--rule);display:flex;align-items:center;gap:5px`}
-                      hover="color:var(--ink);border-color:var(--rule2);background:var(--s2)"
+                      css={`${isDone ? 'margin-left:auto;' : ''}flex-shrink:0;padding:5px 12px;font:700 9.5px/1 Archivo;letter-spacing:0.1em;cursor:pointer;border:1.5px solid var(--acc);color:var(--acc);background:rgba(30,64,175,0.07);display:flex;align-items:center;gap:6px`}
+                      hover="background:rgba(30,64,175,0.15);color:var(--acc)"
                       onClick={() => this.setState({ chatCollapsed: true })}
                     >
-                      <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M5 4L2 1.5V6.5L5 4z"/><rect x="5.5" y="1" width="1" height="6"/></svg>
-                      HIDE
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="7,5 4,2 4,8"/><rect x="7.5" y="1.5" width="1.5" height="7"/></svg>
+                      HIDE CHAT
                     </Box>
                   </div>
 
@@ -3343,22 +3343,21 @@ export default class MedFactory extends React.Component {
                     <div style={S('height:100%;display:flex;flex-direction:column;overflow:hidden')}>
                       {researchPanelJSX}
                     </div>
-                    <Box
-                      css="position:absolute;right:0;top:50%;transform:translateY(-50%);z-index:10;padding:14px 7px;background:var(--s1);border:1px solid var(--rule2);border-right:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px"
-                      hover="background:var(--s2)"
+                    <div
+                      style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 10, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'var(--acc)', color: '#fff', padding: '16px 8px', gap: 10, boxShadow: '-3px 0 12px rgba(30,64,175,0.18)' }}
                       onClick={() => this.setState({ chatCollapsed: false })}
                     >
-                      <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor"><path d="M3 4.5L6.5 1.5V7.5L3 4.5z"/></svg>
-                      <span style={{ font: '700 8px/1 Archivo', letterSpacing: '0.12em', color: 'var(--faint)', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>CHAT</span>
-                    </Box>
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="3,5 6,2 6,8"/><rect x="1" y="1.5" width="1.5" height="7"/></svg>
+                      <span style={{ font: '700 9px/1 Archivo', letterSpacing: '0.14em', color: '#fff', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>OPEN CHAT</span>
+                    </div>
                   </>
                 ) : (
                   <ResizableSplit
                     left={researchPanelJSX}
                     right={chatPanelJSX}
-                    defaultLeftPct={60}
+                    defaultLeftPct={70}
                     minPct={32}
-                    maxPct={82}
+                    maxPct={85}
                   />
                 )}
               </div>
