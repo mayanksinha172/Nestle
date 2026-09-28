@@ -3022,7 +3022,10 @@ export default class MedFactory extends React.Component {
                                             <span key={a} style={S('padding:2px 8px;font:600 9.5px/1 Archivo;border:1px solid var(--rule2);color:var(--dim)')}>{a}</span>
                                           ))}
                                           {p._batch === 2 && (
-                                            <span style={{ marginLeft: 'auto', padding: '2px 6px', font: '700 8px/1 Archivo', letterSpacing: '0.1em', color: 'var(--acc)', border: '1px solid var(--acc)', background: 'rgba(30,64,175,0.07)' }}>EXPANDED</span>
+                                            <span style={{ marginLeft: 'auto', padding: '3px 8px', font: '700 8.5px/1 Archivo', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', display: 'flex', alignItems: 'center', gap: 5 }}>
+                                              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#93c5fd', display: 'inline-block', animation: 'puls 1.4s infinite' }} />
+                                              NEW
+                                            </span>
                                           )}
                                         </div>
 
@@ -3119,6 +3122,12 @@ export default class MedFactory extends React.Component {
                                     return (
                                       <div key={p._idx} style={{ ...S(`background:var(--bg);border:1px solid ${isBatch2List ? 'rgba(30,64,175,0.3)' : accepted ? 'var(--ok)' : 'var(--rule)'};border-left:3px solid ${isBatch2List ? 'var(--acc)' : accepted ? 'var(--ok)' : tc};display:flex;align-items:center;gap:12px;padding:10px 14px`), ...listAnim }}>
                                         <span style={{ padding: '2px 7px', font: '700 9px/1 Archivo', border: `1px solid ${tc}`, color: tc, flexShrink: 0, letterSpacing: '0.06em' }}>{p.type.toUpperCase()}</span>
+                                        {isBatch2List && (
+                                          <span style={{ padding: '2px 7px', font: '700 8.5px/1 Archivo', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+                                            <span style={{ width: 4, height: 4, borderRadius: '50%', background: '#93c5fd', display: 'inline-block', animation: 'puls 1.4s infinite' }} />
+                                            NEW
+                                          </span>
+                                        )}
                                         <span style={S('font:600 10px/1 var(--mono);color:var(--faint);flex-shrink:0')}>{p.year}</span>
                                         <div style={S('font:600 12.5px/1.3 Archivo;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{p.title}</div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
