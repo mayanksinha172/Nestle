@@ -1,25 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --bg: #eef1f8;
+  --bg: #ffffff;
   --s1: #ffffff;
-  --s2: #e2e8f4;
-  --ink: #0d1f4e;
-  --dim: #1e3460;
-  --faint: #4a6896;
-  --rule: rgba(13, 31, 78, 0.1);
-  --rule2: rgba(13, 31, 78, 0.2);
-  --acc: #1e40af;
+  --s2: #f0f4fb;
+  --ink: #1a2d6b;
+  --dim: #2d4a8a;
+  --faint: #6878a8;
+  --rule: rgba(26, 45, 107, 0.09);
+  --rule2: rgba(26, 45, 107, 0.18);
+  --acc: #2c52cc;
   --ok: #166534;
   --warn: #92400e;
   --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-html, body { margin: 0; padding: 0; background: #eef1f8; }
+html, body { margin: 0; padding: 0; background: #ffffff; }
 * { box-sizing: border-box; }
 
-a { color: #1e40af; text-decoration: none; }
-a:hover { color: #3b63d0; }
+a { color: #2c52cc; text-decoration: none; }
+a:hover { color: #4468e0; }
 
 input, textarea, select, button { font-family: inherit; font-size: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
@@ -38,3 +38,5 @@ input, textarea, select, button { font-family: inherit; font-size: inherit; colo
 @keyframes dotBounce { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-5px); opacity: 1; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes batchIn { from { opacity: 0; transform: translateY(28px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes batchBanner { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
