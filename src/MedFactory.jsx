@@ -386,17 +386,17 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
       <div style={{ padding: '13px 20px', borderBottom: '1px solid rgba(26,45,107,0.12)', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, background: '#fff' }}>
         <div style={{ width: 5, height: 38, background: trackColor, flexShrink: 0, borderRadius: 3 }} />
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ font: '700 13.5px/1.4 Inter', color: '#1a2d6b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
-          <div style={{ font: '400 11px/1 Inter', color: '#6878a8', marginTop: 4 }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
+          <div style={{ font: '700 13.5px/1.4 Plus Jakarta Sans', color: '#1a2d6b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
+          <div style={{ font: '400 11px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 4 }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           {activeCount > 0 && (
-            <span style={{ padding: '3px 10px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.3)', font: '600 10px/1 Inter', color: '#92400e', borderRadius: 99 }}>
+            <span style={{ padding: '3px 10px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.3)', font: '600 10px/1 Plus Jakarta Sans', color: '#92400e', borderRadius: 99 }}>
               {activeCount} comment{activeCount > 1 ? 's' : ''}
             </span>
           )}
-          <span style={{ font: '400 10px/1 Inter', color: '#6878a8', letterSpacing: '0.02em' }}>Hover to comment</span>
-          <button onClick={() => setSciSelectedPaper(null)} style={{ padding: '5px 13px', font: '600 10.5px/1 Inter', border: '1px solid rgba(26,45,107,0.18)', color: '#2d4a8a', background: 'transparent', cursor: 'pointer', borderRadius: 4 }}>&#x2715; Close</button>
+          <span style={{ font: '400 10px/1 Plus Jakarta Sans', color: '#6878a8', letterSpacing: '0.02em' }}>Hover to comment</span>
+          <button onClick={() => setSciSelectedPaper(null)} style={{ padding: '5px 13px', font: '600 10.5px/1 Plus Jakarta Sans', border: '1px solid rgba(26,45,107,0.18)', color: '#2d4a8a', background: 'transparent', cursor: 'pointer', borderRadius: 4 }}>&#x2715; Close</button>
         </div>
       </div>
 
@@ -409,18 +409,18 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
 
             {/* Paper title block */}
             <div style={{ marginBottom: 36 }}>
-              <h1 style={{ font: '800 26px/1.3 Inter', letterSpacing: '-0.03em', color: '#1a2d6b', margin: '0 0 14px' }}>{paper.title}</h1>
-              <p style={{ font: '500 13px/1.6 Inter', color: '#6878a8', margin: '0 0 6px' }}>
+              <h1 style={{ font: '800 26px/1.3 Plus Jakarta Sans', letterSpacing: '-0.03em', color: '#1a2d6b', margin: '0 0 14px' }}>{paper.title}</h1>
+              <p style={{ font: '500 13px/1.6 Plus Jakarta Sans', color: '#6878a8', margin: '0 0 6px' }}>
                 Systematic Review &amp; Meta-Analysis &middot; {paper.journal} &middot; {paper.year}
               </p>
-              {paper.n && <p style={{ font: '600 12px/1 Inter', color: '#2d4a8a', margin: '0 0 28px' }}>n = {paper.n.toLocaleString()} participants</p>}
+              {paper.n && <p style={{ font: '600 12px/1 Plus Jakarta Sans', color: '#2d4a8a', margin: '0 0 28px' }}>n = {paper.n.toLocaleString()} participants</p>}
               <div style={{ height: 2, background: 'rgba(26,45,107,0.1)' }} />
             </div>
 
             {/* Sections */}
             {sections.map((sec) => (
               <div key={sec.id} style={{ marginBottom: 44 }}>
-                <h3 style={{ font: '600 10.5px/1 Inter', letterSpacing: '0.14em', color: '#6878a8', textTransform: 'uppercase', margin: '0 0 18px', paddingBottom: 10, borderBottom: '1px solid rgba(26,45,107,0.1)' }}>
+                <h3 style={{ font: '600 10.5px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#6878a8', textTransform: 'uppercase', margin: '0 0 18px', paddingBottom: 10, borderBottom: '1px solid rgba(26,45,107,0.1)' }}>
                   {sec.heading}
                 </h3>
 
@@ -459,7 +459,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
                         onClick={() => { if (!isDraftTarget) setSciCommentDraft(paraKey); }}
                         style={{
                           margin: 0,
-                          font: sec.id === 'refs' ? '400 13px/1.75 Inter' : '400 15.5px/1.9 Georgia, "Times New Roman", serif',
+                          font: sec.id === 'refs' ? '400 13px/1.75 Plus Jakarta Sans' : '400 15.5px/1.9 Georgia, "Times New Roman", serif',
                           color: sec.id === 'refs' ? '#2d4a8a' : '#1a2d6b',
                           background: isDraftTarget ? 'rgba(44,82,204,0.07)' : hasComment ? 'rgba(146,64,14,0.07)' : isHov ? 'rgba(44,82,204,0.04)' : 'transparent',
                           padding: '6px 10px',
@@ -479,10 +479,10 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
                           onClick={e => e.stopPropagation()}
                           style={{ marginTop: 12, background: '#fff', border: '1px solid rgba(26,45,107,0.14)', boxShadow: '0 4px 24px rgba(26,45,107,0.12)', padding: '14px 16px', borderRadius: 6, animation: 'fadeUp 0.16s ease' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                            <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#2c52cc', display: 'grid', placeItems: 'center', font: '700 9px Inter', color: '#fff', flexShrink: 0 }}>AM</div>
+                            <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#2c52cc', display: 'grid', placeItems: 'center', font: '700 9px Plus Jakarta Sans', color: '#fff', flexShrink: 0 }}>AM</div>
                             <div>
-                              <div style={{ font: '600 12px/1 Inter', color: '#1a2d6b' }}>Dr. Arjun Mehta</div>
-                              <div style={{ font: '400 10px/1 Inter', color: '#6878a8', marginTop: 2 }}>Scientific Adviser</div>
+                              <div style={{ font: '600 12px/1 Plus Jakarta Sans', color: '#1a2d6b' }}>Dr. Arjun Mehta</div>
+                              <div style={{ font: '400 10px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 2 }}>Scientific Adviser</div>
                             </div>
                           </div>
                           <textarea
@@ -491,11 +491,11 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
                             placeholder="Add a scientific comment or concern…"
                             value={sciCommentDraft.text}
                             onChange={e => setSciCommentText(e.target.value)}
-                            style={{ width: '100%', background: '#f8fafc', border: '1px solid rgba(26,45,107,0.15)', color: '#1a2d6b', padding: '10px 12px', font: '400 13.5px/1.6 Inter', resize: 'none', outline: 'none', display: 'block', borderRadius: 4 }}
+                            style={{ width: '100%', background: '#f8fafc', border: '1px solid rgba(26,45,107,0.15)', color: '#1a2d6b', padding: '10px 12px', font: '400 13.5px/1.6 Plus Jakarta Sans', resize: 'none', outline: 'none', display: 'block', borderRadius: 4 }}
                           />
                           <div style={{ display: 'flex', gap: 8, marginTop: 10, justifyContent: 'flex-end' }}>
-                            <button onClick={cancelSciComment} style={{ padding: '7px 14px', font: '600 11.5px/1 Inter', border: '1px solid rgba(26,45,107,0.18)', color: '#2d4a8a', background: '#fff', cursor: 'pointer', borderRadius: 4 }}>Cancel</button>
-                            <button onClick={submitSciComment} style={{ padding: '7px 18px', font: '700 11.5px/1 Inter', background: '#2c52cc', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: 4 }}>Add Comment</button>
+                            <button onClick={cancelSciComment} style={{ padding: '7px 14px', font: '600 11.5px/1 Plus Jakarta Sans', border: '1px solid rgba(26,45,107,0.18)', color: '#2d4a8a', background: '#fff', cursor: 'pointer', borderRadius: 4 }}>Cancel</button>
+                            <button onClick={submitSciComment} style={{ padding: '7px 18px', font: '700 11.5px/1 Plus Jakarta Sans', background: '#2c52cc', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: 4 }}>Add Comment</button>
                           </div>
                         </div>
                       )}
@@ -509,7 +509,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
 
         {/* Comments sidebar */}
         <div style={{ width: 280, flexShrink: 0, borderLeft: '1px solid rgba(26,45,107,0.1)', overflowY: 'auto', padding: '24px 18px', background: '#fff' }}>
-          <div style={{ font: '700 9px/1 Inter', letterSpacing: '0.14em', color: '#6878a8', marginBottom: 18 }}>REVIEW COMMENTS</div>
+          <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#6878a8', marginBottom: 18 }}>REVIEW COMMENTS</div>
           {Object.entries(sciInlineComments)
             .filter(([k]) => k.startsWith(`${paper._idx}-`))
             .flatMap(([key, cmts]) => cmts.map(cmt => ({ key, cmt })))
@@ -517,22 +517,22 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
             .map(({ key, cmt }) => (
               <div key={cmt.id} style={{ border: '1px solid rgba(26,45,107,0.1)', background: '#f8fafc', padding: '12px 14px', marginBottom: 10, borderRadius: 6, animation: 'rise 0.2s ease' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#2c52cc', display: 'grid', placeItems: 'center', font: '700 9px Inter', color: '#fff', flexShrink: 0 }}>AM</div>
+                  <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#2c52cc', display: 'grid', placeItems: 'center', font: '700 9px Plus Jakarta Sans', color: '#fff', flexShrink: 0 }}>AM</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ font: '600 12px/1 Inter', color: '#1a2d6b' }}>{cmt.author}</div>
-                    <div style={{ font: '400 10px/1 Inter', color: '#6878a8', marginTop: 3 }}>{cmt.time}</div>
+                    <div style={{ font: '600 12px/1 Plus Jakarta Sans', color: '#1a2d6b' }}>{cmt.author}</div>
+                    <div style={{ font: '400 10px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 3 }}>{cmt.time}</div>
                   </div>
                 </div>
-                <p style={{ margin: '0 0 10px', font: '400 13px/1.65 Inter', color: '#1a2d6b' }}>{cmt.text}</p>
+                <p style={{ margin: '0 0 10px', font: '400 13px/1.65 Plus Jakarta Sans', color: '#1a2d6b' }}>{cmt.text}</p>
                 <button
                   onClick={() => resolveSciComment(key, cmt.id)}
-                  style={{ font: '600 10.5px/1 Inter', color: '#6878a8', background: 'none', border: '1px solid rgba(26,45,107,0.12)', cursor: 'pointer', padding: '4px 10px', borderRadius: 3 }}>
+                  style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: '#6878a8', background: 'none', border: '1px solid rgba(26,45,107,0.12)', cursor: 'pointer', padding: '4px 10px', borderRadius: 3 }}>
                   &#x2713; Resolve
                 </button>
               </div>
             ))}
           {activeCount === 0 && (
-            <div style={{ font: '400 12.5px/1.8 Inter', color: '#6878a8', padding: '8px 0' }}>
+            <div style={{ font: '400 12.5px/1.8 Plus Jakarta Sans', color: '#6878a8', padding: '8px 0' }}>
               No comments yet.<br />
               Hover any paragraph and click the{' '}
               <strong style={{ color: '#2c52cc' }}>+</strong> button to add a comment.
@@ -660,9 +660,9 @@ const PAPER_FIGURES = {
 };
 
 const LIGHT_TOKENS = {
-  '--bg': '#ffffff', '--s1': '#ffffff', '--s2': '#f0f4fb', '--ink': '#1a2d6b',
-  '--dim': '#2d4a8a', '--faint': '#6878a8', '--rule': 'rgba(26,45,107,0.09)',
-  '--rule2': 'rgba(26,45,107,0.18)', '--acc': '#2c52cc', '--ok': '#166534', '--warn': '#92400e',
+  '--bg': '#f7f9fd', '--s1': '#ffffff', '--s2': '#eef2fb', '--ink': '#0f1f4a',
+  '--dim': '#2a4588', '--faint': '#5d78b0', '--rule': 'rgba(15,31,74,0.08)',
+  '--rule2': 'rgba(15,31,74,0.16)', '--acc': '#2c52cc', '--ok': '#166534', '--warn': '#92400e',
 };
 
 /* ---------- evidence helpers ---------- */
@@ -1351,12 +1351,12 @@ export default class MedFactory extends React.Component {
       Rendering:                ['var(--dim)', 'transparent'],
     };
     const [c, bg] = map[status] || ['var(--dim)', 'transparent'];
-    return `display:inline-block;border:1px solid ${c};background:${bg};color:${c};padding:5px 12px;font:600 10px/1 Inter;letter-spacing:0.08em;text-transform:uppercase;border-radius:100px`;
+    return `display:inline-block;border:1px solid ${c};background:${bg};color:${c};padding:5px 12px;font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.08em;text-transform:uppercase;border-radius:100px`;
   }
 
   badge(type) {
     const c = type === 'RCT' ? 'var(--ok)' : type === 'Guideline' ? 'var(--dim)' : 'var(--warn)';
-    return `border:1px solid ${c};color:${c};padding:3px 7px;font:600 9.5px/1 Inter;letter-spacing:0.09em;text-transform:uppercase;border-radius:20px`;
+    return `border:1px solid ${c};color:${c};padding:3px 7px;font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.09em;text-transform:uppercase;border-radius:20px`;
   }
 
   /* -------- derived view model (all computation lives here) -------- */
@@ -1409,13 +1409,13 @@ export default class MedFactory extends React.Component {
       { name: 'Compliance Guardrails', score: '1', unit: 'flag · EU (EMA) ruleset', verdict: 'ACTION', c: 'var(--acc)', pct: 88, note: 'One sentence implies an indication outside the approved label.' },
     ].map((c, i) => ({
       ...c, style: cardStyle(i),
-      tag: `border:1px solid ${c.c};color:${c.c};padding:4px 8px;font:600 9.5px/1 Inter;letter-spacing:0.1em`,
+      tag: `border:1px solid ${c.c};color:${c.c};padding:4px 8px;font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.1em`,
       numStyle: `font:700 30px/1 var(--mono);letter-spacing:-0.02em;color:${c.c}`,
       bar: `height:3px;width:${c.pct}%;background:${c.c}`,
     }));
 
-    const flagTag = () => 'border:1px solid var(--warn);color:var(--warn);padding:3px 7px;font:600 9.5px/1 Inter;letter-spacing:0.09em';
-    const stTag = (ok) => `margin-left:auto;border:1px solid ${ok ? 'var(--ok)' : 'var(--acc)'};color:${ok ? 'var(--ok)' : 'var(--acc)'};padding:3px 8px;font:600 9.5px/1 Inter;letter-spacing:0.09em;flex:none`;
+    const flagTag = () => 'border:1px solid var(--warn);color:var(--warn);padding:3px 7px;font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.09em';
+    const stTag = (ok) => `margin-left:auto;border:1px solid ${ok ? 'var(--ok)' : 'var(--acc)'};color:${ok ? 'var(--ok)' : 'var(--acc)'};padding:3px 8px;font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.09em;flex:none`;
     const flags = [
       { slide: '03', title: 'Unmet need in glycaemic control', type: 'UNSOURCED', status: 'ESCALATED', ok: false, sentence: 'Treatment intensification is typically delayed by roughly three years after a patient first exceeds their individualised target.', fixLabel: 'REVIEWER', fix: 'Retrieval returned only qualitative statements on therapeutic inertia. No source supports the three-year figure — reviewer to supply a citation or cut the sentence.' },
       { slide: '06', title: 'SUSTAIN-6 — cardiovascular outcomes', type: 'ENTAILMENT FAIL', status: 'REPAIRED', ok: true, sentence: 'The trial also demonstrated a benefit on all-cause mortality across the study population.', fixLabel: 'AUTO-REPAIR', fix: 'Rewritten to “no significant difference in all-cause mortality was observed”, matching the cited span. Re-validated: entailment 0.92.' },
@@ -1505,7 +1505,7 @@ export default class MedFactory extends React.Component {
       ['14:26:35', 'Munal Sharma', 'Deck approved — 40/40 slides signed off', 'APPROVED', 'ok'],
     ].map((a) => ({
       time: a[0], who: a[1], what: a[2], result: a[3],
-      tag: `justify-self:start;border:1px solid ${a[4] === 'ok' ? 'var(--ok)' : a[4] === 'warn' ? 'var(--warn)' : 'var(--rule)'};color:${a[4] === 'ok' ? 'var(--ok)' : a[4] === 'warn' ? 'var(--warn)' : 'var(--dim)'};padding:3px 8px;font:600 9.5px/1 Inter;letter-spacing:0.09em`,
+      tag: `justify-self:start;border:1px solid ${a[4] === 'ok' ? 'var(--ok)' : a[4] === 'warn' ? 'var(--warn)' : 'var(--rule)'};color:${a[4] === 'ok' ? 'var(--ok)' : a[4] === 'warn' ? 'var(--warn)' : 'var(--dim)'};padding:3px 8px;font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.09em`,
     }));
 
     const tabStyle = (on) => `padding:14px 16px;text-align:center;font-weight:700;font-size:12.5px;cursor:pointer;color:${on ? 'var(--ink)' : 'var(--faint)'};background:${on ? 'var(--bg)' : 'transparent'};border-bottom:2px solid ${on ? 'var(--acc)' : 'transparent'};border-right:1px solid var(--rule)`;
@@ -1697,6 +1697,8 @@ export default class MedFactory extends React.Component {
         ];
         return q ? allWs.filter((w) => w.topic.toLowerCase().includes(q) || w.status.toLowerCase().includes(q)) : allWs;
       })(),
+      createdWorkspaces: st.createdWorkspaces,
+      activeWorkspaceId: st.activeWorkspaceId,
       sidebarExpandedWs: st.sidebarExpandedWs,
       toggleSidebarWs: (id) => this.setState((s) => ({ sidebarExpandedWs: s.sidebarExpandedWs === id ? null : id })),
       sidebarCollapsed: st.sidebarCollapsed,
@@ -1752,7 +1754,7 @@ export default class MedFactory extends React.Component {
       area: st.area, areas: ['Endocrinology / Metabolic', 'Cardiology', 'Nephrology', 'Hepatology', 'Obesity / Cardiometabolic'], onArea: (e) => this.setState({ area: e.target.value }),
       region: st.region, regions: ['EU (EMA)', 'US (FDA)', 'UK (MHRA)', 'Japan (PMDA)', 'Global — strictest union'], onRegion: (e) => this.setState({ region: e.target.value }),
       lang: st.lang, langs: ['English (UK)', 'English (US)', 'German', 'Spanish', 'Japanese'], onLang: (e) => this.setState({ lang: e.target.value }),
-      audiences: ['HCP', 'KOL', 'Internal'].map((a) => {
+      audiences: ['HCP', 'KOL', 'Plus Jakarta Sansnal'].map((a) => {
         const locked = a !== 'HCP';
         return {
           label: a, pick: () => !locked && this.setState({ aud: a }),
@@ -2058,8 +2060,8 @@ export default class MedFactory extends React.Component {
   render() {
     const v = this.renderVals();
     const S_ = this.state.screen;
-    const label = 'font:600 10px/1 Inter;letter-spacing:0.13em;color:var(--dim);margin-bottom:12px;display:block';
-    const kicker = 'font:600 10px/1 Inter;letter-spacing:0.16em;color:var(--faint)';
+    const label = 'font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.13em;color:var(--dim);margin-bottom:12px;display:block';
+    const kicker = 'font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--faint)';
     const fieldCss = 'width:100%;background:var(--s1);border:1px solid var(--rule);padding:11px 12px;border-radius:8px';
 
     /* ---------- role-specific sidebar helpers ---------- */
@@ -2074,15 +2076,15 @@ export default class MedFactory extends React.Component {
       const { loginEmail, loginPassword, loginError, loginPwShow } = this.state;
       const creds = MedFactory.CREDENTIALS;
       return (
-        <div ref={this.rootRef} style={S('font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;display:flex;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased')}>
+        <div ref={this.rootRef} style={S('font-family:Plus Jakarta Sans,system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;display:flex;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased')}>
           {/* left panel — branding (dark navy) */}
-          <div style={{ width: 440, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '52px 48px', background: '#1a2d6b', color: '#e8eef8' }}>
+          <div style={{ width: 440, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '52px 48px', background: 'linear-gradient(170deg,#1e3370 0%,#0d1a4a 100%)', color: '#e8eef8' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 'auto' }}>
               <div style={{ width: 16, height: 16, background: '#60a5fa' }} />
               <div style={{ fontWeight: 800, fontSize: 17, letterSpacing: '-0.02em', color: '#e8eef8' }}>MedFactory</div>
             </div>
             <div>
-              <div style={{ font: '700 9px/1 Inter', letterSpacing: '0.18em', color: '#60a5fa', marginBottom: 18 }}>MEDICAL AFFAIRS · CONTENT PIPELINE</div>
+              <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.18em', color: '#60a5fa', marginBottom: 18 }}>MEDICAL AFFAIRS · CONTENT PIPELINE</div>
               <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.1, margin: '0 0 20px', color: '#ffffff' }}>Science-validated<br />content, faster.</h1>
               <div style={{ color: '#8aaad4', fontSize: 13.5, lineHeight: 1.7, marginBottom: 44 }}>
                 Three roles. One pipeline. From brand brief to MA-approved webinar deck — with full audit trail.
@@ -2103,7 +2105,7 @@ export default class MedFactory extends React.Component {
               </div>
             </div>
             <div style={{ marginTop: 'auto', paddingTop: 32, borderTop: '1px solid rgba(232,238,248,0.12)' }}>
-              <div style={{ font: '600 9.5px/1 Inter', letterSpacing: '0.14em', color: '#4d6fa0', marginBottom: 10 }}>DEMO CREDENTIALS</div>
+              <div style={{ font: '600 9.5px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#4d6fa0', marginBottom: 10 }}>DEMO CREDENTIALS</div>
               {creds.map((c) => (
                 <div key={c.role}
                   style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '7px 0', borderBottom: '1px solid rgba(232,238,248,0.1)', cursor: 'pointer' }}
@@ -2120,8 +2122,12 @@ export default class MedFactory extends React.Component {
           {/* right panel — login form */}
           <div style={S('flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:var(--bg)')}>
             <div style={S('width:100%;max-width:380px')}>
-              <div style={S('font:700 9px/1 Inter;letter-spacing:0.18em;color:var(--acc);margin-bottom:10px')}>SIGN IN</div>
-              <h2 style={S('font-size:26px;font-weight:800;letter-spacing:-0.03em;margin:0 0 32px;color:var(--ink)')}>Welcome back</h2>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', background: 'rgba(44,82,204,0.08)', borderRadius: 20, marginBottom: 20 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--acc)' }} />
+                <span style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)' }}>SIGN IN</span>
+              </div>
+              <h2 style={S('font-size:30px;font-weight:800;letter-spacing:-0.04em;margin:0 0 6px;color:var(--ink)')}>Welcome back</h2>
+              <div style={S('font:400 13.5px/1 Plus Jakarta Sans;color:var(--faint);margin-bottom:32px')}>Sign in to your MedFactory workspace</div>
 
               <form onSubmit={this.login} style={S('display:flex;flex-direction:column;gap:16px')}>
                 <div>
@@ -2163,7 +2169,7 @@ export default class MedFactory extends React.Component {
                 )}
 
                 <Box
-                  css="background:var(--acc);color:#fff;font-weight:700;padding:15px;text-align:center;cursor:pointer;font-size:14px;margin-top:4px;border-radius:8px"
+                  css="background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font-weight:700;padding:15px;text-align:center;cursor:pointer;font-size:14px;margin-top:4px;border-radius:8px"
                   hover="opacity:0.85"
                   onClick={this.login}
                 >
@@ -2183,10 +2189,10 @@ export default class MedFactory extends React.Component {
     return (
       <div
         ref={this.rootRef}
-        style={S('font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;min-width:1280px;display:flex;overflow:hidden;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased')}
+        style={S('font-family:Plus Jakarta Sans,system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;min-width:1280px;display:flex;overflow:hidden;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased')}
       >
         {/* ---------------- sidebar (role-aware) ---------------- */}
-        <aside style={{ width: v.sidebarCollapsed ? 56 : 240, flexShrink: 0, display: 'flex', flexDirection: 'column', background: '#1a2d6b', transition: 'width 0.22s cubic-bezier(0.4,0,0.2,1)', overflow: 'hidden', '--ink': '#e8eef8', '--dim': '#a8c0e8', '--faint': '#5878a8', '--rule': 'rgba(232,238,248,0.1)', '--rule2': 'rgba(232,238,248,0.18)', '--s1': 'rgba(255,255,255,0.07)', '--s2': 'rgba(255,255,255,0.12)', '--bg': '#1a2d6b', '--acc': '#60a5fa', '--ok': '#4ade80', '--warn': '#fbbf24' }}>
+        <aside style={{ width: v.sidebarCollapsed ? 56 : 240, flexShrink: 0, display: 'flex', flexDirection: 'column', background: 'linear-gradient(170deg,#1e3370 0%,#0d1a4a 100%)', transition: 'width 0.22s cubic-bezier(0.4,0,0.2,1)', overflow: 'hidden', '--ink': '#e8eef8', '--dim': '#a8c0e8', '--faint': '#5878a8', '--rule': 'rgba(232,238,248,0.1)', '--rule2': 'rgba(232,238,248,0.18)', '--s1': 'rgba(255,255,255,0.07)', '--s2': 'rgba(255,255,255,0.12)', '--bg': '#1a2d6b', '--acc': '#60a5fa', '--ok': '#4ade80', '--warn': '#fbbf24' }}>
           {/* Logo row + collapse toggle */}
           <div style={{ padding: '16px 14px 14px', borderBottom: '1px solid rgba(232,238,248,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 9, overflow: 'hidden' }}>
@@ -2210,7 +2216,7 @@ export default class MedFactory extends React.Component {
           {!v.isCreator && !v.sidebarCollapsed && (
             <div style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.07)', borderBottom: '1px solid rgba(232,238,248,0.1)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: reviewerAccent }} />
-              <div style={{ font: '700 9.5px/1 Inter', letterSpacing: '0.14em', color: reviewerAccent }}>{reviewerLabel}</div>
+              <div style={{ font: '700 9.5px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: reviewerAccent }}>{reviewerLabel}</div>
             </div>
           )}
 
@@ -2234,7 +2240,7 @@ export default class MedFactory extends React.Component {
                       <span style={{ flexShrink: 0, opacity: it.active ? 1 : 0.7 }}>{navIcons[i]}</span>
                       {!v.sidebarCollapsed && <span style={{ whiteSpace: 'nowrap' }}>{it.label}</span>}
                       {!v.sidebarCollapsed && i === 0 && v.unreadCount > 0 && (
-                        <span style={{ marginLeft: 'auto', background: '#60a5fa', color: '#fff', font: '700 9px/1 Inter', padding: '2px 6px', borderRadius: 3 }}>{v.unreadCount}</span>
+                        <span style={{ marginLeft: 'auto', background: '#60a5fa', color: '#fff', font: '700 9px/1 Plus Jakarta Sans', padding: '2px 6px', borderRadius: 3 }}>{v.unreadCount}</span>
                       )}
                     </Box>
                   );
@@ -2253,9 +2259,9 @@ export default class MedFactory extends React.Component {
                 ) : (
                   /* Section header + New button */
                   <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
-                    <span style={{ font: '600 9px/1 Inter', letterSpacing: '0.14em', color: '#5878a8' }}>WORKSPACES</span>
+                    <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#5878a8' }}>WORKSPACES</span>
                     <Box
-                      css="font:700 10px/1 Inter;letter-spacing:0.06em;color:#60a5fa;cursor:pointer;padding:3px 8px;border:1px solid rgba(96,165,250,0.3)"
+                      css="font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.06em;color:#60a5fa;cursor:pointer;padding:3px 8px;border:1px solid rgba(96,165,250,0.3)"
                       hover="background:rgba(96,165,250,0.12)"
                       onClick={v.goIntake}
                     >+ NEW</Box>
@@ -2273,7 +2279,7 @@ export default class MedFactory extends React.Component {
                       value={v.workspaceSearch}
                       onChange={v.onWorkspaceSearch}
                       placeholder="Search workspaces…"
-                      style={S('flex:1;background:transparent;border:none;outline:none;font:400 11.5px/1 Inter;color:var(--ink);min-width:0')}
+                      style={S('flex:1;background:transparent;border:none;outline:none;font:400 11.5px/1 Plus Jakarta Sans;color:var(--ink);min-width:0')}
                     />
                     {v.workspaceSearch && (
                       <span
@@ -2287,7 +2293,7 @@ export default class MedFactory extends React.Component {
                 {/* Workspace list */}
                 {!v.sidebarCollapsed && <div style={S('flex:1;overflow-y:auto;padding-bottom:8px')}>
                   {v.sidebarWorkspaces.length === 0 ? (
-                    <div style={S('padding:16px 20px;font:400 11.5px/1.5 Inter;color:var(--faint)')}>
+                    <div style={S('padding:16px 20px;font:400 11.5px/1.5 Plus Jakarta Sans;color:var(--faint)')}>
                       No workspaces match your search.
                     </div>
                   ) : (() => {
@@ -2311,8 +2317,8 @@ export default class MedFactory extends React.Component {
                                   <path d="M1 2.5h4l1.5 1.5H13v7H1V2.5z" stroke="currentColor" strokeWidth="1.3" fill={ws.isActive ? 'rgba(44,82,204,0.15)' : 'transparent'}/>
                                 </svg>
                                 <div style={S('flex:1;min-width:0')}>
-                                  <div style={S('font:700 11.5px/1.3 Inter;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{ws.topic}</div>
-                                  {ws.isActive && <div style={{ font: '500 9.5px/1 Inter', color: 'var(--acc)', marginTop: 3 }}>Active workspace</div>}
+                                  <div style={S('font:700 11.5px/1.3 Plus Jakarta Sans;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{ws.topic}</div>
+                                  {ws.isActive && <div style={{ font: '500 9.5px/1 Plus Jakarta Sans', color: 'var(--acc)', marginTop: 3 }}>Active workspace</div>}
                                 </div>
                                 {ws.isActive && (
                                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', flexShrink: 0, animation: 'puls 1.4s infinite' }} />
@@ -2326,7 +2332,7 @@ export default class MedFactory extends React.Component {
                               {isExpanded && (
                                 <div style={{ background: 'rgba(0,0,0,0.025)', paddingBottom: 6 }}>
                                   {v.wsResearches.length === 0 ? (
-                                    <div style={{ padding: '10px 14px 6px 36px', font: '400 11px/1.5 Inter', color: 'var(--faint)' }}>
+                                    <div style={{ padding: '10px 14px 6px 36px', font: '400 11px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>
                                       No research sessions yet
                                     </div>
                                   ) : v.wsResearches.map((r, ri) => {
@@ -2351,8 +2357,8 @@ export default class MedFactory extends React.Component {
                                           {/* Status dot */}
                                           <div style={{ width: 7, height: 7, borderRadius: '50%', background: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', flexShrink: 0 }} />
                                           <div style={{ flex: 1, minWidth: 0 }}>
-                                            <div style={{ font: `${isActiveR ? 600 : 500} 11.5px/1.3 Inter`, color: isActiveR ? 'var(--ink)' : 'var(--dim)' }}>{r.name}</div>
-                                            <div style={{ font: '400 10px/1 Inter', color: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', marginTop: 2 }}>
+                                            <div style={{ font: `${isActiveR ? 600 : 500} 11.5px/1.3 Plus Jakarta Sans`, color: isActiveR ? 'var(--ink)' : 'var(--dim)' }}>{r.name}</div>
+                                            <div style={{ font: '400 10px/1 Plus Jakarta Sans', color: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', marginTop: 2 }}>
                                               {isDone ? 'Complete' : isInProgress ? 'In progress' : 'Not started'}
                                             </div>
                                           </div>
@@ -2368,7 +2374,7 @@ export default class MedFactory extends React.Component {
                                   })}
                                   {v.wsResearches.length < 5 && (
                                     <Box
-                                      css="display:flex;align-items:center;gap:8px;padding:7px 12px 7px 36px;cursor:pointer;color:var(--acc);font:600 10.5px/1 Inter;opacity:0.8"
+                                      css="display:flex;align-items:center;gap:8px;padding:7px 12px 7px 36px;cursor:pointer;color:var(--acc);font:600 10.5px/1 Plus Jakarta Sans;opacity:0.8"
                                       hover="opacity:1;background:rgba(255,255,255,0.4)"
                                       onClick={v.addWsResearch}
                                     >
@@ -2384,7 +2390,7 @@ export default class MedFactory extends React.Component {
 
                         {/* Divider between created and legacy */}
                         {created.length > 0 && legacy.length > 0 && (
-                          <div style={S('padding:10px 20px 6px;font:600 9px/1 Inter;letter-spacing:0.14em;color:var(--faint)')}>OTHER WORKSPACES</div>
+                          <div style={S('padding:10px 20px 6px;font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint)')}>OTHER WORKSPACES</div>
                         )}
 
                         {/* Legacy DECKS — flat list */}
@@ -2397,9 +2403,9 @@ export default class MedFactory extends React.Component {
                           >
                             <div style={{ width: 6, height: 6, borderRadius: '50%', background: ws.dotColor, flexShrink: 0 }} />
                             <div style={S('flex:1;min-width:0')}>
-                              <div style={S('font:500 11px/1.35 Inter;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px')}>{ws.topic}</div>
+                              <div style={S('font:500 11px/1.35 Plus Jakarta Sans;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px')}>{ws.topic}</div>
                               <div style={S('display:flex;align-items:center;justify-content:space-between;gap:6px')}>
-                                <span style={{ font: '500 9.5px/1 Inter', color: ws.dotColor }}>{ws.status}</span>
+                                <span style={{ font: '500 9.5px/1 Plus Jakarta Sans', color: ws.dotColor }}>{ws.status}</span>
                                 <span style={S('font:400 9.5px/1 var(--mono);color:var(--faint);flex-shrink:0')}>{ws.created}</span>
                               </div>
                             </div>
@@ -2418,7 +2424,7 @@ export default class MedFactory extends React.Component {
                   <Box key={i} css={`display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;font-size:13px;color:${S_ === scr && i === 0 ? 'var(--ink)' : 'var(--dim)'};font-weight:${S_ === scr && i === 0 ? 700 : 400}`} hover="color:var(--ink)" onClick={() => this.go(scr)}>
                     <span style={S(`width:2px;height:14px;background:${S_ === scr && i === 0 ? reviewerAccent : 'transparent'}`)} />
                     {lbl}
-                    {i === 0 && v.unreadCount > 0 && <span style={S(`margin-left:auto;background:${reviewerAccent};color:${v.isMA ? '#000' : '#fff'};font:700 9px/1 Inter;padding:2px 6px`)}>{v.unreadCount}</span>}
+                    {i === 0 && v.unreadCount > 0 && <span style={S(`margin-left:auto;background:${reviewerAccent};color:${v.isMA ? '#000' : '#fff'};font:700 9px/1 Plus Jakarta Sans;padding:2px 6px`)}>{v.unreadCount}</span>}
                   </Box>
                 ))}
               </nav>
@@ -2478,13 +2484,13 @@ export default class MedFactory extends React.Component {
                 <div style={S('padding:34px 40px 28px;border-bottom:2px solid var(--rule2);display:flex;align-items:flex-end;justify-content:space-between;gap:32px')}>
                   <div>
                     <div style={merge(kicker, 'margin-bottom:14px')}>TUESDAY · 2 SEPTEMBER 2026</div>
-                    <h1 style={S('font-size:34px;font-weight:800;letter-spacing:-0.03em;margin:0 0 8px')}>Good morning, Mayank</h1>
+                    <h1 style={S('font-size:36px;font-weight:800;letter-spacing:-0.04em;margin:0 0 8px;color:var(--ink)')}>Good morning, Mayank</h1>
                     <div style={S('color:var(--dim);max-width:52ch')}>
                       Two workspaces need your sign-off before they move to Munal. September&apos;s topic queue is ready for approval.
                     </div>
                   </div>
                   <Box
-                    css="flex:none;background:var(--acc);color:#fff;font-weight:700;padding:14px 24px;cursor:pointer;display:flex;align-items:center;gap:28px;min-width:260px;border-radius:8px"
+                    css="flex:none;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font-weight:700;padding:14px 24px;cursor:pointer;display:flex;align-items:center;gap:28px;min-width:260px;border-radius:8px"
                     hover="opacity:0.85"
                     onClick={v.goIntake}
                   >
@@ -2496,7 +2502,7 @@ export default class MedFactory extends React.Component {
                 <div style={S('display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid var(--rule2)')}>
                   {v.stats.map((k, i) => (
                     <div key={i} style={S(k.style)}>
-                      <div style={S('font:600 10px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:18px')}>{k.label}</div>
+                      <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:18px')}>{k.label}</div>
                       <div style={S('display:flex;align-items:baseline;gap:10px')}>
                         <div style={S(k.numStyle)}>{k.value}</div>
                         <div style={S('color:var(--dim);font-size:12px')}>{k.delta}</div>
@@ -2517,13 +2523,15 @@ export default class MedFactory extends React.Component {
                       css={`display:flex;flex-direction:column;gap:14px;background:#fff;border:1px solid rgba(26,45,107,0.1);border-top:3px solid ${d.leftBorder};cursor:pointer;padding:20px 22px;animation:cardIn 0.32s ease both`}
                       hover={`border-color:${d.leftBorder};box-shadow:0 4px 16px rgba(26,45,107,0.1)`}
                       onClick={d.go}
-                      style={{ animationDelay: `${i * 0.06}s`, boxShadow: '0 1px 4px rgba(26,45,107,0.06)', borderRadius: 10 }}
+                      style={{ animationDelay: `${i * 0.06}s`, boxShadow: '0 1px 3px rgba(15,31,74,0.06), 0 4px 16px rgba(15,31,74,0.06)', borderRadius: 12 }}
                     >
-                      <div style={S('font:500 11px/1 Inter;color:var(--faint);letter-spacing:0.02em')}>Created {d.created}</div>
-                      <div style={S('font:700 15px/1.4 Inter;letter-spacing:-0.01em;color:var(--ink)')}>{d.topic}</div>
-                      <div style={S('display:flex;align-items:center;justify-content:space-between')}>
+                      <div style={S('display:flex;align-items:flex-start;justify-content:space-between;gap:8px')}>
+                        <div style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.02em')}>Created {d.created}</div>
                         <span style={S(d.pill)}>{d.status}</span>
-                        <span style={{ fontSize: 16, color: d.leftBorder, fontWeight: 400 }}>→</span>
+                      </div>
+                      <div style={S('display:flex;align-items:flex-end;justify-content:space-between;gap:8px')}>
+                        <div style={S('font:700 15px/1.4 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink)')}>{d.topic}</div>
+                        <span style={{ fontSize: 16, color: d.leftBorder, fontWeight: 400, flexShrink: 0 }}>→</span>
                       </div>
                     </Box>
                   ))}
@@ -2545,7 +2553,7 @@ export default class MedFactory extends React.Component {
               </div>
 
               {v.fromQueue && (
-                <div style={S('display:inline-flex;align-items:center;gap:8px;border:1px solid var(--acc);background:rgba(44,82,204,0.06);color:var(--acc);padding:6px 12px;font:600 11.5px/1 Inter;margin-bottom:24px')}>
+                <div style={S('display:inline-flex;align-items:center;gap:8px;border:1px solid var(--acc);background:rgba(44,82,204,0.06);color:var(--acc);padding:6px 12px;font:600 11.5px/1 Plus Jakarta Sans;margin-bottom:24px')}>
                   ✦ Pulled from September topic queue
                 </div>
               )}
@@ -2555,8 +2563,8 @@ export default class MedFactory extends React.Component {
                 {/* 1 — Workspace name */}
                 <div style={S('padding:26px 0;border-bottom:1px solid var(--rule)')}>
                   <div style={S('display:flex;align-items:baseline;gap:10px;margin-bottom:10px')}>
-                    <span style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--acc)')}>01</span>
-                    <label style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--ink)')}>WORKSPACE NAME</label>
+                    <span style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--acc)')}>01</span>
+                    <label style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--ink)')}>WORKSPACE NAME</label>
                   </div>
                   <input
                     value={v.workspaceName}
@@ -2572,8 +2580,8 @@ export default class MedFactory extends React.Component {
                   <div style={S('display:grid;grid-template-columns:1fr 1fr;gap:24px')}>
                     <div>
                       <div style={S('display:flex;align-items:baseline;gap:10px;margin-bottom:10px')}>
-                        <span style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--acc)')}>02</span>
-                        <label style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--ink)')}>TOPIC OF THE MONTH</label>
+                        <span style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--acc)')}>02</span>
+                        <label style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--ink)')}>TOPIC OF THE MONTH</label>
                       </div>
                       <input
                         value={v.topic}
@@ -2584,8 +2592,8 @@ export default class MedFactory extends React.Component {
                     </div>
                     <div>
                       <div style={S('display:flex;align-items:baseline;gap:10px;margin-bottom:10px')}>
-                        <span style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--acc)')}>03</span>
-                        <label style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--ink)')}>HERO PRODUCT</label>
+                        <span style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--acc)')}>03</span>
+                        <label style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--ink)')}>HERO PRODUCT</label>
                       </div>
                       <input
                         value={v.heroProduct}
@@ -2601,24 +2609,24 @@ export default class MedFactory extends React.Component {
                 {/* 3 — Target Audience */}
                 <div style={S('padding:26px 0;border-bottom:1px solid var(--rule)')}>
                   <div style={S('display:flex;align-items:baseline;gap:10px;margin-bottom:12px')}>
-                    <span style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--acc)')}>04</span>
-                    <label style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--ink)')}>TARGET AUDIENCE</label>
+                    <span style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--acc)')}>04</span>
+                    <label style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--ink)')}>TARGET AUDIENCE</label>
                   </div>
                   <div style={S('display:flex;align-items:center;gap:12px')}>
                     <div style={S('display:flex;align-items:center;gap:10px;padding:11px 18px;border:2px solid var(--acc);background:rgba(44,82,204,0.07)')}>
                       <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--acc)' }} />
-                      <span style={S('font:700 13px/1 Inter;color:var(--acc)')}>HCP</span>
-                      <span style={S('font:500 11px/1 Inter;color:var(--faint)')}>Healthcare Professional</span>
+                      <span style={S('font:700 13px/1 Plus Jakarta Sans;color:var(--acc)')}>HCP</span>
+                      <span style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint)')}>Healthcare Professional</span>
                     </div>
-                    <div style={S('font:400 11.5px/1.5 Inter;color:var(--faint)')}>All content in this workspace is scoped for HCP audiences.</div>
+                    <div style={S('font:400 11.5px/1.5 Plus Jakarta Sans;color:var(--faint)')}>All content in this workspace is scoped for HCP audiences.</div>
                   </div>
                 </div>
 
                 {/* 4 — Agent Context */}
                 <div style={S('padding:26px 0;border-bottom:2px solid var(--rule2)')}>
                   <div style={S('display:flex;align-items:baseline;gap:10px;margin-bottom:6px')}>
-                    <span style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--acc)')}>05</span>
-                    <label style={S('font:700 10px/1 Inter;letter-spacing:0.14em;color:var(--ink)')}>RESEARCH AGENT CONTEXT</label>
+                    <span style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--acc)')}>05</span>
+                    <label style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--ink)')}>RESEARCH AGENT CONTEXT</label>
                   </div>
                   <div style={S('color:var(--faint);font-size:11.5px;margin-bottom:12px;max-width:58ch')}>
                     Give the research agent additional context, focus areas, clinical nuances, or constraints. The more specific you are, the more targeted the evidence retrieval.
@@ -2628,10 +2636,10 @@ export default class MedFactory extends React.Component {
                     onChange={v.onAgentContext}
                     rows={5}
                     placeholder={"e.g. Focus on cardiovascular outcome data from the SELECT trial and SUSTAIN-6. Prioritise RCTs and meta-analyses from 2020 onwards. Flag any evidence around renal outcomes in CKD patients. Avoid off-label framing. The audience consists of experienced endocrinologists who are already familiar with GLP-1 mechanism — no need to explain basics."}
-                    style={S('width:100%;background:var(--s1);border:1px solid var(--rule2);border-left:3px solid #7c3aed;padding:14px 16px;font:400 13px/1.65 Inter;color:var(--ink);resize:vertical;border-radius:8px')}
+                    style={S('width:100%;background:var(--s1);border:1px solid var(--rule2);border-left:3px solid #7c3aed;padding:14px 16px;font:400 13px/1.65 Plus Jakarta Sans;color:var(--ink);resize:vertical;border-radius:8px')}
                   />
                   <div style={S('display:flex;align-items:center;gap:16px;margin-top:8px')}>
-                    <div style={S('font:500 11px/1 Inter;color:var(--faint)')}>
+                    <div style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint)')}>
                       This goes directly to your research agent as its initial brief — you can refine further in the chat once research starts.
                     </div>
                     {v.agentContext.length > 0 && (
@@ -2643,7 +2651,7 @@ export default class MedFactory extends React.Component {
                 {/* CTA — two options */}
                 <div style={S('padding-top:28px;display:flex;flex-direction:column;gap:10px')}>
                   {(!v.workspaceName.trim() || !v.topic.trim()) && (
-                    <div style={S('font:500 11.5px/1 Inter;color:var(--faint);margin-bottom:2px')}>
+                    <div style={S('font:500 11.5px/1 Plus Jakarta Sans;color:var(--faint);margin-bottom:2px')}>
                       Workspace name and topic are required to continue.
                     </div>
                   )}
@@ -2655,8 +2663,8 @@ export default class MedFactory extends React.Component {
                       onClick={() => { if (v.workspaceName.trim() && v.topic.trim()) v.startGen(); }}
                     >
                       <div>
-                        <div style={S('font:700 14px/1 Inter')}>Start Research Now</div>
-                        <div style={S('font:400 11px/1.4 Inter;opacity:0.72;margin-top:5px')}>Research agent starts immediately</div>
+                        <div style={S('font:700 14px/1 Plus Jakarta Sans')}>Start Research Now</div>
+                        <div style={S('font:400 11px/1.4 Plus Jakarta Sans;opacity:0.72;margin-top:5px')}>Research agent starts immediately</div>
                       </div>
                       <span style={S('margin-left:auto;font-size:18px')}>→</span>
                     </Box>
@@ -2668,15 +2676,15 @@ export default class MedFactory extends React.Component {
                       onClick={() => { if (v.workspaceName.trim() && v.topic.trim()) v.skipToHub(); }}
                     >
                       <div>
-                        <div style={S('font:700 14px/1 Inter')}>Skip Research for Now</div>
-                        <div style={S('font:400 11px/1.4 Inter;color:var(--faint);margin-top:5px')}>Set up workspace, add research later</div>
+                        <div style={S('font:700 14px/1 Plus Jakarta Sans')}>Skip Research for Now</div>
+                        <div style={S('font:400 11px/1.4 Plus Jakarta Sans;color:var(--faint);margin-top:5px')}>Set up workspace, add research later</div>
                       </div>
                       <span style={S('margin-left:auto;font-size:18px;color:var(--faint)')}>→</span>
                     </Box>
                   </div>
 
                   <Box
-                    css="align-self:flex-start;padding:10px 16px;border:1px solid var(--rule);color:var(--faint);font:600 11.5px/1 Inter;cursor:pointer"
+                    css="align-self:flex-start;padding:10px 16px;border:1px solid var(--rule);color:var(--faint);font:600 11.5px/1 Plus Jakarta Sans;cursor:pointer"
                     hover="border-color:var(--ink);color:var(--ink)"
                     onClick={() => this.go('dash')}
                   >← Cancel</Box>
@@ -2695,21 +2703,21 @@ export default class MedFactory extends React.Component {
 
                 {/* Header bar */}
                 <div style={S('padding:28px 40px 22px;border-bottom:2px solid var(--rule2)')}>
-                  <div style={S('font:600 10px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>WORKSPACE</div>
+                  <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>WORKSPACE</div>
                   <div style={S('display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap')}>
                     <div>
-                      <h1 style={S('font:800 26px/1.1 Inter;letter-spacing:-0.03em;margin:0 0 10px;color:var(--ink)')}>{v.workspaceName || 'Untitled Workspace'}</h1>
+                      <h1 style={S('font:800 26px/1.1 Plus Jakarta Sans;letter-spacing:-0.03em;margin:0 0 10px;color:var(--ink)')}>{v.workspaceName || 'Untitled Workspace'}</h1>
                       <div style={S('display:flex;align-items:center;gap:10px;flex-wrap:wrap')}>
-                        <span style={S('font:600 9px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>TOPIC</span>
-                        <span style={S('font:600 12px/1 Inter;color:var(--dim);padding:3px 10px;border:1px solid var(--rule2)')}>{v.topic}</span>
-                        <span style={S('font:600 9px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>HERO PRODUCT</span>
-                        <span style={S('font:600 12px/1 Inter;color:var(--dim);padding:3px 10px;border:1px solid var(--warn);color:var(--warn)')}>{v.heroProduct}</span>
-                        <span style={S('font:600 9px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>AUDIENCE</span>
-                        <span style={S('font:600 12px/1 Inter;padding:3px 10px;border:1px solid var(--acc);color:var(--acc)')}>HCP</span>
+                        <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>TOPIC</span>
+                        <span style={S('font:600 12px/1 Plus Jakarta Sans;color:var(--dim);padding:3px 10px;border:1px solid var(--rule2)')}>{v.topic}</span>
+                        <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>HERO PRODUCT</span>
+                        <span style={S('font:600 12px/1 Plus Jakarta Sans;color:var(--dim);padding:3px 10px;border:1px solid var(--warn);color:var(--warn)')}>{v.heroProduct}</span>
+                        <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>AUDIENCE</span>
+                        <span style={S('font:600 12px/1 Plus Jakarta Sans;padding:3px 10px;border:1px solid var(--acc);color:var(--acc)')}>HCP</span>
                       </div>
                     </div>
                     <Box
-                      css="background:var(--acc);color:#fff;font:700 13px/1 Inter;padding:13px 22px;cursor:pointer;display:flex;align-items:center;gap:10px;flex-shrink:0;border-radius:8px"
+                      css="background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font:700 13px/1 Plus Jakarta Sans;padding:13px 22px;cursor:pointer;display:flex;align-items:center;gap:10px;flex-shrink:0;border-radius:8px"
                       hover="opacity:0.88"
                       onClick={v.createWsResearch}
                     >
@@ -2733,10 +2741,10 @@ export default class MedFactory extends React.Component {
                           <path d="M11 7v4M11 15h.01" stroke="var(--faint)" strokeWidth="1.5" strokeLinecap="square"/>
                         </svg>
                       </div>
-                      <div style={S('font:700 16px/1.3 Inter;color:var(--ink);margin-bottom:10px')}>No research sessions yet</div>
-                      <div style={S('font:400 13px/1.6 Inter;color:var(--faint);max-width:340px;margin-bottom:28px')}>Start a research session to gather scientific evidence, then create artifacts from it — decks, blogs, protocols and more.</div>
+                      <div style={S('font:700 16px/1.3 Plus Jakarta Sans;color:var(--ink);margin-bottom:10px')}>No research sessions yet</div>
+                      <div style={S('font:400 13px/1.6 Plus Jakarta Sans;color:var(--faint);max-width:340px;margin-bottom:28px')}>Start a research session to gather scientific evidence, then create artifacts from it — decks, blogs, protocols and more.</div>
                       <Box
-                        css="background:var(--acc);color:#fff;font:700 13px/1 Inter;padding:13px 28px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;border-radius:8px"
+                        css="background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font:700 13px/1 Plus Jakarta Sans;padding:13px 28px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;border-radius:8px"
                         hover="opacity:0.88"
                         onClick={v.createWsResearch}
                       >
@@ -2754,7 +2762,7 @@ export default class MedFactory extends React.Component {
                           return (
                             <Box
                               key={r.id}
-                              css={`padding:10px 22px;font:${isActive ? 700 : 600} 12.5px/1 Inter;cursor:pointer;border:1px solid ${isActive ? 'var(--rule2)' : 'transparent'};border-bottom:none;margin-bottom:-2px;display:flex;align-items:center;gap:8px;background:${isActive ? 'var(--s1)' : 'transparent'};color:${isActive ? 'var(--ink)' : 'var(--dim)'}`}
+                              css={`padding:10px 22px;font:${isActive ? 700 : 600} 12.5px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid ${isActive ? 'var(--rule2)' : 'transparent'};border-bottom:none;margin-bottom:-2px;display:flex;align-items:center;gap:8px;background:${isActive ? 'var(--s1)' : 'transparent'};color:${isActive ? 'var(--ink)' : 'var(--dim)'}`}
                               hover={!isActive ? 'color:var(--ink);background:var(--s2)' : ''}
                               onClick={() => v.setWsActiveResearch(r.id)}
                             >
@@ -2763,7 +2771,7 @@ export default class MedFactory extends React.Component {
                               )}
                               {r.name}
                               {isDone && (
-                                <span style={S('font:700 8px/1 Inter;letter-spacing:0.1em;color:var(--ok);border:1px solid var(--ok);padding:1px 5px;margin-left:2px')}>DONE</span>
+                                <span style={S('font:700 8px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--ok);border:1px solid var(--ok);padding:1px 5px;margin-left:2px')}>DONE</span>
                               )}
                             </Box>
                           );
@@ -2792,8 +2800,8 @@ export default class MedFactory extends React.Component {
                                 <div style={S('display:flex;align-items:center;justify-content:space-between;margin-bottom:10px')}>
                                   <div style={S('display:flex;align-items:center;gap:8px')}>
                                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7c3aed', animation: 'puls 1.2s ease-in-out infinite' }} />
-                                    <span style={S('font:600 12px/1 Inter;color:#5b21b6')}>Research in progress</span>
-                                    <span style={S('font:400 11px/1 Inter;color:var(--faint)')}>{currentPhase.label}…</span>
+                                    <span style={S('font:600 12px/1 Plus Jakarta Sans;color:#5b21b6')}>Research in progress</span>
+                                    <span style={S('font:400 11px/1 Plus Jakarta Sans;color:var(--faint)')}>{currentPhase.label}…</span>
                                   </div>
                                   <span style={S('font:700 11px/1 var(--mono);color:#7c3aed')}>{rPct}%</span>
                                 </div>
@@ -2806,7 +2814,7 @@ export default class MedFactory extends React.Component {
                                     return (
                                       <div key={pi} style={S('flex:1;display:flex;align-items:center;gap:4px')}>
                                         <div style={{ width: 6, height: 6, borderRadius: '50%', background: done ? '#7c3aed' : 'rgba(124,58,237,0.2)', flexShrink: 0 }} />
-                                        <span style={{ font: '500 9px/1 Inter', color: done ? '#5b21b6' : 'var(--faint)', letterSpacing: '0.02em' }}>{p.label}</span>
+                                        <span style={{ font: '500 9px/1 Plus Jakarta Sans', color: done ? '#5b21b6' : 'var(--faint)', letterSpacing: '0.02em' }}>{p.label}</span>
                                       </div>
                                     );
                                   })}
@@ -2817,7 +2825,7 @@ export default class MedFactory extends React.Component {
                             {/* Action buttons row */}
                             <div style={S('padding:14px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px')}>
                               <Box
-                                css="padding:9px 18px;font:600 12px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:8px"
+                                css="padding:9px 18px;font:600 12px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:8px"
                                 hover="border-color:var(--ink);color:var(--ink)"
                                 onClick={() => this.go('research')}
                               >
@@ -2825,17 +2833,17 @@ export default class MedFactory extends React.Component {
                                 {isDone ? 'View / Modify Research' : isInProgress ? 'View Research' : 'Start Research'}
                               </Box>
                               <Box
-                                css={`padding:9px 18px;font:600 12px/1 Inter;border:1px solid ${isDone ? 'var(--acc)' : 'var(--rule)'};color:${isDone ? 'var(--acc)' : 'var(--faint)'};cursor:${isDone ? 'pointer' : 'default'};background:${isDone ? 'rgba(44,82,204,0.07)' : 'transparent'};display:flex;align-items:center;gap:8px`}
+                                css={`padding:9px 18px;font:600 12px/1 Plus Jakarta Sans;border:1px solid ${isDone ? 'var(--acc)' : 'var(--rule)'};color:${isDone ? 'var(--acc)' : 'var(--faint)'};cursor:${isDone ? 'pointer' : 'default'};background:${isDone ? 'rgba(44,82,204,0.07)' : 'transparent'};display:flex;align-items:center;gap:8px`}
                                 hover={isDone ? 'background:rgba(44,82,204,0.14)' : ''}
                               >
                                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1" y="1" width="4" height="4" stroke="currentColor" strokeWidth="1.3"/><rect x="6" y="6" width="4" height="4" stroke="currentColor" strokeWidth="1.3"/><path d="M5 3h3V6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square"/></svg>
                                 Create Artifact
-                                {!isDone && <span style={S('font:500 9px/1 Inter;color:var(--faint)')}>— complete research first</span>}
+                                {!isDone && <span style={S('font:500 9px/1 Plus Jakarta Sans;color:var(--faint)')}>— complete research first</span>}
                               </Box>
                               {isDone && (
                                 <div style={S('margin-left:auto;display:flex;align-items:center;gap:6px')}>
                                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(22,101,52,0.12)"/><path d="M4 7l2.5 2.5L10 5" stroke="var(--ok)" strokeWidth="1.5" strokeLinecap="square"/></svg>
-                                  <span style={S('font:600 11px/1 Inter;color:var(--ok)')}>Research complete</span>
+                                  <span style={S('font:600 11px/1 Plus Jakarta Sans;color:var(--ok)')}>Research complete</span>
                                 </div>
                               )}
                             </div>
@@ -2843,22 +2851,59 @@ export default class MedFactory extends React.Component {
                             {/* Artifacts list */}
                             {activeR.artifacts.length > 0 ? (
                               <div style={S('padding:0')}>
-                                <div style={S('padding:10px 24px 8px;font:600 9px/1 Inter;letter-spacing:0.14em;color:var(--faint)')}>ARTIFACTS</div>
+                                <div style={S('padding:10px 24px 8px;font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint)')}>ARTIFACTS</div>
                                 {activeR.artifacts.map((art, ai) => (
                                   <div key={ai} style={S('display:flex;align-items:center;gap:16px;padding:12px 24px;border-top:1px solid var(--rule)')}>
-                                    <div style={S('font:600 13px/1 Inter;color:var(--ink);flex:1')}>{art.name}</div>
-                                    <span style={{ padding: '3px 9px', font: '700 9px/1 Inter', letterSpacing: '0.1em', border: `1px solid ${art.status === 'In Review' ? 'var(--acc)' : 'var(--rule2)'}`, color: art.status === 'In Review' ? 'var(--acc)' : 'var(--faint)' }}>{art.status.toUpperCase()}</span>
+                                    <div style={S('font:600 13px/1 Plus Jakarta Sans;color:var(--ink);flex:1')}>{art.name}</div>
+                                    <span style={{ padding: '3px 9px', font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', border: `1px solid ${art.status === 'In Review' ? 'var(--acc)' : 'var(--rule2)'}`, color: art.status === 'In Review' ? 'var(--acc)' : 'var(--faint)' }}>{art.status.toUpperCase()}</span>
                                     <Box
-                                      css="padding:7px 14px;font:600 11.5px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:6px"
+                                      css="padding:7px 14px;font:600 11.5px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:6px"
                                       hover="border-color:var(--ink);color:var(--ink)"
                                       onClick={() => this.go('deliver')}
                                     >Modify →</Box>
                                   </div>
                                 ))}
                               </div>
+                            ) : isDone ? (
+                              /* Research complete — summary card */
+                              <div style={S('padding:24px')}>
+                                <div style={{ background: 'rgba(22,101,52,0.05)', border: '1px solid rgba(22,101,52,0.2)', borderRadius: 12, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+                                  {/* Header */}
+                                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                                    <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(22,101,52,0.12)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4.5 4.5L15 5" stroke="var(--ok)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                    </div>
+                                    <div>
+                                      <div style={S('font:700 15px/1.2 Plus Jakarta Sans;color:var(--ink);margin-bottom:4px')}>Research 1 complete</div>
+                                      <div style={S('font:400 12.5px/1.5 Plus Jakarta Sans;color:var(--faint)')}>12 papers retrieved across 6 databases. Evidence is indexed and ready for content generation.</div>
+                                    </div>
+                                  </div>
+                                  {/* Stats row */}
+                                  <div style={{ display: 'flex', gap: 12 }}>
+                                    {[['12', 'Papers'], ['6', 'Databases'], ['71', 'Raw sources'], ['97%', 'Top relevance']].map(([n, l]) => (
+                                      <div key={l} style={{ flex: 1, background: '#fff', border: '1px solid var(--rule)', borderRadius: 8, padding: '12px 10px', textAlign: 'center' }}>
+                                        <div style={S('font:800 18px/1 Plus Jakarta Sans;color:var(--ok);margin-bottom:4px')}>{n}</div>
+                                        <div style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.06em')}>{l}</div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                  {/* CTA */}
+                                  <Box
+                                    css="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;cursor:pointer;border-radius:10px"
+                                    hover="opacity:0.9"
+                                    onClick={() => this.go('research')}
+                                  >
+                                    <div>
+                                      <div style={S('font:700 13px/1 Plus Jakarta Sans;margin-bottom:4px')}>View Research Papers</div>
+                                      <div style={S('font:400 11px/1 Plus Jakarta Sans;opacity:0.8')}>Review evidence, accept papers, then send to Scientific Review</div>
+                                    </div>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                  </Box>
+                                </div>
+                              </div>
                             ) : (
-                              <div style={S('padding:28px 24px;color:var(--faint);font:400 12.5px/1.6 Inter;text-align:center')}>
-                                {isDone ? 'No artifacts yet — click Create Artifact above.' : isInProgress ? 'Artifacts will be available once research completes.' : 'Complete research first, then create artifacts here.'}
+                              <div style={S('padding:28px 24px;color:var(--faint);font:400 12.5px/1.6 Plus Jakarta Sans;text-align:center')}>
+                                {isInProgress ? 'Artifacts will be available once research completes.' : 'Complete research first, then create artifacts here.'}
                               </div>
                             )}
                           </div>
@@ -2922,14 +2967,14 @@ export default class MedFactory extends React.Component {
                   <div style={S(`display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--rule);flex:none;background:${isDone ? 'rgba(22,101,52,0.08)' : 'rgba(44,82,204,0.06)'}`)}>
                     <div style={S(`width:8px;height:8px;border-radius:50%;flex:none;background:${isDone ? 'var(--ok)' : 'var(--acc)'};${isDone ? '' : 'animation:puls 1s infinite'}`)}>
                     </div>
-                    <div style={S(`font:700 10px/1 Inter;letter-spacing:0.14em;color:${isDone ? 'var(--ok)' : 'var(--acc)'}`)}>
+                    <div style={S(`font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:${isDone ? 'var(--ok)' : 'var(--acc)'}`)}>
                       {isDone ? 'RESEARCH COMPLETE — BRIEF YOUR AGENT BELOW' : 'RUNNING RESEARCH…'}
                     </div>
                     {!isDone && (
                       <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{pct}%</div>
                     )}
                     <Box
-                      css={`${isDone ? 'margin-left:auto;' : ''}flex-shrink:0;padding:5px 12px;font:700 9.5px/1 Inter;letter-spacing:0.1em;cursor:pointer;border:1.5px solid var(--acc);color:var(--acc);background:rgba(44,82,204,0.07);display:flex;align-items:center;gap:6px`}
+                      css={`${isDone ? 'margin-left:auto;' : ''}flex-shrink:0;padding:5px 12px;font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.1em;cursor:pointer;border:1.5px solid var(--acc);color:var(--acc);background:rgba(44,82,204,0.07);display:flex;align-items:center;gap:6px`}
                       hover="background:rgba(44,82,204,0.15);color:var(--acc)"
                       onClick={() => this.setState({ chatCollapsed: true })}
                     >
@@ -2941,7 +2986,7 @@ export default class MedFactory extends React.Component {
                   {/* Thread header */}
                   {activeThread && (
                     <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule);flex:none')}>
-                      <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>BRAND INTELLIGENCE AGENT</div>
+                      <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>BRAND INTELLIGENCE AGENT</div>
                       <div style={S('font-weight:700;font-size:14px;letter-spacing:-0.01em')}>{activeThread.name}</div>
                     </div>
                   )}
@@ -2950,7 +2995,7 @@ export default class MedFactory extends React.Component {
                   <div style={S('flex:1;overflow-y:auto;padding:20px')}>
                     {activeThread && activeThread.messages.map((m, i) => (
                       <div key={i} style={S(`display:flex;gap:10px;margin-bottom:20px;flex-direction:${m.from === 'user' ? 'row-reverse' : 'row'}`)}>
-                        <div style={S(`width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;border-radius:50%;${m.from === 'agent' ? 'background:var(--acc);color:#fff' : 'background:var(--s2);border:1px solid var(--rule2);color:var(--dim)'}`)}>
+                        <div style={S(`width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;border-radius:50%;${m.from === 'agent' ? 'background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff' : 'background:var(--s2);border:1px solid var(--rule2);color:var(--dim)'}`)}>
                           {m.from === 'agent' ? 'AI' : 'ME'}
                         </div>
                         <div style={S(`max-width:80%;${m.from === 'user' ? 'text-align:right' : ''}`)}>
@@ -2966,9 +3011,9 @@ export default class MedFactory extends React.Component {
                     {/* Thinking indicator — visible while research is running */}
                     {!isDone && (
                       <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
-                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--acc);color:#fff;border-radius:50%')}>AI</div>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:50%')}>AI</div>
                         <div style={S('max-width:85%')}>
-                          <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.12em;color:var(--acc);margin-bottom:7px')}>RESEARCH AGENT · ACTIVE</div>
+                          <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--acc);margin-bottom:7px')}>RESEARCH AGENT · ACTIVE</div>
                           <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:13px 15px;border-radius:10px')}>
                             <div style={S('font-size:12px;color:var(--dim);margin-bottom:11px;line-height:1.5')} key={thinkingMsg}>
                               {thinkingMsg}
@@ -2977,7 +3022,7 @@ export default class MedFactory extends React.Component {
                               {[0, 1, 2].map((d) => (
                                 <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
                               ))}
-                              <span style={S('font:600 10px/1 Inter;letter-spacing:0.1em;color:var(--faint);margin-left:8px')}>RESEARCHING</span>
+                              <span style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint);margin-left:8px')}>RESEARCHING</span>
                             </div>
                           </div>
                         </div>
@@ -2987,9 +3032,9 @@ export default class MedFactory extends React.Component {
                     {/* Done confirmation bubble */}
                     {isDone && (
                       <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
-                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
                         <div style={S('max-width:85%')}>
-                          <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.12em;color:var(--ok);margin-bottom:7px')}>RESEARCH AGENT · COMPLETE</div>
+                          <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--ok);margin-bottom:7px')}>RESEARCH AGENT · COMPLETE</div>
                           <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--ok);padding:13px 15px;font-size:12.5px;line-height:1.6;color:var(--dim);border-radius:10px')}>
                             Research complete — <strong style={S('color:var(--ink)')}>12 papers retrieved</strong> across 6 databases. Evidence is indexed and ready for content generation.<br /><br />
                             While you wait, share any clinical context below — or type <strong style={S('color:var(--ink)')}>"show me more papers"</strong> to expand the search.
@@ -3001,9 +3046,9 @@ export default class MedFactory extends React.Component {
                     {/* More research thinking bubble */}
                     {v.moreResearchActive && (
                       <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
-                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--acc);color:#fff;border-radius:50%')}>AI</div>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:50%')}>AI</div>
                         <div style={S('max-width:85%')}>
-                          <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.12em;color:var(--acc);margin-bottom:7px')}>RESEARCH AGENT · EXPANDING</div>
+                          <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--acc);margin-bottom:7px')}>RESEARCH AGENT · EXPANDING</div>
                           <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:13px 15px;border-radius:10px')}>
                             <div style={S('font-size:12px;color:var(--dim);margin-bottom:10px;line-height:1.5')}>
                               {['Querying Cochrane Library…', 'Scanning NICE HTA database…', 'Deep-searching supplementary PubMed…', 'Extracting and scoring new evidence…', 'Indexing additional papers…'][Math.min(Math.floor(v.moreResearchN / 2), 4)]}
@@ -3012,7 +3057,7 @@ export default class MedFactory extends React.Component {
                               {[0, 1, 2].map((d) => (
                                 <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
                               ))}
-                              <span style={S('font:600 10px/1 Inter;letter-spacing:0.1em;color:var(--faint);margin-left:8px')}>{v.moreResearchN} / {EXTRA_PAPERS.length + 4}</span>
+                              <span style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint);margin-left:8px')}>{v.moreResearchN} / {EXTRA_PAPERS.length + 4}</span>
                             </div>
                           </div>
                         </div>
@@ -3027,10 +3072,10 @@ export default class MedFactory extends React.Component {
                       const preview = acceptedList.slice(0, 3);
                       return (
                         <div style={S('margin-bottom:20px;animation:rise 0.28s ease')}>
-                          <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.12em;color:var(--ok);margin-bottom:8px;padding-left:38px')}>EVIDENCE BASE · {acceptedCount} {acceptedCount === 1 ? 'PAPER' : 'PAPERS'} ACCEPTED</div>
+                          <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--ok);margin-bottom:8px;padding-left:38px')}>EVIDENCE BASE · {acceptedCount} {acceptedCount === 1 ? 'PAPER' : 'PAPERS'} ACCEPTED</div>
                           {/* Stack */}
                           <div style={S('display:flex;gap:10px;align-items:flex-start')}>
-                            <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
+                            <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
                             <Box
                               css="position:relative;cursor:pointer;padding-bottom:12px"
                               onClick={v.toggleAcceptedPopup}
@@ -3044,15 +3089,15 @@ export default class MedFactory extends React.Component {
                               })}
                               {/* Top card */}
                               <div style={{ position: 'relative', zIndex: preview.length, background: 'var(--s1)', border: '1px solid var(--rule)', borderLeft: '2px solid var(--ok)', padding: '10px 14px', minWidth: 260, marginTop: (preview.length - 1) * 5, marginLeft: (preview.length - 1) * 5 }}>
-                                <div style={S('font:700 11.5px/1.4 Inter;color:var(--ink);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px')}>{acceptedList[acceptedCount - 1].title}</div>
-                                <div style={S('font:500 10px/1 Inter;color:var(--faint)')}>{acceptedList[acceptedCount - 1].journal.split('·')[0].trim()} · {acceptedList[acceptedCount - 1].year}</div>
+                                <div style={S('font:700 11.5px/1.4 Plus Jakarta Sans;color:var(--ink);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px')}>{acceptedList[acceptedCount - 1].title}</div>
+                                <div style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>{acceptedList[acceptedCount - 1].journal.split('·')[0].trim()} · {acceptedList[acceptedCount - 1].year}</div>
                               </div>
                               {/* Count badge */}
-                              <div style={{ position: 'absolute', top: -8, right: -8, zIndex: preview.length + 1, background: 'var(--ok)', color: '#fff', font: '700 10px/1 Inter', padding: '3px 7px', borderRadius: 2 }}>
+                              <div style={{ position: 'absolute', top: -8, right: -8, zIndex: preview.length + 1, background: 'var(--ok)', color: '#fff', font: '700 10px/1 Plus Jakarta Sans', padding: '3px 7px', borderRadius: 2 }}>
                                 {acceptedCount}
                               </div>
                               {/* Click hint */}
-                              <div style={S('margin-top:8px;font:600 10px/1 Inter;color:var(--ok);letter-spacing:0.06em')}>
+                              <div style={S('margin-top:8px;font:600 10px/1 Plus Jakarta Sans;color:var(--ok);letter-spacing:0.06em')}>
                                 Click to view all accepted papers ↗
                               </div>
                             </Box>
@@ -3066,9 +3111,9 @@ export default class MedFactory extends React.Component {
                                 {/* Popup header */}
                                 <div style={S('padding:14px 18px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:10px;flex:none')}>
                                   <span style={S('width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none')} />
-                                  <span style={S('font:700 12px/1 Inter;letter-spacing:-0.01em')}>Accepted Evidence</span>
-                                  <span style={S('padding:2px 8px;background:var(--ok);color:#fff;font:700 10px/1 Inter;margin-left:2px;border-radius:20px')}>{acceptedCount}</span>
-                                  <Box css="margin-left:auto;font:600 11px/1 Inter;color:var(--faint);cursor:pointer;padding:4px 8px" hover="color:var(--ink)" onClick={v.toggleAcceptedPopup}>✕ Close</Box>
+                                  <span style={S('font:700 12px/1 Plus Jakarta Sans;letter-spacing:-0.01em')}>Accepted Evidence</span>
+                                  <span style={S('padding:2px 8px;background:var(--ok);color:#fff;font:700 10px/1 Plus Jakarta Sans;margin-left:2px;border-radius:20px')}>{acceptedCount}</span>
+                                  <Box css="margin-left:auto;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;padding:4px 8px" hover="color:var(--ink)" onClick={v.toggleAcceptedPopup}>✕ Close</Box>
                                 </div>
                                 {/* Popup list */}
                                 <div style={S('overflow-y:auto;flex:1')}>
@@ -3076,11 +3121,11 @@ export default class MedFactory extends React.Component {
                                     <div key={idx} style={S('padding:12px 18px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:5px;animation:rise 0.18s ease')}>
                                       <div style={S('display:flex;align-items:flex-start;gap:8px')}>
                                         <span style={S('width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none;margin-top:5px')} />
-                                        <div style={S('font:700 12px/1.4 Inter;color:var(--ink)')}>{p.title}</div>
+                                        <div style={S('font:700 12px/1.4 Plus Jakarta Sans;color:var(--ink)')}>{p.title}</div>
                                       </div>
-                                      <div style={S('padding-left:14px;font:500 10.5px/1 Inter;color:var(--faint)')}>{p.journal.split('·')[0].trim()} · {p.year} · {p.grade}</div>
+                                      <div style={S('padding-left:14px;font:500 10.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{p.journal.split('·')[0].trim()} · {p.year} · {p.grade}</div>
                                       <div style={S('padding-left:14px;display:flex;gap:6px;flex-wrap:wrap')}>
-                                        {p.artifacts.map((a) => <span key={a} style={S('padding:2px 7px;border:1px solid var(--rule2);font:600 9px/1 Inter;color:var(--faint);border-radius:20px')}>{a}</span>)}
+                                        {p.artifacts.map((a) => <span key={a} style={S('padding:2px 7px;border:1px solid var(--rule2);font:600 9px/1 Plus Jakarta Sans;color:var(--faint);border-radius:20px')}>{a}</span>)}
                                       </div>
                                     </div>
                                   ))}
@@ -3105,7 +3150,7 @@ export default class MedFactory extends React.Component {
                         onKeyDown={v.onProjectKey}
                       />
                       <Box
-                        css="background:var(--acc);color:#fff;font-weight:700;padding:12px 16px;cursor:pointer;font-size:12px;flex:none;align-self:stretch;display:flex;align-items:center;border-radius:8px"
+                        css="background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font-weight:700;padding:12px 16px;cursor:pointer;font-size:12px;flex:none;align-self:stretch;display:flex;align-items:center;border-radius:8px"
                         hover="opacity:0.85"
                         onClick={v.sendIntelMessage}
                       >Send</Box>
@@ -3113,8 +3158,29 @@ export default class MedFactory extends React.Component {
                   </div>
               </div>
             );
+            const activeWs = v.createdWorkspaces.find((w) => w.id === v.activeWorkspaceId);
             const researchPanelJSX = (
               <div style={S('height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--s1)')}>
+
+                  {/* Breadcrumb — back to workspace hub */}
+                  {activeWs && (
+                    <div style={S('padding:7px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:6px;flex:none;background:var(--s2)')}>
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:6px;font:500 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;padding:3px 0"
+                        hover="color:var(--acc)"
+                        onClick={() => this.go('workspace-hub')}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1L3 6l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <span style={S('font:600 11px/1 Plus Jakarta Sans;color:var(--faint)')}>Workspace</span>
+                      </Box>
+                      <span style={S('color:var(--rule2);font-size:11px')}>/</span>
+                      <span style={S('font:600 11px/1 Plus Jakarta Sans;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px')}>{activeWs.topic || activeWs.name}</span>
+                      <span style={S('color:var(--rule2);font-size:11px')}>/</span>
+                      <span style={S('font:600 11px/1 Plus Jakarta Sans;color:var(--dim)')}>
+                        {v.wsResearches.find(r => r.id === v.wsActiveResearch)?.name || 'Research'}
+                      </span>
+                    </div>
+                  )}
 
                   {isDone ? (
                     /* ===== DONE STATE: Card Grid View ===== */
@@ -3123,14 +3189,14 @@ export default class MedFactory extends React.Component {
                       {/* Header bar */}
                       <div style={S('padding:13px 18px;border-bottom:1px solid var(--rule2);display:flex;align-items:center;gap:10px;flex:none;background:var(--bg)')}>
                         <span style={S('width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none')} />
-                        <div style={S('font:700 12px/1 Inter;letter-spacing:-0.01em')}>Research Papers</div>
+                        <div style={S('font:700 12px/1 Plus Jakarta Sans;letter-spacing:-0.01em')}>Research Papers</div>
                         <span style={S('font:600 10px/1 var(--mono);color:var(--faint)')}>{RESEARCH_PAPERS.length + (v.moreResearchDone ? EXTRA_PAPERS.length : 0)} sources</span>
                         {v.moreResearchDone && (
-                          <span style={S('padding:2px 7px;font:700 8.5px/1 Inter;letter-spacing:0.1em;color:var(--ok);border:1px solid var(--ok);background:rgba(22,101,52,0.07)')}>+{EXTRA_PAPERS.length} EXPANDED</span>
+                          <span style={S('padding:2px 7px;font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--ok);border:1px solid var(--ok);background:rgba(22,101,52,0.07)')}>+{EXTRA_PAPERS.length} EXPANDED</span>
                         )}
                         {/* Sources toggle */}
                         <Box
-                          css="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--rule2);cursor:pointer;font:600 10.5px/1 Inter;color:var(--dim)"
+                          css="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--rule2);cursor:pointer;font:600 10.5px/1 Plus Jakarta Sans;color:var(--dim)"
                           hover="border-color:var(--ink);color:var(--ink)"
                           onClick={v.toggleResearchSources}
                         >
@@ -3149,7 +3215,7 @@ export default class MedFactory extends React.Component {
                             <div style={{ padding: '10px 20px', background: '#fff', borderBottom: '1px solid rgba(26,45,107,0.08)', display: 'flex', alignItems: 'center', gap: 20 }}>
                               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', flex: 1 }}>
                                 {RESEARCH_DBS.map((db) => (
-                                  <span key={db} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', border: '1px solid rgba(22,101,52,0.3)', background: 'rgba(22,101,52,0.06)', font: '600 10.5px/1 Inter', color: '#166534', borderRadius: 20 }}>
+                                  <span key={db} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', border: '1px solid rgba(22,101,52,0.3)', background: 'rgba(22,101,52,0.06)', font: '600 10.5px/1 Plus Jakarta Sans', color: '#166534', borderRadius: 20 }}>
                                     <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#166534', flexShrink: 0 }} />{db}
                                   </span>
                                 ))}
@@ -3157,8 +3223,8 @@ export default class MedFactory extends React.Component {
                               <div style={{ display: 'flex', gap: 18, flexShrink: 0 }}>
                                 {[['71', 'raw'], ['12', 'retained'], ['58', 'chunks']].map(([n, l]) => (
                                   <div key={l} style={{ textAlign: 'center' }}>
-                                    <div style={{ font: '800 15px/1 Inter', color: '#166534' }}>{n}</div>
-                                    <div style={{ font: '600 9px/1 Inter', color: '#6878a8', marginTop: 2, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{l}</div>
+                                    <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#166534' }}>{n}</div>
+                                    <div style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 2, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{l}</div>
                                   </div>
                                 ))}
                               </div>
@@ -3166,7 +3232,7 @@ export default class MedFactory extends React.Component {
 
                             {/* Evidence Retrieved list */}
                             <div style={{ padding: '14px 18px' }}>
-                              <div style={{ font: '700 10px/1 Inter', letterSpacing: '0.14em', color: '#6878a8', marginBottom: 12, textTransform: 'uppercase' }}>
+                              <div style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#6878a8', marginBottom: 12, textTransform: 'uppercase' }}>
                                 Evidence Retrieved &middot; {RESEARCH_PAPERS.length}
                               </div>
 
@@ -3185,13 +3251,13 @@ export default class MedFactory extends React.Component {
                                       <div style={{ flex: 1, minWidth: 0 }}>
                                         {/* Pills row */}
                                         <div style={{ display: 'flex', gap: 6, marginBottom: 7, flexWrap: 'wrap' }}>
-                                          <span style={{ padding: '2px 8px', border: `1px solid ${tc}`, font: '700 9.5px/1.5 Inter', color: tc, letterSpacing: '0.04em', borderRadius: 3, textTransform: 'uppercase' }}>{p.type}</span>
-                                          <span style={{ padding: '2px 8px', background: `${dc}14`, font: '600 9.5px/1.5 Inter', color: dc, borderRadius: 3 }}>{p.db} {p.year}</span>
+                                          <span style={{ padding: '2px 8px', border: `1px solid ${tc}`, font: '700 9.5px/1.5 Plus Jakarta Sans', color: tc, letterSpacing: '0.04em', borderRadius: 3, textTransform: 'uppercase' }}>{p.type}</span>
+                                          <span style={{ padding: '2px 8px', background: `${dc}14`, font: '600 9.5px/1.5 Plus Jakarta Sans', color: dc, borderRadius: 3 }}>{p.db} {p.year}</span>
                                         </div>
                                         {/* Title */}
-                                        <div style={{ font: '700 14px/1.4 Inter', color: '#1a2d6b', marginBottom: 4 }}>{p.title}</div>
+                                        <div style={{ font: '700 14px/1.4 Plus Jakarta Sans', color: '#1a2d6b', marginBottom: 4 }}>{p.title}</div>
                                         {/* Journal */}
-                                        <div style={{ font: '400 12px/1.3 Inter', color: '#6878a8' }}>{p.journal}</div>
+                                        <div style={{ font: '400 12px/1.3 Plus Jakarta Sans', color: '#6878a8' }}>{p.journal}</div>
                                       </div>
                                       {/* Relevance */}
                                       <div style={{ flexShrink: 0, width: 64, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, paddingTop: 2 }}>
@@ -3199,7 +3265,7 @@ export default class MedFactory extends React.Component {
                                         <div style={{ width: 64, height: 4, background: 'rgba(26,45,107,0.1)', overflow: 'hidden' }}>
                                           <div style={{ width: `${p.relevance}%`, height: '100%', background: p.relevance >= 80 ? '#166534' : p.relevance >= 60 ? '#92400e' : '#2c52cc' }} />
                                         </div>
-                                        <span style={{ font: '700 8px/1 Inter', letterSpacing: '0.12em', color: '#6878a8' }}>RELEVANCE</span>
+                                        <span style={{ font: '700 8px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: '#6878a8' }}>RELEVANCE</span>
                                       </div>
                                     </div>
 
@@ -3211,23 +3277,23 @@ export default class MedFactory extends React.Component {
                                         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 12 }}>
                                           {[['Design', p.designTier], ['GRADE', p.grade], ['Sample', p.statRigor], ['Citations', p.citations]].map(([label, val]) => (
                                             <div key={label}>
-                                              <div style={{ font: '700 9px/1 Inter', letterSpacing: '0.1em', color: '#6878a8', textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
-                                              <div style={{ font: '500 12px/1.4 Inter', color: '#2d4a8a' }}>{val}</div>
+                                              <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#6878a8', textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
+                                              <div style={{ font: '500 12px/1.4 Plus Jakarta Sans', color: '#2d4a8a' }}>{val}</div>
                                             </div>
                                           ))}
                                         </div>
                                         {/* Excerpt */}
                                         {p.excerpt && (
                                           <div style={{ background: '#fff', border: '1px solid rgba(26,45,107,0.1)', borderLeft: '3px solid ' + tc, padding: '10px 14px' }}>
-                                            <div style={{ font: '700 9px/1 Inter', letterSpacing: '0.1em', color: '#6878a8', textTransform: 'uppercase', marginBottom: 7 }}>Key Excerpt</div>
+                                            <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#6878a8', textTransform: 'uppercase', marginBottom: 7 }}>Key Excerpt</div>
                                             <p style={{ margin: 0, font: '400 13px/1.7 Georgia, serif', color: '#1a2d6b', fontStyle: 'italic' }}>{p.excerpt}</p>
-                                            <div style={{ font: '600 10.5px/1 Inter', color: '#6878a8', marginTop: 8 }}>{p.excerptSrc}</div>
+                                            <div style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 8 }}>{p.excerptSrc}</div>
                                           </div>
                                         )}
                                         {p.flag && (
                                           <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(146,64,14,0.06)', border: '1px solid rgba(146,64,14,0.25)', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                                            <span style={{ font: '700 10px/1 Inter', color: '#92400e', flexShrink: 0, marginTop: 1 }}>⚠ FLAG</span>
-                                            <span style={{ font: '400 12px/1.6 Inter', color: '#92400e' }}>{p.flag}</span>
+                                            <span style={{ font: '700 10px/1 Plus Jakarta Sans', color: '#92400e', flexShrink: 0, marginTop: 1 }}>⚠ FLAG</span>
+                                            <span style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: '#92400e' }}>{p.flag}</span>
                                           </div>
                                         )}
                                       </div>
@@ -3252,7 +3318,7 @@ export default class MedFactory extends React.Component {
                             <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule2);flex:none;background:rgba(44,82,204,0.04)')}>
                               <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:8px')}>
                                 <div style={S('width:9px;height:9px;border-radius:50%;flex:none;background:var(--acc);animation:puls 1.1s infinite')} />
-                                <span style={S('font:700 9.5px/1 Inter;letter-spacing:0.15em;color:var(--acc)')}>EXPANDING SEARCH · BATCH 2</span>
+                                <span style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.15em;color:var(--acc)')}>EXPANDING SEARCH · BATCH 2</span>
                                 <span style={S('margin-left:auto;font:700 11px/1 var(--mono);color:var(--faint)')}>{morePct}%</span>
                               </div>
                               <div style={S('height:3px;background:var(--rule);overflow:hidden')}>
@@ -3264,12 +3330,12 @@ export default class MedFactory extends React.Component {
                             <div style={S('flex:1;overflow-y:auto;padding:18px 20px')}>
                               {/* New DB connections */}
                               <div style={S('margin-bottom:16px')}>
-                                <div style={S('font:700 9px/1 Inter;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>ADDITIONAL SOURCES</div>
+                                <div style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>ADDITIONAL SOURCES</div>
                                 <div style={S('display:flex;gap:8px;flex-wrap:wrap')}>
                                   {EXTRA_DBS.map((db, i) => {
                                     const connected = v.moreResearchN > i;
                                     return (
-                                      <div key={db} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 11px', border: `1px solid ${connected ? 'var(--ok)' : 'var(--rule)'}`, background: connected ? 'rgba(22,101,52,0.08)' : 'var(--bg)', font: '600 11px/1 Inter', color: connected ? 'var(--ok)' : 'var(--faint)', animation: connected ? 'rise 0.22s ease' : '' }}>
+                                      <div key={db} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 11px', border: `1px solid ${connected ? 'var(--ok)' : 'var(--rule)'}`, background: connected ? 'rgba(22,101,52,0.08)' : 'var(--bg)', font: '600 11px/1 Plus Jakarta Sans', color: connected ? 'var(--ok)' : 'var(--faint)', animation: connected ? 'rise 0.22s ease' : '' }}>
                                         <span style={{ width: 5, height: 5, borderRadius: '50%', background: connected ? 'var(--ok)' : 'var(--rule2)', flexShrink: 0 }} />
                                         {db}
                                       </div>
@@ -3279,7 +3345,7 @@ export default class MedFactory extends React.Component {
                               </div>
 
                               {/* Status label */}
-                              <div style={S('font:700 9px/1 Inter;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>
+                              <div style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>
                                 PAPERS FOUND · {visibleExtra} of {EXTRA_PAPERS.length}
                               </div>
 
@@ -3290,7 +3356,7 @@ export default class MedFactory extends React.Component {
                                 return (
                                   <div key={i} style={{ background: 'var(--bg)', border: '1px solid rgba(44,82,204,0.2)', borderLeft: '2px solid var(--acc)', padding: '12px 14px', marginBottom: 8, animation: 'cardIn 0.38s cubic-bezier(0.22,1,0.36,1) both' }}>
                                     <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
-                                      <span style={{ padding: '2px 6px', font: '700 8.5px/1 Inter', border: `1px solid ${tc}`, color: tc, letterSpacing: '0.09em' }}>{p.type.toUpperCase()}</span>
+                                      <span style={{ padding: '2px 6px', font: '700 8.5px/1 Plus Jakarta Sans', border: `1px solid ${tc}`, color: tc, letterSpacing: '0.09em' }}>{p.type.toUpperCase()}</span>
                                       <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
                                       <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
                                       <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
@@ -3300,8 +3366,8 @@ export default class MedFactory extends React.Component {
                                         </div>
                                       </div>
                                     </div>
-                                    <div style={S('font:700 12.5px/1.35 Inter;color:var(--ink);letter-spacing:-0.01em;margin-bottom:4px')}>{p.title}</div>
-                                    <div style={S('font:400 11px/1.55 Inter;color:var(--dim);font-style:italic')}>{p.journal}</div>
+                                    <div style={S('font:700 12.5px/1.35 Plus Jakarta Sans;color:var(--ink);letter-spacing:-0.01em;margin-bottom:4px')}>{p.title}</div>
+                                    <div style={S('font:400 11px/1.55 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>{p.journal}</div>
                                   </div>
                                 );
                               })}
@@ -3312,7 +3378,7 @@ export default class MedFactory extends React.Component {
                                   {[0, 1, 2].map((d) => (
                                     <div key={d} style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
                                   ))}
-                                  <span style={S('font:600 10px/1 Inter;color:var(--faint);margin-left:8px;letter-spacing:0.1em')}>{thinkLabel}</span>
+                                  <span style={S('font:600 10px/1 Plus Jakarta Sans;color:var(--faint);margin-left:8px;letter-spacing:0.1em')}>{thinkLabel}</span>
                                 </div>
                               )}
                             </div>
@@ -3377,7 +3443,7 @@ export default class MedFactory extends React.Component {
                                 return (
                                   <Box
                                     key={id}
-                                    css={`padding:4px 10px;font:600 10px/1 Inter;letter-spacing:0.06em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
+                                    css={`padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.06em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
                                     hover={!active ? 'border-color:var(--rule2);color:var(--dim)' : ''}
                                     onClick={() => v.setTrackFilter(id)}
                                   >{label}</Box>
@@ -3400,14 +3466,14 @@ export default class MedFactory extends React.Component {
 
                             {/* Row 2: Grade · Artifact · Funding · Sort · Clear */}
                             <div style={S('padding:8px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;background:var(--bg);position:relative')}>
-                              <span style={S('font:700 9px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>GRADE</span>
+                              <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>GRADE</span>
                               {['A', 'B', 'C', 'D', 'F'].map((g) => {
                                 const active = v.gradeFilter.includes(g);
                                 const count = gradeCounts[g] || 0;
                                 return (
                                   <Box
                                     key={g}
-                                    css={`width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;font:700 10px/1 Inter;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'var(--acc)' : 'transparent'};color:${active ? '#fff' : count > 0 ? 'var(--dim)' : 'var(--rule2)'}`}
+                                    css={`width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;font:700 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'var(--acc)' : 'transparent'};color:${active ? '#fff' : count > 0 ? 'var(--dim)' : 'var(--rule2)'}`}
                                     hover={!active && count > 0 ? 'border-color:var(--acc);color:var(--acc)' : ''}
                                     onClick={() => count > 0 && v.toggleGradeFilter(g)}
                                   >{g}</Box>
@@ -3416,14 +3482,14 @@ export default class MedFactory extends React.Component {
 
                               <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
 
-                              <span style={S('font:700 9px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>ARTIFACT</span>
+                              <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>ARTIFACT</span>
                               {['All', ...ALL_ARTIFACTS].map((a) => {
                                 const active = v.artifactFilter === a;
                                 const count = a === 'All' ? RESEARCH_PAPERS.length : (artifactCounts[a] || 0);
                                 return (
                                   <Box
                                     key={a}
-                                    css={`padding:3px 9px;font:600 10px/1 Inter;letter-spacing:0.04em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
+                                    css={`padding:3px 9px;font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.04em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
                                     hover={!active ? 'border-color:var(--rule2);color:var(--dim)' : ''}
                                     onClick={() => v.setArtifactFilter(a)}
                                   >{a}{a !== 'All' ? ` (${count})` : ''}</Box>
@@ -3432,11 +3498,11 @@ export default class MedFactory extends React.Component {
 
                               <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
 
-                              <span style={S('font:700 9px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>FUNDING</span>
+                              <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>FUNDING</span>
                               <select
                                 value={v.fundingFilter}
                                 onChange={(e) => v.setFundingFilter(e.target.value)}
-                                style={{ font: '600 10px/1 Inter', color: 'var(--dim)', background: 'var(--bg)', border: '1px solid var(--rule)', padding: '4px 6px', cursor: 'pointer', outline: 'none' }}
+                                style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--dim)', background: 'var(--bg)', border: '1px solid var(--rule)', padding: '4px 6px', cursor: 'pointer', outline: 'none' }}
                               >
                                 <option value="All">All</option>
                                 <option value="Independent">Independent</option>
@@ -3445,10 +3511,10 @@ export default class MedFactory extends React.Component {
 
                               <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
 
-                              <span style={S('font:700 9px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>SORT BY</span>
+                              <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>SORT BY</span>
                               <div style={{ position: 'relative' }}>
                                 <Box
-                                  css="padding:4px 8px;font:600 10px/1 Inter;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:5px;border-radius:6px"
+                                  css="padding:4px 8px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:5px;border-radius:6px"
                                   hover="border-color:var(--acc);color:var(--acc)"
                                   onClick={() => v.toggleSortDropdown()}
                                 >
@@ -3460,7 +3526,7 @@ export default class MedFactory extends React.Component {
                                     {SORT_OPTIONS.map((o) => (
                                       <Box
                                         key={o.key}
-                                        css={`padding:8px 12px;font:${v.sortBy === o.key ? '700' : '500'} 11px/1 Inter;cursor:pointer;color:${v.sortBy === o.key ? 'var(--acc)' : 'var(--dim)'};display:flex;align-items:center;gap:8px`}
+                                        css={`padding:8px 12px;font:${v.sortBy === o.key ? '700' : '500'} 11px/1 Plus Jakarta Sans;cursor:pointer;color:${v.sortBy === o.key ? 'var(--acc)' : 'var(--dim)'};display:flex;align-items:center;gap:8px`}
                                         hover="background:var(--s2)"
                                         onClick={() => v.setSortBy(o.key)}
                                       >
@@ -3473,7 +3539,7 @@ export default class MedFactory extends React.Component {
                                 )}
                               </div>
                               <Box
-                                css="padding:4px 8px;font:600 10px/1 Inter;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:4px;border-radius:6px"
+                                css="padding:4px 8px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:4px;border-radius:6px"
                                 hover="border-color:var(--rule2);color:var(--ink)"
                                 onClick={() => v.toggleSortDir()}
                               >
@@ -3482,7 +3548,7 @@ export default class MedFactory extends React.Component {
 
                               {isFiltered && (
                                 <Box
-                                  css="margin-left:auto;font:600 10px/1 Inter;color:var(--faint);cursor:pointer;text-decoration:underline;text-underline-offset:2px"
+                                  css="margin-left:auto;font:600 10px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;text-decoration:underline;text-underline-offset:2px"
                                   hover="color:var(--ink)"
                                   onClick={() => v.clearEvidenceFilters()}
                                 >Clear filters</Box>
@@ -3491,7 +3557,7 @@ export default class MedFactory extends React.Component {
 
                             {/* Row 3: Quick accept */}
                             <div style={S('padding:8px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;background:var(--s2)')}>
-                              <span style={S('font:700 9px/1 Inter;letter-spacing:0.12em;color:var(--faint);flex-shrink:0')}>QUICK ACCEPT</span>
+                              <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);flex-shrink:0')}>QUICK ACCEPT</span>
                               {[
                                 { key: 'grade-ab', label: 'Grade A & B' },
                                 { key: 'independent', label: 'Independent funding' },
@@ -3500,7 +3566,7 @@ export default class MedFactory extends React.Component {
                               ].map(({ key, label }) => (
                                 <Box
                                   key={key}
-                                  css="padding:4px 11px;font:600 10px/1 Inter;cursor:pointer;border:1px solid var(--rule2);color:var(--dim);background:var(--s1);border-radius:20px"
+                                  css="padding:4px 11px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--rule2);color:var(--dim);background:var(--s1);border-radius:20px"
                                   hover="border-color:var(--ok);color:var(--ok);background:rgba(22,101,52,0.06)"
                                   onClick={() => v.quickAccept(key)}
                                 >{label}</Box>
@@ -3509,13 +3575,13 @@ export default class MedFactory extends React.Component {
 
                             {/* Card list */}
                             <div style={S('flex:1;overflow-y:auto;padding:14px 16px')}>
-                              <div style={S('font:600 10px/1 Inter;color:var(--faint);letter-spacing:0.08em;margin-bottom:12px')}>
+                              <div style={S('font:600 10px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.08em;margin-bottom:12px')}>
                                 SHOWING {filteredPapers.length} {filteredPapers.length === 1 ? 'PAPER' : 'PAPERS'}
                                 {isFiltered && <span style={{ color: 'var(--acc)', marginLeft: 6 }}>· filtered</span>}
                               </div>
 
                               {filteredPapers.length === 0 && (
-                                <div style={S('padding:32px;text-align:center;color:var(--faint);font:500 13px/1.6 Inter;border:1px dashed var(--rule2)')}>
+                                <div style={S('padding:32px;text-align:center;color:var(--faint);font:500 13px/1.6 Plus Jakarta Sans;border:1px dashed var(--rule2)')}>
                                   No papers match the current filters.<br />
                                   <span style={{ color: 'var(--acc)', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => v.clearEvidenceFilters()}>Clear filters</span>
                                 </div>
@@ -3536,31 +3602,39 @@ export default class MedFactory extends React.Component {
 
                                         {/* ARTIFACTS row */}
                                         <div style={S('padding:10px 14px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap')}>
-                                          <span style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>ARTIFACTS</span>
+                                          <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>ARTIFACTS</span>
                                           {p.artifacts.map((a) => (
-                                            <span key={a} style={S('padding:2px 10px;font:600 9.5px/1 Inter;border:1px solid var(--rule2);color:var(--dim);border-radius:20px')}>{a}</span>
+                                            <span key={a} style={S('padding:2px 10px;font:600 9.5px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);border-radius:20px')}>{a}</span>
                                           ))}
                                           {p._batch === 2 && (
-                                            <span style={{ marginLeft: 'auto', padding: '3px 8px', font: '700 8.5px/1 Inter', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', display: 'flex', alignItems: 'center', gap: 5 }}>
+                                            <span style={{ padding: '3px 8px', font: '700 8.5px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', display: 'flex', alignItems: 'center', gap: 5 }}>
                                               <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#93c5fd', display: 'inline-block', animation: 'puls 1.4s infinite' }} />
                                               NEW
                                             </span>
                                           )}
+                                          <Box
+                                            css="margin-left:auto;padding:4px 6px;cursor:pointer;color:var(--faint);border:1px solid transparent;border-radius:6px;display:flex;align-items:center"
+                                            hover="color:#dc2626;border-color:#dc2626;background:rgba(220,38,38,0.05)"
+                                            onClick={() => v.deleteResearchPaper(p._idx)}
+                                            title="Remove paper"
+                                          >
+                                            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                                          </Box>
                                         </div>
 
                                         {/* TRACK */}
                                         <div style={S('padding:5px 14px 0;display:flex;align-items:center;gap:6px')}>
-                                          <span style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>TRACK</span>
-                                          <span style={S(`padding:2px 8px;font:600 9.5px/1 Inter;border:1px solid ${tc};color:${tc};border-radius:20px`)}>{p.track}</span>
+                                          <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>TRACK</span>
+                                          <span style={S(`padding:2px 8px;font:600 9.5px/1 Plus Jakarta Sans;border:1px solid ${tc};color:${tc};border-radius:20px`)}>{p.track}</span>
                                         </div>
 
                                         {/* Title */}
-                                        <div style={S('padding:10px 14px 0;font:700 13px/1.4 Inter;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
+                                        <div style={S('padding:10px 14px 0;font:700 13px/1.4 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
 
                                         {/* Relevance bar */}
                                         <div style={S('padding:8px 14px 10px')}>
                                           <div style={S('display:flex;align-items:center;gap:8px')}>
-                                            <span style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);flex-shrink:0')}>RELEVANCE</span>
+                                            <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);flex-shrink:0')}>RELEVANCE</span>
                                             <div style={S('flex:1;height:4px;background:var(--rule);overflow:hidden')}>
                                               <div style={{ width: `${p.relevance}%`, height: '100%', background: p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }} />
                                             </div>
@@ -3580,8 +3654,8 @@ export default class MedFactory extends React.Component {
                                             ['Stat. rigor', p.statRigor],
                                           ].map(([label, val]) => (
                                             <React.Fragment key={label}>
-                                              <div style={S('font:500 10.5px/1.5 Inter;color:var(--faint);white-space:nowrap')}>{label}</div>
-                                              <div style={S('font:600 10.5px/1.5 Inter;color:var(--dim);text-align:right')}>{val}</div>
+                                              <div style={S('font:500 10.5px/1.5 Plus Jakarta Sans;color:var(--faint);white-space:nowrap')}>{label}</div>
+                                              <div style={S('font:600 10.5px/1.5 Plus Jakarta Sans;color:var(--dim);text-align:right')}>{val}</div>
                                             </React.Fragment>
                                           ))}
                                         </div>
@@ -3599,7 +3673,7 @@ export default class MedFactory extends React.Component {
                                           hover="background:var(--s1)"
                                           onClick={() => v.toggleExcerpt(p._idx)}
                                         >
-                                          <span style={S('font:700 9.5px/1 Inter;letter-spacing:0.1em;color:var(--dim)')}>Excerpt</span>
+                                          <span style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--dim)')}>Excerpt</span>
                                           <span style={S('font-size:10px;color:var(--faint)')}>{excOpen ? '▲' : '▼'}</span>
                                         </Box>
                                         {excOpen && (
@@ -3612,23 +3686,15 @@ export default class MedFactory extends React.Component {
                                         {/* Footer */}
                                         <div style={S('padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:10px')}>
                                           {p.artifacts.map((a) => (
-                                            <span key={a} style={S('padding:2px 10px;font:600 9px/1 Inter;border:1px solid var(--rule2);color:var(--faint);border-radius:20px')}>{a}</span>
+                                            <span key={a} style={S('padding:2px 10px;font:600 9px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--faint);border-radius:20px')}>{a}</span>
                                           ))}
-                                          <span style={S(`padding:2px 8px;font:600 9px/1 Inter;border:1px solid ${tc};color:${tc};border-radius:20px`)}>{p.track.split(' ')[0]}</span>
+                                          <span style={S(`padding:2px 8px;font:600 9px/1 Plus Jakarta Sans;border:1px solid ${tc};color:${tc};border-radius:20px`)}>{p.track.split(' ')[0]}</span>
                                           <Box
-                                            css={`margin-left:auto;padding:7px 14px;font:700 10.5px/1 Inter;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);border-radius:8px`}
+                                            css={`margin-left:auto;padding:7px 14px;font:700 10.5px/1 Plus Jakarta Sans;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);border-radius:8px`}
                                             hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
                                             onClick={() => v.toggleAccept(p._idx)}
                                           >
                                             {accepted ? '✓ Accepted' : 'Accept paper'}
-                                          </Box>
-                                          <Box
-                                            css="padding:6px 10px;font:600 10.5px/1 Inter;cursor:pointer;color:var(--faint);border:1px solid var(--rule2);border-radius:6px"
-                                            hover="color:#dc2626;border-color:#dc2626;background:rgba(220,38,38,0.05)"
-                                            onClick={() => v.deleteResearchPaper(p._idx)}
-                                            title="Remove paper"
-                                          >
-                                            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
                                           </Box>
                                         </div>
                                       </div>
@@ -3648,15 +3714,15 @@ export default class MedFactory extends React.Component {
                                       : { animation: 'cardIn 0.28s ease both', animationDelay: `${idx * 0.03}s` };
                                     return (
                                       <div key={p._idx} style={{ ...S(`background:var(--bg);border:1px solid ${isBatch2List ? 'rgba(44,82,204,0.3)' : accepted ? 'var(--ok)' : 'var(--rule)'};border-left:3px solid ${isBatch2List ? 'var(--acc)' : accepted ? 'var(--ok)' : tc};display:flex;align-items:center;gap:12px;padding:10px 14px`), ...listAnim }}>
-                                        <span style={{ padding: '2px 7px', font: '700 9px/1 Inter', border: `1px solid ${tc}`, color: tc, flexShrink: 0, letterSpacing: '0.06em' }}>{p.type.toUpperCase()}</span>
+                                        <span style={{ padding: '2px 7px', font: '700 9px/1 Plus Jakarta Sans', border: `1px solid ${tc}`, color: tc, flexShrink: 0, letterSpacing: '0.06em' }}>{p.type.toUpperCase()}</span>
                                         {isBatch2List && (
-                                          <span style={{ padding: '2px 7px', font: '700 8.5px/1 Inter', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+                                          <span style={{ padding: '2px 7px', font: '700 8.5px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
                                             <span style={{ width: 4, height: 4, borderRadius: '50%', background: '#93c5fd', display: 'inline-block', animation: 'puls 1.4s infinite' }} />
                                             NEW
                                           </span>
                                         )}
                                         <span style={S('font:600 10px/1 var(--mono);color:var(--faint);flex-shrink:0')}>{p.year}</span>
-                                        <div style={S('font:600 12.5px/1.3 Inter;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{p.title}</div>
+                                        <div style={S('font:600 12.5px/1.3 Plus Jakarta Sans;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{p.title}</div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
                                           <div style={{ width: 72, height: 4, background: 'var(--rule)', overflow: 'hidden' }}>
                                             <div style={{ width: `${p.relevance}%`, height: '100%', background: relColor }} />
@@ -3664,7 +3730,7 @@ export default class MedFactory extends React.Component {
                                           <span style={{ font: '700 10px/1 var(--mono)', color: relColor }}>{p.relevance}/100</span>
                                         </div>
                                         <Box
-                                          css={`padding:5px 12px;font:700 10px/1 Inter;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);flex-shrink:0`}
+                                          css={`padding:5px 12px;font:700 10px/1 Plus Jakarta Sans;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);flex-shrink:0`}
                                           hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
                                           onClick={() => v.toggleAccept(p._idx)}
                                         >
@@ -3699,11 +3765,11 @@ export default class MedFactory extends React.Component {
                               style={S('padding:0 16px;border-bottom:1px solid var(--rule);cursor:pointer;display:flex;align-items:center;gap:10px')}
                               onClick={v.toggleAcceptedDrawer}
                             >
-                              <span style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);padding:10px 0')}>SHARED ACROSS EVERY RESEARCH TAB</span>
+                              <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);padding:10px 0')}>SHARED ACROSS EVERY RESEARCH TAB</span>
                               <div style={S('flex:1;display:flex;align-items:center;justify-content:space-between;padding:10px 0')}>
-                                <span style={S('font:600 11.5px/1 Inter;color:var(--dim)')}>
+                                <span style={S('font:600 11.5px/1 Plus Jakarta Sans;color:var(--dim)')}>
                                   Accepted papers
-                                  <span style={S('display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;margin-left:8px;background:var(--ok);color:#fff;font:700 10px/1 Inter;border-radius:20px')}>{acceptedCount}</span>
+                                  <span style={S('display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;margin-left:8px;background:var(--ok);color:#fff;font:700 10px/1 Plus Jakarta Sans;border-radius:20px')}>{acceptedCount}</span>
                                 </span>
                                 <span style={S('font-size:11px;color:var(--faint)')}>{v.acceptedDrawerOpen ? '▲' : '▼'}</span>
                               </div>
@@ -3715,8 +3781,8 @@ export default class MedFactory extends React.Component {
                                 {acceptedList.map((p, idx) => (
                                   <div key={idx} style={S('display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--rule)')}>
                                     <span style={S('width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none')} />
-                                    <span style={S('font:600 11px/1.4 Inter;color:var(--dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{p.title}</span>
-                                    <span style={S('font:500 10px/1 Inter;color:var(--faint);flex:none')}>{p.year}</span>
+                                    <span style={S('font:600 11px/1.4 Plus Jakarta Sans;color:var(--dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{p.title}</span>
+                                    <span style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint);flex:none')}>{p.year}</span>
                                   </div>
                                 ))}
                               </div>
@@ -3725,19 +3791,19 @@ export default class MedFactory extends React.Component {
                             {/* Action buttons */}
                             <div style={S('padding:12px 16px;display:flex;align-items:center;gap:10px')}>
                               <Box
-                                css="padding:8px 14px;font:600 11px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;white-space:nowrap;border-radius:8px"
+                                css="padding:8px 14px;font:600 11px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;white-space:nowrap;border-radius:8px"
                                 hover="border-color:var(--ink);color:var(--ink)"
                               >
                                 + Upload or link a paper to evaluate
                               </Box>
                               <Box
-                                css="padding:8px 14px;font:600 11px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;white-space:nowrap;border-radius:8px"
+                                css="padding:8px 14px;font:600 11px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;white-space:nowrap;border-radius:8px"
                                 hover="border-color:var(--ink);color:var(--ink)"
                               >
                                 + Add additional topic for research
                               </Box>
                               <Box
-                                css="margin-left:auto;padding:8px 18px;font:700 11px/1 Inter;background:var(--acc);color:#fff;cursor:pointer;white-space:nowrap;border:1px solid transparent;border-radius:8px"
+                                css="margin-left:auto;padding:8px 18px;font:700 11px/1 Plus Jakarta Sans;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;cursor:pointer;white-space:nowrap;border:1px solid transparent;border-radius:8px"
                                 hover="background:var(--acc)"
                                 onClick={() => this.go('organize')}
                               >
@@ -3757,7 +3823,7 @@ export default class MedFactory extends React.Component {
                       <div style={S('padding:14px 22px;border-bottom:2px solid var(--rule2);display:flex;align-items:center;gap:12px;flex:none;background:var(--bg)')}>
                         <div style={S('width:9px;height:9px;border-radius:50%;flex:none;background:var(--acc);animation:puls 1.1s infinite')} />
                         <div>
-                          <div style={S('font:700 9.5px/1 Inter;letter-spacing:0.15em;color:var(--faint);margin-bottom:3px')}>RESEARCH AGENT</div>
+                          <div style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.15em;color:var(--faint);margin-bottom:3px')}>RESEARCH AGENT</div>
                           <div style={S('font-weight:800;font-size:14px;letter-spacing:-0.01em')}>
                             {rN >= INDEX_STEP ? 'Building evidence index…' : rN >= DEDUP_STEP ? 'Deduplicating results…' : rN >= PAPER_START ? `Retrieving papers — ${visiblePapers} of ${RESEARCH_PAPERS.length} found` : 'Connecting to databases…'}
                           </div>
@@ -3778,14 +3844,14 @@ export default class MedFactory extends React.Component {
                               <div key={d} style={{ width:5, height:5, borderRadius:'50%', background:'var(--acc)', animation:'dotBounce 1.3s ease-in-out infinite', animationDelay:`${d*0.18}s` }} />
                             ))}
                           </div>
-                          <div style={S('font:600 10px/1 Inter;letter-spacing:0.1em;color:var(--faint)')}>EVIDENCE COLLECTOR</div>
+                          <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint)')}>EVIDENCE COLLECTOR</div>
                           <div style={S('font-size:11.5px;color:var(--dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')} key={thinkingMsg}>{thinkingMsg}</div>
                           <div style={S('font:600 10px/1 var(--mono);color:var(--faint);flex:none')}>{pct}%</div>
                         </div>
 
                     {/* Database sources */}
                     <div style={S('margin-bottom:20px')}>
-                      <div style={S('font:700 9px/1 Inter;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>SOURCES</div>
+                      <div style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>SOURCES</div>
                       <div style={S('display:flex;flex-wrap:wrap;gap:7px')}>
                         {RESEARCH_DBS.map((db, i) => {
                           const connected = rN > i;
@@ -3803,12 +3869,12 @@ export default class MedFactory extends React.Component {
                     {/* Papers feed */}
                     {visiblePapers > 0 && (
                       <div>
-                        <div style={S('font:700 9px/1 Inter;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>EVIDENCE RETRIEVED · {visiblePapers}</div>
+                        <div style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>EVIDENCE RETRIEVED · {visiblePapers}</div>
                         <div style={S('display:flex;flex-direction:column;gap:8px')}>
                           {RESEARCH_PAPERS.slice(0, visiblePapers).map((p, i) => (
                             <div key={i} style={S('background:var(--bg);border:1px solid var(--rule);border-left:2px solid var(--rule2);padding:12px 14px;animation:rise 0.22s ease')}>
                               <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
-                                <span style={S(`border:1px solid ${typeColor(p.type)};color:${typeColor(p.type)};padding:2px 6px;font:600 8.5px/1 Inter;letter-spacing:0.09em`)}>{p.type.toUpperCase()}</span>
+                                <span style={S(`border:1px solid ${typeColor(p.type)};color:${typeColor(p.type)};padding:2px 6px;font:600 8.5px/1 Plus Jakarta Sans;letter-spacing:0.09em`)}>{p.type.toUpperCase()}</span>
                                 <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
                                 <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
                                 <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
@@ -3834,7 +3900,7 @@ export default class MedFactory extends React.Component {
                           <div style={{ flex: 1, height: 1, background: 'linear-gradient(to right, var(--acc), transparent)' }} />
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 12px', background: 'rgba(44,82,204,0.08)', border: '1px solid var(--acc)' }}>
                             <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'puls 1.4s infinite' }} />
-                            <span style={{ font: '700 9.5px/1 Inter', letterSpacing: '0.14em', color: 'var(--acc)' }}>BATCH 2 — {EXTRA_PAPERS.length} NEW PAPERS</span>
+                            <span style={{ font: '700 9.5px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)' }}>BATCH 2 — {EXTRA_PAPERS.length} NEW PAPERS</span>
                           </div>
                           <div style={{ flex: 1, height: 1, background: 'linear-gradient(to left, var(--acc), transparent)' }} />
                         </div>
@@ -3844,7 +3910,7 @@ export default class MedFactory extends React.Component {
                             return (
                               <div key={i} style={{ background: 'var(--bg)', border: '1px solid rgba(44,82,204,0.25)', borderLeft: '2px solid var(--acc)', padding: '12px 14px', animation: 'batchIn 0.55s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${i * 0.07}s` }}>
                                 <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
-                                  <span style={{ padding: '2px 6px', font: '700 8.5px/1 Inter', border: `1px solid ${typeColor(p.type)}`, color: typeColor(p.type), letterSpacing: '0.09em' }}>{p.type.toUpperCase()}</span>
+                                  <span style={{ padding: '2px 6px', font: '700 8.5px/1 Plus Jakarta Sans', border: `1px solid ${typeColor(p.type)}`, color: typeColor(p.type), letterSpacing: '0.09em' }}>{p.type.toUpperCase()}</span>
                                   <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
                                   <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
                                   <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
@@ -3892,7 +3958,7 @@ export default class MedFactory extends React.Component {
                       onClick={() => this.setState({ chatCollapsed: false })}
                     >
                       <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="3,5 6,2 6,8"/><rect x="1" y="1.5" width="1.5" height="7"/></svg>
-                      <span style={{ font: '700 9px/1 Inter', letterSpacing: '0.14em', color: '#fff', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>OPEN CHAT</span>
+                      <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#fff', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>OPEN CHAT</span>
                     </div>
                   </>
                 ) : (
@@ -4100,22 +4166,22 @@ export default class MedFactory extends React.Component {
               >
                 {/* top row: db pill + type + year + score */}
                 <div style={S('display:flex;align-items:center;gap:8px')}>
-                  <span style={{ padding: '2px 8px', fontSize: 9, fontWeight: 700, fontFamily: 'Inter', letterSpacing: '0.1em', border: `1px solid ${tc2(p.type)}`, color: tc2(p.type), background: `${tc2(p.type)}18` }}>{p.type}</span>
+                  <span style={{ padding: '2px 8px', fontSize: 9, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.1em', border: `1px solid ${tc2(p.type)}`, color: tc2(p.type), background: `${tc2(p.type)}18` }}>{p.type}</span>
                   <span style={S('font:500 10px/1 var(--mono);color:var(--faint)')}>{p.db} · {p.year}</span>
                   <span style={S('margin-left:auto;font:700 11px/1 var(--mono);color:var(--ok)')}>{p.score.toFixed(2)}</span>
                 </div>
                 {/* title */}
-                <div style={S('font:700 13px/1.4 Inter;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
+                <div style={S('font:700 13px/1.4 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink)')}>{p.title}</div>
                 {/* excerpt blockquote */}
                 <div style={S('border-left:2px solid var(--acc);padding:8px 14px;background:rgba(44,82,204,0.06)')}>
-                  <div style={S('font:400 11.5px/1.75 Inter;color:var(--dim);font-style:italic')}>{p.excerpt}</div>
+                  <div style={S('font:400 11.5px/1.75 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>{p.excerpt}</div>
                   <div style={S('font:600 9.5px/1 var(--mono);color:var(--faint);margin-top:7px;letter-spacing:0.04em')}>{p.excerptSrc}</div>
                 </div>
                 {/* artifact tags */}
                 <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
                   {ALL_ARTIFACTS.map((a) => {
                     const active = p.artifacts.includes(a);
-                    return <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Inter', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
+                    return <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Plus Jakarta Sans', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
                   })}
                 </div>
               </Box>
@@ -4131,7 +4197,7 @@ export default class MedFactory extends React.Component {
                 {/* Status banner */}
                 <div style={S(`display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--rule);flex:none;background:${orgDone ? 'rgba(22,101,52,0.08)' : 'rgba(44,82,204,0.06)'}`)}>
                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: orgDone ? 'var(--ok)' : 'var(--acc)', animation: orgDone ? '' : 'puls 1s infinite' }} />
-                  <div style={S(`font:700 10px/1 Inter;letter-spacing:0.14em;color:${orgDone ? 'var(--ok)' : 'var(--acc)'}`)}>
+                  <div style={S(`font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:${orgDone ? 'var(--ok)' : 'var(--acc)'}`)}>
                     {orgDone ? 'ORGANISATION COMPLETE' : 'ORGANISE AGENT · RUNNING…'}
                   </div>
                   {!orgDone && <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{Math.round((v.organizeAgentMsgN / ORGANIZE_AGENT_MSGS.length) * 100)}%</div>}
@@ -4139,8 +4205,8 @@ export default class MedFactory extends React.Component {
 
                 {/* Thread header */}
                 <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule);flex:none')}>
-                  <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>RESEARCH ORGANISATION AGENT</div>
-                  <div style={S('font:700 14px/1 Inter;letter-spacing:-0.01em;color:var(--ink)')}>Excerpt & Track Analysis</div>
+                  <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>RESEARCH ORGANISATION AGENT</div>
+                  <div style={S('font:700 14px/1 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink)')}>Excerpt & Track Analysis</div>
                 </div>
 
                 {/* Messages */}
@@ -4151,11 +4217,11 @@ export default class MedFactory extends React.Component {
                     const parts = msg.text.replace(/^⚠\s*/, '').split(/(\*\*[^*]+\*\*)/g);
                     return (
                       <div key={i} style={{ ...S('display:flex;gap:10px;margin-bottom:22px;animation:rise 0.3s ease both'), animationDelay: `${i * 0.05}s` }}>
-                        <div style={{ width: 28, height: 28, flexShrink: 0, background: isGap ? 'var(--warn)' : 'var(--acc)', display: 'grid', placeItems: 'center', font: '700 10px/1 Inter', color: '#fff' }}>
+                        <div style={{ width: 28, height: 28, flexShrink: 0, background: isGap ? 'var(--warn)' : 'var(--acc)', display: 'grid', placeItems: 'center', font: '700 10px/1 Plus Jakarta Sans', color: '#fff' }}>
                           {isGap ? '!' : 'AI'}
                         </div>
                         <div style={S('max-width:88%;flex:1')}>
-                          <div style={{ ...S('font:700 9.5px/1 Inter;letter-spacing:0.12em;margin-bottom:6px'), color: isGap ? 'var(--warn)' : 'var(--acc)' }}>
+                          <div style={{ ...S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;margin-bottom:6px'), color: isGap ? 'var(--warn)' : 'var(--acc)' }}>
                             {isGap ? 'GAP DETECTED' : `STEP ${i + 1} · ANALYSIS`}
                           </div>
                           <div style={{ background: 'var(--s1)', border: '1px solid var(--rule)', borderLeft: `2px solid ${accentVar}`, padding: '12px 14px', fontSize: 12.5, color: 'var(--dim)', lineHeight: 1.65 }}>
@@ -4173,9 +4239,9 @@ export default class MedFactory extends React.Component {
                   {/* Thinking dots */}
                   {v.organizeAgentThinking && (
                     <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.25s ease')}>
-                      <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--acc);color:#fff;border-radius:50%')}>AI</div>
+                      <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:50%')}>AI</div>
                       <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:12px 14px')}>
-                        <div style={S('font:600 10px/1 Inter;letter-spacing:0.1em;color:var(--acc);margin-bottom:8px')}>
+                        <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--acc);margin-bottom:8px')}>
                           {visibleOrgMsgs.length === 0 ? 'LOADING EVIDENCE BASE…' : 'ANALYSING TRACKS…'}
                         </div>
                         <div style={S('display:flex;gap:5px')}>
@@ -4188,9 +4254,9 @@ export default class MedFactory extends React.Component {
                   {/* Done bubble */}
                   {orgDone && (
                     <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
-                      <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
+                      <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
                       <div>
-                        <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.12em;color:var(--ok);margin-bottom:6px')}>ORGANISE AGENT · COMPLETE</div>
+                        <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--ok);margin-bottom:6px')}>ORGANISE AGENT · COMPLETE</div>
                         <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--ok);padding:12px 14px;font-size:12.5px;color:var(--dim);line-height:1.65')}>
                           Organisation complete. <strong style={S('color:var(--ink)')}>4 of 5 tracks</strong> have sufficient excerpt coverage. Ready to proceed.
                         </div>
@@ -4206,7 +4272,7 @@ export default class MedFactory extends React.Component {
                     onChange={e => v.setOrganizeAgentInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && v.sendOrganizeMsg()}
                     placeholder="Ask about track coverage, gaps, or excerpts…"
-                    style={S('flex:1;background:var(--s2);border:1px solid var(--rule2);color:var(--ink);padding:9px 13px;font:400 12.5px/1 Inter;outline:none;border-radius:8px')}
+                    style={S('flex:1;background:var(--s2);border:1px solid var(--rule2);color:var(--ink);padding:9px 13px;font:400 12.5px/1 Plus Jakarta Sans;outline:none;border-radius:8px')}
                   />
                   <div onClick={v.sendOrganizeMsg} style={S('width:34px;height:34px;background:var(--acc);display:grid;place-items:center;cursor:pointer;flex:none;border-radius:50%')}>
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M15 1L7 9M15 1L10 15L7 9M15 1L1 6L7 9" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -4224,8 +4290,8 @@ export default class MedFactory extends React.Component {
                 <div style={S('padding:0 0 0;flex:none;border-bottom:1px solid var(--rule2)')}>
                   <div style={S('padding:22px 40px 16px;display:flex;align-items:flex-end;gap:0')}>
                     <div style={S('flex:1')}>
-                      <div style={S('font:800 22px/1.2 Inter;letter-spacing:-0.03em;color:var(--ink);margin-bottom:5px')}>Organize Your Research</div>
-                      <div style={S('font:400 12px/1.6 Inter;color:var(--faint);max-width:520px')}>
+                      <div style={S('font:800 22px/1.2 Plus Jakarta Sans;letter-spacing:-0.03em;color:var(--ink);margin-bottom:5px')}>Organize Your Research</div>
+                      <div style={S('font:400 12px/1.6 Plus Jakarta Sans;color:var(--faint);max-width:520px')}>
                         Excerpts grouped by content track — a paper appears under every track its evidence serves. Select any excerpt to inspect the full card.
                       </div>
                     </div>
@@ -4237,8 +4303,8 @@ export default class MedFactory extends React.Component {
                         { label: 'Tracks', val: `${populatedTracks} / ${CONTENT_TRACKS.length}`, color: 'var(--warn)' },
                       ].map(({ label, val, color }) => (
                         <div key={label} style={S('text-align:center;padding:8px 16px;background:var(--s2);border:1px solid var(--rule)')}>
-                          <div style={{ font: '700 16px/1 Inter', color, marginBottom: 3 }}>{val}</div>
-                          <div style={S('font:500 9px/1 Inter;letter-spacing:0.1em;color:var(--faint)')}>{label.toUpperCase()}</div>
+                          <div style={{ font: '700 16px/1 Plus Jakarta Sans', color, marginBottom: 3 }}>{val}</div>
+                          <div style={S('font:500 9px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint)')}>{label.toUpperCase()}</div>
                         </div>
                       ))}
                     </div>
@@ -4254,7 +4320,7 @@ export default class MedFactory extends React.Component {
                       const active = curView === tab.id;
                       return (
                         <Box key={tab.id}
-                          css={`padding:10px 20px;font:600 12px/1 Inter;cursor:pointer;color:${active ? 'var(--ink)' : 'var(--faint)'};border-bottom:2px solid ${active ? 'var(--acc)' : 'transparent'};margin-bottom:-1px;transition:color 0.15s,border-color 0.15s`}
+                          css={`padding:10px 20px;font:600 12px/1 Plus Jakarta Sans;cursor:pointer;color:${active ? 'var(--ink)' : 'var(--faint)'};border-bottom:2px solid ${active ? 'var(--acc)' : 'transparent'};margin-bottom:-1px;transition:color 0.15s,border-color 0.15s`}
                           hover={!active ? 'color:var(--dim)' : ''}
                           onClick={() => v.setOrganizeView(tab.id)}
                         >{tab.label}</Box>
@@ -4268,7 +4334,7 @@ export default class MedFactory extends React.Component {
                         const c = ART_COLORS[a];
                         return (
                           <Box key={a}
-                            css={`padding:4px 10px;font:600 10px/1 Inter;cursor:pointer;border:1px solid ${on ? c : 'var(--rule)'};background:${on ? `${c}18` : 'transparent'};color:${on ? c : 'var(--faint)'};transition:all 0.15s`}
+                            css={`padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid ${on ? c : 'var(--rule)'};background:${on ? `${c}18` : 'transparent'};color:${on ? c : 'var(--faint)'};transition:all 0.15s`}
                             hover={!on ? `border-color:${c};color:${c}` : ''}
                             onClick={() => v.toggleOrganizeArtifact(a)}
                           >{a}</Box>
@@ -4276,8 +4342,8 @@ export default class MedFactory extends React.Component {
                       })}
                       <div style={S('width:1px;height:16px;background:var(--rule);margin:0 6px')} />
                       {curView !== 'figures' && <>
-                        <Box css="padding:4px 10px;font:600 10px/1 Inter;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={() => v.setOrganizeExpandAll(true)}>Expand all</Box>
-                        <Box css="padding:4px 10px;font:600 10px/1 Inter;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={() => v.setOrganizeExpandAll(false)}>Collapse all</Box>
+                        <Box css="padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={() => v.setOrganizeExpandAll(true)}>Expand all</Box>
+                        <Box css="padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={() => v.setOrganizeExpandAll(false)}>Collapse all</Box>
                       </>}
                     </div>
                   </div>
@@ -4302,8 +4368,8 @@ export default class MedFactory extends React.Component {
                               onClick={() => v.toggleOrganizeTrack(track.id)}
                             >
                               <div style={{ width: 8, height: 8, borderRadius: '50%', background: track.color, flexShrink: 0 }} />
-                              <span style={{ font: '700 13px/1 Inter', color: track.color }}>{track.label}</span>
-                              <span style={S('font:500 10px/1 Inter;color:var(--faint)')}>{count} {count === 1 ? 'excerpt' : 'excerpts'}</span>
+                              <span style={{ font: '700 13px/1 Plus Jakarta Sans', color: track.color }}>{track.label}</span>
+                              <span style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>{count} {count === 1 ? 'excerpt' : 'excerpts'}</span>
                               {count > 0 && (
                                 <div style={S('display:flex;gap:3px')}>
                                   {Array.from({ length: Math.min(count, 5) }).map((_, i) => (
@@ -4312,7 +4378,7 @@ export default class MedFactory extends React.Component {
                                 </div>
                               )}
                               <Box
-                                css="margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px dashed var(--acc);color:var(--acc);font:600 10px/1 Inter;cursor:pointer;transition:background 0.15s"
+                                css="margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px dashed var(--acc);color:var(--acc);font:600 10px/1 Plus Jakarta Sans;cursor:pointer;transition:background 0.15s"
                                 hover="background:rgba(79,82,216,.14)"
                                 onClick={(e) => { e.stopPropagation(); v.openAddExcerpt(track.id); }}
                               >+ Add excerpt</Box>
@@ -4321,18 +4387,18 @@ export default class MedFactory extends React.Component {
                             {isOpen && (
                               <div style={S('padding:12px 18px 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--rule);animation:rise 0.18s ease')}>
                                 {count === 0
-                                  ? <div style={S('padding:20px;text-align:center;color:var(--faint);font:500 12px/1.6 Inter;border:1px dashed var(--rule)')}>No excerpts yet in this track. Click <span style={{ color: 'var(--acc)' }}>+ Add excerpt</span> to add one.</div>
+                                  ? <div style={S('padding:20px;text-align:center;color:var(--faint);font:500 12px/1.6 Plus Jakarta Sans;border:1px dashed var(--rule)')}>No excerpts yet in this track. Click <span style={{ color: 'var(--acc)' }}>+ Add excerpt</span> to add one.</div>
                                   : trackPapers.map((p) => <ExcerptCard key={p._idx} p={p} />)
                                 }
                                 {customHere.map((e) => (
                                   <div key={e.id} style={S('background:var(--s2);border:1px solid var(--rule);border-left:3px solid var(--acc);padding:14px 16px;display:flex;flex-direction:column;gap:8px;animation:rise 0.18s ease')}>
                                     <div style={S('display:flex;align-items:center;gap:8px')}>
-                                      <span style={S('padding:2px 8px;border:1px solid var(--acc);background:rgba(44,82,204,0.16);font:700 8.5px/1 Inter;letter-spacing:0.12em;color:var(--acc)')}>CUSTOM</span>
-                                      <span style={S('font:500 10px/1 Inter;color:var(--faint)')}>Added manually</span>
+                                      <span style={S('padding:2px 8px;border:1px solid var(--acc);background:rgba(44,82,204,0.16);font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--acc)')}>CUSTOM</span>
+                                      <span style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>Added manually</span>
                                     </div>
-                                    <div style={S('border-left:2px solid var(--acc);padding:8px 12px;background:rgba(44,82,204,0.06);font:400 12px/1.75 Inter;color:var(--dim);font-style:italic')}>{e.text}</div>
+                                    <div style={S('border-left:2px solid var(--acc);padding:8px 12px;background:rgba(44,82,204,0.06);font:400 12px/1.75 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>{e.text}</div>
                                     <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
-                                      {e.artifacts.map((a) => <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Inter', border: `1px solid ${ART_COLORS[a]}`, color: ART_COLORS[a], background: `${ART_COLORS[a]}15` }}>{a}</span>)}
+                                      {e.artifacts.map((a) => <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Plus Jakarta Sans', border: `1px solid ${ART_COLORS[a]}`, color: ART_COLORS[a], background: `${ART_COLORS[a]}15` }}>{a}</span>)}
                                     </div>
                                   </div>
                                 ))}
@@ -4351,14 +4417,14 @@ export default class MedFactory extends React.Component {
                           <div key={art} style={{ borderLeft: `3px solid ${isOpen ? c : 'var(--rule)'}`, background: 'var(--bg)', marginBottom: 6, transition: 'border-color 0.2s', animation: `rise 0.22s ease both`, animationDelay: `${ai * 0.05}s` }}>
                             <Box css={`display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;background:${isOpen ? 'var(--s2)' : 'var(--bg)'};transition:background 0.15s`} hover={!isOpen ? 'background:var(--s1)' : ''} onClick={() => v.toggleOrganizeTrack(`art_${art}`)}>
                               <div style={{ width: 8, height: 8, borderRadius: '50%', background: c, flexShrink: 0 }} />
-                              <span style={{ font: '700 13px/1 Inter', color: c }}>{art}</span>
-                              <span style={S('font:500 10px/1 Inter;color:var(--faint)')}>{artPapers.length} {artPapers.length === 1 ? 'paper' : 'papers'}</span>
+                              <span style={{ font: '700 13px/1 Plus Jakarta Sans', color: c }}>{art}</span>
+                              <span style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>{artPapers.length} {artPapers.length === 1 ? 'paper' : 'papers'}</span>
                               <span style={{ marginLeft: 'auto', color: 'var(--faint)', fontSize: 11, display: 'inline-block', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
                             </Box>
                             {isOpen && (
                               <div style={S('padding:12px 18px 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--rule);animation:rise 0.18s ease')}>
                                 {artPapers.length === 0
-                                  ? <div style={S('padding:20px;text-align:center;color:var(--faint);font:500 12px/1.6 Inter;border:1px dashed var(--rule)')}>No accepted papers produce this artifact type.</div>
+                                  ? <div style={S('padding:20px;text-align:center;color:var(--faint);font:500 12px/1.6 Plus Jakarta Sans;border:1px dashed var(--rule)')}>No accepted papers produce this artifact type.</div>
                                   : artPapers.map((p) => <ExcerptCard key={p._idx} p={p} />)
                                 }
                               </div>
@@ -4374,8 +4440,8 @@ export default class MedFactory extends React.Component {
                         if (figCards.length === 0) return (
                           <div style={S('display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 32px;gap:12px')}>
                             <div style={S('font-size:32px')}>📊</div>
-                            <div style={S('font:700 15px/1 Inter;color:var(--dim)')}>No figures yet</div>
-                            <div style={S('font:400 12px/1.65 Inter;color:var(--faint);text-align:center;max-width:320px')}>Accept RCTs, meta-analyses or registry papers — those come with embedded figures that appear here.</div>
+                            <div style={S('font:700 15px/1 Plus Jakarta Sans;color:var(--dim)')}>No figures yet</div>
+                            <div style={S('font:400 12px/1.65 Plus Jakarta Sans;color:var(--faint);text-align:center;max-width:320px')}>Accept RCTs, meta-analyses or registry papers — those come with embedded figures that appear here.</div>
                           </div>
                         );
                         return (
@@ -4392,11 +4458,11 @@ export default class MedFactory extends React.Component {
                                 </div>
                                 <div style={S('padding:11px 14px;display:flex;flex-direction:column;gap:5px')}>
                                   <div style={S('display:flex;align-items:center;gap:7px')}>
-                                    <span style={S('font:700 8.5px/1 Inter;letter-spacing:0.12em;color:var(--faint)')}>{label.toUpperCase()}</span>
-                                    <span style={{ padding: '1px 6px', font: '600 8px/1 Inter', border: `1px solid ${tc2(paper.type)}`, color: tc2(paper.type) }}>{type.toUpperCase()}</span>
+                                    <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>{label.toUpperCase()}</span>
+                                    <span style={{ padding: '1px 6px', font: '600 8px/1 Plus Jakarta Sans', border: `1px solid ${tc2(paper.type)}`, color: tc2(paper.type) }}>{type.toUpperCase()}</span>
                                   </div>
-                                  <div style={S('font:600 11px/1.45 Inter;color:var(--dim)')}>{caption}</div>
-                                  <div style={S('font:500 9.5px/1 Inter;color:var(--faint)')}>{paper.title.length > 48 ? paper.title.slice(0, 48) + '…' : paper.title} · {paper.year}</div>
+                                  <div style={S('font:600 11px/1.45 Plus Jakarta Sans;color:var(--dim)')}>{caption}</div>
+                                  <div style={S('font:500 9.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{paper.title.length > 48 ? paper.title.slice(0, 48) + '…' : paper.title} · {paper.year}</div>
                                 </div>
                               </Box>
                             ))}
@@ -4415,14 +4481,14 @@ export default class MedFactory extends React.Component {
                         {/* Panel header */}
                         <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--rule2)', display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg)', position: 'sticky', top: 0, zIndex: 2 }}>
                           <div style={{ width: 6, height: 6, borderRadius: '50%', background: tc2(sel.type), flexShrink: 0 }} />
-                          <span style={S('font:700 11px/1 Inter;color:var(--ink);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{sel.type} · {sel.year}</span>
+                          <span style={S('font:700 11px/1 Plus Jakarta Sans;color:var(--ink);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{sel.type} · {sel.year}</span>
                           <Box css="font-size:11px;color:var(--faint);cursor:pointer;padding:3px 8px;border:1px solid var(--rule)" hover="color:var(--ink);border-color:var(--dim)" onClick={() => v.setOrganizeSelected(null)}>✕</Box>
                         </div>
 
                         <div style={S('padding:16px;display:flex;flex-direction:column;gap:0')}>
                           {/* Score bar */}
                           <div style={S('display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--rule)')}>
-                            <span style={{ padding: '2px 8px', font: '700 9px/1 Inter', border: `1px solid ${tc2(sel.type)}`, color: tc2(sel.type), background: `${tc2(sel.type)}15` }}>{sel.type}</span>
+                            <span style={{ padding: '2px 8px', font: '700 9px/1 Plus Jakarta Sans', border: `1px solid ${tc2(sel.type)}`, color: tc2(sel.type), background: `${tc2(sel.type)}15` }}>{sel.type}</span>
                             <div style={S('flex:1;height:4px;background:var(--rule);overflow:hidden')}>
                               <div style={{ width: `${sel.relevance}%`, height: '100%', background: sel.relevance >= 80 ? 'var(--ok)' : sel.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }} />
                             </div>
@@ -4431,21 +4497,21 @@ export default class MedFactory extends React.Component {
 
                           {/* Title + journal */}
                           <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
-                            <div style={S('font:700 13px/1.45 Inter;letter-spacing:-0.01em;color:var(--ink);margin-bottom:6px')}>{sel.title}</div>
-                            <div style={S('font:500 10px/1.4 Inter;color:var(--faint)')}>{sel.journal}</div>
+                            <div style={S('font:700 13px/1.45 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink);margin-bottom:6px')}>{sel.title}</div>
+                            <div style={S('font:500 10px/1.4 Plus Jakarta Sans;color:var(--faint)')}>{sel.journal}</div>
                           </div>
 
                           {/* Figures */}
                           {(PAPER_FIGURES[sel._idx] || []).length > 0 && (
                             <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
-                              <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>FIGURES</div>
+                              <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>FIGURES</div>
                               <div style={S('display:flex;flex-direction:column;gap:8px')}>
                                 {(PAPER_FIGURES[sel._idx] || []).map((fig, fi) => (
                                   <div key={fi} style={S('border:1px solid var(--rule);overflow:hidden')}>
                                     <div style={S('background:var(--bg);padding:10px')}>{renderFigSVG(fig.type, sel._idx)}</div>
                                     <div style={S('padding:8px 10px;background:var(--s2)')}>
-                                      <div style={S('font:700 8.5px/1 Inter;color:var(--faint);letter-spacing:0.1em;margin-bottom:3px')}>{fig.label}</div>
-                                      <div style={S('font:500 10px/1.45 Inter;color:var(--dim)')}>{fig.caption}</div>
+                                      <div style={S('font:700 8.5px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.1em;margin-bottom:3px')}>{fig.label}</div>
+                                      <div style={S('font:500 10px/1.45 Plus Jakarta Sans;color:var(--dim)')}>{fig.caption}</div>
                                     </div>
                                   </div>
                                 ))}
@@ -4455,12 +4521,12 @@ export default class MedFactory extends React.Component {
 
                           {/* Metadata table */}
                           <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
-                            <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>EVIDENCE QUALITY</div>
+                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>EVIDENCE QUALITY</div>
                             <div style={S('display:flex;flex-direction:column;gap:0')}>
                               {[['Design', sel.designTier],['Appraisal', sel.appraisal],['GRADE', sel.grade],['Citations', sel.citations],['Funding', sel.funding],['Stat. rigor', sel.statRigor]].map(([lbl, val]) => (
                                 <div key={lbl} style={S('display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(243,242,242,0.05)')}>
-                                  <span style={S('font:500 9.5px/1.4 Inter;color:var(--faint);width:72px;flex-shrink:0')}>{lbl}</span>
-                                  <span style={S('font:600 9.5px/1.4 Inter;color:var(--dim);flex:1')}>{val}</span>
+                                  <span style={S('font:500 9.5px/1.4 Plus Jakarta Sans;color:var(--faint);width:72px;flex-shrink:0')}>{lbl}</span>
+                                  <span style={S('font:600 9.5px/1.4 Plus Jakarta Sans;color:var(--dim);flex:1')}>{val}</span>
                                 </div>
                               ))}
                             </div>
@@ -4473,18 +4539,18 @@ export default class MedFactory extends React.Component {
 
                           {/* Excerpt */}
                           <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
-                            <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>KEY EXCERPT</div>
-                            <div style={S('border-left:2px solid var(--acc);padding:8px 12px;background:rgba(44,82,204,0.06);font:400 11px/1.75 Inter;color:var(--dim);font-style:italic')}>{sel.excerpt}</div>
+                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>KEY EXCERPT</div>
+                            <div style={S('border-left:2px solid var(--acc);padding:8px 12px;background:rgba(44,82,204,0.06);font:400 11px/1.75 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>{sel.excerpt}</div>
                             <div style={S('font:600 9px/1 var(--mono);color:var(--faint);margin-top:7px;letter-spacing:0.04em')}>{sel.excerptSrc}</div>
                           </div>
 
                           {/* Artifacts */}
                           <div style={S('padding:14px 0')}>
-                            <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>ARTIFACTS</div>
+                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>ARTIFACTS</div>
                             <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
                               {ALL_ARTIFACTS.map((a) => {
                                 const active = sel.artifacts.includes(a);
-                                return <span key={a} style={{ padding: '3px 10px', font: '600 9.5px/1 Inter', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
+                                return <span key={a} style={{ padding: '3px 10px', font: '600 9.5px/1 Plus Jakarta Sans', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
                               })}
                             </div>
                           </div>
@@ -4517,15 +4583,15 @@ export default class MedFactory extends React.Component {
                         {readiness.map(({ a, cur, tgt, ok }) => (
                           <div key={a} style={S(`display:flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid ${ok ? 'var(--ok)' : 'var(--rule2)'};background:${ok ? 'rgba(22,101,52,0.1)' : 'var(--s2)'}`)}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', background: ok ? 'var(--ok)' : 'var(--faint)' }} />
-                            <span style={{ font: '600 10px/1 Inter', color: ok ? 'var(--ok)' : 'var(--faint)' }}>{a}</span>
+                            <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: ok ? 'var(--ok)' : 'var(--faint)' }}>{a}</span>
                             <span style={{ font: '500 10px/1 var(--mono)', color: ok ? 'var(--ok)' : 'var(--dim)' }}>{cur}/{tgt}</span>
                           </div>
                         ))}
-                        <span style={S('font:500 11px/1 Inter;color:var(--faint);margin-left:4px')}>{totalEx} excerpts · {accepted.length} papers</span>
+                        <span style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint);margin-left:4px')}>{totalEx} excerpts · {accepted.length} papers</span>
                       </div>
                       {/* CTA */}
                       <Box
-                        css={`padding:11px 24px;font:700 12px/1 Inter;cursor:pointer;background:${allReady ? 'var(--acc)' : 'var(--s2)'};color:${allReady ? '#fff' : 'var(--ink)'};border:1px solid ${allReady ? 'var(--acc)' : 'var(--rule2)'};white-space:nowrap;transition:background 0.15s;border-radius:8px`}
+                        css={`padding:11px 24px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;background:${allReady ? 'var(--acc)' : 'var(--s2)'};color:${allReady ? '#fff' : 'var(--ink)'};border:1px solid ${allReady ? 'var(--acc)' : 'var(--rule2)'};white-space:nowrap;transition:background 0.15s;border-radius:8px`}
                         hover={allReady ? 'background:var(--acc)' : 'border-color:var(--dim)'}
                         onClick={v.openMAReview}
                       >
@@ -4555,9 +4621,9 @@ export default class MedFactory extends React.Component {
                           <div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
                               <div style={{ width: 10, height: 10, borderRadius: '50%', background: allReady ? 'var(--ok)' : 'var(--warn)', flexShrink: 0, animation: allReady ? '' : 'puls 1.2s infinite' }} />
-                              <span style={S(`font:800 16px/1 Inter;letter-spacing:-0.02em;color:var(--ink)`)}>{allReady ? 'Evidence base looks good' : 'Some artifacts aren\'t ready yet'}</span>
+                              <span style={S(`font:800 16px/1 Plus Jakarta Sans;letter-spacing:-0.02em;color:var(--ink)`)}>{allReady ? 'Evidence base looks good' : 'Some artifacts aren\'t ready yet'}</span>
                             </div>
-                            <div style={S('font:400 12px/1.6 Inter;color:var(--faint);max-width:400px')}>
+                            <div style={S('font:400 12px/1.6 Plus Jakarta Sans;color:var(--faint);max-width:400px')}>
                               {allReady
                                 ? 'All artifacts have enough accepted research behind them. You\'re ready to run the Medical Affairs review.'
                                 : 'The following artifacts don\'t have enough accepted research behind them yet:'}
@@ -4573,7 +4639,7 @@ export default class MedFactory extends React.Component {
                               {notReady.map(({ a, label, cur, tgt }) => (
                                 <div key={a} style={S('display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule)')}>
                                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--acc)', flexShrink: 0 }} />
-                                  <span style={S('font:600 13px/1 Inter;color:var(--acc);flex:1')}>{label}</span>
+                                  <span style={S('font:600 13px/1 Plus Jakarta Sans;color:var(--acc);flex:1')}>{label}</span>
                                   <div style={S('display:flex;align-items:center;gap:8px')}>
                                     {/* mini progress bar */}
                                     <div style={{ width: 80, height: 4, background: 'var(--rule2)', overflow: 'hidden' }}>
@@ -4591,7 +4657,7 @@ export default class MedFactory extends React.Component {
                             {readiness.filter((r) => r.ok).map(({ a, label, cur, tgt }) => (
                               <div key={a} style={S('display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule)')}>
                                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--ok)', flexShrink: 0 }} />
-                                <span style={S('font:600 13px/1 Inter;color:var(--dim);flex:1')}>{label}</span>
+                                <span style={S('font:600 13px/1 Plus Jakarta Sans;color:var(--dim);flex:1')}>{label}</span>
                                 <div style={S('display:flex;align-items:center;gap:8px')}>
                                   <div style={{ width: 80, height: 4, background: 'var(--rule2)', overflow: 'hidden' }}>
                                     <div style={{ width: '100%', height: '100%', background: 'var(--ok)' }} />
@@ -4603,7 +4669,7 @@ export default class MedFactory extends React.Component {
                           </div>
 
                           {notReady.length > 0 && (
-                            <div style={S('margin-top:16px;font:400 12px/1.65 Inter;color:var(--faint)')}>
+                            <div style={S('margin-top:16px;font:400 12px/1.65 Plus Jakarta Sans;color:var(--faint)')}>
                               You can go back and accept more excerpts for these artifacts, or finalize anyway if you're satisfied with what's there.
                             </div>
                           )}
@@ -4611,9 +4677,9 @@ export default class MedFactory extends React.Component {
 
                         {/* Footer buttons */}
                         <div style={S('padding:16px 24px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:flex-end;gap:10px')}>
-                          <Box css="padding:10px 22px;font:600 12px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:8px" hover="border-color:var(--ink);color:var(--ink)" onClick={v.closeMAReview}>Go back</Box>
+                          <Box css="padding:10px 22px;font:600 12px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:8px" hover="border-color:var(--ink);color:var(--ink)" onClick={v.closeMAReview}>Go back</Box>
                           <Box
-                            css="padding:10px 28px;font:700 12px/1 Inter;background:var(--acc);color:#fff;cursor:pointer;border:1px solid var(--acc);border-radius:8px"
+                            css="padding:10px 28px;font:700 12px/1 Plus Jakarta Sans;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;cursor:pointer;border:1px solid var(--acc);border-radius:8px"
                             hover="background:var(--acc)"
                             onClick={() => { v.closeMAReview(); this.go('med-review'); }}
                           >
@@ -4634,8 +4700,8 @@ export default class MedFactory extends React.Component {
 
                       <div style={S('padding:22px 26px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--rule2)')}>
                         <div>
-                          <div style={S('font:800 17px/1 Inter;letter-spacing:-0.02em;color:var(--ink);margin-bottom:4px')}>Add an excerpt</div>
-                          <div style={S('font:400 11px/1 Inter;color:var(--faint)')}>Paste a key quote from a paper in your evidence base</div>
+                          <div style={S('font:800 17px/1 Plus Jakarta Sans;letter-spacing:-0.02em;color:var(--ink);margin-bottom:4px')}>Add an excerpt</div>
+                          <div style={S('font:400 11px/1 Plus Jakarta Sans;color:var(--faint)')}>Paste a key quote from a paper in your evidence base</div>
                         </div>
                         <Box css="width:28px;height:28px;border:1px solid var(--rule2);display:grid;place-items:center;cursor:pointer;font-size:13px;color:var(--faint);flex-shrink:0" hover="border-color:var(--dim);color:var(--ink)" onClick={v.closeAddExcerpt}>✕</Box>
                       </div>
@@ -4643,15 +4709,15 @@ export default class MedFactory extends React.Component {
                       <div style={S('padding:22px 26px;display:flex;flex-direction:column;gap:20px;overflow-y:auto')}>
                         {/* Textarea */}
                         <div>
-                          <div style={S('font:700 9.5px/1 Inter;letter-spacing:0.12em;color:var(--faint);margin-bottom:8px')}>EXCERPT TEXT</div>
+                          <div style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-bottom:8px')}>EXCERPT TEXT</div>
                           <textarea rows={5} autoFocus
-                            style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--acc)', color: 'var(--ink)', padding: '13px 14px', fontSize: 13, lineHeight: 1.65, resize: 'vertical', outline: 'none', fontFamily: 'Inter,sans-serif', boxSizing: 'border-box', transition: 'border-color 0.15s', borderRadius: 8 }}
+                            style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--acc)', color: 'var(--ink)', padding: '13px 14px', fontSize: 13, lineHeight: 1.65, resize: 'vertical', outline: 'none', fontFamily: 'Plus Jakarta Sans,sans-serif', boxSizing: 'border-box', transition: 'border-color 0.15s', borderRadius: 8 }}
                             placeholder="Paste or type the excerpt..."
                             value={v.excerptModalText}
                             onChange={(e) => v.setExcerptModalText(e.target.value)}
                           />
                           {v.excerptModalText.trim().length > 0 && (
-                            <div style={S('margin-top:6px;font:500 10px/1 Inter;color:var(--faint)')}>
+                            <div style={S('margin-top:6px;font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>
                               {v.excerptModalText.trim().split(' ').length} words
                             </div>
                           )}
@@ -4659,14 +4725,14 @@ export default class MedFactory extends React.Component {
 
                         {/* Artifacts */}
                         <div>
-                          <div style={S('font:700 9.5px/1 Inter;letter-spacing:0.12em;color:var(--faint);margin-bottom:10px')}>USED IN ARTIFACTS</div>
+                          <div style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-bottom:10px')}>USED IN ARTIFACTS</div>
                           <div style={S('display:flex;gap:8px;flex-wrap:wrap')}>
                             {ALL_ARTIFACTS.map((a) => {
                               const on = v.excerptModalArtifacts[a];
                               const c = ART_COLORS[a];
                               return (
                                 <Box key={a}
-                                  css={`padding:7px 18px;border-radius:999px;border:1px solid ${on ? c : 'var(--rule)'};background:${on ? `${c}20` : 'transparent'};color:${on ? c : 'var(--faint)'};font:600 12px/1 Inter;cursor:pointer;transition:all 0.15s`}
+                                  css={`padding:7px 18px;border-radius:999px;border:1px solid ${on ? c : 'var(--rule)'};background:${on ? `${c}20` : 'transparent'};color:${on ? c : 'var(--faint)'};font:600 12px/1 Plus Jakarta Sans;cursor:pointer;transition:all 0.15s`}
                                   hover={!on ? `border-color:${c};color:${c}` : ''}
                                   onClick={() => v.toggleExcerptModalArtifact(a)}
                                 >{a}</Box>
@@ -4677,13 +4743,13 @@ export default class MedFactory extends React.Component {
 
                         {/* Tracks */}
                         <div>
-                          <div style={S('font:700 9.5px/1 Inter;letter-spacing:0.12em;color:var(--faint);margin-bottom:10px')}>RELEVANT TRACKS</div>
+                          <div style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-bottom:10px')}>RELEVANT TRACKS</div>
                           <div style={S('display:flex;gap:7px;flex-wrap:wrap')}>
                             {CONTENT_TRACKS.map((t) => {
                               const on = !!v.excerptModalTracks[t.id];
                               return (
                                 <Box key={t.id}
-                                  css={`padding:7px 14px;border-radius:999px;border:1px solid ${on ? t.color : 'var(--rule)'};background:${on ? `${t.color}20` : 'transparent'};color:${on ? t.color : 'var(--faint)'};font:600 11px/1 Inter;cursor:pointer;transition:all 0.15s`}
+                                  css={`padding:7px 14px;border-radius:999px;border:1px solid ${on ? t.color : 'var(--rule)'};background:${on ? `${t.color}20` : 'transparent'};color:${on ? t.color : 'var(--faint)'};font:600 11px/1 Plus Jakarta Sans;cursor:pointer;transition:all 0.15s`}
                                   hover={!on ? `border-color:${t.color};color:${t.color}` : ''}
                                   onClick={() => v.toggleExcerptModalTrack(t.id)}
                                 >{t.label}</Box>
@@ -4694,9 +4760,9 @@ export default class MedFactory extends React.Component {
                       </div>
 
                       <div style={S('padding:16px 26px;border-top:1px solid var(--rule2);display:flex;align-items:center;justify-content:space-between')}>
-                        <Box css="padding:9px 18px;font:600 11px/1 Inter;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={v.closeAddExcerpt}>Cancel</Box>
+                        <Box css="padding:9px 18px;font:600 11px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer" hover="color:var(--ink)" onClick={v.closeAddExcerpt}>Cancel</Box>
                         <Box
-                          css={`padding:10px 28px;font:700 12px/1 Inter;cursor:${v.excerptModalText.trim() ? 'pointer' : 'default'};background:${v.excerptModalText.trim() ? 'var(--acc)' : 'var(--s2)'};color:${v.excerptModalText.trim() ? '#fff' : 'var(--faint)'};border:1px solid ${v.excerptModalText.trim() ? 'var(--acc)' : 'var(--rule)'};transition:all 0.15s`}
+                          css={`padding:10px 28px;font:700 12px/1 Plus Jakarta Sans;cursor:${v.excerptModalText.trim() ? 'pointer' : 'default'};background:${v.excerptModalText.trim() ? 'var(--acc)' : 'var(--s2)'};color:${v.excerptModalText.trim() ? '#fff' : 'var(--faint)'};border:1px solid ${v.excerptModalText.trim() ? 'var(--acc)' : 'var(--rule)'};transition:all 0.15s`}
                           hover={v.excerptModalText.trim() ? 'background:var(--acc)' : ''}
                           onClick={v.excerptModalText.trim() ? v.submitExcerpt : undefined}
                         >Add excerpt</Box>
@@ -4745,7 +4811,7 @@ export default class MedFactory extends React.Component {
                   <circle cx="22" cy="22" r={r} fill="none" stroke={qColor} strokeWidth="3"
                     strokeDasharray={`${filled} ${circ - filled}`} strokeLinecap="round"
                     transform="rotate(-90 22 22)" style={{ transition: 'stroke-dasharray 0.6s ease' }} />
-                  <text x="22" y="26" textAnchor="middle" fontSize="9" fontWeight="700" fill={qColor} fontFamily="Inter">{score}</text>
+                  <text x="22" y="26" textAnchor="middle" fontSize="9" fontWeight="700" fill={qColor} fontFamily="Plus Jakarta Sans">{score}</text>
                 </svg>
               );
             };
@@ -4755,7 +4821,7 @@ export default class MedFactory extends React.Component {
                   {/* Status banner */}
                   <div style={S(`display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--rule);flex:none;background:${isDone ? 'rgba(22,101,52,0.08)' : 'rgba(44,82,204,0.06)'}`)}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: isDone ? 'var(--ok)' : 'var(--acc)', animation: isDone ? '' : 'puls 1s infinite' }} />
-                    <div style={S(`font:700 10px/1 Inter;letter-spacing:0.14em;color:${isDone ? 'var(--ok)' : 'var(--acc)'}`)}>
+                    <div style={S(`font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:${isDone ? 'var(--ok)' : 'var(--acc)'}`)}>
                       {isDone ? 'REVIEW COMPLETE — READY FOR CONTENT GENERATION' : 'MA REVIEW AGENT · RUNNING…'}
                     </div>
                     {!isDone && <div style={S('margin-left:auto;font:600 10px/1 var(--mono);color:var(--faint)')}>{Math.round((rN / (REVIEW_AGENT_MSGS.length + 1)) * 100)}%</div>}
@@ -4763,20 +4829,20 @@ export default class MedFactory extends React.Component {
 
                   {/* Thread header */}
                   <div style={S('padding:14px 20px;border-bottom:1px solid var(--rule);flex:none')}>
-                    <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>MEDICAL AFFAIRS REVIEW AGENT</div>
-                    <div style={S('font:700 14px/1 Inter;letter-spacing:-0.01em;color:var(--ink)')}>Evidence Quality & Artifact Readiness</div>
+                    <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>MEDICAL AFFAIRS REVIEW AGENT</div>
+                    <div style={S('font:700 14px/1 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink)')}>Evidence Quality & Artifact Readiness</div>
                   </div>
 
                   {/* Messages */}
                   <div style={S('flex:1;overflow-y:auto;padding:20px')}>
                     {visibleMsgs.map((msg, i) => (
                       <div key={i} style={{ ...S('display:flex;gap:10px;margin-bottom:22px;animation:rise 0.3s ease both'), animationDelay: `${i * 0.05}s` }}>
-                        <div style={{ width: 28, height: 28, flexShrink: 0, background: msg.color || 'var(--acc)', display: 'grid', placeItems: 'center', font: '700 10px/1 Inter', color: msg.color ? '#000' : '#fff', fontSize: msg.color ? 11 : 10, borderRadius: '50%' }}>
+                        <div style={{ width: 28, height: 28, flexShrink: 0, background: msg.color || 'var(--acc)', display: 'grid', placeItems: 'center', font: '700 10px/1 Plus Jakarta Sans', color: msg.color ? '#000' : '#fff', fontSize: msg.color ? 11 : 10, borderRadius: '50%' }}>
                           {msg.artifact ? msg.artifact[0] : 'AI'}
                         </div>
                         <div style={S('max-width:88%;flex:1')}>
                           {msg.artifact && (
-                            <div style={{ ...S('font:700 9.5px/1 Inter;letter-spacing:0.12em;margin-bottom:6px'), color: msg.color }}>
+                            <div style={{ ...S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;margin-bottom:6px'), color: msg.color }}>
                               {msg.artifact.toUpperCase()} · ANALYSIS
                             </div>
                           )}
@@ -4785,9 +4851,9 @@ export default class MedFactory extends React.Component {
                             {/* Sources */}
                             {msg.sources && msg.sources.length > 0 && (
                               <div style={S('display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule)')}>
-                                <span style={S('font:600 9px/1 Inter;letter-spacing:0.1em;color:var(--faint);margin-right:2px')}>SOURCES</span>
+                                <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint);margin-right:2px')}>SOURCES</span>
                                 {msg.sources.map((s) => (
-                                  <span key={s} style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1 Inter;color:var(--dim);cursor:pointer;border-radius:20px')}>{s}</span>
+                                  <span key={s} style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1 Plus Jakarta Sans;color:var(--dim);cursor:pointer;border-radius:20px')}>{s}</span>
                                 ))}
                               </div>
                             )}
@@ -4799,9 +4865,9 @@ export default class MedFactory extends React.Component {
                     {/* Thinking indicator */}
                     {!isDone && rN > 0 && (
                       <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.25s ease')}>
-                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--acc);color:#fff;border-radius:50%')}>AI</div>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:50%')}>AI</div>
                         <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--acc);padding:12px 14px;border-radius:10px')}>
-                          <div style={S('font:600 10px/1 Inter;letter-spacing:0.1em;color:var(--acc);margin-bottom:8px')}>
+                          <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--acc);margin-bottom:8px')}>
                             {rN <= 1 ? 'LOADING EVIDENCE BASE…' : `ANALYSING ${REVIEW_AGENT_MSGS[rN]?.artifact?.toUpperCase() || 'EVIDENCE'}…`}
                           </div>
                           <div style={S('display:flex;gap:5px')}>
@@ -4814,9 +4880,9 @@ export default class MedFactory extends React.Component {
                     {/* Done summary bubble */}
                     {isDone && (
                       <div style={S('display:flex;gap:10px;margin-bottom:20px;animation:rise 0.3s ease')}>
-                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Inter;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
+                        <div style={S('width:28px;height:28px;flex:none;display:grid;place-items:center;font:700 10px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;border-radius:50%')}>AI</div>
                         <div>
-                          <div style={S('font:600 9.5px/1 Inter;letter-spacing:0.12em;color:var(--ok);margin-bottom:6px')}>MA REVIEW AGENT · COMPLETE</div>
+                          <div style={S('font:600 9.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--ok);margin-bottom:6px')}>MA REVIEW AGENT · COMPLETE</div>
                           <div style={S('background:var(--s1);border:1px solid var(--rule);border-left:2px solid var(--ok);padding:12px 14px;font-size:12.5px;color:var(--dim);line-height:1.65')}>
                             Review complete. Overall quality <strong style={S('color:var(--ink)')}>78/100</strong>. Download the evidence brief below or proceed directly to content generation.
                           </div>
@@ -4829,19 +4895,19 @@ export default class MedFactory extends React.Component {
                   {isDone && (
                     <div style={S('padding:14px 20px;border-top:1px solid var(--rule);flex:none;display:flex;flex-direction:column;gap:8px')}>
                       <div style={S('display:flex;gap:8px')}>
-                        <Box css="flex:1;padding:10px 0;text-align:center;font:700 11px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:8px" hover="border-color:var(--ink);color:var(--ink)">
+                        <Box css="flex:1;padding:10px 0;text-align:center;font:700 11px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:8px" hover="border-color:var(--ink);color:var(--ink)">
                           ↓ Download research JSON
                         </Box>
-                        <Box css="flex:1;padding:10px 0;text-align:center;font:700 11px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:8px" hover="border-color:var(--ink);color:var(--ink)">
+                        <Box css="flex:1;padding:10px 0;text-align:center;font:700 11px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:8px" hover="border-color:var(--ink);color:var(--ink)">
                           ↓ Download evidence brief
                         </Box>
                       </div>
                       {v.sciSubmitted ? (
-                        <div style={S('display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:rgba(22,101,52,0.1);border:1px solid var(--ok);font:700 11px/1 Inter;color:var(--ok)')}>
+                        <div style={S('display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:rgba(22,101,52,0.1);border:1px solid var(--ok);font:700 11px/1 Plus Jakarta Sans;color:var(--ok)')}>
                           <span>✓</span> Sent for Scientific Review — awaiting Dr. Arjun Mehta
                         </div>
                       ) : (
-                        <Box css="padding:12px 0;text-align:center;font:700 12px/1 Inter;background:var(--ok);color:#fff;cursor:pointer;border-radius:8px" hover="opacity:0.85" onClick={v.submitToSci}>
+                        <Box css="padding:12px 0;text-align:center;font:700 12px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;cursor:pointer;border-radius:8px" hover="opacity:0.85" onClick={v.submitToSci}>
                           Submit for Scientific Review →
                         </Box>
                       )}
@@ -4857,13 +4923,13 @@ export default class MedFactory extends React.Component {
                   <div style={S('border-bottom:1px solid var(--rule2);flex:none;background:var(--bg)')}>
                     <div style={S('padding:12px 20px 0;display:flex;align-items:center;gap:10px')}>
                       <div style={{ width: 8, height: 8, borderRadius: '50%', background: isDone ? 'var(--ok)' : 'var(--warn)', animation: isDone ? '' : 'puls 1.1s infinite' }} />
-                      <div style={S('font:700 12px/1 Inter;letter-spacing:-0.01em')}>Evidence Review</div>
+                      <div style={S('font:700 12px/1 Plus Jakarta Sans;letter-spacing:-0.01em')}>Evidence Review</div>
                       <span style={S('font:600 10px/1 var(--mono);color:var(--faint)')}>{accepted.length} papers · {visibleMsgs.filter(m => m.artifact).length} of 5 analysed</span>
                     </div>
                     <div style={S('display:flex;gap:0;padding:0 20px;margin-top:10px')}>
                       {[['artifacts','Artifact Readiness'],['papers','Papers & Excerpts']].map(([tid, tlabel]) => (
                         <div key={tid} onClick={() => v.setMedReviewTab(tid)}
-                          style={{ padding: '6px 14px 10px', font: '600 11px/1 Inter', cursor: 'pointer', color: v.medReviewTab === tid ? 'var(--ink)' : 'var(--faint)', borderBottom: v.medReviewTab === tid ? '2px solid var(--acc)' : '2px solid transparent', transition: 'color 0.15s, border-color 0.15s', marginBottom: -1 }}>
+                          style={{ padding: '6px 14px 10px', font: '600 11px/1 Plus Jakarta Sans', cursor: 'pointer', color: v.medReviewTab === tid ? 'var(--ink)' : 'var(--faint)', borderBottom: v.medReviewTab === tid ? '2px solid var(--acc)' : '2px solid transparent', transition: 'color 0.15s, border-color 0.15s', marginBottom: -1 }}>
                           {tlabel}
                         </div>
                       ))}
@@ -4879,8 +4945,8 @@ export default class MedFactory extends React.Component {
                       if (!visible) return (
                         <div key={i} style={S('border:1px solid var(--rule);padding:14px 16px;opacity:0.35;display:flex;align-items:center;gap:10px')}>
                           <div style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid var(--faint)' }} />
-                          <span style={S('font:600 11px/1 Inter;color:var(--faint)')}>{ARTIFACT_TARGETS[msg.artifact]?.label}</span>
-                          <span style={S('font:500 10px/1 Inter;color:var(--faint);margin-left:auto')}>pending…</span>
+                          <span style={S('font:600 11px/1 Plus Jakarta Sans;color:var(--faint)')}>{ARTIFACT_TARGETS[msg.artifact]?.label}</span>
+                          <span style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint);margin-left:auto')}>pending…</span>
                         </div>
                       );
                       const qColor = msg.quality >= 80 ? 'var(--ok)' : msg.quality >= 50 ? 'var(--warn)' : 'var(--acc)';
@@ -4891,12 +4957,12 @@ export default class MedFactory extends React.Component {
                           <div style={S('padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--rule)')}>
                             <QualityRing score={msg.quality} color={msg.color} />
                             <div style={S('flex:1;min-width:0')}>
-                              <div style={{ font: '700 12.5px/1 Inter', color: msg.color, marginBottom: 4 }}>{ARTIFACT_TARGETS[msg.artifact]?.label}</div>
-                              <div style={S('font:500 10px/1 Inter;color:var(--faint)')}>Evidence quality: <span style={{ color: qColor, fontWeight: 700 }}>{qLabel}</span></div>
+                              <div style={{ font: '700 12.5px/1 Plus Jakarta Sans', color: msg.color, marginBottom: 4 }}>{ARTIFACT_TARGETS[msg.artifact]?.label}</div>
+                              <div style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>Evidence quality: <span style={{ color: qColor, fontWeight: 700 }}>{qLabel}</span></div>
                             </div>
                             <div style={{ textAlign: 'right', flexShrink: 0 }}>
                               <div style={S('font:700 12px/1 var(--mono);color:var(--dim)')}>{cur}/{tgt}</div>
-                              <div style={S('font:500 9px/1 Inter;color:var(--faint);margin-top:3px')}>excerpts</div>
+                              <div style={S('font:500 9px/1 Plus Jakarta Sans;color:var(--faint);margin-top:3px')}>excerpts</div>
                             </div>
                           </div>
                           {/* Progress bar */}
@@ -4905,21 +4971,21 @@ export default class MedFactory extends React.Component {
                           </div>
                           {/* Papers used */}
                           <div style={S('padding:10px 14px;display:flex;flex-direction:column;gap:6px')}>
-                            <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.12em;color:var(--faint);margin-bottom:2px')}>SOURCES USED</div>
+                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-bottom:2px')}>SOURCES USED</div>
                             {accepted.filter(p => p.artifacts.includes(msg.artifact)).slice(0, 3).map((p) => (
                               <div key={p._idx} style={S('display:flex;align-items:center;gap:7px')}>
                                 <div style={{ width: 5, height: 5, borderRadius: '50%', background: msg.color, flexShrink: 0 }} />
-                                <span style={S('font:500 10.5px/1.4 Inter;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1')}>{p.title}</span>
+                                <span style={S('font:500 10.5px/1.4 Plus Jakarta Sans;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1')}>{p.title}</span>
                                 <span style={S('font:500 9px/1 var(--mono);color:var(--faint);flex-shrink:0')}>{p.year}</span>
                               </div>
                             ))}
                             {accepted.filter(p => p.artifacts.includes(msg.artifact)).length === 0 && (
-                              <div style={S('font:500 10.5px/1 Inter;color:var(--faint)')}>No papers accepted for this artifact yet.</div>
+                              <div style={S('font:500 10.5px/1 Plus Jakarta Sans;color:var(--faint)')}>No papers accepted for this artifact yet.</div>
                             )}
                           </div>
                           {/* Gap indicator */}
                           {msg.quality < 80 && (
-                            <div style={S('margin:0 14px 12px;padding:7px 10px;border:1px solid var(--warn);background:rgba(146,64,14,0.07);font:500 10.5px/1.5 Inter;color:var(--warn)')}>
+                            <div style={S('margin:0 14px 12px;padding:7px 10px;border:1px solid var(--warn);background:rgba(146,64,14,0.07);font:500 10.5px/1.5 Plus Jakarta Sans;color:var(--warn)')}>
                               ⚠ Gap detected — see chat for recommendations
                             </div>
                           )}
@@ -4932,8 +4998,8 @@ export default class MedFactory extends React.Component {
                       <div style={S('border:1px solid var(--rule2);background:var(--s2);padding:16px;display:flex;align-items:center;gap:14px;animation:fadeUp 0.3s ease both')}>
                         <QualityRing score={78} color="var(--acc)" />
                         <div>
-                          <div style={S('font:700 13px/1 Inter;color:var(--ink);margin-bottom:5px')}>Overall evidence quality</div>
-                          <div style={S('font:500 11px/1.5 Inter;color:var(--faint)')}>4 of 5 artifacts ready · 1 needs more excerpts</div>
+                          <div style={S('font:700 13px/1 Plus Jakarta Sans;color:var(--ink);margin-bottom:5px')}>Overall evidence quality</div>
+                          <div style={S('font:500 11px/1.5 Plus Jakarta Sans;color:var(--faint)')}>4 of 5 artifacts ready · 1 needs more excerpts</div>
                         </div>
                       </div>
                     )}
@@ -4951,9 +5017,9 @@ export default class MedFactory extends React.Component {
 
                         {/* Paper list */}
                         <div style={{ width: sel ? '42%' : '100%', flexShrink: 0, overflowY: 'auto', borderRight: sel ? '1px solid var(--rule2)' : 'none', transition: 'width 0.25s ease', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                          <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>{accepted.length} ACCEPTED PAPERS</div>
+                          <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:4px')}>{accepted.length} ACCEPTED PAPERS</div>
                           {accepted.length === 0 && (
-                            <div style={S('font:500 12px/1.6 Inter;color:var(--faint);padding:20px 0')}>No papers accepted yet. Go back to Research to accept papers.</div>
+                            <div style={S('font:500 12px/1.6 Plus Jakarta Sans;color:var(--faint);padding:20px 0')}>No papers accepted yet. Go back to Research to accept papers.</div>
                           )}
                           {accepted.map((p, i) => {
                             const isSel = sel && sel._idx === p._idx;
@@ -4962,12 +5028,12 @@ export default class MedFactory extends React.Component {
                             return (
                               <div key={p._idx} onClick={() => v.setMedReviewPaper(isSel ? null : p)}
                                 style={{ border: `1px solid ${isSel ? tColor + '88' : 'var(--rule)'}`, borderLeft: `3px solid ${tColor}`, background: isSel ? 'var(--s2)' : 'var(--bg)', padding: '10px 12px', cursor: 'pointer', animation: 'cardIn 0.25s ease both', animationDelay: `${i * 0.04}s`, transition: 'background 0.15s, border-color 0.15s' }}>
-                                <div style={S('font:600 10.5px/1.4 Inter;color:var(--ink);margin-bottom:5px')}>{p.title}</div>
+                                <div style={S('font:600 10.5px/1.4 Plus Jakarta Sans;color:var(--ink);margin-bottom:5px')}>{p.title}</div>
                                 <div style={S('display:flex;flex-wrap:wrap;gap:5px;align-items:center')}>
-                                  <span style={{ padding: '1px 7px', border: `1px solid ${tColor}44`, font: '600 9px/1.6 Inter', color: tColor }}>{p.track || 'Uncategorised'}</span>
+                                  <span style={{ padding: '1px 7px', border: `1px solid ${tColor}44`, font: '600 9px/1.6 Plus Jakarta Sans', color: tColor }}>{p.track || 'Uncategorised'}</span>
                                   <span style={S('font:500 9.5px/1 var(--mono);color:var(--faint)')}>{p.journal} · {p.year}</span>
                                   {p.artifacts && p.artifacts.map(a => (
-                                    <span key={a} style={{ padding: '1px 6px', background: 'var(--s2)', font: '600 9px/1.6 Inter', color: 'var(--faint)' }}>{a}</span>
+                                    <span key={a} style={{ padding: '1px 6px', background: 'var(--s2)', font: '600 9px/1.6 Plus Jakarta Sans', color: 'var(--faint)' }}>{a}</span>
                                   ))}
                                 </div>
                               </div>
@@ -4981,37 +5047,37 @@ export default class MedFactory extends React.Component {
                             {/* Close */}
                             <div style={S('display:flex;align-items:flex-start;gap:8px;margin-bottom:12px')}>
                               <div style={{ flex: 1 }}>
-                                <div style={{ font: '700 8.5px/1 Inter', letterSpacing: '0.14em', color: trackColor(sel), marginBottom: 5 }}>{sel.track || 'UNCATEGORISED'}</div>
-                                <div style={S('font:700 13px/1.45 Inter;color:var(--ink)')}>{sel.title}</div>
+                                <div style={{ font: '700 8.5px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: trackColor(sel), marginBottom: 5 }}>{sel.track || 'UNCATEGORISED'}</div>
+                                <div style={S('font:700 13px/1.45 Plus Jakarta Sans;color:var(--ink)')}>{sel.title}</div>
                               </div>
                               <div onClick={() => v.setMedReviewPaper(null)} style={S('cursor:pointer;color:var(--faint);font-size:16px;padding:2px 4px;line-height:1')}>×</div>
                             </div>
 
                             {/* Meta row */}
                             <div style={S('display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--rule)')}>
-                              <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Inter;color:var(--dim)')}>{sel.journal}</span>
-                              <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Inter;color:var(--dim)')}>{sel.year}</span>
-                              {sel.n && <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Inter;color:var(--dim)')}>n={sel.n.toLocaleString()}</span>}
-                              {sel.phase && <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Inter;color:var(--dim)')}>{sel.phase}</span>}
+                              <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Plus Jakarta Sans;color:var(--dim)')}>{sel.journal}</span>
+                              <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Plus Jakarta Sans;color:var(--dim)')}>{sel.year}</span>
+                              {sel.n && <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Plus Jakarta Sans;color:var(--dim)')}>n={sel.n.toLocaleString()}</span>}
+                              {sel.phase && <span style={S('padding:2px 8px;border:1px solid var(--rule2);font:600 9.5px/1.6 Plus Jakarta Sans;color:var(--dim)')}>{sel.phase}</span>}
                             </div>
 
                             {/* Excerpt */}
                             {sel.excerpt && (
                               <div style={S('margin-bottom:16px')}>
-                                <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:8px')}>KEY EXCERPT</div>
-                                <div style={S('border-left:2px solid var(--rule2);padding:8px 12px;font:400 12px/1.65 Inter;color:var(--dim);font-style:italic')}>&ldquo;{sel.excerpt}&rdquo;</div>
+                                <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:8px')}>KEY EXCERPT</div>
+                                <div style={S('border-left:2px solid var(--rule2);padding:8px 12px;font:400 12px/1.65 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>&ldquo;{sel.excerpt}&rdquo;</div>
                               </div>
                             )}
 
                             {/* Artifact pills */}
                             {sel.artifacts && sel.artifacts.length > 0 && (
                               <div style={S('margin-bottom:16px')}>
-                                <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:8px')}>USED IN ARTIFACTS</div>
+                                <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:8px')}>USED IN ARTIFACTS</div>
                                 <div style={S('display:flex;flex-wrap:wrap;gap:6px')}>
                                   {sel.artifacts.map(a => {
                                     const am = REVIEW_AGENT_MSGS.find(m => m.artifact === a);
                                     const aColor = am ? am.color : 'var(--dim)';
-                                    return <span key={a} style={{ padding: '3px 10px', border: `1px solid ${aColor}55`, font: '700 10px/1.6 Inter', color: aColor }}>{a}</span>;
+                                    return <span key={a} style={{ padding: '3px 10px', border: `1px solid ${aColor}55`, font: '700 10px/1.6 Plus Jakarta Sans', color: aColor }}>{a}</span>;
                                   })}
                                 </div>
                               </div>
@@ -5020,13 +5086,13 @@ export default class MedFactory extends React.Component {
                             {/* Figures */}
                             {PAPER_FIGURES[sel._idx] && PAPER_FIGURES[sel._idx].length > 0 && (
                               <div>
-                                <div style={S('font:700 8.5px/1 Inter;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>FIGURES</div>
+                                <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>FIGURES</div>
                                 <div style={S('display:flex;flex-direction:column;gap:10px')}>
                                   {PAPER_FIGURES[sel._idx].map((fig, fi) => (
                                     <div key={fi} style={S('border:1px solid var(--rule);padding:10px')}>
-                                      <div style={S('font:700 9.5px/1 Inter;color:var(--dim);margin-bottom:6px')}>{fig.label}</div>
-                                      <div style={S('font:400 9.5px/1.5 Inter;color:var(--faint);margin-bottom:8px')}>{fig.caption}</div>
-                                      <div style={S('background:var(--s2);height:90px;display:grid;place-items:center;font:500 10px/1 Inter;color:var(--faint)')}>[{fig.type.toUpperCase()} FIGURE]</div>
+                                      <div style={S('font:700 9.5px/1 Plus Jakarta Sans;color:var(--dim);margin-bottom:6px')}>{fig.label}</div>
+                                      <div style={S('font:400 9.5px/1.5 Plus Jakarta Sans;color:var(--faint);margin-bottom:8px')}>{fig.caption}</div>
+                                      <div style={S('background:var(--s2);height:90px;display:grid;place-items:center;font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>[{fig.type.toUpperCase()} FIGURE]</div>
                                     </div>
                                   ))}
                                 </div>
@@ -5061,13 +5127,13 @@ export default class MedFactory extends React.Component {
                 {/* Header */}
                 <div style={S('display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px')}>
                   <div>
-                    <div style={S('font:700 9.5px/1 Inter;letter-spacing:0.16em;color:var(--ok);margin-bottom:10px')}>SCIENTIFIC REVIEW HUB</div>
-                    <h1 style={S('font:800 28px/1 Inter;letter-spacing:-0.03em;margin:0 0 8px')}>Welcome, Dr. Arjun Mehta</h1>
-                    <div style={S('font:400 13.5px/1 Inter;color:var(--dim)')}>Scientific Adviser · September 2026</div>
+                    <div style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--ok);margin-bottom:10px')}>SCIENTIFIC REVIEW HUB</div>
+                    <h1 style={S('font:800 28px/1 Plus Jakarta Sans;letter-spacing:-0.03em;margin:0 0 8px')}>Welcome, Dr. Arjun Mehta</h1>
+                    <div style={S('font:400 13.5px/1 Plus Jakarta Sans;color:var(--dim)')}>Scientific Adviser · September 2026</div>
                   </div>
                   <div style={S('display:flex;align-items:center;gap:10px')}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--ok)', animation: 'puls 1.4s infinite' }} />
-                    <span style={S('font:600 10px/1 Inter;letter-spacing:0.1em;color:var(--ok)')}>1 DECK AWAITING REVIEW</span>
+                    <span style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--ok)')}>1 DECK AWAITING REVIEW</span>
                   </div>
                 </div>
 
@@ -5079,29 +5145,29 @@ export default class MedFactory extends React.Component {
                     { label: 'SENT BACK', value: '1', color: 'var(--acc)', delta: 'Avg 1.2 days to resubmit' },
                   ].map((s, i) => (
                     <div key={i} style={{ padding: '22px 28px', borderRight: i < 2 ? '1px solid var(--rule2)' : 'none', background: 'var(--s1)' }}>
-                      <div style={{ font: '700 9px/1 Inter', letterSpacing: '0.14em', color: s.color, marginBottom: 12 }}>{s.label}</div>
-                      <div style={{ font: '800 36px/1 Inter', letterSpacing: '-0.03em', marginBottom: 6 }}>{s.value}</div>
-                      <div style={S('font:400 11.5px/1 Inter;color:var(--faint)')}>{s.delta}</div>
+                      <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: s.color, marginBottom: 12 }}>{s.label}</div>
+                      <div style={{ font: '800 36px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', marginBottom: 6 }}>{s.value}</div>
+                      <div style={S('font:400 11.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{s.delta}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Pending deck card */}
-                <div style={S('font:700 11px/1 Inter;letter-spacing:0.1em;color:var(--faint);margin-bottom:14px')}>PENDING YOUR REVIEW</div>
+                <div style={S('font:700 11px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint);margin-bottom:14px')}>PENDING YOUR REVIEW</div>
                 <div style={S('border:1px solid var(--rule2);border-left:3px solid var(--ok);background:var(--s1);animation:cardIn 0.4s ease both;animation-delay:0.1s')}>
                   {/* Deck header */}
                   <div style={S('padding:18px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:16px')}>
-                    <div style={{ flexShrink: 0, width: 44, height: 44, background: 'var(--ok)', display: 'grid', placeItems: 'center', font: '700 16px/1 Inter', color: '#fff' }}>D</div>
+                    <div style={{ flexShrink: 0, width: 44, height: 44, background: 'var(--ok)', display: 'grid', placeItems: 'center', font: '700 16px/1 Plus Jakarta Sans', color: '#fff' }}>D</div>
                     <div style={S('flex:1;min-width:0')}>
-                      <div style={S('font:800 16px/1.3 Inter;letter-spacing:-0.01em;margin-bottom:5px')}>{deck.topic}</div>
-                      <div style={S('font:500 12px/1 Inter;color:var(--faint)')}>{deck.product}</div>
+                      <div style={S('font:800 16px/1.3 Plus Jakarta Sans;letter-spacing:-0.01em;margin-bottom:5px')}>{deck.topic}</div>
+                      <div style={S('font:500 12px/1 Plus Jakarta Sans;color:var(--faint)')}>{deck.product}</div>
                     </div>
                     <div style={S('text-align:right;flex:none')}>
                       <div style={S('display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-bottom:6px')}>
                         <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--warn)', animation: 'puls 1.2s infinite' }} />
-                        <span style={S('font:700 10px/1 Inter;letter-spacing:0.1em;color:var(--warn)')}>AWAITING REVIEW</span>
+                        <span style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--warn)')}>AWAITING REVIEW</span>
                       </div>
-                      <div style={S('font:500 10.5px/1 Inter;color:var(--faint)')}>{deck.submittedAt}</div>
+                      <div style={S('font:500 10.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{deck.submittedAt}</div>
                     </div>
                   </div>
 
@@ -5114,15 +5180,15 @@ export default class MedFactory extends React.Component {
                       { label: 'MA QUALITY SCORE', value: `${deck.maQuality}/100`, color: 'var(--warn)' },
                     ].map((m, i) => (
                       <div key={i} style={{ padding: '12px 18px', borderRight: i < 3 ? '1px solid var(--rule)' : 'none' }}>
-                        <div style={S('font:600 9px/1 Inter;letter-spacing:0.12em;color:var(--faint);margin-bottom:5px')}>{m.label}</div>
-                        <div style={{ font: '600 12.5px/1 Inter', color: m.color || 'var(--ink)' }}>{m.value}</div>
+                        <div style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-bottom:5px')}>{m.label}</div>
+                        <div style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: m.color || 'var(--ink)' }}>{m.value}</div>
                       </div>
                     ))}
                   </div>
 
                   {/* Artifact pills */}
                   <div style={S('padding:12px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex-wrap:wrap')}>
-                    <span style={S('font:600 9px/1 Inter;letter-spacing:0.12em;color:var(--faint);margin-right:4px')}>ARTIFACTS</span>
+                    <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-right:4px')}>ARTIFACTS</span>
                     {[
                       { name: 'HCP Deck', q: 89, color: '#7eb8f7' },
                       { name: 'Blog', q: 100, color: '#fb923c' },
@@ -5132,7 +5198,7 @@ export default class MedFactory extends React.Component {
                     ].map((a) => (
                       <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: `1px solid ${a.color}44`, background: `${a.color}0d` }}>
                         <div style={{ width: 5, height: 5, borderRadius: '50%', background: a.q >= 80 ? 'var(--ok)' : a.q >= 50 ? 'var(--warn)' : 'var(--acc)' }} />
-                        <span style={{ font: '600 11px/1 Inter', color: a.color }}>{a.name}</span>
+                        <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: a.color }}>{a.name}</span>
                         <span style={S('font:500 10px/1 var(--mono);color:var(--faint)')}>{a.q}</span>
                       </div>
                     ))}
@@ -5140,8 +5206,8 @@ export default class MedFactory extends React.Component {
 
                   {/* CTA */}
                   <div style={S('padding:16px 24px;display:flex;align-items:center;gap:10px')}>
-                    <div style={S('flex:1;font:400 12px/1.5 Inter;color:var(--faint)')}>All excerpts are approved by default. You only need to act on what you reject.</div>
-                    <Box css="padding:12px 28px;background:var(--ok);color:#fff;font:700 13px/1 Inter;cursor:pointer;white-space:nowrap" hover="opacity:0.85" onClick={() => this.go('sci-review')}>
+                    <div style={S('flex:1;font:400 12px/1.5 Plus Jakarta Sans;color:var(--faint)')}>All excerpts are approved by default. You only need to act on what you reject.</div>
+                    <Box css="padding:12px 28px;background:var(--ok);color:#fff;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;white-space:nowrap" hover="opacity:0.85" onClick={() => this.go('sci-review')}>
                       Open for Review →
                     </Box>
                   </div>
@@ -5181,8 +5247,8 @@ export default class MedFactory extends React.Component {
                   <div style={{ padding: '18px 22px', borderBottom: '1px solid rgba(26,45,107,0.12)', flexShrink: 0, background: '#fff' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                       <div style={{ flex: 1 }}>
-                        <h2 style={{ font: '800 20px/1 Inter', letterSpacing: '-0.025em', color: '#1a2d6b', margin: '0 0 6px' }}>Scientific Review</h2>
-                        <div style={{ font: '500 13px/1 Inter', color: '#2d4a8a' }}>
+                        <h2 style={{ font: '800 20px/1 Plus Jakarta Sans', letterSpacing: '-0.025em', color: '#1a2d6b', margin: '0 0 6px' }}>Scientific Review</h2>
+                        <div style={{ font: '500 13px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>
                           {accepted.length} papers under review &middot;&nbsp;
                           {rejectedCount > 0
                             ? <span style={{ color: '#2c52cc', fontWeight: 700 }}>{rejectedCount} rejected</span>
@@ -5195,7 +5261,7 @@ export default class MedFactory extends React.Component {
                       {artifactStatus.map(a => (
                         <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 11px', border: `1px solid ${a.ok ? 'rgba(22,101,52,0.4)' : 'rgba(44,82,204,0.4)'}`, background: a.ok ? 'rgba(22,101,52,0.08)' : 'rgba(44,82,204,0.06)', borderRadius: 99 }}>
                           <div style={{ width: 15, height: 15, borderRadius: '50%', background: a.ok ? '#166534' : '#2c52cc', display: 'grid', placeItems: 'center', fontSize: 9, color: '#fff', fontWeight: 800 }}>{a.ok ? '✓' : '!'}</div>
-                          <span style={{ font: '600 12.5px/1 Inter', color: '#1a2d6b' }}>{a.name}</span>
+                          <span style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: '#1a2d6b' }}>{a.name}</span>
                         </div>
                       ))}
                     </div>
@@ -5203,10 +5269,10 @@ export default class MedFactory extends React.Component {
 
                   {/* Scrollable paper list */}
                   <div style={{ flex: 1, overflowY: 'auto', padding: '20px 22px' }}>
-                    <div style={{ font: '700 11px/1 Inter', letterSpacing: '0.1em', color: '#2d4a8a', marginBottom: 16, textTransform: 'uppercase' }}>Papers — click to open full view</div>
+                    <div style={{ font: '700 11px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#2d4a8a', marginBottom: 16, textTransform: 'uppercase' }}>Papers — click to open full view</div>
                     {trackGroups.map((tc) => (
                       <div key={tc.id} style={{ marginBottom: 24 }}>
-                        <div style={{ font: '800 12px/1 Inter', letterSpacing: '0.08em', color: tc.color, marginBottom: 10, paddingBottom: 8, borderBottom: `2px solid ${tc.color}40`, textTransform: 'uppercase' }}>{tc.label}</div>
+                        <div style={{ font: '800 12px/1 Plus Jakarta Sans', letterSpacing: '0.08em', color: tc.color, marginBottom: 10, paddingBottom: 8, borderBottom: `2px solid ${tc.color}40`, textTransform: 'uppercase' }}>{tc.label}</div>
                         {tc.papers.map((paper) => {
                           const key = `${paper._idx}-0`;
                           const cmt = comments[key] || {};
@@ -5219,19 +5285,19 @@ export default class MedFactory extends React.Component {
                               <div style={{ padding: '14px 16px', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: 10 }}
                                 onClick={() => v.setSciSelectedPaper(isSel ? null : paper)}>
                                 <div style={{ flex: 1, minWidth: 0 }}>
-                                  <div style={{ font: '700 15px/1.45 Inter', color: '#1a2d6b', marginBottom: 5 }}>{paper.title}</div>
-                                  <div style={{ font: '500 12.5px/1 Inter', color: '#2d4a8a' }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
+                                  <div style={{ font: '700 15px/1.45 Plus Jakarta Sans', color: '#1a2d6b', marginBottom: 5 }}>{paper.title}</div>
+                                  <div style={{ font: '500 12.5px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5, flexShrink: 0 }}>
-                                  {inlineCount > 0 && <span style={{ padding: '3px 8px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.35)', font: '700 10.5px/1.5 Inter', color: '#92400e', borderRadius: 4 }}>{inlineCount} comment{inlineCount > 1 ? 's' : ''}</span>}
-                                  {isRejected && <span style={{ padding: '3px 8px', background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.35)', font: '700 10.5px/1.5 Inter', color: '#2c52cc', borderRadius: 4 }}>REJECTED</span>}
-                                  <span style={{ font: '600 12px/1 Inter', color: isSel ? tc.color : '#2d4a8a' }}>{isSel ? '← close' : 'open →'}</span>
+                                  {inlineCount > 0 && <span style={{ padding: '3px 8px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.35)', font: '700 10.5px/1.5 Plus Jakarta Sans', color: '#92400e', borderRadius: 4 }}>{inlineCount} comment{inlineCount > 1 ? 's' : ''}</span>}
+                                  {isRejected && <span style={{ padding: '3px 8px', background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.35)', font: '700 10.5px/1.5 Plus Jakarta Sans', color: '#2c52cc', borderRadius: 4 }}>REJECTED</span>}
+                                  <span style={{ font: '600 12px/1 Plus Jakarta Sans', color: isSel ? tc.color : '#2d4a8a' }}>{isSel ? '← close' : 'open →'}</span>
                                 </div>
                               </div>
                               {/* Excerpt */}
                               {paper.excerpt && (
                                 <div style={{ padding: '0 16px 12px', borderTop: '1px solid rgba(26,45,107,0.08)' }}>
-                                  <div style={{ paddingTop: 9, font: '400 13px/1.65 Inter', color: '#2d4a8a', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>"{paper.excerpt}"</div>
+                                  <div style={{ paddingTop: 9, font: '400 13px/1.65 Plus Jakarta Sans', color: '#2d4a8a', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>"{paper.excerpt}"</div>
                                 </div>
                               )}
                               {/* Reject / comment row */}
@@ -5241,10 +5307,10 @@ export default class MedFactory extends React.Component {
                                   value={cmt.text || ''}
                                   onChange={(e) => v.setSciComment(key, e.target.value)}
                                   onClick={(e) => e.stopPropagation()}
-                                  style={{ flex: 1, background: '#f4f7fb', border: `1px solid ${isRejected ? 'rgba(44,82,204,0.4)' : 'rgba(26,45,107,0.14)'}`, color: '#1a2d6b', padding: '7px 11px', font: '400 13px/1 Inter', outline: 'none', borderRadius: 4 }}
+                                  style={{ flex: 1, background: '#f4f7fb', border: `1px solid ${isRejected ? 'rgba(44,82,204,0.4)' : 'rgba(26,45,107,0.14)'}`, color: '#1a2d6b', padding: '7px 11px', font: '400 13px/1 Plus Jakarta Sans', outline: 'none', borderRadius: 4 }}
                                 />
                                 <Box
-                                  css={`padding:7px 13px;font:700 12px/1 Inter;cursor:pointer;border:1px solid rgba(44,82,204,0.45);color:${isRejected ? '#fff' : '#2c52cc'};background:${isRejected ? '#2c52cc' : 'transparent'};white-space:nowrap;border-radius:4px`}
+                                  css={`padding:7px 13px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid rgba(44,82,204,0.45);color:${isRejected ? '#fff' : '#2c52cc'};background:${isRejected ? '#2c52cc' : 'transparent'};white-space:nowrap;border-radius:4px`}
                                   hover="opacity:0.82"
                                   onClick={(e) => { e.stopPropagation(); v.toggleSciReject(key); }}>
                                   {isRejected ? '✕ Rejected' : '✕ Reject'}
@@ -5258,8 +5324,8 @@ export default class MedFactory extends React.Component {
 
                     {/* Final CTA */}
                     <div style={{ marginTop: 16, paddingTop: 18, borderTop: '2px solid rgba(26,45,107,0.1)', display: 'flex', gap: 9 }}>
-                      <Box css="flex:1;padding:13px 0;text-align:center;font:600 13px/1 Inter;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="background:var(--s2);color:var(--ink)">&#x2193; Download report</Box>
-                      <Box css="flex:2;padding:13px 0;text-align:center;font:700 13.5px/1 Inter;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.87" onClick={v.sciApproveAll}>
+                      <Box css="flex:1;padding:13px 0;text-align:center;font:600 13px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="background:var(--s2);color:var(--ink)">&#x2193; Download report</Box>
+                      <Box css="flex:2;padding:13px 0;text-align:center;font:700 13.5px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.87" onClick={v.sciApproveAll}>
                         {rejectedCount > 0 ? `Send back · ${rejectedCount} rejection${rejectedCount > 1 ? 's' : ''} →` : 'Approve & finalise →'}
                       </Box>
                     </div>
