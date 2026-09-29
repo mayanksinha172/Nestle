@@ -2481,57 +2481,88 @@ export default class MedFactory extends React.Component {
                     <Box css={`background:${v.pptStatus === 'sci-rejected' ? 'var(--ok)' : 'var(--warn)'};color:${v.pptStatus === 'sci-rejected' ? '#fff' : '#000'};font-weight:700;padding:10px 18px;cursor:pointer;font-size:13px`} hover="opacity:0.85" onClick={() => this.go('dash')}>Back to Dashboard →</Box>
                   </div>
                 )}
-                <div style={S('padding:34px 40px 28px;border-bottom:2px solid var(--rule2);display:flex;align-items:flex-end;justify-content:space-between;gap:32px')}>
-                  <div>
-                    <div style={merge(kicker, 'margin-bottom:14px')}>TUESDAY · 2 SEPTEMBER 2026</div>
-                    <h1 style={S('font-size:36px;font-weight:800;letter-spacing:-0.04em;margin:0 0 8px;color:var(--ink)')}>Good morning, Mayank</h1>
-                    <div style={S('color:var(--dim);max-width:52ch')}>
-                      Two workspaces need your sign-off before they move to Munal. September&apos;s topic queue is ready for approval.
+                {/* ── Hero header ── */}
+                <div style={{ background: 'linear-gradient(135deg,#eef2fb 0%,#f7f9fd 60%,#f0f4ff 100%)', padding: '40px 40px 36px', borderBottom: '1px solid var(--rule)', position: 'relative', overflow: 'hidden' }}>
+                  {/* decorative accent blob */}
+                  <div style={{ position: 'absolute', right: 280, top: -60, width: 260, height: 260, borderRadius: '50%', background: 'radial-gradient(circle,rgba(44,82,204,0.07) 0%,transparent 70%)', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', right: 40, top: -30, width: 180, height: 180, borderRadius: '50%', background: 'radial-gradient(circle,rgba(68,104,224,0.05) 0%,transparent 70%)', pointerEvents: 'none' }} />
+                  <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 32, position: 'relative' }}>
+                    <div>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(44,82,204,0.08)', borderRadius: 20, padding: '5px 12px', marginBottom: 18 }}>
+                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--acc)' }} />
+                        <span style={{ font: '700 9.5px/1 Plus Jakarta Sans', letterSpacing: '0.16em', color: 'var(--acc)' }}>TUESDAY · 2 SEPTEMBER 2026</span>
+                      </div>
+                      <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-0.04em', margin: '0 0 10px', color: 'var(--ink)', lineHeight: 1.1 }}>Good morning, Mayank</h1>
+                      <div style={{ color: 'var(--dim)', fontSize: 14, lineHeight: 1.6, maxWidth: '52ch' }}>
+                        Two workspaces need your sign-off before they move to Munal. September&apos;s topic queue is ready for approval.
+                      </div>
                     </div>
+                    <Box
+                      css="flex:none;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font-weight:700;padding:15px 26px;cursor:pointer;display:flex;align-items:center;gap:12px;border-radius:12px;box-shadow:0 4px 20px rgba(44,82,204,0.28);white-space:nowrap"
+                      hover="opacity:0.88;box-shadow:0 6px 24px rgba(44,82,204,0.36)"
+                      onClick={v.goIntake}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
+                      <span style={{ fontSize: 14 }}>Create a New Workspace</span>
+                    </Box>
                   </div>
-                  <Box
-                    css="flex:none;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font-weight:700;padding:14px 24px;cursor:pointer;display:flex;align-items:center;gap:28px;min-width:260px;border-radius:8px"
-                    hover="opacity:0.85"
-                    onClick={v.goIntake}
-                  >
-                    <span>+ Create a New Workspace</span>
-                    <span style={S('margin-left:auto;font-size:16px')}>→</span>
-                  </Box>
                 </div>
 
-                <div style={S('display:grid;grid-template-columns:repeat(3,1fr);border-bottom:2px solid var(--rule2)')}>
-                  {v.stats.map((k, i) => (
-                    <div key={i} style={S(k.style)}>
-                      <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:18px')}>{k.label}</div>
-                      <div style={S('display:flex;align-items:baseline;gap:10px')}>
-                        <div style={S(k.numStyle)}>{k.value}</div>
-                        <div style={S('color:var(--dim);font-size:12px')}>{k.delta}</div>
+                {/* ── Stat cards ── */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, padding: '24px 40px' }}>
+                  {[
+                    { label: 'WORKSPACES IN PROGRESS', value: '4', delta: '2 in generation', color: 'var(--ink)', bg: 'rgba(15,31,74,0.04)', accent: '#0f1f4a' },
+                    { label: 'PENDING YOUR REVIEW', value: '2', delta: 'oldest 1 day', color: 'var(--acc)', bg: 'rgba(44,82,204,0.06)', accent: '#2c52cc' },
+                    { label: 'COMPLETED THIS MONTH', value: '18', delta: '+5 vs August', color: 'var(--ok)', bg: 'rgba(22,101,52,0.06)', accent: '#166534' },
+                  ].map((k, i) => (
+                    <div key={i} style={{ background: '#fff', borderRadius: 14, padding: '22px 24px', boxShadow: '0 1px 3px rgba(15,31,74,0.06),0 4px 16px rgba(15,31,74,0.05)', border: '1px solid var(--rule)', position: 'relative', overflow: 'hidden' }}>
+                      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: k.accent, borderRadius: '14px 14px 0 0' }} />
+                      <div style={{ font: '600 9.5px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--faint)', marginBottom: 14 }}>{k.label}</div>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
+                        <div style={{ font: `800 40px/1 Plus Jakarta Sans`, letterSpacing: '-0.04em', color: k.color }}>{k.value}</div>
+                        <div style={{ background: k.bg, borderRadius: 20, padding: '3px 10px', font: '600 11px/1 Plus Jakarta Sans', color: k.accent }}>{k.delta}</div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div style={S('padding:26px 40px 16px;display:flex;align-items:baseline;gap:16px')}>
-                  <h2 style={S('font-size:13px;font-weight:700;letter-spacing:0.1em;margin:0')}>RECENT WORKSPACES</h2>
-                  <span style={S('color:var(--faint);font-size:12px')}>6 of 24</span>
+                {/* ── Recent workspaces ── */}
+                <div style={{ padding: '4px 40px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <h2 style={{ font: '700 13px/1 Plus Jakarta Sans', letterSpacing: '0.1em', margin: 0, color: 'var(--ink)' }}>RECENT WORKSPACES</h2>
+                    <div style={{ background: 'var(--s2)', borderRadius: 20, padding: '3px 10px', font: '700 11px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>6 of 24</div>
+                  </div>
+                  <div style={{ font: '600 12px/1 Plus Jakarta Sans', color: 'var(--acc)', cursor: 'pointer' }}>View all →</div>
                 </div>
 
-                <div style={S('padding:0 40px 40px;display:grid;grid-template-columns:1fr 1fr;gap:14px')}>
+                <div style={{ padding: '0 40px 40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                   {v.decks.map((d, i) => (
                     <Box
                       key={i}
-                      css={`display:flex;flex-direction:column;gap:14px;background:#fff;border:1px solid rgba(26,45,107,0.1);border-top:3px solid ${d.leftBorder};cursor:pointer;padding:20px 22px;animation:cardIn 0.32s ease both`}
-                      hover={`border-color:${d.leftBorder};box-shadow:0 4px 16px rgba(26,45,107,0.1)`}
+                      css={`display:flex;flex-direction:column;background:#fff;border:1px solid var(--rule);cursor:pointer;border-radius:14px;overflow:hidden;animation:cardIn 0.32s ease both`}
+                      hover={`border-color:${d.leftBorder};box-shadow:0 8px 28px rgba(15,31,74,0.12);transform:translateY(-2px)`}
                       onClick={d.go}
-                      style={{ animationDelay: `${i * 0.06}s`, boxShadow: '0 1px 3px rgba(15,31,74,0.06), 0 4px 16px rgba(15,31,74,0.06)', borderRadius: 12 }}
+                      style={{ animationDelay: `${i * 0.06}s`, boxShadow: '0 1px 4px rgba(15,31,74,0.06),0 4px 16px rgba(15,31,74,0.05)', transition: 'transform 0.18s,box-shadow 0.18s,border-color 0.18s' }}
                     >
-                      <div style={S('display:flex;align-items:flex-start;justify-content:space-between;gap:8px')}>
-                        <div style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.02em')}>Created {d.created}</div>
-                        <span style={S(d.pill)}>{d.status}</span>
-                      </div>
-                      <div style={S('display:flex;align-items:flex-end;justify-content:space-between;gap:8px')}>
-                        <div style={S('font:700 15px/1.4 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink)')}>{d.topic}</div>
-                        <span style={{ fontSize: 16, color: d.leftBorder, fontWeight: 400, flexShrink: 0 }}>→</span>
+                      {/* top accent bar */}
+                      <div style={{ height: 3, background: d.leftBorder, flexShrink: 0 }} />
+                      <div style={{ padding: '18px 20px 20px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+                          <div style={{ font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', letterSpacing: '0.02em' }}>Created {d.created}</div>
+                          <span style={S(d.pill)}>{d.status}</span>
+                        </div>
+                        <div style={{ font: '700 15px/1.4 Plus Jakarta Sans', letterSpacing: '-0.01em', color: 'var(--ink)', flex: 1 }}>{d.topic}</div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <div style={{ height: 4, width: 80, background: 'var(--s2)', borderRadius: 4, overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: `${d.stagePct}%`, background: d.leftBorder, borderRadius: 4 }} />
+                            </div>
+                            <span style={{ font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>Stage {d.stage}/7</span>
+                          </div>
+                          <div style={{ width: 28, height: 28, borderRadius: '50%', background: `${d.leftBorder}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <span style={{ fontSize: 13, color: d.leftBorder }}>→</span>
+                          </div>
+                        </div>
                       </div>
                     </Box>
                   ))}
