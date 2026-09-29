@@ -3437,26 +3437,26 @@ export default class MedFactory extends React.Component {
                         return (
                           <>
                             {/* Row 1: Track chips + Grid/List toggle */}
-                            <div style={S('padding:10px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:6px;flex:none;flex-wrap:wrap;background:var(--bg)')}>
+                            <div style={S('padding:10px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:6px;flex:none;flex-wrap:wrap;background:var(--s1)')}>
                               {[{ label: 'All papers', id: 'All' }, ...CONTENT_TRACKS.map((t) => ({ label: t.label, id: t.label }))].map(({ label, id }) => {
                                 const active = v.trackFilter === id;
                                 return (
                                   <Box
                                     key={id}
-                                    css={`padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.06em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
-                                    hover={!active ? 'border-color:var(--rule2);color:var(--dim)' : ''}
+                                    css={`padding:5px 14px;font:600 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'var(--s1)'};color:${active ? 'var(--acc)' : 'var(--faint)'};transition:all 0.15s`}
+                                    hover={!active ? 'border-color:var(--dim);color:var(--dim);background:var(--s2)' : ''}
                                     onClick={() => v.setTrackFilter(id)}
                                   >{label}</Box>
                                 );
                               })}
-                              <div style={S('margin-left:auto;display:flex;gap:0;border:1px solid var(--rule);flex-shrink:0')}>
+                              <div style={{ marginLeft: 'auto', display: 'flex', gap: 2, background: 'var(--s2)', borderRadius: 8, padding: 3, flexShrink: 0 }}>
                                 {[['grid', (<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" fill="currentColor" opacity=".9"/><rect x="8" y="1" width="5" height="5" fill="currentColor" opacity=".9"/><rect x="1" y="8" width="5" height="5" fill="currentColor" opacity=".9"/><rect x="8" y="8" width="5" height="5" fill="currentColor" opacity=".9"/></svg>)], ['list', (<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2.5" width="12" height="2" fill="currentColor"/><rect x="1" y="6" width="12" height="2" fill="currentColor"/><rect x="1" y="9.5" width="12" height="2" fill="currentColor"/></svg>)]].map(([mode, icon]) => {
                                   const active = v.evidenceView === mode;
                                   return (
                                     <Box
                                       key={mode}
-                                      css={`padding:6px 8px;cursor:pointer;display:flex;align-items:center;background:${active ? 'rgba(44,82,204,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
-                                      hover={!active ? 'background:var(--s2);color:var(--dim)' : ''}
+                                      css={`padding:5px 8px;cursor:pointer;display:flex;align-items:center;border-radius:6px;background:${active ? 'var(--s1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'};box-shadow:${active ? '0 1px 3px rgba(15,31,74,0.1)' : 'none'}`}
+                                      hover={!active ? 'background:rgba(255,255,255,0.6);color:var(--dim)' : ''}
                                       onClick={() => v.setEvidenceView(mode)}
                                     >{icon}</Box>
                                   );
@@ -3465,7 +3465,7 @@ export default class MedFactory extends React.Component {
                             </div>
 
                             {/* Row 2: Grade · Artifact · Funding · Sort · Clear */}
-                            <div style={S('padding:8px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;background:var(--bg);position:relative')}>
+                            <div style={S('padding:8px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex:none;flex-wrap:wrap;background:var(--s1);position:relative')}>
                               <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>GRADE</span>
                               {['A', 'B', 'C', 'D', 'F'].map((g) => {
                                 const active = v.gradeFilter.includes(g);
@@ -3489,8 +3489,8 @@ export default class MedFactory extends React.Component {
                                 return (
                                   <Box
                                     key={a}
-                                    css={`padding:3px 9px;font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.04em;cursor:pointer;border:1px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'transparent'};color:${active ? 'var(--acc)' : 'var(--faint)'}`}
-                                    hover={!active ? 'border-color:var(--rule2);color:var(--dim)' : ''}
+                                    css={`padding:4px 12px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'var(--s1)'};color:${active ? 'var(--acc)' : 'var(--faint)'};transition:all 0.15s`}
+                                    hover={!active ? 'border-color:var(--dim);color:var(--dim)' : ''}
                                     onClick={() => v.setArtifactFilter(a)}
                                   >{a}{a !== 'All' ? ` (${count})` : ''}</Box>
                                 );
@@ -3502,7 +3502,7 @@ export default class MedFactory extends React.Component {
                               <select
                                 value={v.fundingFilter}
                                 onChange={(e) => v.setFundingFilter(e.target.value)}
-                                style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--dim)', background: 'var(--bg)', border: '1px solid var(--rule)', padding: '4px 6px', cursor: 'pointer', outline: 'none' }}
+                                style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--dim)', background: 'var(--s1)', border: '1.5px solid var(--rule)', padding: '5px 10px', cursor: 'pointer', outline: 'none', borderRadius: 20 }}
                               >
                                 <option value="All">All</option>
                                 <option value="Independent">Independent</option>
@@ -3514,7 +3514,7 @@ export default class MedFactory extends React.Component {
                               <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>SORT BY</span>
                               <div style={{ position: 'relative' }}>
                                 <Box
-                                  css="padding:4px 8px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:5px;border-radius:6px"
+                                  css="padding:5px 12px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1.5px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:5px;border-radius:20px;background:var(--s1)"
                                   hover="border-color:var(--acc);color:var(--acc)"
                                   onClick={() => v.toggleSortDropdown()}
                                 >
@@ -3539,7 +3539,7 @@ export default class MedFactory extends React.Component {
                                 )}
                               </div>
                               <Box
-                                css="padding:4px 8px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:4px;border-radius:6px"
+                                css="padding:5px 12px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1.5px solid var(--rule);color:var(--dim);display:flex;align-items:center;gap:4px;border-radius:20px;background:var(--s1)"
                                 hover="border-color:var(--rule2);color:var(--ink)"
                                 onClick={() => v.toggleSortDir()}
                               >
@@ -3838,15 +3838,15 @@ export default class MedFactory extends React.Component {
                       <div style={S('flex:1;overflow-y:auto;padding:20px 22px')}>
 
                         {/* Evidence Collector compact strip */}
-                        <div style={S('display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--rule);background:var(--bg);margin-bottom:16px')}>
-                          <div style={S('display:flex;gap:3px;align-items:center')}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', background: 'rgba(44,82,204,0.06)', border: '1px solid rgba(44,82,204,0.15)', borderRadius: 10, marginBottom: 16 }}>
+                          <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
                             {[0,1,2].map((d) => (
-                              <div key={d} style={{ width:5, height:5, borderRadius:'50%', background:'var(--acc)', animation:'dotBounce 1.3s ease-in-out infinite', animationDelay:`${d*0.18}s` }} />
+                              <div key={d} style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d*0.18}s` }} />
                             ))}
                           </div>
-                          <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint)')}>EVIDENCE COLLECTOR</div>
-                          <div style={S('font-size:11.5px;color:var(--dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')} key={thinkingMsg}>{thinkingMsg}</div>
-                          <div style={S('font:600 10px/1 var(--mono);color:var(--faint);flex:none')}>{pct}%</div>
+                          <div style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--acc)' }}>EVIDENCE COLLECTOR</div>
+                          <div style={{ fontSize: 11.5, color: 'var(--dim)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} key={thinkingMsg}>{thinkingMsg}</div>
+                          <div style={{ font: '700 11px/1 var(--mono)', color: 'var(--acc)' }}>{pct}%</div>
                         </div>
 
                     {/* Database sources */}
@@ -3856,9 +3856,8 @@ export default class MedFactory extends React.Component {
                         {RESEARCH_DBS.map((db, i) => {
                           const connected = rN > i;
                           return (
-                            <div key={db} style={S(`display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid ${connected ? 'var(--ok)' : 'var(--rule)'};background:${connected ? 'rgba(22,101,52,0.08)' : 'var(--bg)'};font-size:11.5px;font-weight:600;color:${connected ? 'var(--ok)' : 'var(--faint)'};${connected ? 'animation:rise 0.2s ease' : ''}`)}>
-                              <span style={S(`width:5px;height:5px;border-radius:50%;flex:none;background:${connected ? 'var(--ok)' : 'var(--rule)'}`)}>
-                              </span>
+                            <div key={db} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', border: `1px solid ${connected ? 'rgba(22,101,52,0.25)' : 'var(--rule)'}`, background: connected ? 'rgba(22,101,52,0.07)' : 'var(--s1)', fontSize: 11.5, fontWeight: 600, color: connected ? 'var(--ok)' : 'var(--faint)', borderRadius: 20, boxShadow: connected ? '0 1px 4px rgba(22,101,52,0.08)' : 'none', animation: connected ? 'rise 0.2s ease' : 'none', transition: 'all 0.2s' }}>
+                              <span style={{ width: 5, height: 5, borderRadius: '50%', flexShrink: 0, background: connected ? 'var(--ok)' : 'var(--rule)' }} />
                               {db}
                             </div>
                           );
@@ -3871,23 +3870,26 @@ export default class MedFactory extends React.Component {
                       <div>
                         <div style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--faint);margin-bottom:10px')}>EVIDENCE RETRIEVED · {visiblePapers}</div>
                         <div style={S('display:flex;flex-direction:column;gap:8px')}>
-                          {RESEARCH_PAPERS.slice(0, visiblePapers).map((p, i) => (
-                            <div key={i} style={S('background:var(--bg);border:1px solid var(--rule);border-left:2px solid var(--rule2);padding:12px 14px;animation:rise 0.22s ease')}>
-                              <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
-                                <span style={S(`border:1px solid ${typeColor(p.type)};color:${typeColor(p.type)};padding:2px 6px;font:600 8.5px/1 Plus Jakarta Sans;letter-spacing:0.09em`)}>{p.type.toUpperCase()}</span>
-                                <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
-                                <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
-                                <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
-                                  <span style={{ font: '700 11px/1 var(--mono)', color: p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }}>{p.relevance}/100</span>
-                                  <div style={{ width: 48, height: 3, background: 'var(--rule2)', overflow: 'hidden' }}>
-                                    <div style={{ width: `${p.relevance}%`, height: '100%', background: p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }} />
+                          {RESEARCH_PAPERS.slice(0, visiblePapers).map((p, i) => {
+                            const tc = typeColor(p.type);
+                            const rc = p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)';
+                            return (
+                              <div key={i} style={{ background: 'var(--s1)', border: '1px solid var(--rule)', borderRadius: 12, padding: '12px 16px', animation: 'rise 0.22s ease', boxShadow: '0 1px 4px rgba(15,31,74,0.05)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+                                  <span style={{ border: `1px solid ${tc}`, color: tc, padding: '2px 8px', font: '700 8.5px/1 Plus Jakarta Sans', letterSpacing: '0.08em', borderRadius: 20 }}>{p.type.toUpperCase()}</span>
+                                  <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{p.db} · {p.year}</span>
+                                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                                    <div style={{ width: 52, height: 4, background: 'var(--rule2)', borderRadius: 4, overflow: 'hidden' }}>
+                                      <div style={{ width: `${p.relevance}%`, height: '100%', background: rc, borderRadius: 4 }} />
+                                    </div>
+                                    <span style={{ font: '700 11px/1 var(--mono)', color: rc, minWidth: 38, textAlign: 'right' }}>{p.relevance}/100</span>
                                   </div>
                                 </div>
+                                <div style={{ fontWeight: 700, fontSize: 12.5, lineHeight: 1.35, letterSpacing: '-0.01em', color: 'var(--ink)' }}>{p.title}</div>
+                                <div style={{ fontSize: 11, color: 'var(--faint)', lineHeight: 1.5 }}>{p.journal}</div>
                               </div>
-                              <div style={S('font-weight:700;font-size:12.5px;margin-bottom:5px;line-height:1.3;letter-spacing:-0.01em')}>{p.title}</div>
-                              <div style={S('font-size:11px;color:var(--dim);line-height:1.55;font-style:italic;margin-bottom:4px')}>{p.journal}</div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -3908,20 +3910,23 @@ export default class MedFactory extends React.Component {
                           {EXTRA_PAPERS.map((p, i) => {
                             const relColor = p.relevance >= 80 ? 'var(--ok)' : p.relevance >= 60 ? 'var(--warn)' : 'var(--acc)';
                             return (
-                              <div key={i} style={{ background: 'var(--bg)', border: '1px solid rgba(44,82,204,0.25)', borderLeft: '2px solid var(--acc)', padding: '12px 14px', animation: 'batchIn 0.55s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${i * 0.07}s` }}>
-                                <div style={S('display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap')}>
-                                  <span style={{ padding: '2px 6px', font: '700 8.5px/1 Plus Jakarta Sans', border: `1px solid ${typeColor(p.type)}`, color: typeColor(p.type), letterSpacing: '0.09em' }}>{p.type.toUpperCase()}</span>
-                                  <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.db}</span>
-                                  <span style={S('font:600 9px/1 var(--mono);color:var(--faint)')}>{p.year}</span>
-                                  <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
-                                    <span style={{ font: '700 11px/1 var(--mono)', color: relColor }}>{p.relevance}/100</span>
-                                    <div style={{ width: 48, height: 3, background: 'var(--rule2)', overflow: 'hidden' }}>
-                                      <div style={{ width: `${p.relevance}%`, height: '100%', background: relColor }} />
+                              <div key={i} style={{ background: 'var(--s1)', border: '1px solid rgba(44,82,204,0.18)', borderRadius: 12, padding: '12px 16px', animation: 'batchIn 0.55s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${i * 0.07}s`, boxShadow: '0 2px 8px rgba(44,82,204,0.08)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+                                  <span style={{ border: `1px solid ${typeColor(p.type)}`, color: typeColor(p.type), padding: '2px 8px', font: '700 8.5px/1 Plus Jakarta Sans', letterSpacing: '0.08em', borderRadius: 20 }}>{p.type.toUpperCase()}</span>
+                                  <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{p.db} · {p.year}</span>
+                                  <span style={{ marginLeft: 'auto', padding: '2px 7px', font: '700 8px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', borderRadius: 20, display: 'flex', alignItems: 'center', gap: 4 }}>
+                                    <span style={{ width: 4, height: 4, borderRadius: '50%', background: '#93c5fd', display: 'inline-block', animation: 'puls 1.4s infinite' }} />
+                                    NEW
+                                  </span>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexShrink: 0 }}>
+                                    <div style={{ width: 52, height: 4, background: 'var(--rule2)', borderRadius: 4, overflow: 'hidden' }}>
+                                      <div style={{ width: `${p.relevance}%`, height: '100%', background: relColor, borderRadius: 4 }} />
                                     </div>
+                                    <span style={{ font: '700 11px/1 var(--mono)', color: relColor }}>{p.relevance}/100</span>
                                   </div>
                                 </div>
-                                <div style={S('font-weight:700;font-size:12.5px;margin-bottom:4px;line-height:1.35;letter-spacing:-0.01em')}>{p.title}</div>
-                                <div style={S('font-size:11px;color:var(--dim);line-height:1.55;font-style:italic')}>{p.journal}</div>
+                                <div style={{ fontWeight: 700, fontSize: 12.5, lineHeight: 1.35, letterSpacing: '-0.01em', color: 'var(--ink)' }}>{p.title}</div>
+                                <div style={{ fontSize: 11, color: 'var(--faint)', lineHeight: 1.5 }}>{p.journal}</div>
                               </div>
                             );
                           })}
@@ -3930,15 +3935,19 @@ export default class MedFactory extends React.Component {
                     )}
 
                     {rN >= DEDUP_STEP && (
-                      <div style={S('margin-top:12px;padding:12px 14px;border:1px solid var(--ok);background:rgba(22,101,52,0.06);display:flex;align-items:center;gap:10px;animation:rise 0.2s ease')}>
-                        <span style={S('font-size:14px')}>✓</span>
-                        <div style={S('font-size:12px;color:var(--ok);font-weight:600')}>Deduplication complete — 71 raw results → {RESEARCH_PAPERS.length} unique papers retained</div>
+                      <div style={{ marginTop: 12, padding: '11px 16px', border: '1px solid rgba(22,101,52,0.2)', background: 'rgba(22,101,52,0.06)', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10, animation: 'rise 0.2s ease' }}>
+                        <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(22,101,52,0.15)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 5.5l3 3 5-5" stroke="var(--ok)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </div>
+                        <div style={{ fontSize: 12, color: 'var(--ok)', fontWeight: 600 }}>Deduplication complete — 71 raw results → {RESEARCH_PAPERS.length} unique papers retained</div>
                       </div>
                     )}
                     {rN >= INDEX_STEP && (
-                      <div style={S('margin-top:8px;padding:12px 14px;border:1px solid var(--ok);background:rgba(22,101,52,0.06);display:flex;align-items:center;gap:10px;animation:rise 0.2s ease')}>
-                        <span style={S('font-size:14px')}>✓</span>
-                        <div style={S('font-size:12px;color:var(--ok);font-weight:600')}>Evidence index built — {RESEARCH_PAPERS.length + 46} chunks · 1,204 spans · ready for content generation</div>
+                      <div style={{ marginTop: 8, padding: '11px 16px', border: '1px solid rgba(22,101,52,0.2)', background: 'rgba(22,101,52,0.06)', borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10, animation: 'rise 0.2s ease' }}>
+                        <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(22,101,52,0.15)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 5.5l3 3 5-5" stroke="var(--ok)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </div>
+                        <div style={{ fontSize: 12, color: 'var(--ok)', fontWeight: 600 }}>Evidence index built — {RESEARCH_PAPERS.length + 46} chunks · 1,204 spans · ready for content generation</div>
                       </div>
                     )}
                   </div>
