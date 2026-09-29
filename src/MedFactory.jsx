@@ -5115,7 +5115,7 @@ export default class MedFactory extends React.Component {
 
             </div>); /* end rightPanel */
 
-            return <ResizableSplit left={leftPanel} right={rightPanel} defaultLeftPct={46} />;
+            return <ResizableSplit left={rightPanel} right={leftPanel} defaultLeftPct={54} minPct={30} maxPct={76} />;
           })()}
 
           {/* ============ SCI DASHBOARD ============ */}
