@@ -813,6 +813,7 @@ export default class MedFactory extends React.Component {
       reviewN: 0,
       medReviewTab: 'artifacts',
       medReviewPaper: null,
+      pipeViewPaper: null,
       sciSubmitted: false,
       sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
       sciReviewTab: 'track',
@@ -1570,6 +1571,8 @@ export default class MedFactory extends React.Component {
         deletedPapers: { ...s.deletedPapers, [idx]: true },
         acceptedPapers: (() => { const a = { ...s.acceptedPapers }; delete a[idx]; return a; })(),
       })),
+      pipeViewPaper: st.pipeViewPaper,
+      setPipeViewPaper: (p) => this.setState({ pipeViewPaper: p }),
       acceptedDrawerOpen: st.acceptedDrawerOpen,
       toggleAcceptedDrawer: () => this.setState((s) => ({ acceptedDrawerOpen: !s.acceptedDrawerOpen })),
       toggleAccept: (i) => {
@@ -3631,14 +3634,11 @@ export default class MedFactory extends React.Component {
                                     return (
                                       <div key={p._idx} style={{ ...S(`background:var(--bg);border:1px solid ${isBatch2 ? 'rgba(44,82,204,0.3)' : accepted ? 'var(--ok)' : 'var(--rule)'};border-left:3px solid ${isBatch2 ? 'var(--acc)' : accepted ? 'var(--ok)' : tc};display:flex;flex-direction:column;border-radius:10px;overflow:hidden`), ...cardAnim }}>
 
-                                        {/* ARTIFACTS row */}
+                                        {/* Top bar: track pill + NEW badge + delete */}
                                         <div style={S('padding:10px 14px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap')}>
-                                          <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>ARTIFACTS</span>
-                                          {p.artifacts.map((a) => (
-                                            <span key={a} style={S('padding:2px 10px;font:600 9.5px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);border-radius:20px')}>{a}</span>
-                                          ))}
+                                          <span style={S(`padding:2px 8px;font:600 9px/1 Plus Jakarta Sans;border:1px solid ${tc};color:${tc};border-radius:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px`)}>{p.track}</span>
                                           {p._batch === 2 && (
-                                            <span style={{ padding: '3px 8px', font: '700 8.5px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', display: 'flex', alignItems: 'center', gap: 5 }}>
+                                            <span style={{ padding: '3px 8px', font: '700 8.5px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#fff', background: 'var(--acc)', display: 'flex', alignItems: 'center', gap: 5, borderRadius: 4 }}>
                                               <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#93c5fd', display: 'inline-block', animation: 'puls 1.4s infinite' }} />
                                               NEW
                                             </span>
@@ -3651,12 +3651,6 @@ export default class MedFactory extends React.Component {
                                           >
                                             <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1L1 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
                                           </Box>
-                                        </div>
-
-                                        {/* TRACK */}
-                                        <div style={S('padding:5px 14px 0;display:flex;align-items:center;gap:6px')}>
-                                          <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-right:2px')}>TRACK</span>
-                                          <span style={S(`padding:2px 8px;font:600 9.5px/1 Plus Jakarta Sans;border:1px solid ${tc};color:${tc};border-radius:20px`)}>{p.track}</span>
                                         </div>
 
                                         {/* Title */}
@@ -3716,10 +3710,22 @@ export default class MedFactory extends React.Component {
 
                                         {/* Footer */}
                                         <div style={S('padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:10px')}>
-                                          {p.artifacts.map((a) => (
-                                            <span key={a} style={S('padding:2px 10px;font:600 9px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--faint);border-radius:20px')}>{a}</span>
-                                          ))}
-                                          <span style={S(`padding:2px 8px;font:600 9px/1 Plus Jakarta Sans;border:1px solid ${tc};color:${tc};border-radius:20px`)}>{p.track.split(' ')[0]}</span>
+                                          <Box
+                                            css="padding:6px 11px;font:600 10.5px/1 Plus Jakarta Sans;cursor:pointer;color:var(--acc);border:1px solid var(--acc);border-radius:8px;display:flex;align-items:center;gap:5px"
+                                            hover="background:rgba(44,82,204,0.07)"
+                                            onClick={() => v.setPipeViewPaper(p)}
+                                          >
+                                            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1" stroke="currentColor" strokeWidth="1.3"/><path d="M3.5 5h5M3.5 7.5h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                                            View Paper
+                                          </Box>
+                                          <Box
+                                            css="padding:6px 11px;font:600 10.5px/1 Plus Jakarta Sans;cursor:pointer;color:var(--dim);border:1px solid var(--rule2);border-radius:8px;display:flex;align-items:center;gap:5px"
+                                            hover="background:var(--s2);border-color:var(--dim)"
+                                            onClick={() => v.setPipeViewPaper({ ...p, _citationsTab: true })}
+                                          >
+                                            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1a5 5 0 100 10A5 5 0 006 1z" stroke="currentColor" strokeWidth="1.3"/><path d="M6 4.5v3M6 8.5v.3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                                            {p.citations.split('·')[0].trim()}
+                                          </Box>
                                           <Box
                                             css={`margin-left:auto;padding:7px 14px;font:700 10.5px/1 Plus Jakarta Sans;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);border-radius:8px`}
                                             hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
@@ -3760,6 +3766,14 @@ export default class MedFactory extends React.Component {
                                           </div>
                                           <span style={{ font: '700 10px/1 var(--mono)', color: relColor }}>{p.relevance}/100</span>
                                         </div>
+                                        <Box
+                                          css="padding:5px 11px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;color:var(--acc);border:1px solid var(--acc);border-radius:6px;flex-shrink:0;display:flex;align-items:center;gap:4px"
+                                          hover="background:rgba(44,82,204,0.07)"
+                                          onClick={() => v.setPipeViewPaper(p)}
+                                        >
+                                          <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1" stroke="currentColor" strokeWidth="1.3"/><path d="M3.5 5h5M3.5 7.5h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                                          View
+                                        </Box>
                                         <Box
                                           css={`padding:5px 12px;font:700 10px/1 Plus Jakarta Sans;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);flex-shrink:0`}
                                           hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
@@ -4010,7 +4024,136 @@ export default class MedFactory extends React.Component {
                     maxPct={85}
                   />
                 )}
-              </div>
+
+              {/* ===== VIEW PAPER MODAL ===== */}
+              {v.pipeViewPaper && (() => {
+                const mp = v.pipeViewPaper;
+                const tc = typeColor(mp.type);
+                const accepted = v.acceptedPapers[mp._idx];
+                const showCitations = mp._citationsTab;
+                return (
+                  <div
+                    style={{ position: 'fixed', inset: 0, background: 'rgba(15,31,74,0.45)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, backdropFilter: 'blur(2px)' }}
+                    onClick={(e) => { if (e.target === e.currentTarget) v.setPipeViewPaper(null); }}
+                  >
+                    <div style={{ background: '#fff', width: '100%', maxWidth: 720, maxHeight: '88vh', display: 'flex', flexDirection: 'column', borderRadius: 14, boxShadow: '0 24px 64px rgba(15,31,74,0.28)', overflow: 'hidden', animation: 'fadeUp 0.22s ease' }}>
+
+                      {/* Modal header */}
+                      <div style={{ padding: '18px 24px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'flex-start', gap: 14, flexShrink: 0 }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                            <span style={{ padding: '3px 10px', font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', border: `1px solid ${tc}`, color: tc, borderRadius: 20 }}>{mp.type.toUpperCase()}</span>
+                            <span style={{ padding: '3px 10px', font: '600 9px/1 Plus Jakarta Sans', background: 'var(--s2)', color: 'var(--faint)', borderRadius: 20 }}>{mp.db}</span>
+                            <span style={{ font: '600 10px/1 var(--mono)', color: 'var(--faint)' }}>{mp.year}</span>
+                          </div>
+                          <div style={{ font: '800 17px/1.35 Plus Jakarta Sans', letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: 6 }}>{mp.title}</div>
+                          <div style={{ font: '500 11.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>{mp.journal}</div>
+                        </div>
+                        <button
+                          onClick={() => v.setPipeViewPaper(null)}
+                          style={{ flexShrink: 0, background: 'var(--s2)', border: 'none', borderRadius: 8, width: 30, height: 30, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--dim)', fontSize: 16, marginTop: 2 }}
+                        >✕</button>
+                      </div>
+
+                      {/* Tabs */}
+                      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--rule)', flexShrink: 0 }}>
+                        {['Paper Details', 'Citations & Funding'].map((tab, ti) => {
+                          const isActive = (ti === 1) === !!showCitations;
+                          return (
+                            <button
+                              key={tab}
+                              onClick={() => v.setPipeViewPaper(ti === 1 ? { ...mp, _citationsTab: true } : { ...mp, _citationsTab: false })}
+                              style={{ padding: '11px 20px', font: `${isActive ? '700' : '500'} 12px/1 Plus Jakarta Sans`, color: isActive ? 'var(--acc)' : 'var(--faint)', background: 'none', border: 'none', borderBottom: isActive ? '2px solid var(--acc)' : '2px solid transparent', cursor: 'pointer', letterSpacing: '0.01em' }}
+                            >{tab}</button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Body */}
+                      <div style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
+                        {!showCitations ? (
+                          <>
+                            {/* Relevance bar */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, padding: '12px 16px', background: 'var(--s2)', borderRadius: 10 }}>
+                              <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--faint)', flexShrink: 0 }}>RELEVANCE SCORE</span>
+                              <div style={{ flex: 1, height: 6, background: 'var(--rule)', borderRadius: 4, overflow: 'hidden' }}>
+                                <div style={{ width: `${mp.relevance}%`, height: '100%', background: mp.relevance >= 80 ? 'var(--ok)' : mp.relevance >= 60 ? 'var(--warn)' : 'var(--acc)', borderRadius: 4 }} />
+                              </div>
+                              <span style={{ font: '800 14px/1 Plus Jakarta Sans', color: mp.relevance >= 80 ? 'var(--ok)' : mp.relevance >= 60 ? 'var(--warn)' : 'var(--acc)', flexShrink: 0 }}>{mp.relevance}/100</span>
+                            </div>
+
+                            {/* Metadata grid */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 20px', marginBottom: 20 }}>
+                              {[
+                                ['Design Tier', mp.designTier],
+                                ['Appraisal Score', mp.appraisal],
+                                ['GRADE Certainty', mp.grade],
+                                ['Statistical Rigor', mp.statRigor],
+                              ].map(([label, val]) => (
+                                <div key={label} style={{ background: 'var(--s2)', borderRadius: 8, padding: '12px 14px' }}>
+                                  <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 6 }}>{label.toUpperCase()}</div>
+                                  <div style={{ font: '600 12.5px/1.4 Plus Jakarta Sans', color: 'var(--ink)' }}>{val}</div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Excerpt */}
+                            <div style={{ borderLeft: `3px solid ${tc}`, paddingLeft: 16, marginBottom: 20 }}>
+                              <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--faint)', marginBottom: 10 }}>KEY EXCERPT</div>
+                              <blockquote style={{ margin: 0, font: '400 13.5px/1.75 Georgia, serif', color: 'var(--dim)', fontStyle: 'italic' }}>{mp.excerpt}</blockquote>
+                              <div style={{ font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 8 }}>{mp.excerptSrc}</div>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            {/* Citations section */}
+                            <div style={{ marginBottom: 20, padding: '18px 20px', background: 'rgba(44,82,204,0.05)', border: '1px solid rgba(44,82,204,0.15)', borderRadius: 10 }}>
+                              <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)', marginBottom: 10 }}>CITATION COUNT</div>
+                              <div style={{ font: '800 28px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', color: 'var(--ink)', marginBottom: 6 }}>{mp.citations.split('·')[0].trim()}</div>
+                              {mp.citations.includes('·') && (
+                                <div style={{ font: '500 12px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{mp.citations.split('·').slice(1).join('·').trim()} citation rate</div>
+                              )}
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 20px', marginBottom: 20 }}>
+                              {[
+                                ['Funding & COI', mp.funding],
+                                ['Appraisal Score', mp.appraisal],
+                                ['GRADE Certainty', mp.grade],
+                                ['Journal', mp.journal.split('·')[0].trim()],
+                              ].map(([label, val]) => (
+                                <div key={label} style={{ background: 'var(--s2)', borderRadius: 8, padding: '12px 14px' }}>
+                                  <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 6 }}>{label.toUpperCase()}</div>
+                                  <div style={{ font: '600 12.5px/1.4 Plus Jakarta Sans', color: 'var(--ink)' }}>{val}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+
+                      {/* Modal footer */}
+                      <div style={{ padding: '14px 24px', borderTop: '1px solid var(--rule)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                        <Box
+                          css={`padding:9px 18px;font:700 11px/1 Plus Jakarta Sans;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);border-radius:8px`}
+                          hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
+                          onClick={() => v.toggleAccept(mp._idx)}
+                        >
+                          {accepted ? '✓ Accepted' : 'Accept paper'}
+                        </Box>
+                        <Box
+                          css="margin-left:auto;padding:9px 18px;font:600 11px/1 Plus Jakarta Sans;cursor:pointer;color:var(--dim);border:1px solid var(--rule2);border-radius:8px"
+                          hover="background:var(--s2)"
+                          onClick={() => v.setPipeViewPaper(null)}
+                        >
+                          Close
+                        </Box>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
             );
           })()}
 
