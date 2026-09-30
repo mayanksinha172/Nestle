@@ -665,6 +665,15 @@ const LIGHT_TOKENS = {
   '--rule2': 'rgba(15,31,74,0.16)', '--acc': '#2c52cc', '--ok': '#166534', '--warn': '#92400e',
 };
 
+const MOCK_CITE_PAPERS = [
+  { title: 'GLP-1 receptor agonists and cardiovascular protection — mechanisms beyond glycaemia', journal: 'Cardiovascular Research', year: 2024 },
+  { title: 'Comparative effectiveness of GLP-1 RA versus DPP-4 inhibitors in real-world cohorts', journal: 'Diabetes Care', year: 2023 },
+  { title: 'Long-term renal outcomes with incretin-based therapy in type 2 diabetes', journal: 'Journal of Clinical Endocrinology', year: 2022 },
+  { title: 'Patient adherence and persistence with weekly versus daily GLP-1 formulations', journal: 'Annals of Internal Medicine', year: 2023 },
+  { title: 'Network meta-analysis of MACE outcomes across GLP-1 RA cardiovascular outcome trials', journal: 'JAMA Cardiology', year: 2024 },
+  { title: 'Semaglutide dose-response relationship in glycaemic and weight outcomes — pooled RCT data', journal: 'The Lancet Diabetes & Endocrinology', year: 2022 },
+];
+
 /* ---------- evidence helpers ---------- */
 
 function gradeLetterFromPaper(p) {
@@ -814,6 +823,8 @@ export default class MedFactory extends React.Component {
       medReviewTab: 'artifacts',
       medReviewPaper: null,
       pipeViewPaper: null,
+      pipeCitationsOpen: null,
+      pipeCitationSort: 'year-desc',
       sciSubmitted: false,
       sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
       sciReviewTab: 'track',
@@ -1573,6 +1584,23 @@ export default class MedFactory extends React.Component {
       })),
       pipeViewPaper: st.pipeViewPaper,
       setPipeViewPaper: (p) => this.setState({ pipeViewPaper: p }),
+      pipeCitationsOpen: st.pipeCitationsOpen,
+      setPipeCitationsOpen: (p) => this.setState({ pipeCitationsOpen: p }),
+      pipeCitationSort: st.pipeCitationSort,
+      setPipeCitationSort: (s) => this.setState({ pipeCitationSort: s }),
+      evaluateCitation: (citeTitle, citeJournal, citeYear) => this.setState((s) => {
+        const userMsg = { from: 'user', text: `Evaluate this citing paper: **${citeTitle}** — ${citeJournal} · ${citeYear}`, time: 'Just now' };
+        const agentMsg = { from: 'agent', text: `Reviewing **${citeTitle}** (${citeJournal}, ${citeYear}).\n\nThis paper cites one of our primary evidence sources. I'll assess its methodological quality, directness of evidence, and relevance to our key claims on GLP-1 receptor agonist outcomes. Adding to evaluation queue — findings will surface in the Evidence Review tab.`, time: 'Just now' };
+        const threads = s.projectThreads;
+        if (!threads.length) return { pipeCitationsOpen: null };
+        const activeId = s.activeThreadId || threads[0].id;
+        return {
+          pipeCitationsOpen: null,
+          projectThreads: threads.map((t) =>
+            t.id === activeId ? { ...t, messages: [...t.messages, userMsg, agentMsg] } : t
+          ),
+        };
+      }),
       acceptedDrawerOpen: st.acceptedDrawerOpen,
       toggleAcceptedDrawer: () => this.setState((s) => ({ acceptedDrawerOpen: !s.acceptedDrawerOpen })),
       toggleAccept: (i) => {
@@ -3721,7 +3749,7 @@ export default class MedFactory extends React.Component {
                                           <Box
                                             css="padding:6px 11px;font:600 10.5px/1 Plus Jakarta Sans;cursor:pointer;color:var(--dim);border:1px solid var(--rule2);border-radius:8px;display:flex;align-items:center;gap:5px"
                                             hover="background:var(--s2);border-color:var(--dim)"
-                                            onClick={() => v.setPipeViewPaper({ ...p, _citationsTab: true })}
+                                            onClick={() => v.setPipeCitationsOpen(p)}
                                           >
                                             <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1a5 5 0 100 10A5 5 0 006 1z" stroke="currentColor" strokeWidth="1.3"/><path d="M6 4.5v3M6 8.5v.3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
                                             {p.citations.split('·')[0].trim()}
@@ -4024,6 +4052,83 @@ export default class MedFactory extends React.Component {
                     maxPct={85}
                   />
                 )}
+
+              {/* ===== CITATIONS POPOVER ===== */}
+              {v.pipeCitationsOpen && (() => {
+                const cp = v.pipeCitationsOpen;
+                const sortedCites = [...MOCK_CITE_PAPERS].sort((a, b) => {
+                  if (v.pipeCitationSort === 'year-desc') return b.year - a.year;
+                  if (v.pipeCitationSort === 'year-asc') return a.year - b.year;
+                  if (v.pipeCitationSort === 'title') return a.title.localeCompare(b.title);
+                  return 0;
+                });
+                const sortLabels = { 'year-desc': 'Year (newest first)', 'year-asc': 'Year (oldest first)', 'title': 'Title (A–Z)' };
+                const tc = typeColor(cp.type);
+                return (
+                  <div
+                    style={{ position: 'fixed', inset: 0, background: 'rgba(10,18,40,0.6)', zIndex: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, backdropFilter: 'blur(3px)' }}
+                    onClick={(e) => { if (e.target === e.currentTarget) v.setPipeCitationsOpen(null); }}
+                  >
+                    <div style={{ background: '#0d1f4e', width: '100%', maxWidth: 500, maxHeight: '82vh', display: 'flex', flexDirection: 'column', borderRadius: 12, boxShadow: '0 28px 72px rgba(0,0,0,0.5)', overflow: 'hidden', animation: 'fadeUp 0.2s ease', '--ink': '#e8eef8', '--dim': '#8aaad4', '--faint': '#4d6fa0', '--rule': 'rgba(232,238,248,0.1)', '--rule2': 'rgba(232,238,248,0.18)', '--s1': 'rgba(255,255,255,0.06)', '--s2': 'rgba(255,255,255,0.1)', '--acc': '#60a5fa', '--ok': '#4ade80' }}>
+
+                      {/* Header */}
+                      <div style={{ padding: '18px 20px 14px', borderBottom: '1px solid rgba(232,238,248,0.12)', flexShrink: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#4d6fa0', marginBottom: 8 }}>CITATIONS IN</div>
+                            <div style={{ font: '700 13.5px/1.4 Plus Jakarta Sans', letterSpacing: '-0.01em', color: '#e8eef8' }}>{cp.title}</div>
+                          </div>
+                          <button onClick={() => v.setPipeCitationsOpen(null)} style={{ flexShrink: 0, background: 'rgba(255,255,255,0.08)', border: 'none', borderRadius: 6, width: 28, height: 28, cursor: 'pointer', color: '#8aaad4', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 2 }}>✕</button>
+                        </div>
+
+                        {/* Sort row */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14 }}>
+                          <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: '#4d6fa0' }}>Sort by</span>
+                          <div style={{ position: 'relative' }}>
+                            <select
+                              value={v.pipeCitationSort}
+                              onChange={(e) => v.setPipeCitationSort(e.target.value)}
+                              style={{ appearance: 'none', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(232,238,248,0.2)', borderRadius: 6, padding: '5px 28px 5px 10px', font: '600 10.5px/1 Plus Jakarta Sans', color: '#e8eef8', cursor: 'pointer', outline: 'none' }}
+                            >
+                              <option value="year-desc">Year (newest first)</option>
+                              <option value="year-asc">Year (oldest first)</option>
+                              <option value="title">Title (A–Z)</option>
+                            </select>
+                            <svg style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="#8aaad4" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Citing papers list */}
+                      <div style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
+                        {sortedCites.map((cite, ci) => (
+                          <div key={ci} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 20px', borderBottom: '1px solid rgba(232,238,248,0.07)' }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ font: '600 12.5px/1.45 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 4 }}>{cite.title}</div>
+                              <div style={{ font: '400 10.5px/1 Plus Jakarta Sans', color: '#4d6fa0' }}>{cite.journal} · {cite.year}</div>
+                            </div>
+                            <Box
+                              css="flex-shrink:0;padding:6px 14px;font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.04em;cursor:pointer;color:#60a5fa;border:1px solid rgba(96,165,250,0.4);border-radius:6px;background:rgba(96,165,250,0.06)"
+                              hover="background:rgba(96,165,250,0.16);border-color:#60a5fa"
+                              onClick={() => v.evaluateCitation(cite.title, cite.journal, cite.year)}
+                            >
+                              Evaluate
+                            </Box>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Footer strip */}
+                      <div style={{ padding: '12px 20px', borderTop: '1px solid rgba(232,238,248,0.1)', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+                        <span style={{ font: '500 10px/1 Plus Jakarta Sans', color: '#4d6fa0', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cp.journal}</span>
+                        <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: '#4d6fa0', flexShrink: 0 }}>Relevance</span>
+                        <span style={{ font: '800 11px/1 Plus Jakarta Sans', color: cp.relevance >= 80 ? '#4ade80' : '#fbbf24', flexShrink: 0 }}>{cp.relevance}/100</span>
+                        <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: '#4d6fa0', flexShrink: 0, borderLeft: '1px solid rgba(232,238,248,0.12)', paddingLeft: 16 }}>{cp.citations}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* ===== VIEW PAPER MODAL ===== */}
               {v.pipeViewPaper && (() => {
