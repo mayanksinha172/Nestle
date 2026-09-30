@@ -4047,9 +4047,9 @@ export default class MedFactory extends React.Component {
                   <ResizableSplit
                     left={researchPanelJSX}
                     right={chatPanelJSX}
-                    defaultLeftPct={70}
-                    minPct={32}
-                    maxPct={85}
+                    defaultLeftPct={80}
+                    minPct={50}
+                    maxPct={90}
                   />
                 )}
 
@@ -4571,7 +4571,7 @@ export default class MedFactory extends React.Component {
             );
 
             return (
-              <ResizableSplit right={organizeAgentPanel} defaultLeftPct={64} minPct={40} maxPct={76}
+              <ResizableSplit right={organizeAgentPanel} defaultLeftPct={80} minPct={55} maxPct={90}
                 left={<div style={S('display:flex;flex-direction:column;height:100%;overflow:hidden;animation:fadeUp 0.3s cubic-bezier(0.22,1,0.36,1) both')}>
 
                 {/* ══ TOP HEADER BAR ══ */}
@@ -5394,7 +5394,7 @@ export default class MedFactory extends React.Component {
 
             </div>); /* end rightPanel */
 
-            return <ResizableSplit left={rightPanel} right={leftPanel} defaultLeftPct={54} minPct={30} maxPct={76} />;
+            return <ResizableSplit left={rightPanel} right={leftPanel} defaultLeftPct={80} minPct={55} maxPct={90} />;
           })()}
 
           {/* ============ SCI DASHBOARD ============ */}
