@@ -1529,6 +1529,8 @@ export default class MedFactory extends React.Component {
 
     return {
       isDash: S_ === 'dash', isIntake: S_ === 'intake', isResearch: S_ === 'research', isOrganize: S_ === 'organize', isMedReview: S_ === 'med-review', isWsHub: S_ === 'workspace-hub',
+      backRoute: ({ intake: ['dash','Dashboard'], research: ['intake','Setup'], pipe: ['intake','Setup'], organize: ['research','Research'], 'med-review': ['organize','Organize'], 'sci-review': ['sci-dash','Inbox'] })[S_] || null,
+      goBack: () => { const b = ({ intake: ['dash','Dashboard'], research: ['intake','Setup'], pipe: ['intake','Setup'], organize: ['research','Research'], 'med-review': ['organize','Organize'], 'sci-review': ['sci-dash','Inbox'] })[S_]; if (b) this.go(b[0]); },
       isLanding: !st.role,
       role: st.role, pptStatus: st.pptStatus,
       isCreator: st.role === 'creator', isMA: st.role === 'ma', isSci: st.role === 'sci',
@@ -2609,6 +2611,16 @@ export default class MedFactory extends React.Component {
           {v.isIntake && (
             <div style={S('max-width:720px;margin:0 auto;padding:44px 40px 80px')}>
 
+              {/* Back button — top */}
+              <Box
+                css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;margin-bottom:28px"
+                hover="color:var(--ink);border-color:var(--ink)"
+                onClick={v.goBack}
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                Back to Dashboard
+              </Box>
+
               {/* Page header */}
               <div style={merge(kicker, 'margin-bottom:14px')}>NEW WORKSPACE · SETUP</div>
               <h1 style={S('font-size:30px;font-weight:800;letter-spacing:-0.03em;margin:0 0 8px')}>Create a New Workspace</h1>
@@ -2748,10 +2760,13 @@ export default class MedFactory extends React.Component {
                   </div>
 
                   <Box
-                    css="align-self:flex-start;padding:10px 16px;border:1px solid var(--rule);color:var(--faint);font:600 11.5px/1 Plus Jakarta Sans;cursor:pointer"
+                    css="align-self:flex-start;padding:10px 16px;border:1px solid var(--rule);color:var(--faint);font:600 11.5px/1 Plus Jakarta Sans;cursor:pointer;border-radius:6px;display:inline-flex;align-items:center;gap:5px"
                     hover="border-color:var(--ink);color:var(--ink)"
-                    onClick={() => this.go('dash')}
-                  >← Cancel</Box>
+                    onClick={v.goBack}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Back to Dashboard
+                  </Box>
                 </div>
 
               </div>
@@ -3225,6 +3240,18 @@ export default class MedFactory extends React.Component {
             const activeWs = v.createdWorkspaces.find((w) => w.id === v.activeWorkspaceId);
             const researchPanelJSX = (
               <div style={S('height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--s1)')}>
+
+                  {/* Back button — top */}
+                  <div style={{ padding: '8px 18px', borderBottom: '1px solid var(--rule)', flexShrink: 0 }}>
+                    <Box
+                      css="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;font:600 10.5px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
+                      hover="color:var(--ink);border-color:var(--ink)"
+                      onClick={v.goBack}
+                    >
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Back to Setup
+                    </Box>
+                  </div>
 
                   {/* Breadcrumb — back to workspace hub */}
                   {activeWs && (
@@ -3865,6 +3892,14 @@ export default class MedFactory extends React.Component {
 
                             {/* Action buttons */}
                             <div style={S('padding:12px 16px;display:flex;align-items:center;gap:10px')}>
+                              <Box
+                                css="display:inline-flex;align-items:center;gap:5px;padding:7px 12px;font:600 10.5px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;flex-shrink:0"
+                                hover="color:var(--ink);border-color:var(--ink)"
+                                onClick={v.goBack}
+                              >
+                                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                Back
+                              </Box>
                               <Box
                                 css="padding:8px 14px;font:600 11px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;white-space:nowrap;border-radius:8px"
                                 hover="border-color:var(--ink);color:var(--ink)"
@@ -4579,6 +4614,14 @@ export default class MedFactory extends React.Component {
                 <div style={S('padding:0 0 0;flex:none;border-bottom:1px solid var(--rule2)')}>
                   <div style={S('padding:22px 40px 16px;display:flex;align-items:flex-end;gap:0')}>
                     <div style={S('flex:1')}>
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;font:600 10.5px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;margin-bottom:12px"
+                        hover="color:var(--ink);border-color:var(--ink)"
+                        onClick={v.goBack}
+                      >
+                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Back to Research
+                      </Box>
                       <div style={S('font:800 22px/1.2 Plus Jakarta Sans;letter-spacing:-0.03em;color:var(--ink);margin-bottom:5px')}>Organize Your Research</div>
                       <div style={S('font:400 12px/1.6 Plus Jakarta Sans;color:var(--faint);max-width:520px')}>
                         Excerpts grouped by content track — a paper appears under every track its evidence serves. Select any excerpt to inspect the full card.
@@ -4867,6 +4910,15 @@ export default class MedFactory extends React.Component {
                   const allReady = readiness.every((r) => r.ok);
                   return (
                     <div style={S('flex:none;border-top:2px solid var(--rule2);background:var(--bg);padding:14px 40px;display:flex;align-items:center;gap:14px')}>
+                      {/* Back — bottom */}
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:5px;padding:7px 12px;font:600 10.5px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;flex-shrink:0"
+                        hover="color:var(--ink);border-color:var(--ink)"
+                        onClick={v.goBack}
+                      >
+                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Back
+                      </Box>
                       {/* readiness pills */}
                       <div style={S('display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap')}>
                         {readiness.map(({ a, cur, tgt, ok }) => (
@@ -5207,6 +5259,18 @@ export default class MedFactory extends React.Component {
 
             const rightPanel = (<div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideInRight 0.5s cubic-bezier(0.22,1,0.36,1) both', animationDelay: '0.08s' }}>
 
+                  {/* Back button — top */}
+                  <div style={S('padding:10px 20px;flex:none;border-bottom:1px solid var(--rule)')}>
+                    <Box
+                      css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
+                      hover="color:var(--ink);border-color:var(--ink)"
+                      onClick={v.goBack}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Back to Organize
+                    </Box>
+                  </div>
+
                   {/* Header + tabs */}
                   <div style={S('border-bottom:1px solid var(--rule2);flex:none;background:var(--bg)')}>
                     <div style={S('padding:12px 20px 0;display:flex;align-items:center;gap:10px')}>
@@ -5493,7 +5557,15 @@ export default class MedFactory extends React.Component {
                   </div>
 
                   {/* CTA */}
-                  <div style={S('padding:16px 24px;display:flex;align-items:center;gap:10px')}>
+                  <div style={S('padding:16px 24px;display:flex;align-items:center;gap:10px;border-top:1px solid var(--rule)')}>
+                    <Box
+                      css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;flex:none"
+                      hover="color:var(--ink);border-color:var(--ink)"
+                      onClick={v.goBack}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Back to Organize
+                    </Box>
                     <div style={S('flex:1;font:400 12px/1.5 Plus Jakarta Sans;color:var(--faint)')}>All excerpts are approved by default. You only need to act on what you reject.</div>
                     <Box css="padding:12px 28px;background:var(--ok);color:#fff;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;white-space:nowrap" hover="opacity:0.85" onClick={() => this.go('sci-review')}>
                       Open for Review →
@@ -5530,6 +5602,18 @@ export default class MedFactory extends React.Component {
 
                 {/* ═══ LEFT: Paper List ═══ */}
                 <div style={{ width: selPaper ? 400 : '100%', flexShrink: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', transition: 'width 0.32s cubic-bezier(0.22,1,0.36,1)', borderRight: selPaper ? '1px solid rgba(26,45,107,0.12)' : 'none', background: 'var(--s1)' }}>
+
+                  {/* Back — top */}
+                  <div style={{ padding: '10px 22px', borderBottom: '1px solid rgba(26,45,107,0.12)', flexShrink: 0, background: '#fff' }}>
+                    <Box
+                      css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
+                      hover="color:var(--ink);border-color:var(--ink)"
+                      onClick={v.goBack}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Back to Inbox
+                    </Box>
+                  </div>
 
                   {/* Header */}
                   <div style={{ padding: '18px 22px', borderBottom: '1px solid rgba(26,45,107,0.12)', flexShrink: 0, background: '#fff' }}>
@@ -5611,10 +5695,20 @@ export default class MedFactory extends React.Component {
                     ))}
 
                     {/* Final CTA */}
-                    <div style={{ marginTop: 16, paddingTop: 18, borderTop: '2px solid rgba(26,45,107,0.1)', display: 'flex', gap: 9 }}>
-                      <Box css="flex:1;padding:13px 0;text-align:center;font:600 13px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="background:var(--s2);color:var(--ink)">&#x2193; Download report</Box>
-                      <Box css="flex:2;padding:13px 0;text-align:center;font:700 13.5px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.87" onClick={v.sciApproveAll}>
-                        {rejectedCount > 0 ? `Send back · ${rejectedCount} rejection${rejectedCount > 1 ? 's' : ''} →` : 'Approve & finalise →'}
+                    <div style={{ marginTop: 16, paddingTop: 18, borderTop: '2px solid rgba(26,45,107,0.1)', display: 'flex', flexDirection: 'column', gap: 9 }}>
+                      <div style={{ display: 'flex', gap: 9 }}>
+                        <Box css="flex:1;padding:13px 0;text-align:center;font:600 13px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="background:var(--s2);color:var(--ink)">&#x2193; Download report</Box>
+                        <Box css="flex:2;padding:13px 0;text-align:center;font:700 13.5px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.87" onClick={v.sciApproveAll}>
+                          {rejectedCount > 0 ? `Send back · ${rejectedCount} rejection${rejectedCount > 1 ? 's' : ''} →` : 'Approve & finalise →'}
+                        </Box>
+                      </div>
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;align-self:flex-start"
+                        hover="color:var(--ink);border-color:var(--ink)"
+                        onClick={v.goBack}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Back to Inbox
                       </Box>
                     </div>
                   </div>
