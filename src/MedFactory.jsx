@@ -910,6 +910,8 @@ export default class MedFactory extends React.Component {
 
   go = (s) => {
     clearInterval(this.t);
+    if (s === 'dash') this.setState({ sidebarCollapsed: false });
+    else if (s !== 'landing') this.setState({ sidebarCollapsed: true });
     if (!this._skipHistory && s !== 'landing' && s !== 'intel') {
       window.history.pushState({ screen: s }, '');
     }
