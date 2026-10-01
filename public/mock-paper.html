@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SUSTAIN-6 — Semaglutide Cardiovascular Outcomes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 9.5pt;
+    line-height: 1.55;
+    color: #111;
+    background: #f0f0f0;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 24px auto;
+    background: #fff;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.18);
+    padding: 0;
+    page-break-after: always;
+  }
+
+  /* Journal header band */
+  .journal-header {
+    background: #1a3a6c;
+    color: #fff;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .journal-name {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 11pt;
+    letter-spacing: 0.04em;
+  }
+  .journal-meta {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 7.5pt;
+    color: #c5d8f0;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  /* Article header */
+  .article-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1.5px solid #1a3a6c;
+  }
+  .article-type {
+    font-family: Arial, sans-serif;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #1a3a6c;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .article-title {
+    font-size: 14.5pt;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #0d1f3c;
+    margin-bottom: 10px;
+  }
+  .article-subtitle {
+    font-size: 10pt;
+    font-style: italic;
+    color: #3a5a8a;
+    margin-bottom: 12px;
+  }
+  .authors {
+    font-family: Arial, sans-serif;
+    font-size: 8.5pt;
+    color: #1a3a6c;
+    margin-bottom: 4px;
+  }
+  .affiliations {
+    font-family: Arial, sans-serif;
+    font-size: 7.5pt;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .doi-line {
+    font-family: Arial, sans-serif;
+    font-size: 7.5pt;
+    color: #888;
+  }
+  .doi-line a { color: #1a3a6c; }
+
+  /* Abstract box */
+  .abstract-box {
+    background: #f0f5fb;
+    border-left: 3px solid #1a3a6c;
+    padding: 12px 16px;
+    margin: 16px 24px;
+  }
+  .abstract-box h2 {
+    font-family: Arial, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #1a3a6c;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .abstract-text {
+    font-size: 8.5pt;
+    line-height: 1.65;
+    color: #222;
+  }
+
+  /* Keywords */
+  .keywords {
+    padding: 0 24px 4px;
+    font-family: Arial, sans-serif;
+    font-size: 7.5pt;
+    color: #555;
+  }
+  .keywords strong { color: #1a3a6c; }
+
+  /* Two-column body */
+  .body-columns {
+    padding: 14px 24px 24px;
+    column-count: 2;
+    column-gap: 22px;
+    column-rule: 0.5px solid #ccc;
+  }
+
+  h2.section {
+    font-family: Arial, sans-serif;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #1a3a6c;
+    text-transform: uppercase;
+    margin: 14px 0 6px;
+    border-bottom: 0.5px solid #c5d3e8;
+    padding-bottom: 3px;
+  }
+  h2.section:first-child { margin-top: 0; }
+
+  p { margin-bottom: 8px; text-align: justify; hyphens: auto; }
+
+  /* Results table */
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 12px;
+    font-size: 7.5pt;
+    break-inside: avoid;
+  }
+  .results-table caption {
+    font-family: Arial, sans-serif;
+    font-size: 7pt;
+    font-weight: 700;
+    color: #1a3a6c;
+    text-align: left;
+    margin-bottom: 4px;
+    letter-spacing: 0.06em;
+    caption-side: top;
+  }
+  .results-table th {
+    background: #1a3a6c;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+    padding: 4px 6px;
+    text-align: left;
+    border: 0.5px solid #1a3a6c;
+  }
+  .results-table td {
+    padding: 4px 6px;
+    border: 0.5px solid #c5d3e8;
+    vertical-align: top;
+  }
+  .results-table tr:nth-child(even) td { background: #f4f7fc; }
+  .results-table td:nth-child(1) { font-style: italic; }
+
+  .figure-box {
+    background: #f7f9fc;
+    border: 0.5px solid #c5d3e8;
+    padding: 10px 8px 6px;
+    margin: 10px 0;
+    text-align: center;
+    break-inside: avoid;
+  }
+  .figure-box svg { display: block; margin: 0 auto; }
+  .figure-caption {
+    font-family: Arial, sans-serif;
+    font-size: 7pt;
+    color: #555;
+    margin-top: 6px;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  /* References */
+  .references ol {
+    padding-left: 16px;
+    margin: 6px 0 0;
+  }
+  .references li {
+    font-size: 7.5pt;
+    line-height: 1.5;
+    margin-bottom: 4px;
+    color: #333;
+  }
+
+  /* Footer */
+  .page-footer {
+    background: #f4f7fc;
+    border-top: 0.5px solid #c5d3e8;
+    padding: 7px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+  }
+  .page-footer span {
+    font-family: Arial, sans-serif;
+    font-size: 7pt;
+    color: #888;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Journal header -->
+  <div class="journal-header">
+    <div>
+      <div class="journal-name">New England Journal of Medicine</div>
+      <div style="font-family:Arial,sans-serif;font-size:7pt;color:#8ab4d8;margin-top:2px;">NEJM.org &nbsp;·&nbsp; Original Article</div>
+    </div>
+    <div class="journal-meta">
+      Vol. 375, No. 19 &nbsp;|&nbsp; November 10, 2019<br>
+      MEDLINE-indexed · High-impact · IF 96.2
+    </div>
+  </div>
+
+  <!-- Article header -->
+  <div class="article-header">
+    <div class="article-type">Original Article — Cardiovascular Outcomes</div>
+    <div class="article-title">
+      Semaglutide and Cardiovascular Outcomes in Patients<br>with Type 2 Diabetes — SUSTAIN-6
+    </div>
+    <div class="article-subtitle">
+      A Randomised, Double-Blind, Placebo-Controlled Trial
+    </div>
+    <div class="authors">
+      Steven P. Marso, M.D., Sébastien Bain, M.B.B.S., Agostino Consoli, M.D., Frédéric Eliaschewitz, M.D.,
+      Esteban Jódar, M.D., Lawrence A. Leiter, M.D., Ildiko Lingvay, M.D., Julia Rosenstock, M.D.,
+      Julio Rosenstock, M.D., Johannes F.E. Mann, M.D., and Neil Poulter, M.D., for the SUSTAIN-6 Investigators
+    </div>
+    <div class="affiliations">
+      <sup>1</sup>University of Kansas School of Medicine, Kansas City. &nbsp;
+      <sup>2</sup>Swansea University Medical School, Swansea, UK. &nbsp;
+      <sup>3</sup>University of Chieti–Pescara, Chieti, Italy. &nbsp;
+      <sup>4</sup>São Paulo Federal University, São Paulo. &nbsp;
+      <sup>5</sup>Hospital HM Montepríncipe, Madrid. &nbsp;
+      <sup>6</sup>University of Toronto, Toronto. &nbsp;
+      <sup>7</sup>UT Southwestern Medical Center, Dallas. &nbsp;
+      <sup>8</sup>Dallas Diabetes Research Center at Medical City, Dallas. &nbsp;
+      <sup>9</sup>KfH Kidney Center, Munich.
+    </div>
+    <div class="doi-line">
+      DOI: <a href="#">10.1056/NEJMoa1607141</a> &nbsp;·&nbsp;
+      Received October 3, 2019 &nbsp;·&nbsp; Accepted November 1, 2019 &nbsp;·&nbsp;
+      Published November 10, 2019 &nbsp;·&nbsp;
+      ClinicalTrials.gov: <a href="#">NCT01720446</a>
+    </div>
+  </div>
+
+  <!-- Abstract -->
+  <div class="abstract-box">
+    <h2>Abstract</h2>
+    <div class="abstract-text">
+      <strong>Background.</strong> The cardiovascular effects of semaglutide, a glucagon-like peptide-1 (GLP-1)
+      receptor agonist, in patients with type 2 diabetes at high cardiovascular risk have not been established
+      in a pre-approval outcomes trial.
+      <br><br>
+      <strong>Methods.</strong> We randomly assigned 3,297 patients with type 2 diabetes who were at high
+      cardiovascular risk to receive semaglutide (0.5 mg or 1.0 mg subcutaneously once weekly) or matching
+      placebo. The primary composite outcome was death from cardiovascular causes, nonfatal myocardial
+      infarction, or nonfatal stroke (MACE-3). The trial was designed to rule out a hazard ratio exceeding
+      1.8 for the primary outcome.
+      <br><br>
+      <strong>Results.</strong> The primary composite outcome occurred in 6.6% of patients receiving
+      semaglutide versus 8.9% receiving placebo (HR 0.74; 95% CI 0.58–0.95; P=0.02 for noninferiority;
+      P=0.015 for superiority). Rates of new or worsening nephropathy were significantly lower with
+      semaglutide (3.8% vs 6.1%; HR 0.64).
+      <br><br>
+      <strong>Conclusions.</strong> Semaglutide was noninferior to placebo with respect to cardiovascular
+      safety and demonstrated superiority for MACE reduction at 2 years. These findings support the use of
+      semaglutide in patients with type 2 diabetes and high cardiovascular risk.
+      <br><br>
+      <strong>Funding:</strong> Novo Nordisk. &nbsp; <strong>ClinicalTrials.gov number:</strong> NCT01720446.
+    </div>
+  </div>
+
+  <div class="keywords">
+    <strong>Keywords:</strong> GLP-1 receptor agonist, semaglutide, cardiovascular outcomes, type 2 diabetes, MACE, SUSTAIN-6, RCT.
+  </div>
+
+  <!-- Two-column body -->
+  <div class="body-columns">
+
+    <h2 class="section">Introduction</h2>
+    <p>
+      Patients with type 2 diabetes (T2D) are at substantially elevated risk of major adverse cardiovascular
+      events (MACE), including cardiovascular death, nonfatal myocardial infarction (MI), and nonfatal stroke.
+      Regulatory guidance issued by the U.S. Food and Drug Administration in 2008 mandated cardiovascular
+      outcomes trials (CVOTs) for all new glucose-lowering agents.<sup>1</sup>
+    </p>
+    <p>
+      Semaglutide is a long-acting GLP-1 receptor agonist with 94% structural homology to native human GLP-1,
+      modified to resist dipeptidyl peptidase-4 degradation and albumin binding to extend its half-life to
+      approximately seven days, enabling once-weekly subcutaneous administration.<sup>2</sup>
+      Preclinical data suggested anti-atherosclerotic properties; however, whether these effects translate to
+      cardiovascular risk reduction in a randomised controlled trial setting had not been established.
+    </p>
+    <p>
+      The SUSTAIN-6 trial was designed primarily to demonstrate cardiovascular noninferiority of semaglutide
+      relative to placebo within the framework of current regulatory requirements. Secondary objectives included
+      assessment of glycaemic efficacy, body weight change, and microvascular outcomes over 104 weeks.
+    </p>
+
+    <h2 class="section">Methods</h2>
+    <p>
+      <strong>Trial Design and Oversight.</strong> SUSTAIN-6 was a multinational, randomised, double-blind,
+      placebo-controlled trial conducted across 230 sites in 56 countries. The protocol was approved by local
+      ethics committees at each participating site, and all patients provided written informed consent. The
+      trial was sponsored by Novo Nordisk, which participated in the design, data collection, and oversight.
+      An independent data monitoring committee provided oversight, and data analyses were confirmed by an
+      independent academic research organisation.
+    </p>
+    <p>
+      <strong>Patients.</strong> Eligible patients were adults (≥18 years) with T2D, HbA1c ≥7.0%, and either
+      established cardiovascular disease, chronic kidney disease (eGFR 30–59 mL/min/1.73m²), or age ≥60 years
+      with ≥1 cardiovascular risk factor. Key exclusion criteria included recent acute coronary syndrome,
+      planned revascularisation, and end-stage renal disease.
+    </p>
+    <p>
+      <strong>Randomisation and Intervention.</strong> Patients were randomised 1:1:1:1 to semaglutide 0.5 mg,
+      semaglutide 1.0 mg, matched placebo 0.5 mg, or matched placebo 1.0 mg, administered via autoinjector
+      pen once weekly. Randomisation was stratified by screening HbA1c (≤8.5% or >8.5%) and insulin use at
+      baseline. Investigators and patients were masked to treatment assignment throughout the 104-week duration.
+    </p>
+    <p>
+      <strong>Outcomes.</strong> The primary endpoint was a composite of first occurrence of cardiovascular
+      death, nonfatal MI, or nonfatal stroke (3-point MACE). Secondary endpoints included all-cause mortality,
+      HbA1c change, body weight change, and a composite microvascular outcome comprising new or worsening
+      nephropathy or retinopathy. All events were adjudicated by an independent committee masked to treatment.
+    </p>
+    <p>
+      <strong>Statistical Analysis.</strong> The trial was designed to rule out an upper 97.5% confidence
+      interval boundary for the HR exceeding 1.8 (noninferiority margin). The prespecified primary analysis
+      used a Cox proportional hazards model with treatment as a fixed effect and stratification factors as
+      covariates, analysed on an intent-to-treat basis. A hierarchical testing procedure controlled the
+      familywise type I error rate at 5% (two-sided).
+    </p>
+
+    <h2 class="section">Results</h2>
+    <p>
+      <strong>Patient Characteristics.</strong> A total of 3,297 patients were enrolled (mean age 64.6 years;
+      60.8% male; mean HbA1c 8.7%; mean BMI 32.8 kg/m²; mean duration of diabetes 13.9 years). Established
+      CVD was present in 83.0% of patients, with 57.6% having a prior MI. The two treatment groups were
+      well-matched at baseline.
+    </p>
+    <p>
+      <strong>Primary Outcome.</strong> Over a median follow-up of 2.1 years, the primary MACE composite
+      occurred in 108 of 1,648 patients (6.6%) in the semaglutide group versus 146 of 1,649 patients (8.9%)
+      in the placebo group (HR 0.74; 95% CI 0.58–0.95; P&lt;0.001 for noninferiority; P=0.015 for
+      superiority). Results are shown in Table 1.
+    </p>
+
+    <!-- Results table -->
+    <table class="results-table">
+      <caption>TABLE 1 — Primary and Key Secondary Outcomes</caption>
+      <thead>
+        <tr>
+          <th>Outcome</th>
+          <th>Semaglutide (n=1,648)</th>
+          <th>Placebo (n=1,649)</th>
+          <th>HR (95% CI)</th>
+          <th>P value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>MACE-3 (primary)</td>
+          <td>108 (6.6%)</td>
+          <td>146 (8.9%)</td>
+          <td>0.74 (0.58–0.95)</td>
+          <td>0.015</td>
+        </tr>
+        <tr>
+          <td>CV death</td>
+          <td>44 (2.7%)</td>
+          <td>46 (2.8%)</td>
+          <td>0.98 (0.65–1.48)</td>
+          <td>0.92</td>
+        </tr>
+        <tr>
+          <td>Nonfatal MI</td>
+          <td>47 (2.9%)</td>
+          <td>64 (3.9%)</td>
+          <td>0.74 (0.51–1.08)</td>
+          <td>0.12</td>
+        </tr>
+        <tr>
+          <td>Nonfatal stroke</td>
+          <td>27 (1.6%)</td>
+          <td>44 (2.7%)</td>
+          <td>0.61 (0.38–0.99)</td>
+          <td>0.04</td>
+        </tr>
+        <tr>
+          <td>All-cause mortality</td>
+          <td>62 (3.8%)</td>
+          <td>60 (3.6%)</td>
+          <td>1.05 (0.74–1.50)</td>
+          <td>0.79</td>
+        </tr>
+        <tr>
+          <td>New/worsening nephropathy</td>
+          <td>62 (3.8%)</td>
+          <td>100 (6.1%)</td>
+          <td>0.64 (0.46–0.88)</td>
+          <td>0.005</td>
+        </tr>
+        <tr>
+          <td>HbA1c change (%, week 104)</td>
+          <td>−1.1%</td>
+          <td>−0.0%</td>
+          <td>ETD −1.1% (−1.3 to −0.9)</td>
+          <td>&lt;0.001</td>
+        </tr>
+        <tr>
+          <td>Body weight change (kg, week 104)</td>
+          <td>−4.2 kg</td>
+          <td>+0.2 kg</td>
+          <td>ETD −4.4 kg (−5.0 to −3.9)</td>
+          <td>&lt;0.001</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- KM curve figure (SVG) -->
+    <div class="figure-box">
+      <svg viewBox="0 0 220 110" width="200" height="100">
+        <!-- Axes -->
+        <line x1="24" y1="8" x2="24" y2="90" stroke="#333" stroke-width="1"/>
+        <line x1="24" y1="90" x2="210" y2="90" stroke="#333" stroke-width="1"/>
+        <!-- Y axis ticks -->
+        <text x="20" y="91" font-size="5" fill="#555" text-anchor="end">0</text>
+        <text x="20" y="72" font-size="5" fill="#555" text-anchor="end">4%</text>
+        <text x="20" y="52" font-size="5" fill="#555" text-anchor="end">8%</text>
+        <text x="20" y="32" font-size="5" fill="#555" text-anchor="end">12%</text>
+        <text x="20" y="12" font-size="5" fill="#555" text-anchor="end">16%</text>
+        <!-- X axis ticks -->
+        <text x="24"  y="97" font-size="5" fill="#555" text-anchor="middle">0</text>
+        <text x="69"  y="97" font-size="5" fill="#555" text-anchor="middle">6</text>
+        <text x="114" y="97" font-size="5" fill="#555" text-anchor="middle">12</text>
+        <text x="159" y="97" font-size="5" fill="#555" text-anchor="middle">18</text>
+        <text x="204" y="97" font-size="5" fill="#555" text-anchor="middle">24 mo</text>
+        <!-- Placebo curve (higher) -->
+        <polyline points="24,90 45,85 69,79 90,75 114,69 135,64 159,59 180,55 204,50"
+          fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <!-- Semaglutide curve (lower) -->
+        <polyline points="24,90 45,86 69,82 90,79 114,75 135,71 159,67 180,64 204,61"
+          fill="none" stroke="#1a3a6c" stroke-width="1.5"/>
+        <!-- Legend -->
+        <line x1="90" y1="20" x2="105" y2="20" stroke="#666" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="107" y="23" font-size="5" fill="#333">Placebo (8.9%)</text>
+        <line x1="90" y1="29" x2="105" y2="29" stroke="#1a3a6c" stroke-width="1.5"/>
+        <text x="107" y="32" font-size="5" fill="#333">Semaglutide (6.6%)</text>
+        <!-- HR annotation -->
+        <rect x="130" y="38" width="74" height="14" rx="2" fill="#eef4ff" stroke="#c5d3e8" stroke-width="0.5"/>
+        <text x="167" y="47" font-size="5" fill="#1a3a6c" text-anchor="middle" font-weight="700">HR 0.74 (95% CI 0.58–0.95)</text>
+      </svg>
+      <div class="figure-caption">
+        <strong>Figure 1.</strong> Kaplan–Meier estimates of time to first MACE event (cardiovascular death, nonfatal MI, or nonfatal stroke) in the semaglutide and placebo groups. HR = hazard ratio; CI = confidence interval.
+      </div>
+    </div>
+
+    <p>
+      <strong>Secondary Outcomes.</strong> Nonfatal stroke was significantly reduced with semaglutide (1.6% vs
+      2.7%; HR 0.61; 95% CI 0.38–0.99; P=0.04). Nonfatal MI trended lower (2.9% vs 3.9%; HR 0.74; P=0.12).
+      Cardiovascular death did not differ significantly between groups (2.7% vs 2.8%; HR 0.98). HbA1c was
+      reduced by a mean 1.1 percentage points more with semaglutide, and body weight decreased by 4.4 kg
+      more than placebo at week 104 (both P&lt;0.001).
+    </p>
+    <p>
+      <strong>Microvascular Outcomes.</strong> New or worsening nephropathy occurred in 3.8% of semaglutide
+      patients versus 6.1% on placebo (HR 0.64; 95% CI 0.46–0.88; P=0.005), driven primarily by reduction
+      in persistent macroalbuminuria. Retinopathy complications were more frequent with semaglutide (3.0%)
+      than placebo (1.8%; HR 1.76; P=0.02), principally in those with severe pre-existing retinopathy.
+    </p>
+    <p>
+      <strong>Safety.</strong> Gastrointestinal adverse events were more common with semaglutide (nausea
+      21.8% vs 7.7%; vomiting 9.2% vs 2.9%). Serious adverse events occurred at similar rates (35.4%
+      semaglutide vs 35.8% placebo). No unexpected safety signals were identified.
+    </p>
+
+    <h2 class="section">Discussion</h2>
+    <p>
+      SUSTAIN-6 demonstrated that once-weekly subcutaneous semaglutide significantly reduced the risk of
+      MACE compared with placebo in patients with T2D at high cardiovascular risk, thus establishing both
+      cardiovascular safety and superiority beyond the required noninferiority margin.
+    </p>
+    <p>
+      The 26% relative risk reduction in MACE was driven predominantly by a 39% reduction in nonfatal
+      stroke — the largest such effect reported in a GLP-1 RA CVOT at the time of publication. This finding
+      is consistent with semaglutide's anti-atherosclerotic properties demonstrated in preclinical models,
+      including inhibition of macrophage foam cell formation and reduction in aortic plaque burden.<sup>3</sup>
+    </p>
+    <p>
+      The reduction in nephropathy composite was clinically meaningful and preceded the definitive renal
+      outcomes evidence from the dedicated FLOW trial. The retinopathy signal, while observed, was
+      hypothesised to be an artefact of rapid HbA1c reduction in patients with pre-existing advanced
+      retinopathy — a phenomenon previously observed with insulin intensification.<sup>4</sup>
+    </p>
+
+    <h2 class="section">Conclusions</h2>
+    <p>
+      Semaglutide once weekly significantly reduced the incidence of MACE compared with placebo over
+      104 weeks in patients with type 2 diabetes at high cardiovascular risk, demonstrating both
+      noninferiority and superiority. These results support the cardiovascular benefit of semaglutide and
+      its use in high-risk patients, consistent with subsequent guideline endorsement by the ADA, ESC,
+      and EASD.
+    </p>
+
+    <h2 class="section" class="references">References</h2>
+    <div class="references">
+      <ol>
+        <li>FDA Guidance for Industry. Diabetes mellitus — evaluating cardiovascular risk in new antidiabetic therapies. December 2008.</li>
+        <li>Lau J, et al. Discovery of the once-weekly glucagon-like peptide-1 (GLP-1) analogue semaglutide. <em>J Med Chem.</em> 2015;58:7370–7380.</li>
+        <li>Rakipovski G, et al. The GLP-1 analogues liraglutide and semaglutide reduce atherosclerosis in ApoE<sup>−/−</sup> and LDLr<sup>−/−</sup> mice by a mechanism that includes inflammatory pathways. <em>JACC Basic Transl Sci.</em> 2018;3:844–857.</li>
+        <li>Feldman-Billard S, et al. Early worsening of diabetic retinopathy after rapid improvement of blood glucose control in patients with diabetes. <em>Diabetes Metab.</em> 2018;44:4–14.</li>
+        <li>Marso SP, et al. Liraglutide and cardiovascular outcomes in type 2 diabetes (LEADER). <em>N Engl J Med.</em> 2016;375:311–322.</li>
+        <li>Neal B, et al. Canagliflozin and cardiovascular and renal events in type 2 diabetes (CANVAS). <em>N Engl J Med.</em> 2017;377:644–657.</li>
+      </ol>
+    </div>
+
+  </div><!-- /body-columns -->
+
+  <div class="page-footer">
+    <span>N Engl J Med 2019;375:1834–1844 &nbsp;·&nbsp; DOI: 10.1056/NEJMoa1607141</span>
+    <span>Copyright © 2019 Massachusetts Medical Society. All rights reserved.</span>
+    <span>Page 1 of 2</span>
+  </div>
+
+</div><!-- /page -->
+</body>
+</html>

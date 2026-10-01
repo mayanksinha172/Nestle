@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 :root {
-  --bg: #f7f9fd;
+  --bg: #f4f7fd;
   --s1: #ffffff;
-  --s2: #eef2fb;
-  --ink: #0f1f4a;
-  --dim: #2a4588;
-  --faint: #5d78b0;
-  --rule: rgba(15, 31, 74, 0.08);
-  --rule2: rgba(15, 31, 74, 0.16);
+  --s2: #e8eef9;
+  --ink: #0c1a3d;
+  --dim: #1a3070;
+  --faint: #3d5499;
+  --rule: rgba(12, 26, 61, 0.10);
+  --rule2: rgba(12, 26, 61, 0.20);
   --acc: #2c52cc;
   --acc2: #4468e0;
-  --ok: #166534;
-  --warn: #92400e;
+  --ok: #15803d;
+  --warn: #b45309;
   --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
