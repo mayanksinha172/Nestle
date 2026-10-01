@@ -981,6 +981,8 @@ export default class MedFactory extends React.Component {
       manageExcerptIdx: null,
       paperExcerpts: {},
       showMoreExcerpts: {},
+      aiExcerpts: {},           // { [idx]: [{text, src}] } AI-generated excerpts per paper
+      aiExcerptsLoading: {},    // { [idx]: true } loading state
       organizeAgentMsgN: 0,
       organizeAgentThinking: false,
       organizeAgentInput: '',
@@ -1884,6 +1886,22 @@ export default class MedFactory extends React.Component {
       }),
       showMoreExcerpts: st.showMoreExcerpts,
       toggleShowMore: (idx) => this.setState((s) => ({ showMoreExcerpts: { ...s.showMoreExcerpts, [idx]: !s.showMoreExcerpts[idx] } })),
+      aiExcerpts: st.aiExcerpts,
+      aiExcerptsLoading: st.aiExcerptsLoading,
+      generateAIExcerpts: (idx, paper) => {
+        this.setState((s) => ({ aiExcerptsLoading: { ...s.aiExcerptsLoading, [idx]: true } }));
+        setTimeout(() => {
+          const generated = [
+            { text: `"${paper.title.split(' ').slice(0,6).join(' ')} — findings suggest a statistically significant effect (p<0.001) with consistent results across subgroups, supporting applicability in routine clinical practice."`, src: 'AI summary · Methods, p.3', aiGenerated: true },
+            { text: `"${paper.journal} data confirms that the intervention produced clinically meaningful improvements in the primary endpoint, with an effect size exceeding the pre-specified minimum clinically important difference."`, src: 'AI summary · Results, p.5', aiGenerated: true },
+            { text: `"Pooled analysis across ${paper.year} data demonstrates robust reproducibility; sensitivity analyses were consistent with main findings, reinforcing the reliability of the reported outcomes."`, src: 'AI summary · Discussion, p.7', aiGenerated: true },
+          ];
+          this.setState((s) => ({
+            aiExcerptsLoading: { ...s.aiExcerptsLoading, [idx]: false },
+            aiExcerpts: { ...s.aiExcerpts, [idx]: generated },
+          }));
+        }, 1800);
+      },
       organizeAgentMsgN: st.organizeAgentMsgN,
       organizeAgentThinking: st.organizeAgentThinking,
       organizeAgentInput: st.organizeAgentInput,
@@ -4858,8 +4876,9 @@ export default class MedFactory extends React.Component {
               const currentExcerpts = v.paperExcerpts[p._idx] || [{ text: p.excerpt, src: p.excerptSrc }];
               const alts = ALTERNATE_EXCERPTS[p._idx] || [];
               const manageOpen = v.manageExcerptIdx === p._idx;
-              const showMore = v.showMoreExcerpts[p._idx];
-              const visibleAlts = showMore ? alts : alts.slice(0, 3);
+              const aiGenerated = v.aiExcerpts[p._idx] || [];
+              const aiLoading = v.aiExcerptsLoading[p._idx];
+              const visibleAlts = alts;
               return (
                 <div style={{ position: 'relative', background: '#fff', border: `1px solid ${sel && sel._idx === p._idx ? 'var(--acc)' : 'var(--rule2)'}`, borderLeft: `4px solid ${tc2(p.type)}`, borderRadius: '0 10px 10px 0', transition: 'all 0.15s', overflow: 'hidden' }}>
                   {/* Clickable main content */}
@@ -4938,11 +4957,26 @@ export default class MedFactory extends React.Component {
                       {/* Alternatives section */}
                       {alts.length > 0 && (
                         <>
-                          <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginTop: 4 }}>ALTERNATIVE EXCERPTS</div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
+                            <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)' }}>ALTERNATIVE EXCERPTS</span>
+                            {!aiGenerated.length && (
+                              <button
+                                onClick={() => v.generateAIExcerpts(p._idx, p)}
+                                disabled={!!aiLoading}
+                                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 10px', font: '700 9px/1 Plus Jakarta Sans', background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#2c52cc,#4468e0)', color: aiLoading ? 'var(--faint)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer', transition: 'all 0.2s' }}
+                              >
+                                {aiLoading ? (
+                                  <><div style={{ width: 8, height: 8, border: '1.5px solid var(--faint)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} /> Generating…</>
+                                ) : (
+                                  <><svg width="9" height="9" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg> Generate more with AI</>
+                                )}
+                              </button>
+                            )}
+                          </div>
                           {visibleAlts.map((alt, ai) => {
                             const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
                             return (
-                              <div key={ai} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                              <div key={ai} style={{ background: '#fff', border: '1px solid var(--rule2)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
                                 <div style={{ font: '400 11px/1.7 Plus Jakarta Sans', color: 'var(--dim)', fontStyle: 'italic' }}>{alt.text}</div>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                   <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--faint)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
@@ -4950,27 +4984,44 @@ export default class MedFactory extends React.Component {
                                     <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6 }}>✓ Added</span>
                                   ) : (
                                     <div style={{ display: 'flex', gap: 6 }}>
-                                      <button
-                                        onClick={() => v.replaceExcerpt(p._idx, alt)}
-                                        style={{ background: 'var(--acc)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', font: '700 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}
-                                      >Replace</button>
-                                      <button
-                                        onClick={() => v.addExcerpt(p._idx, alt)}
-                                        style={{ background: 'transparent', color: 'var(--acc)', border: '1px solid var(--acc)', borderRadius: 6, cursor: 'pointer', font: '600 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}
-                                      >Add</button>
+                                      <button onClick={() => v.replaceExcerpt(p._idx, alt)} style={{ background: 'var(--acc)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', font: '700 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Replace</button>
+                                      <button onClick={() => v.addExcerpt(p._idx, alt)} style={{ background: 'transparent', color: 'var(--acc)', border: '1px solid var(--acc)', borderRadius: 6, cursor: 'pointer', font: '600 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Add</button>
                                     </div>
                                   )}
                                 </div>
                               </div>
                             );
                           })}
-                          {alts.length > 3 && (
-                            <button
-                              onClick={() => v.toggleShowMore(p._idx)}
-                              style={{ background: 'none', border: '1px dashed #cbd5e1', borderRadius: 8, cursor: 'pointer', color: 'var(--faint)', font: '600 10px/1 Plus Jakarta Sans', padding: '8px 14px', textAlign: 'center' }}
-                            >
-                              {showMore ? '▲ Show fewer excerpts' : `▼ Show ${alts.length - 3} more excerpt${alts.length - 3 > 1 ? 's' : ''}`}
-                            </button>
+                          {/* AI-generated excerpts */}
+                          {aiGenerated.length > 0 && (
+                            <>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+                                <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)' }}>AI-GENERATED EXCERPTS</span>
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', font: '700 8px/1 Plus Jakarta Sans', background: 'linear-gradient(135deg,#2c52cc,#4468e0)', color: '#fff', borderRadius: 20 }}>
+                                  <svg width="7" height="7" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                  Generated by AI
+                                </span>
+                              </div>
+                              {aiGenerated.map((alt, ai) => {
+                                const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
+                                return (
+                                  <div key={`ai-${ai}`} style={{ background: 'rgba(44,82,204,0.04)', border: '1px solid rgba(44,82,204,0.18)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
+                                    <div style={{ font: '400 11px/1.7 Plus Jakarta Sans', color: 'var(--dim)', fontStyle: 'italic' }}>{alt.text}</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                      <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--faint)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
+                                      {alreadyAdded ? (
+                                        <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6 }}>✓ Added</span>
+                                      ) : (
+                                        <div style={{ display: 'flex', gap: 6 }}>
+                                          <button onClick={() => v.replaceExcerpt(p._idx, alt)} style={{ background: 'var(--acc)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', font: '700 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Replace</button>
+                                          <button onClick={() => v.addExcerpt(p._idx, alt)} style={{ background: 'transparent', color: 'var(--acc)', border: '1px solid var(--acc)', borderRadius: 6, cursor: 'pointer', font: '600 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Add</button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </>
                           )}
                         </>
                       )}
