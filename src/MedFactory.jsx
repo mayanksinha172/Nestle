@@ -4714,12 +4714,20 @@ export default class MedFactory extends React.Component {
                   <div style={S('font:400 11.5px/1.75 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>{p.excerpt}</div>
                   <div style={S('font:600 9.5px/1 var(--mono);color:var(--faint);margin-top:7px;letter-spacing:0.04em')}>{p.excerptSrc}</div>
                 </div>
-                {/* artifact tags */}
-                <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
+                {/* artifact tags + remove button */}
+                <div style={S('display:flex;align-items:center;gap:5px;flex-wrap:wrap')}>
                   {ALL_ARTIFACTS.map((a) => {
                     const active = p.artifacts.includes(a);
                     return <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Plus Jakarta Sans', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
                   })}
+                  <Box
+                    css="margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;color:var(--warn);border:1px solid rgba(146,64,14,0.3);border-radius:6px;cursor:pointer;flex-shrink:0;background:transparent"
+                    hover="background:rgba(146,64,14,0.08);border-color:var(--warn)"
+                    onClick={(e) => { e.stopPropagation(); v.toggleAccept(p._idx); if (sel && sel._idx === p._idx) v.setOrganizeSelected(null); }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 2.5h7M4 2.5V1.5h2V2.5M3 2.5v5.5a.5.5 0 00.5.5h3a.5.5 0 00.5-.5V2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Remove excerpt
+                  </Box>
                 </div>
               </Box>
             );
