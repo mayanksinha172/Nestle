@@ -4184,6 +4184,22 @@ export default class MedFactory extends React.Component {
                                 );
                               })()}
 
+                              {(() => {
+                                const selCount = Object.keys(v.chatPaperSelections).length;
+                                if (!selCount) return null;
+                                return (
+                                  <Box
+                                    css="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;font:700 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid var(--acc);color:var(--acc);background:rgba(44,82,204,0.06);white-space:nowrap;flex-shrink:0;animation:rise 0.15s ease both"
+                                    hover="background:rgba(44,82,204,0.12)"
+                                    onClick={v.addSelectedToChat}
+                                  >
+                                    <svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM7 5h2v3h3v2H9v3H7v-3H4V8h3V5z" fill="currentColor"/></svg>
+                                    Add to chat
+                                    <span style={{ background: 'var(--acc)', color: '#fff', borderRadius: 20, padding: '1px 6px', font: '700 9px/1.4 Plus Jakarta Sans', minWidth: 16, textAlign: 'center' }}>{selCount}</span>
+                                  </Box>
+                                );
+                              })()}
+
                               <Box
                                 css={`margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:4px 11px;font:700 10px/1 Plus Jakarta Sans;cursor:${v.aiAcceptLoading ? 'default' : 'pointer'};border-radius:20px;background:${v.aiAcceptLoading ? 'transparent' : 'linear-gradient(135deg,#2c52cc,#4468e0)'};color:${v.aiAcceptLoading ? 'var(--faint)' : '#fff'};border:1px solid ${v.aiAcceptLoading ? 'var(--rule2)' : 'transparent'};transition:all 0.2s;white-space:nowrap;flex-shrink:0`}
                                 hover={v.aiAcceptLoading ? '' : 'opacity:0.88'}
