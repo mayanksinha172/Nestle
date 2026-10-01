@@ -841,6 +841,9 @@ export default class MedFactory extends React.Component {
       excerptModalArtifacts: { Deck: true, Blog: false, Protocol: false, Blurb: false, Facts: false },
       excerptModalTracks: {},
       customExcerpts: [],
+      sectionSelectTracks: CONTENT_TRACKS.map(t => t.id),
+      sectionSelectCustom: [],
+      sectionSelectInput: '',
       renderStep: 2,
       built: 7,
       history: [
@@ -956,6 +959,9 @@ export default class MedFactory extends React.Component {
       } else {
         this.setState({ screen: 'research' });
       }
+    } else if (s === 'section-select') {
+      this.setState({ screen: 'section-select' });
+      return;
     } else if (s === 'organize') {
       this.setState({ screen: 'organize', organizeExpanded: {}, organizeSelectedPaper: null, organizeAgentMsgN: 0, organizeAgentThinking: false, organizeAgentInput: '' });
       setTimeout(() => this.runOrganizeAgent(), 600);
@@ -1528,9 +1534,9 @@ export default class MedFactory extends React.Component {
     const rpct = Math.round((st.built / 20) * 100);
 
     return {
-      isDash: S_ === 'dash', isIntake: S_ === 'intake', isResearch: S_ === 'research', isOrganize: S_ === 'organize', isMedReview: S_ === 'med-review', isWsHub: S_ === 'workspace-hub',
-      backRoute: ({ intake: ['dash','Dashboard'], research: ['intake','Setup'], pipe: ['intake','Setup'], organize: ['research','Research'], 'med-review': ['organize','Organize'], 'sci-review': ['sci-dash','Inbox'] })[S_] || null,
-      goBack: () => { const b = ({ intake: ['dash','Dashboard'], research: ['intake','Setup'], pipe: ['intake','Setup'], organize: ['research','Research'], 'med-review': ['organize','Organize'], 'sci-review': ['sci-dash','Inbox'] })[S_]; if (b) this.go(b[0]); },
+      isDash: S_ === 'dash', isIntake: S_ === 'intake', isResearch: S_ === 'research', isOrganize: S_ === 'organize', isMedReview: S_ === 'med-review', isWsHub: S_ === 'workspace-hub', isSectionSelect: S_ === 'section-select',
+      backRoute: ({ intake: ['dash','Dashboard'], 'section-select': ['intake','Setup'], research: ['section-select','Sections'], pipe: ['intake','Setup'], organize: ['research','Research'], 'med-review': ['organize','Organize'], 'sci-review': ['sci-dash','Inbox'] })[S_] || null,
+      goBack: () => { const b = ({ intake: ['dash','Dashboard'], 'section-select': ['intake','Setup'], research: ['section-select','Sections'], pipe: ['intake','Setup'], organize: ['research','Research'], 'med-review': ['organize','Organize'], 'sci-review': ['sci-dash','Inbox'] })[S_]; if (b) this.go(b[0]); },
       isLanding: !st.role,
       role: st.role, pptStatus: st.pptStatus,
       isCreator: st.role === 'creator', isMA: st.role === 'ma', isSci: st.role === 'sci',
@@ -1837,16 +1843,11 @@ export default class MedFactory extends React.Component {
       onAvoidKey: (e) => { if (e.key === 'Enter' && e.target.value.trim()) this.setState((s) => ({ avoid: s.avoid.concat(s.avoidDraft.trim()), avoidDraft: '' })); },
       estSlides: est[0], estMin: est[1], estRefs: est[2],
       startGen: () => {
-        const id = Date.now();
-        const ws = {
-          id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
-          status: 'Research in Progress', created: 'Today', to: 'research', dotColor: '#a78bfa',
-        };
-        const r1 = { id: 1, name: 'Research 1', status: 'in-progress', artifacts: [] };
-        this.setState((s) => ({
-          createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
-          wsResearches: [r1], wsActiveResearch: 1, sidebarExpandedWs: id,
-        }), () => this.go('research'));
+        this.setState({
+          sectionSelectTracks: CONTENT_TRACKS.map(t => t.id),
+          sectionSelectCustom: [],
+          sectionSelectInput: '',
+        }, () => this.go('section-select'));
       },
       skipToHub: () => {
         const id = Date.now();
@@ -1987,6 +1988,40 @@ export default class MedFactory extends React.Component {
       renderBar: `height:3px;width:${rpct}%;background:var(--acc);transition:width 0.4s ease`,
 
       deliverStats, audit,
+
+      /* ---------- section select ---------- */
+      sectionSelectTracks: st.sectionSelectTracks,
+      sectionSelectCustom: st.sectionSelectCustom,
+      sectionSelectInput: st.sectionSelectInput,
+      onSectionSelectInput: (e) => this.setState({ sectionSelectInput: e.target.value }),
+      toggleSectionTrack: (id) => this.setState((s) => ({
+        sectionSelectTracks: s.sectionSelectTracks.includes(id)
+          ? s.sectionSelectTracks.filter(x => x !== id)
+          : [...s.sectionSelectTracks, id],
+      })),
+      toggleCustomSection: (label) => this.setState((s) => ({
+        sectionSelectCustom: s.sectionSelectCustom.map(c => c.label === label ? { ...c, on: !c.on } : c),
+      })),
+      addCustomSection: () => {
+        const label = st.sectionSelectInput.trim();
+        if (!label) return;
+        this.setState((s) => ({
+          sectionSelectCustom: [...s.sectionSelectCustom, { label, on: true, color: '#60a5fa' }],
+          sectionSelectInput: '',
+        }));
+      },
+      proceedFromSectionSelect: () => {
+        const id = Date.now();
+        const ws = {
+          id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
+          status: 'Research in Progress', created: 'Today', to: 'research', dotColor: '#a78bfa',
+        };
+        const r1 = { id: 1, name: 'Research 1', status: 'in-progress', artifacts: [] };
+        this.setState((s) => ({
+          createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
+          wsResearches: [r1], wsActiveResearch: 1, sidebarExpandedWs: id,
+        }), () => this.go('research'));
+      },
 
       /* ---------- role actions ---------- */
       enterRole: (r) => this.enterRole(r),
@@ -2991,6 +3026,155 @@ export default class MedFactory extends React.Component {
                     </>
                   )}
                 </div>
+              </div>
+            );
+          })()}
+
+          {/* ============ SELECT RESEARCH SECTIONS ============ */}
+          {v.isSectionSelect && (() => {
+            const trackColors = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+            return (
+              <div style={{ minHeight: '100%', background: '#0d1f4e', padding: '52px 64px', animation: 'fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both' }}>
+
+                {/* Title + subtitle */}
+                <h1 style={{ font: '800 32px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', color: '#e8eef8', margin: '0 0 14px' }}>Select Research Sections</h1>
+                <p style={{ font: '400 14px/1.65 Plus Jakarta Sans', color: '#8aaad4', margin: '0 0 28px', maxWidth: 480 }}>
+                  These are the content sections this research will cover. Unselect any you don't need for this run, or add a new custom section — it gets its own color automatically. The rest of the research will only use whatever is selected here.
+                </p>
+
+                {/* Proceed button */}
+                <Box
+                  css="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:#2c52cc;color:#fff;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;margin-bottom:36px"
+                  hover="background:#4468e0"
+                  onClick={v.proceedFromSectionSelect}
+                >
+                  Proceed with selected sections →
+                </Box>
+
+                {/* Track rows */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 680, marginBottom: 28 }}>
+                  {CONTENT_TRACKS.map((track, i) => {
+                    const on = v.sectionSelectTracks.includes(track.id);
+                    const col = trackColors[i] || '#60a5fa';
+                    return (
+                      <div
+                        key={track.id}
+                        onClick={() => v.toggleSectionTrack(track.id)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 16,
+                          padding: '16px 20px',
+                          background: on ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)',
+                          border: `1px solid ${on ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.07)'}`,
+                          borderRadius: 10, cursor: 'pointer',
+                          transition: 'background 0.15s, border-color 0.15s',
+                        }}
+                      >
+                        {/* Checkbox */}
+                        <div style={{
+                          width: 20, height: 20, borderRadius: 5, flexShrink: 0,
+                          background: on ? '#2c52cc' : 'transparent',
+                          border: `2px solid ${on ? '#2c52cc' : 'rgba(255,255,255,0.25)'}`,
+                          display: 'grid', placeItems: 'center',
+                          transition: 'background 0.15s, border-color 0.15s',
+                        }}>
+                          {on && (
+                            <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+                              <path d="M1 4l3 3 6-6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          )}
+                        </div>
+                        {/* Color label pill */}
+                        <div style={{
+                          padding: '3px 10px', borderRadius: 20, fontSize: 10, fontWeight: 700,
+                          fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.02em',
+                          background: `${col}22`, color: col, border: `1px solid ${col}55`,
+                          whiteSpace: 'nowrap', flexShrink: 0,
+                        }}>
+                          {track.label}
+                        </div>
+                        {/* Name */}
+                        <span style={{ font: '500 14px/1 Plus Jakarta Sans', color: on ? '#e8eef8' : '#4d6fa0' }}>
+                          {track.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+
+                  {/* Custom sections */}
+                  {v.sectionSelectCustom.map((c, i) => (
+                    <div
+                      key={i}
+                      onClick={() => v.toggleCustomSection(c.label)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 16,
+                        padding: '16px 20px',
+                        background: c.on ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)',
+                        border: `1px solid ${c.on ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.07)'}`,
+                        borderRadius: 10, cursor: 'pointer',
+                        transition: 'background 0.15s, border-color 0.15s',
+                      }}
+                    >
+                      <div style={{
+                        width: 20, height: 20, borderRadius: 5, flexShrink: 0,
+                        background: c.on ? '#2c52cc' : 'transparent',
+                        border: `2px solid ${c.on ? '#2c52cc' : 'rgba(255,255,255,0.25)'}`,
+                        display: 'grid', placeItems: 'center',
+                        transition: 'background 0.15s, border-color 0.15s',
+                      }}>
+                        {c.on && (
+                          <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+                            <path d="M1 4l3 3 6-6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
+                      </div>
+                      <div style={{
+                        padding: '3px 10px', borderRadius: 20, fontSize: 10, fontWeight: 700,
+                        fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.02em',
+                        background: `${c.color}22`, color: c.color, border: `1px solid ${c.color}55`,
+                        whiteSpace: 'nowrap', flexShrink: 0,
+                      }}>
+                        {c.label}
+                      </div>
+                      <span style={{ font: '500 14px/1 Plus Jakarta Sans', color: c.on ? '#e8eef8' : '#4d6fa0' }}>{c.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Add custom section input */}
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center', maxWidth: 500 }}>
+                  <input
+                    value={v.sectionSelectInput}
+                    onChange={v.onSectionSelectInput}
+                    onKeyDown={(e) => { if (e.key === 'Enter') v.addCustomSection(); }}
+                    placeholder="New section name (e.g. Patient adherence…)"
+                    style={{
+                      flex: 1, padding: '11px 16px',
+                      background: 'rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(255,255,255,0.14)',
+                      borderRadius: 8, color: '#e8eef8',
+                      font: '400 13px/1 Plus Jakarta Sans',
+                      outline: 'none',
+                    }}
+                  />
+                  <Box
+                    css="padding:11px 20px;background:transparent;border:1.5px solid rgba(255,255,255,0.22);color:#e8eef8;font:600 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;white-space:nowrap"
+                    hover="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.4)"
+                    onClick={v.addCustomSection}
+                  >
+                    + Add section
+                  </Box>
+                </div>
+
+                {/* Back link */}
+                <Box
+                  css="display:inline-flex;align-items:center;gap:5px;margin-top:36px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:rgba(138,170,212,0.8);cursor:pointer;border:1px solid rgba(255,255,255,0.12);border-radius:6px"
+                  hover="color:#e8eef8;border-color:rgba(255,255,255,0.3)"
+                  onClick={v.goBack}
+                >
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  Back to Setup
+                </Box>
+
               </div>
             );
           })()}
