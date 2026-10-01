@@ -4931,25 +4931,25 @@ export default class MedFactory extends React.Component {
                   {manageOpen && (
                     <div
                       onClick={(e) => e.stopPropagation()}
-                      style={{ borderTop: '1px solid #e2e8f0', background: '#f8faff', padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10, animation: 'rise 0.18s ease' }}
+                      style={{ borderTop: '2px solid var(--rule2)', background: '#f0f4ff', padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10, animation: 'rise 0.18s ease' }}
                     >
                       {/* Current excerpts section */}
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)' }}>CURRENT EXCERPT{currentExcerpts.length > 1 ? 'S' : ''}</span>
+                        <span style={{ font: '800 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--ink)' }}>CURRENT EXCERPT{currentExcerpts.length > 1 ? 'S' : ''}</span>
                         <button
                           onClick={() => v.closeManageExcerpt()}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--faint)', fontSize: 13, lineHeight: 1, padding: '2px 4px' }}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--dim)', fontSize: 15, lineHeight: 1, padding: '2px 4px', fontWeight: 700 }}
                         >✕</button>
                       </div>
                       {currentExcerpts.map((exc, ei) => (
-                        <div key={ei} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 12px' }}>
+                        <div key={ei} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', background: '#fff', border: '1.5px solid var(--rule2)', borderRadius: 8, padding: '10px 12px' }}>
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ font: '400 11px/1.7 Plus Jakarta Sans', color: 'var(--dim)', fontStyle: 'italic' }}>{exc.text}</div>
-                            <div style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 5, fontFamily: 'var(--mono)' }}>{exc.src}</div>
+                            <div style={{ font: '500 12px/1.75 Plus Jakarta Sans', color: 'var(--ink)', fontStyle: 'italic' }}>{exc.text}</div>
+                            <div style={{ font: '700 9px/1 Plus Jakarta Sans', color: 'var(--dim)', marginTop: 6, fontFamily: 'var(--mono)' }}>{exc.src}</div>
                           </div>
                           <button
                             onClick={() => v.removeExcerptItem(p._idx, exc.text)}
-                            style={{ flexShrink: 0, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer', color: '#dc2626', font: '600 9px/1 Plus Jakarta Sans', padding: '4px 8px', whiteSpace: 'nowrap' }}
+                            style={{ flexShrink: 0, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer', color: '#dc2626', font: '700 9px/1 Plus Jakarta Sans', padding: '4px 8px', whiteSpace: 'nowrap' }}
                           >Remove</button>
                         </div>
                       ))}
@@ -4958,7 +4958,7 @@ export default class MedFactory extends React.Component {
                       {alts.length > 0 && (
                         <>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
-                            <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)' }}>ALTERNATIVE EXCERPTS</span>
+                            <span style={{ font: '800 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--ink)' }}>ALTERNATIVE EXCERPTS</span>
                             {!aiGenerated.length && (
                               <button
                                 onClick={() => v.generateAIExcerpts(p._idx, p)}
@@ -4976,10 +4976,10 @@ export default class MedFactory extends React.Component {
                           {visibleAlts.map((alt, ai) => {
                             const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
                             return (
-                              <div key={ai} style={{ background: '#fff', border: '1px solid var(--rule2)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                                <div style={{ font: '400 11px/1.7 Plus Jakarta Sans', color: 'var(--dim)', fontStyle: 'italic' }}>{alt.text}</div>
+                              <div key={ai} style={{ background: '#fff', border: '1.5px solid var(--rule2)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                <div style={{ font: '500 12px/1.75 Plus Jakarta Sans', color: 'var(--ink)', fontStyle: 'italic' }}>{alt.text}</div>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                  <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--faint)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
+                                  <span style={{ font: '700 9px/1 Plus Jakarta Sans', color: 'var(--dim)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
                                   {alreadyAdded ? (
                                     <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6 }}>✓ Added</span>
                                   ) : (
@@ -4996,7 +4996,7 @@ export default class MedFactory extends React.Component {
                           {aiGenerated.length > 0 && (
                             <>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
-                                <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)' }}>AI-GENERATED EXCERPTS</span>
+                                <span style={{ font: '800 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--ink)' }}>AI-GENERATED EXCERPTS</span>
                                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', font: '700 8px/1 Plus Jakarta Sans', background: 'linear-gradient(135deg,#2c52cc,#4468e0)', color: '#fff', borderRadius: 20 }}>
                                   <svg width="7" height="7" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                                   Generated by AI
@@ -5005,10 +5005,10 @@ export default class MedFactory extends React.Component {
                               {aiGenerated.map((alt, ai) => {
                                 const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
                                 return (
-                                  <div key={`ai-${ai}`} style={{ background: 'rgba(44,82,204,0.04)', border: '1px solid rgba(44,82,204,0.18)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
-                                    <div style={{ font: '400 11px/1.7 Plus Jakarta Sans', color: 'var(--dim)', fontStyle: 'italic' }}>{alt.text}</div>
+                                  <div key={`ai-${ai}`} style={{ background: 'rgba(44,82,204,0.05)', border: '1.5px solid rgba(44,82,204,0.22)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
+                                    <div style={{ font: '500 12px/1.75 Plus Jakarta Sans', color: 'var(--ink)', fontStyle: 'italic' }}>{alt.text}</div>
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                      <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--faint)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
+                                      <span style={{ font: '700 9px/1 Plus Jakarta Sans', color: 'var(--dim)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
                                       {alreadyAdded ? (
                                         <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6 }}>✓ Added</span>
                                       ) : (
@@ -5244,7 +5244,7 @@ export default class MedFactory extends React.Component {
                               <div style={{ padding:'12px 18px 16px', display:'flex', flexDirection:'column', gap:10, borderTop:`1px solid ${track.color}25`, background:`${track.color}05`, animation:'rise 0.18s ease', borderRadius:'0 0 12px 12px' }}>
                                 {count === 0
                                   ? <div style={{ padding:'24px', textAlign:'center', color:'var(--faint)', font:'500 12px/1.6 Plus Jakarta Sans', border:'1.5px dashed #cbd5e1', borderRadius:10, background:'var(--s2)' }}>No excerpts yet in this track. Click <span style={{ color:'var(--acc)', fontWeight:700 }}>+ Add excerpt</span> to add one.</div>
-                                  : trackPapers.map((p) => <ExcerptCard key={p._idx} p={p} />)
+                                  : trackPapers.map((p) => <React.Fragment key={p._idx}>{ExcerptCard({ p })}</React.Fragment>)
                                 }
                                 {customHere.map((e) => (
                                   <div key={e.id} style={{ background:'#fff', border:'1px solid #e2e8f0', borderLeft:'3px solid var(--acc)', padding:'14px 16px', display:'flex', flexDirection:'column', gap:8, animation:'rise 0.18s ease', borderRadius:'0 8px 8px 0' }}>
@@ -5286,7 +5286,7 @@ export default class MedFactory extends React.Component {
                               <div style={{ padding:'12px 18px 16px', display:'flex', flexDirection:'column', gap:10, borderTop:`1px solid ${c}25`, background:`${c}05`, animation:'rise 0.18s ease', borderRadius:'0 0 12px 12px' }}>
                                 {artPapers.length === 0
                                   ? <div style={{ padding:'24px', textAlign:'center', color:'var(--faint)', font:'500 12px/1.6 Plus Jakarta Sans', border:'1.5px dashed #cbd5e1', borderRadius:10, background:'var(--s2)' }}>No accepted papers produce this artifact type.</div>
-                                  : artPapers.map((p) => <ExcerptCard key={p._idx} p={p} />)
+                                  : artPapers.map((p) => <React.Fragment key={p._idx}>{ExcerptCard({ p })}</React.Fragment>)
                                 }
                               </div>
                             )}
