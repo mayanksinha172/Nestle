@@ -3501,14 +3501,6 @@ export default class MedFactory extends React.Component {
                         {v.moreResearchDone && (
                           <span style={S('padding:2px 7px;font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--ok);border:1px solid var(--ok);background:rgba(22,101,52,0.07)')}>+{EXTRA_PAPERS.length} EXPANDED</span>
                         )}
-                        {/* Sources toggle */}
-                        <Box
-                          css="margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--rule2);cursor:pointer;font:600 10.5px/1 Plus Jakarta Sans;color:var(--dim)"
-                          hover="border-color:var(--ink);color:var(--ink)"
-                          onClick={v.toggleResearchSources}
-                        >
-                          <span style={S('font-size:11px')}>◎</span> Sources {v.researchSourcesOpen ? '▲' : '▼'}
-                        </Box>
                       </div>
 
                       {/* Sources — Evidence Retrieved drawer */}
