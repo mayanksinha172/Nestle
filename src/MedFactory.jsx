@@ -4993,30 +4993,57 @@ export default class MedFactory extends React.Component {
 
                   if (!sel) return <div style={S('display:flex;flex:1;min-height:0')}>{trackList}</div>;
 
+                  const selTrack = CONTENT_TRACKS.find(t => t.paperTracks.includes(sel.track));
+
                   const detailPanel = (
                     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--s1)', overflow: 'hidden', borderLeft: '1px solid var(--rule2)', animation: 'slideInRight 0.25s cubic-bezier(0.22,1,0.36,1) both' }}>
-                      <div key={sel._idx} style={S('flex:1;overflow-y:auto')}>
-                        {/* Panel header */}
-                        <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--rule2)', display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg)', position: 'sticky', top: 0, zIndex: 2 }}>
-                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: tc2(sel.type), flexShrink: 0 }} />
-                          <span style={S('font:700 11px/1 Plus Jakarta Sans;color:var(--ink);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{sel.type} · {sel.year}</span>
-                          <Box css="font-size:11px;color:var(--faint);cursor:pointer;padding:3px 8px;border:1px solid var(--rule)" hover="color:var(--ink);border-color:var(--dim)" onClick={() => v.setOrganizeSelected(null)}>✕</Box>
-                        </div>
 
+                      {/* "Selected paper" sticky header */}
+                      <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--rule2)', display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg)', position: 'sticky', top: 0, zIndex: 2, flexShrink: 0 }}>
+                        <span style={S('font:700 11px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint);flex:1')}>SELECTED PAPER</span>
+                        <Box css="font-size:11px;color:var(--faint);cursor:pointer;padding:3px 8px;border:1px solid var(--rule);border-radius:4px" hover="color:var(--ink);border-color:var(--dim)" onClick={() => v.setOrganizeSelected(null)}>✕</Box>
+                      </div>
+
+                      <div key={sel._idx} style={S('flex:1;overflow-y:auto')}>
                         <div style={S('padding:16px;display:flex;flex-direction:column;gap:0')}>
-                          {/* Score bar */}
-                          <div style={S('display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--rule)')}>
-                            <span style={{ padding: '2px 8px', font: '700 9px/1 Plus Jakarta Sans', border: `1px solid ${tc2(sel.type)}`, color: tc2(sel.type), background: `${tc2(sel.type)}15` }}>{sel.type}</span>
-                            <div style={S('flex:1;height:4px;background:var(--rule);overflow:hidden')}>
-                              <div style={{ width: `${sel.relevance}%`, height: '100%', background: sel.relevance >= 80 ? 'var(--ok)' : sel.relevance >= 60 ? 'var(--warn)' : 'var(--acc)' }} />
-                            </div>
-                            <span style={{ font: '700 11px/1 var(--mono)', color: sel.relevance >= 80 ? 'var(--ok)' : sel.relevance >= 60 ? 'var(--warn)' : 'var(--acc)', flexShrink: 0 }}>{sel.relevance}/100</span>
-                          </div>
 
                           {/* Title + journal */}
+                          <div style={S('padding-bottom:14px;border-bottom:1px solid var(--rule)')}>
+                            <div style={S('font:700 14px/1.45 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink);margin-bottom:8px')}>{sel.title}</div>
+                            <div style={S('font:500 10px/1.4 Plus Jakarta Sans;color:var(--faint);margin-bottom:10px')}>{sel.journal} · {sel.year}</div>
+                            {/* Artifact tags */}
+                            <div style={S('display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px')}>
+                              {sel.artifacts.map((a) => (
+                                <span key={a} style={{ padding: '3px 10px', font: '600 9.5px/1 Plus Jakarta Sans', border: `1px solid ${ART_COLORS[a]}`, color: ART_COLORS[a], background: `${ART_COLORS[a]}18`, borderRadius: 20 }}>{a}</span>
+                              ))}
+                            </div>
+                            {/* Track pill */}
+                            {selTrack && (
+                              <span style={{ padding: '4px 11px', font: '600 10px/1 Plus Jakarta Sans', color: selTrack.color, background: `${selTrack.color}18`, border: `1px solid ${selTrack.color}55`, borderRadius: 20, display: 'inline-block' }}>
+                                {selTrack.label}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Metadata table */}
                           <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
-                            <div style={S('font:700 13px/1.45 Plus Jakarta Sans;letter-spacing:-0.01em;color:var(--ink);margin-bottom:6px')}>{sel.title}</div>
-                            <div style={S('font:500 10px/1.4 Plus Jakarta Sans;color:var(--faint)')}>{sel.journal}</div>
+                            <div style={S('display:flex;flex-direction:column;gap:0')}>
+                              {[
+                                ['Design tier', sel.designTier],
+                                ['Appraisal score', sel.appraisal],
+                                ['GRADE certainty', sel.grade],
+                                ['Journal', sel.journal.split('·')[0].trim()],
+                                ['Citations', sel.citations],
+                                ['Funding / COI', sel.funding],
+                                ['Stat. rigor', sel.statRigor],
+                                ['Relevance', `${sel.relevance}/100`],
+                              ].map(([lbl, val]) => (
+                                <div key={lbl} style={S('display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--rule)')}>
+                                  <span style={S('font:500 10px/1.4 Plus Jakarta Sans;color:var(--faint);width:100px;flex-shrink:0')}>{lbl}</span>
+                                  <span style={S('font:600 10px/1.4 Plus Jakarta Sans;color:var(--dim);flex:1')}>{val}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
 
                           {/* Figures */}
@@ -5037,43 +5064,27 @@ export default class MedFactory extends React.Component {
                             </div>
                           )}
 
-                          {/* Metadata table */}
-                          <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
-                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>EVIDENCE QUALITY</div>
-                            <div style={S('display:flex;flex-direction:column;gap:0')}>
-                              {[['Design', sel.designTier],['Appraisal', sel.appraisal],['GRADE', sel.grade],['Citations', sel.citations],['Funding', sel.funding],['Stat. rigor', sel.statRigor]].map(([lbl, val]) => (
-                                <div key={lbl} style={S('display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(243,242,242,0.05)')}>
-                                  <span style={S('font:500 9.5px/1.4 Plus Jakarta Sans;color:var(--faint);width:72px;flex-shrink:0')}>{lbl}</span>
-                                  <span style={S('font:600 9.5px/1.4 Plus Jakarta Sans;color:var(--dim);flex:1')}>{val}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Flag */}
-                          {sel.flag && (
-                            <div style={S('padding:10px 12px;border:1px solid var(--acc);background:rgba(44,82,204,0.06);font-size:10px;color:var(--acc);line-height:1.6;margin-top:14px')}>⚠ {sel.flag}</div>
-                          )}
-
                           {/* Excerpt */}
-                          <div style={S('padding:14px 0;border-bottom:1px solid var(--rule)')}>
-                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>KEY EXCERPT</div>
-                            <div style={S('border-left:2px solid var(--acc);padding:8px 12px;background:rgba(44,82,204,0.06);font:400 11px/1.75 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>{sel.excerpt}</div>
+                          <div style={S('padding:14px 0')}>
+                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>** EXCERPT</div>
+                            <div style={S('border-left:2px solid var(--acc);padding:10px 14px;background:rgba(44,82,204,0.06);font:400 11px/1.75 Plus Jakarta Sans;color:var(--dim);font-style:italic')}>{sel.excerpt}</div>
                             <div style={S('font:600 9px/1 var(--mono);color:var(--faint);margin-top:7px;letter-spacing:0.04em')}>{sel.excerptSrc}</div>
                           </div>
 
-                          {/* Artifacts */}
-                          <div style={S('padding:14px 0')}>
-                            <div style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>ARTIFACTS</div>
-                            <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
-                              {ALL_ARTIFACTS.map((a) => {
-                                const active = sel.artifacts.includes(a);
-                                return <span key={a} style={{ padding: '3px 10px', font: '600 9.5px/1 Plus Jakarta Sans', border: '1px solid', borderColor: active ? ART_COLORS[a] : 'var(--rule)', color: active ? ART_COLORS[a] : 'var(--faint)', background: active ? `${ART_COLORS[a]}15` : 'transparent' }}>{a}</span>;
-                              })}
-                            </div>
-                          </div>
                         </div>
                       </div>
+
+                      {/* Remove from accepted — sticky footer */}
+                      <div style={S('flex:none;padding:12px 16px;border-top:1px solid var(--rule2);background:var(--bg)')}>
+                        <Box
+                          css="width:100%;padding:10px 0;text-align:center;font:700 12px/1 Plus Jakarta Sans;color:var(--warn);border:1.5px solid var(--warn);cursor:pointer;border-radius:8px;background:transparent"
+                          hover="background:rgba(146,64,14,0.08)"
+                          onClick={() => { v.toggleAccept(sel._idx); v.setOrganizeSelected(null); }}
+                        >
+                          Remove from accepted
+                        </Box>
+                      </div>
+
                     </div>
                   );
 
