@@ -807,6 +807,8 @@ export default class MedFactory extends React.Component {
       chatCollapsed: false,
       acceptedPapers: {},
       deletedPapers: {},
+      aiAcceptLoading: false,
+      aiAcceptStep: 0,
       excerptOpen: {},
       acceptedDrawerOpen: false,
       acceptedPopupOpen: false,
@@ -1586,6 +1588,26 @@ export default class MedFactory extends React.Component {
         });
         return { acceptedPapers: acc };
       }),
+      aiAcceptLoading: st.aiAcceptLoading,
+      aiAcceptStep: st.aiAcceptStep,
+      quickAcceptByAI: () => {
+        if (st.aiAcceptLoading) return;
+        this.setState({ aiAcceptLoading: true, aiAcceptStep: 0 });
+        const steps = [0, 800, 1600, 2400];
+        steps.forEach((delay, i) => {
+          setTimeout(() => this.setState({ aiAcceptStep: i + 1 }), delay);
+        });
+        setTimeout(() => {
+          // Accept top 10 papers by score (indices sorted by score desc, take first 10)
+          const sorted = RESEARCH_PAPERS
+            .map((p, i) => ({ score: p.score, idx: i }))
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10);
+          const acc = {};
+          sorted.forEach(({ idx }) => { acc[idx] = true; });
+          this.setState({ aiAcceptLoading: false, aiAcceptStep: 0, acceptedPapers: acc });
+        }, 3200);
+      },
       chatCollapsed: st.chatCollapsed,
       setChatCollapsed: (b) => this.setState({ chatCollapsed: b }),
       acceptedPapers: st.acceptedPapers,
@@ -3684,6 +3706,62 @@ export default class MedFactory extends React.Component {
                           </div>
                         );
                       })()}
+
+                      {/* ===== QUICK ACCEPT BY AI ===== */}
+                      {!v.moreResearchActive && (
+                        <div style={S('padding:10px 16px;border-bottom:1px solid var(--rule);flex:none;display:flex;align-items:center;gap:10px;background:var(--s1)')}>
+
+                          {/* Loading overlay */}
+                          {v.aiAcceptLoading ? (() => {
+                            const steps = [
+                              'Scanning evidence quality…',
+                              'Ranking by composite score…',
+                              'Evaluating funding & bias…',
+                              'Selecting top 10 papers…',
+                            ];
+                            const currentMsg = steps[Math.min(v.aiAcceptStep, steps.length) - 1] || steps[0];
+                            return (
+                              <div style={S('flex:1;display:flex;align-items:center;gap:12px')}>
+                                <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                                  {[0,1,2].map(d => (
+                                    <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
+                                  ))}
+                                </div>
+                                <span style={{ font: '600 12px/1 Plus Jakarta Sans', color: 'var(--acc)', animation: 'fadeUp 0.25s ease both' }} key={currentMsg}>{currentMsg}</span>
+                                <div style={S('flex:1;height:3px;background:var(--rule);overflow:hidden;border-radius:4px;max-width:200px')}>
+                                  <div style={{ height: '100%', background: 'var(--acc)', borderRadius: 4, width: `${(v.aiAcceptStep / 4) * 100}%`, transition: 'width 0.6s cubic-bezier(0.22,1,0.36,1)' }} />
+                                </div>
+                              </div>
+                            );
+                          })() : (
+                            <>
+                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                                <path d="M7 1l1.5 3.5L12 5.5l-2.5 2.5.5 3.5L7 10l-3 1.5.5-3.5L2 5.5l3.5-1L7 1z" fill="var(--acc)" stroke="var(--acc)" strokeWidth="0.5" strokeLinejoin="round"/>
+                              </svg>
+                              <span style={S('font:600 12px/1 Plus Jakarta Sans;color:var(--ink)')}>Let AI select the best papers</span>
+                              <span style={S('font:400 11px/1 Plus Jakarta Sans;color:var(--faint)')}>Picks top 10 of 12 based on score, grade & funding</span>
+                            </>
+                          )}
+
+                          <Box
+                            css={`margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:7px 16px;font:700 11px/1 Plus Jakarta Sans;cursor:${v.aiAcceptLoading ? 'default' : 'pointer'};border-radius:20px;background:${v.aiAcceptLoading ? 'var(--s2)' : 'linear-gradient(135deg,#2c52cc,#4468e0)'};color:${v.aiAcceptLoading ? 'var(--faint)' : '#fff'};border:1px solid ${v.aiAcceptLoading ? 'var(--rule)' : 'transparent'};transition:all 0.2s;white-space:nowrap`}
+                            hover={v.aiAcceptLoading ? '' : 'opacity:0.88'}
+                            onClick={v.quickAcceptByAI}
+                          >
+                            {v.aiAcceptLoading ? (
+                              <>
+                                <div style={{ width: 10, height: 10, border: '2px solid var(--faint)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                                Selecting…
+                              </>
+                            ) : (
+                              <>
+                                <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 3.5L12 5.5l-2.5 2.5.5 3.5L7 10l-3 1.5.5-3.5L2 5.5l3.5-1L7 1z" fill="#fff" strokeWidth="0"/></svg>
+                                Quick Accept by AI
+                              </>
+                            )}
+                          </Box>
+                        </div>
+                      )}
 
                       {/* ===== FILTER / SORT BAR ===== */}
                       {!v.moreResearchActive && (() => {
