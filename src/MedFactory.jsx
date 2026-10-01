@@ -845,6 +845,7 @@ export default class MedFactory extends React.Component {
       sectionSelectCustom: [],
       sectionSelectInput: '',
       figureSelections: {},
+      combinedExcerptsModal: null,
       renderStep: 2,
       built: 7,
       history: [
@@ -2023,6 +2024,11 @@ export default class MedFactory extends React.Component {
           wsResearches: [r1], wsActiveResearch: 1, sidebarExpandedWs: id,
         }), () => this.go('research'));
       },
+
+      /* ---------- combined excerpts modal ---------- */
+      combinedExcerptsModal: st.combinedExcerptsModal,
+      openCombinedExcerpts: (obj) => this.setState({ combinedExcerptsModal: obj }),
+      closeCombinedExcerpts: () => this.setState({ combinedExcerptsModal: null }),
 
       /* ---------- figure management ---------- */
       figureSelections: st.figureSelections,
@@ -4930,10 +4936,15 @@ export default class MedFactory extends React.Component {
                                 </div>
                               )}
                               <Box
-                                css="margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px dashed var(--acc);color:var(--acc);font:600 10px/1 Plus Jakarta Sans;cursor:pointer;transition:background 0.15s"
+                                css="margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px dashed var(--acc);color:var(--acc);font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;transition:background 0.15s"
                                 hover="background:rgba(79,82,216,.14)"
                                 onClick={(e) => { e.stopPropagation(); v.openAddExcerpt(track.id); }}
                               >+ Add excerpt</Box>
+                              <Box
+                                css="width:26px;height:26px;border-radius:50%;border:1.5px solid var(--rule2);color:var(--faint);font:700 11px/1 Plus Jakarta Sans;display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:all 0.15s"
+                                hover="border-color:var(--acc);color:var(--acc);background:rgba(44,82,204,0.08)"
+                                onClick={(e) => { e.stopPropagation(); v.openCombinedExcerpts({ type: 'track', id: track.id, label: track.label, color: track.color, papers: trackPapers }); }}
+                              >i</Box>
                               <span style={{ color: 'var(--faint)', fontSize: 11, width: 18, textAlign: 'center', display: 'inline-block', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
                             </Box>
                             {isOpen && (
@@ -4971,7 +4982,12 @@ export default class MedFactory extends React.Component {
                               <div style={{ width: 8, height: 8, borderRadius: '50%', background: c, flexShrink: 0 }} />
                               <span style={{ font: '700 13px/1 Plus Jakarta Sans', color: c }}>{art}</span>
                               <span style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint)')}>{artPapers.length} {artPapers.length === 1 ? 'paper' : 'papers'}</span>
-                              <span style={{ marginLeft: 'auto', color: 'var(--faint)', fontSize: 11, display: 'inline-block', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
+                              <Box
+                                css="margin-left:auto;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--rule2);color:var(--faint);font:700 11px/1 Plus Jakarta Sans;display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:all 0.15s"
+                                hover="border-color:var(--acc);color:var(--acc);background:rgba(44,82,204,0.08)"
+                                onClick={(e) => { e.stopPropagation(); v.openCombinedExcerpts({ type: 'artifact', id: art, label: art, color: c, papers: artPapers }); }}
+                              >i</Box>
+                              <span style={{ color: 'var(--faint)', fontSize: 11, display: 'inline-block', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
                             </Box>
                             {isOpen && (
                               <div style={S('padding:12px 18px 16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--rule);animation:rise 0.18s ease')}>
@@ -5233,6 +5249,92 @@ export default class MedFactory extends React.Component {
                   return (
                     <div style={S('display:flex;flex:1;min-height:0')}>
                       <ResizableSplit left={trackList} right={detailPanel} defaultLeftPct={62} minPct={30} maxPct={78} />
+                    </div>
+                  );
+                })()}
+
+                {/* ══ COMBINED EXCERPTS MODAL ══ */}
+                {v.combinedExcerptsModal && (() => {
+                  const m = v.combinedExcerptsModal;
+                  const letterColor = (type) => ({ RCT: '#7eb8f7', 'Systematic Review': '#fb923c', 'Meta-Analysis': '#4ade80', Guideline: '#c084fc', Registry: '#f97b7b', 'Real-World': '#e5a14b' })[type] || '#8aaad4';
+                  return (
+                    <div
+                      style={{ position: 'fixed', inset: 0, background: 'rgba(5,10,30,0.72)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32 }}
+                      onClick={v.closeCombinedExcerpts}
+                    >
+                      <div
+                        style={{ background: '#0f1e3d', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 14, width: '100%', maxWidth: 520, maxHeight: '82vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.22s cubic-bezier(0.22,1,0.36,1) both', boxShadow: '0 24px 64px rgba(0,0,0,0.5)' }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {/* Header */}
+                        <div style={{ padding: '18px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                          <div style={{ width: 8, height: 8, borderRadius: '50%', background: m.color, flexShrink: 0 }} />
+                          <span style={{ font: '700 14px/1 Plus Jakarta Sans', color: '#e8eef8', flex: 1 }}>Combined excerpts — {m.label}</span>
+                          <Box
+                            css="width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);color:#8aaad4;font-size:14px;display:grid;place-items:center;cursor:pointer"
+                            hover="border-color:rgba(255,255,255,0.35);color:#e8eef8"
+                            onClick={v.closeCombinedExcerpts}
+                          >×</Box>
+                        </div>
+
+                        {/* Description */}
+                        <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
+                          <p style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: '#8aaad4', margin: 0 }}>
+                            This is a concatenated view of the excerpts currently tagged to this {m.type === 'track' ? 'track' : 'artifact'}. In the full product, this section would instead show an AI-generated summary combining these excerpts.
+                          </p>
+                        </div>
+
+                        {/* Paper excerpts list */}
+                        <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+                          {m.papers.length === 0 ? (
+                            <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: '#4d6fa0', textAlign: 'center', padding: '32px 0' }}>No excerpts in this {m.type} yet.</div>
+                          ) : m.papers.map((p) => {
+                            const lc = letterColor(p.type);
+                            const figs = PAPER_FIGURES[p._idx] || [];
+                            return (
+                              <div key={p._idx} style={{ display: 'flex', gap: 12 }}>
+                                {/* Letter avatar */}
+                                <div style={{ width: 28, height: 28, borderRadius: '50%', background: lc, display: 'grid', placeItems: 'center', font: '700 11px/1 Plus Jakarta Sans', color: '#0f1e3d', flexShrink: 0, marginTop: 2 }}>
+                                  {p.type[0]}
+                                </div>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ font: '700 13px/1.4 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 3 }}>{p.title}</div>
+                                  <div style={{ font: '400 10.5px/1 Plus Jakarta Sans', color: '#4d6fa0', marginBottom: 10 }}>{p.journal.split('·')[0].trim()} · {p.year}</div>
+                                  {/* Excerpt */}
+                                  <div style={{ font: '400 12px/1.7 Plus Jakarta Sans', color: '#8aaad4', fontStyle: 'italic', borderLeft: `2px solid ${lc}40`, paddingLeft: 12, marginBottom: figs.length > 0 ? 10 : 0 }}>
+                                    {p.excerpt}
+                                  </div>
+                                  {/* Inline figure if any */}
+                                  {figs.length > 0 && (
+                                    <div style={{ background: '#fff', borderRadius: 8, padding: '10px 12px', marginTop: 8 }}>
+                                      {(() => {
+                                        const fig = figs[0];
+                                        const tc3 = (type) => ({ RCT: '#7eb8f7', 'Systematic Review': '#fb923c', 'Meta-Analysis': '#4ade80', Guideline: '#c084fc', Registry: '#f97b7b', 'Real-World': '#e5a14b' })[type] || '#8aaad4';
+                                        if (fig.type === 'bar') {
+                                          const vals = [72, 48, 38, 20].map(n => n + (p._idx * 7) % 15);
+                                          const mx = Math.max(...vals);
+                                          const lbls = ['Control', 'Low-dose', 'High-dose', 'Symptomatic'];
+                                          return (
+                                            <svg viewBox="0 0 200 90" style={{ width: '100%', height: 90 }}>
+                                              <text x="100" y="10" textAnchor="middle" fontSize="7" fontWeight="700" fill="#333">{fig.label}</text>
+                                              {vals.map((v2, i) => {
+                                                const bh = (v2 / mx) * 58; const bx = 20 + i * 44; const by = 72 - bh;
+                                                const cols = ['#60a5fa','#34d399','#f59e0b','#f87171'];
+                                                return <g key={i}><rect x={bx} y={by} width="30" height={bh} fill={cols[i]} rx="2"/><text x={bx+15} y={by-3} textAnchor="middle" fontSize="6" fill="#555">{v2}%</text><text x={bx+15} y="82" textAnchor="middle" fontSize="5.5" fill="#888">{lbls[i]}</text></g>;
+                                              })}
+                                            </svg>
+                                          );
+                                        }
+                                        return <div style={{ font: '500 10px/1 Plus Jakarta Sans', color: '#888', textAlign: 'center', padding: '8px 0' }}>{fig.label}</div>;
+                                      })()}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   );
                 })()}
