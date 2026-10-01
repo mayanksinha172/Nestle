@@ -1590,6 +1590,29 @@ export default class MedFactory extends React.Component {
       }),
       aiAcceptLoading: st.aiAcceptLoading,
       aiAcceptStep: st.aiAcceptStep,
+      addPaperToChat: (p) => this.setState((s) => {
+        const threads = s.projectThreads;
+        if (!threads.length) return {};
+        const activeId = s.activeThreadId || threads[0].id;
+        const msg = { from: 'user', text: `Tell me more about this paper: **${p.title}** (${p.journal.split('·')[0].trim()}, ${p.year}). Relevance: ${p.relevance}/100. Grade: ${p.grade}.`, time: 'Just now' };
+        const reply = { from: 'agent', text: `Reviewing **${p.title}** (${p.year}).\n\nThis is a ${p.type} with a composite score of ${p.score.toFixed(2)}. ${p.grade}. ${p.statRigor}.\n\nKey excerpt: ${p.excerpt}`, time: 'Just now' };
+        return {
+          projectThreads: threads.map((t) => t.id === activeId ? { ...t, messages: [...t.messages, msg, reply] } : t),
+        };
+      }),
+      addAllAcceptedToChat: () => this.setState((s) => {
+        const threads = s.projectThreads;
+        if (!threads.length) return {};
+        const activeId = s.activeThreadId || threads[0].id;
+        const accepted = RESEARCH_PAPERS.filter((_, i) => s.acceptedPapers[i]);
+        if (!accepted.length) return {};
+        const msg = { from: 'user', text: `Add all ${accepted.length} accepted papers to our research context.`, time: 'Just now' };
+        const list = accepted.map((p, i) => `${i + 1}. **${p.title}** (${p.year}) — ${p.grade}, relevance ${p.relevance}/100`).join('\n');
+        const reply = { from: 'agent', text: `Added **${accepted.length} accepted papers** to the research context:\n\n${list}\n\nI'll use these as the primary evidence base for all content generation.`, time: 'Just now' };
+        return {
+          projectThreads: threads.map((t) => t.id === activeId ? { ...t, messages: [...t.messages, msg, reply] } : t),
+        };
+      }),
       quickAcceptByAI: () => {
         if (st.aiAcceptLoading) return;
         this.setState({ aiAcceptLoading: true, aiAcceptStep: 0 });
@@ -3924,9 +3947,21 @@ export default class MedFactory extends React.Component {
 
                             {/* Card list */}
                             <div style={S('flex:1;overflow-y:auto;padding:14px 16px')}>
-                              <div style={S('font:600 10px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.08em;margin-bottom:12px')}>
-                                SHOWING {filteredPapers.length} {filteredPapers.length === 1 ? 'PAPER' : 'PAPERS'}
-                                {isFiltered && <span style={{ color: 'var(--acc)', marginLeft: 6 }}>· filtered</span>}
+                              <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:12px')}>
+                                <span style={S('font:600 10px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.08em')}>
+                                  SHOWING {filteredPapers.length} {filteredPapers.length === 1 ? 'PAPER' : 'PAPERS'}
+                                  {isFiltered && <span style={{ color: 'var(--acc)', marginLeft: 6 }}>· filtered</span>}
+                                </span>
+                                {Object.keys(v.acceptedPapers).length > 0 && (
+                                  <Box
+                                    css="margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:4px 11px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--acc);color:var(--acc);border-radius:20px;background:transparent;white-space:nowrap"
+                                    hover="background:rgba(44,82,204,0.08)"
+                                    onClick={v.addAllAcceptedToChat}
+                                  >
+                                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                                    Add {Object.keys(v.acceptedPapers).length} selected to chat
+                                  </Box>
+                                )}
                               </div>
 
                               {filteredPapers.length === 0 && (
@@ -4042,6 +4077,14 @@ export default class MedFactory extends React.Component {
                                             {p.citations.split('·')[0].trim()}
                                           </Box>
                                           <Box
+                                            css="padding:6px 11px;font:600 10.5px/1 Plus Jakarta Sans;cursor:pointer;color:var(--faint);border:1px solid var(--rule2);border-radius:8px;display:flex;align-items:center;gap:5px"
+                                            hover="color:var(--acc);border-color:var(--acc);background:rgba(44,82,204,0.06)"
+                                            onClick={() => v.addPaperToChat(p)}
+                                          >
+                                            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 1h10v7.5H7L4.5 11V8.5H1V1z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/><path d="M4 4h4M4 6h2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                                            Add to chat
+                                          </Box>
+                                          <Box
                                             css={`margin-left:auto;padding:7px 14px;font:700 10.5px/1 Plus Jakarta Sans;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);border-radius:8px`}
                                             hover={!accepted ? 'background:rgba(22,101,52,0.12)' : ''}
                                             onClick={() => v.toggleAccept(p._idx)}
@@ -4088,6 +4131,14 @@ export default class MedFactory extends React.Component {
                                         >
                                           <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1" stroke="currentColor" strokeWidth="1.3"/><path d="M3.5 5h5M3.5 7.5h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
                                           View
+                                        </Box>
+                                        <Box
+                                          css="padding:5px 9px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;color:var(--faint);border:1px solid var(--rule2);border-radius:6px;flex-shrink:0;display:flex;align-items:center;gap:4px"
+                                          hover="color:var(--acc);border-color:var(--acc);background:rgba(44,82,204,0.06)"
+                                          onClick={() => v.addPaperToChat(p)}
+                                        >
+                                          <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M1 1h10v7.5H7L4.5 11V8.5H1V1z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/></svg>
+                                          Chat
                                         </Box>
                                         <Box
                                           css={`padding:5px 12px;font:700 10px/1 Plus Jakarta Sans;cursor:pointer;background:${accepted ? 'var(--ok)' : 'transparent'};color:${accepted ? '#fff' : 'var(--ok)'};border:1px solid var(--ok);flex-shrink:0`}
