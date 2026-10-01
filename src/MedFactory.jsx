@@ -1001,6 +1001,7 @@ export default class MedFactory extends React.Component {
       gapPaperOpen: false,
       gapShowRecommendation: {},
       sciSubmitted: false,
+      sciOverallComment: '',
       sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
       sciReviewTab: 'track',
       sciChatInput: '',
@@ -1949,6 +1950,8 @@ export default class MedFactory extends React.Component {
       sciActiveHighlight: st.sciActiveHighlight,
       setSciHighlight: (key) => this.setState({ sciActiveHighlight: key }),
       sciChatStep: st.sciChatStep,
+      sciOverallComment: st.sciOverallComment,
+      setSciOverallComment: (text) => this.setState({ sciOverallComment: text }),
       sciReviewComments: st.sciReviewComments,
       setSciComment: (key, text) => this.setState((s) => ({ sciReviewComments: { ...s.sciReviewComments, [key]: { ...s.sciReviewComments[key], text } } })),
       toggleSciReject: (key) => this.setState((s) => {
@@ -6648,8 +6651,34 @@ export default class MedFactory extends React.Component {
                       </div>
                     ))}
 
+                    {/* Overall comment */}
+                    <div style={{ marginTop: 16, paddingTop: 18, borderTop: '2px solid rgba(26,45,107,0.1)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V5z" fill="#2c52cc" fillOpacity="0.15" stroke="#2c52cc" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+                        <span style={{ font: '800 11px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#1a2d6b' }}>OVERALL RESEARCH COMMENTARY</span>
+                      </div>
+                      <textarea
+                        rows={4}
+                        placeholder="Write your overall assessment of the research package — scientific rigour, evidence gaps, suitability for the intended audience, or any cross-paper observations…"
+                        value={v.sciOverallComment}
+                        onChange={(e) => v.setSciOverallComment(e.target.value)}
+                        style={{ width: '100%', resize: 'vertical', background: '#f4f7fb', border: '1.5px solid rgba(44,82,204,0.25)', borderRadius: 8, padding: '11px 14px', font: '400 13px/1.7 Plus Jakarta Sans', color: '#1a2d6b', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
+                        onFocus={(e) => { e.target.style.borderColor = 'rgba(44,82,204,0.6)'; }}
+                        onBlur={(e) => { e.target.style.borderColor = 'rgba(44,82,204,0.25)'; }}
+                      />
+                      {v.sciOverallComment.trim().length > 0 && (
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 }}>
+                          <span style={{ font: '500 11px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{v.sciOverallComment.trim().length} characters</span>
+                          <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#166534', display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#166534" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            Saved
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
                     {/* Final CTA */}
-                    <div style={{ marginTop: 16, paddingTop: 18, borderTop: '2px solid rgba(26,45,107,0.1)', display: 'flex', flexDirection: 'column', gap: 9 }}>
+                    <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 9 }}>
                       <div style={{ display: 'flex', gap: 9 }}>
                         <Box css="flex:1;padding:13px 0;text-align:center;font:600 13px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="background:var(--s2);color:var(--ink)">&#x2193; Download report</Box>
                         <Box css="flex:2;padding:13px 0;text-align:center;font:700 13.5px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.87" onClick={v.sciApproveAll}>
