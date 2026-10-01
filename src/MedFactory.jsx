@@ -3668,6 +3668,7 @@ export default class MedFactory extends React.Component {
                         RESEARCH_PAPERS.forEach((p) => p.artifacts.forEach((a) => { artifactCounts[a] = (artifactCounts[a] || 0) + 1; }));
                         const gradeCounts = { A: 0, B: 0, C: 0, D: 0, F: 0 };
                         RESEARCH_PAPERS.forEach((p) => { const g = gradeLetterFromPaper(p); if (g in gradeCounts) gradeCounts[g]++; });
+                        const ART_COLORS_EV = { Deck: '#7eb8f7', Blog: '#e5a14b', Protocol: '#c084fc', Blurb: '#f97b7b', Facts: '#94a3b8' };
 
                         const SORT_OPTIONS = [
                           { key: 'composite', label: 'Composite score' },
@@ -3761,11 +3762,12 @@ export default class MedFactory extends React.Component {
                               {['All', ...ALL_ARTIFACTS].map((a) => {
                                 const active = v.artifactFilter === a;
                                 const count = a === 'All' ? RESEARCH_PAPERS.length : (artifactCounts[a] || 0);
+                                const col = a !== 'All' ? ART_COLORS_EV[a] : 'var(--acc)';
                                 return (
                                   <Box
                                     key={a}
-                                    css={`padding:4px 12px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${active ? 'var(--acc)' : 'var(--rule)'};background:${active ? 'rgba(44,82,204,0.1)' : 'var(--s1)'};color:${active ? 'var(--acc)' : 'var(--faint)'};transition:all 0.15s`}
-                                    hover={!active ? 'border-color:var(--dim);color:var(--dim)' : ''}
+                                    css={`padding:4px 12px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${active ? col : 'var(--rule)'};background:${active ? `${col}1a` : 'var(--s1)'};color:${active ? col : 'var(--faint)'};transition:all 0.15s`}
+                                    hover={!active ? `border-color:${col};color:${col}` : ''}
                                     onClick={() => v.setArtifactFilter(a)}
                                   >{a}{a !== 'All' ? ` (${count})` : ''}</Box>
                                 );
