@@ -4226,7 +4226,7 @@ export default class MedFactory extends React.Component {
                                     onClick={v.addAllAcceptedToChat}
                                   >
                                     <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                                    Add {Object.keys(v.acceptedPapers).length} selected to chat
+                                    Add all accepted papers to chat
                                   </Box>
                                 )}
                               </div>
