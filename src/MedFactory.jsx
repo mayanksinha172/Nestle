@@ -844,6 +844,7 @@ export default class MedFactory extends React.Component {
       sectionSelectTracks: CONTENT_TRACKS.map(t => t.id),
       sectionSelectCustom: [],
       sectionSelectInput: '',
+      figureSelections: {},
       renderStep: 2,
       built: 7,
       history: [
@@ -2021,6 +2022,31 @@ export default class MedFactory extends React.Component {
           createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
           wsResearches: [r1], wsActiveResearch: 1, sidebarExpandedWs: id,
         }), () => this.go('research'));
+      },
+
+      /* ---------- figure management ---------- */
+      figureSelections: st.figureSelections,
+      toggleFigureInclude: (key) => this.setState((s) => {
+        const cur = s.figureSelections[key] || { included: false, artifacts: [], tracks: [], useAs: null };
+        return { figureSelections: { ...s.figureSelections, [key]: { ...cur, included: !cur.included } } };
+      }),
+      toggleFigureArtifact: (key, a) => this.setState((s) => {
+        const cur = s.figureSelections[key] || { included: true, artifacts: [], tracks: [], useAs: null };
+        const arts = cur.artifacts.includes(a) ? cur.artifacts.filter(x => x !== a) : [...cur.artifacts, a];
+        return { figureSelections: { ...s.figureSelections, [key]: { ...cur, artifacts: arts } } };
+      }),
+      toggleFigureTrack: (key, t) => this.setState((s) => {
+        const cur = s.figureSelections[key] || { included: true, artifacts: [], tracks: [], useAs: null };
+        const tracks = cur.tracks.includes(t) ? cur.tracks.filter(x => x !== t) : [...cur.tracks, t];
+        return { figureSelections: { ...s.figureSelections, [key]: { ...cur, tracks } } };
+      }),
+      setFigureUseAs: (key, val) => this.setState((s) => {
+        const cur = s.figureSelections[key] || { included: true, artifacts: [], tracks: [], useAs: null };
+        return { figureSelections: { ...s.figureSelections, [key]: { ...cur, useAs: val } } };
+      }),
+      confirmFigures: () => {
+        // mark confirmed — in a real app would persist; here just a no-op success
+        this.setState({ figureSelections: st.figureSelections });
       },
 
       /* ---------- role actions ---------- */
@@ -4833,7 +4859,7 @@ export default class MedFactory extends React.Component {
                     {[
                       { id: 'track', label: 'By Track' },
                       { id: 'artifact', label: 'By Artifact' },
-                      { id: 'figures', label: '📊 Review Figures' },
+                      { id: 'figures', label: 'Manage Figures' },
                     ].map((tab) => {
                       const active = curView === tab.id;
                       return (
@@ -4951,39 +4977,147 @@ export default class MedFactory extends React.Component {
                         );
                       })}
 
-                      {/* REVIEW FIGURES */}
+                      {/* MANAGE FIGURES */}
                       {curView === 'figures' && (() => {
                         const figCards = [];
-                        acceptedList.forEach((p) => { (PAPER_FIGURES[p._idx] || []).forEach((fig) => figCards.push({ ...fig, paper: p })); });
+                        acceptedList.forEach((p) => { (PAPER_FIGURES[p._idx] || []).forEach((fig, fi) => figCards.push({ ...fig, figIdx: fi, key: `${p._idx}-${fi}`, paper: p })); });
                         if (figCards.length === 0) return (
                           <div style={S('display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 32px;gap:12px')}>
                             <div style={S('font-size:32px')}>📊</div>
                             <div style={S('font:700 15px/1 Plus Jakarta Sans;color:var(--dim)')}>No figures yet</div>
-                            <div style={S('font:400 12px/1.65 Plus Jakarta Sans;color:var(--faint);text-align:center;max-width:320px')}>Accept RCTs, meta-analyses or registry papers — those come with embedded figures that appear here.</div>
+                            <div style={S('font:400 12px/1.65 Plus Jakarta Sans;color:var(--faint);text-align:center;max-width:320px')}>Accept RCTs, meta-analyses or registry papers to see their figures here.</div>
                           </div>
                         );
+
+                        // top action bar
+                        const includedCount = figCards.filter(f => v.figureSelections[f.key]?.included).length;
+
                         return (
-                          <div style={S('display:grid;grid-template-columns:repeat(2,1fr);gap:12px')}>
-                            {figCards.map(({ type, label, caption, paper }, i) => (
-                              <Box key={i}
-                                css={`display:flex;flex-direction:column;overflow:hidden;cursor:pointer;border:1px solid ${sel && sel._idx === paper._idx ? 'var(--acc)' : 'var(--rule)'};background:var(--bg);transition:border-color 0.15s,transform 0.15s`}
-                                hover="border-color:var(--acc);transform:translateY(-2px)"
-                                onClick={() => v.setOrganizeSelected(paper)}
-                                style={{ animation: `cardIn 0.25s ease both`, animationDelay: `${i * 0.045}s` }}
+                          <div style={S('display:flex;flex-direction:column;gap:0')}>
+
+                            {/* Top bar: Upload + Confirm */}
+                            <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:20px')}>
+                              <Box
+                                css="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid var(--rule2);color:var(--faint);font:600 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px"
+                                hover="border-color:var(--dim);color:var(--dim)"
                               >
-                                <div style={S('background:var(--s2);padding:16px 16px 10px;border-bottom:1px solid var(--rule)')}>
-                                  {renderFigSVG(type, paper._idx)}
-                                </div>
-                                <div style={S('padding:11px 14px;display:flex;flex-direction:column;gap:5px')}>
-                                  <div style={S('display:flex;align-items:center;gap:7px')}>
-                                    <span style={S('font:700 8.5px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>{label.toUpperCase()}</span>
-                                    <span style={{ padding: '1px 6px', font: '600 8px/1 Plus Jakarta Sans', border: `1px solid ${tc2(paper.type)}`, color: tc2(paper.type) }}>{type.toUpperCase()}</span>
-                                  </div>
-                                  <div style={S('font:600 11px/1.45 Plus Jakarta Sans;color:var(--dim)')}>{caption}</div>
-                                  <div style={S('font:500 9.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{paper.title.length > 48 ? paper.title.slice(0, 48) + '…' : paper.title} · {paper.year}</div>
-                                </div>
+                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 9V1M3 4l3.5-3L10 4M1 10v1.5a.5.5 0 00.5.5h10a.5.5 0 00.5-.5V10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                Upload image
                               </Box>
-                            ))}
+                              <div style={S('flex:1')} />
+                              {includedCount > 0 && (
+                                <span style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint)')}>{includedCount} figure{includedCount > 1 ? 's' : ''} selected</span>
+                              )}
+                              <Box
+                                css="padding:8px 22px;background:var(--acc);color:#fff;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px"
+                                hover="opacity:0.88"
+                                onClick={v.confirmFigures}
+                              >
+                                Confirm
+                              </Box>
+                            </div>
+
+                            {/* Figure cards grid */}
+                            <div style={S('display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start')}>
+                              {figCards.map(({ type, label, caption, key, paper }, i) => {
+                                const fSel = v.figureSelections[key] || { included: false, artifacts: [], tracks: [], useAs: null };
+                                const included = fSel.included;
+                                const validationError = included && (fSel.artifacts.length === 0 || fSel.tracks.length === 0);
+
+                                return (
+                                  <div
+                                    key={key}
+                                    style={{ background: '#1a2d50', border: `1px solid ${included ? 'rgba(96,165,250,0.5)' : 'rgba(255,255,255,0.1)'}`, borderRadius: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column', animation: `cardIn 0.25s ease both`, animationDelay: `${i * 0.05}s`, transition: 'border-color 0.15s' }}
+                                  >
+                                    {/* Figure preview */}
+                                    <div style={{ background: '#fff', padding: '12px 12px 8px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                                      {renderFigSVG(type, paper._idx)}
+                                    </div>
+
+                                    <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+
+                                      {/* Include checkbox */}
+                                      <label style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }} onClick={() => v.toggleFigureInclude(key)}>
+                                        <div style={{ width: 18, height: 18, borderRadius: 4, border: `2px solid ${included ? '#3b82f6' : 'rgba(255,255,255,0.3)'}`, background: included ? '#3b82f6' : 'transparent', display: 'grid', placeItems: 'center', flexShrink: 0, transition: 'all 0.15s' }}>
+                                          {included && <svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3.5l2.5 2.5 5.5-5" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                                        </div>
+                                        <span style={{ font: '600 12px/1 Plus Jakarta Sans', color: '#e8eef8' }}>Include this figure</span>
+                                      </label>
+
+                                      {/* Figure title */}
+                                      <div>
+                                        <div style={{ font: '700 13px/1.4 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 4 }}>{caption}</div>
+                                        <div style={{ font: '400 10.5px/1.5 Plus Jakarta Sans', color: '#8aaad4' }}>From: {paper.title.length > 60 ? paper.title.slice(0, 60) + '…' : paper.title}</div>
+                                      </div>
+
+                                      {/* Validation error */}
+                                      {validationError && (
+                                        <div style={{ padding: '8px 12px', background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.4)', borderRadius: 6, font: '500 11px/1.5 Plus Jakarta Sans', color: '#fca5a5' }}>
+                                          Select at least one artifact and one track to finish including this figure.
+                                        </div>
+                                      )}
+
+                                      {/* Artifacts */}
+                                      <div>
+                                        <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: '#8aaad4', marginBottom: 8 }}>Artifacts</div>
+                                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                                          {ALL_ARTIFACTS.map((a) => {
+                                            const on = fSel.artifacts.includes(a);
+                                            const ac = ART_COLORS[a];
+                                            return (
+                                              <Box
+                                                key={a}
+                                                css={`padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${on ? ac : 'rgba(255,255,255,0.18)'};background:${on ? `${ac}22` : 'transparent'};color:${on ? ac : '#8aaad4'};transition:all 0.15s`}
+                                                hover={!on ? `border-color:${ac};color:${ac}` : ''}
+                                                onClick={() => v.toggleFigureArtifact(key, a)}
+                                              >{a}</Box>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+
+                                      {/* Tracks */}
+                                      <div>
+                                        <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: '#8aaad4', marginBottom: 8 }}>Tracks</div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                                          {CONTENT_TRACKS.map((tc) => {
+                                            const on = fSel.tracks.includes(tc.id);
+                                            return (
+                                              <Box
+                                                key={tc.id}
+                                                css={`padding:6px 10px;font:500 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:6px;border:1px solid ${on ? tc.color : 'rgba(255,255,255,0.1)'};background:${on ? `${tc.color}20` : 'transparent'};color:${on ? tc.color : '#8aaad4'};transition:all 0.15s`}
+                                                hover={!on ? `border-color:${tc.color};color:${tc.color}` : ''}
+                                                onClick={() => v.toggleFigureTrack(key, tc.id)}
+                                              >{tc.label}</Box>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+
+                                      {/* Use as-is? */}
+                                      <div>
+                                        <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: '#8aaad4', marginBottom: 8 }}>Use as-is?</div>
+                                        <div style={{ display: 'flex', gap: 8 }}>
+                                          {[['as-is', 'Use as-is'], ['redesign', 'Needs redesign before use']].map(([val, lbl]) => {
+                                            const on = fSel.useAs === val;
+                                            return (
+                                              <Box
+                                                key={val}
+                                                css={`flex:1;padding:8px 0;text-align:center;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${on ? '#60a5fa' : 'rgba(255,255,255,0.18)'};background:${on ? 'rgba(96,165,250,0.15)' : 'transparent'};color:${on ? '#60a5fa' : '#8aaad4'};transition:all 0.15s`}
+                                                hover={!on ? 'border-color:rgba(255,255,255,0.35);color:#e8eef8' : ''}
+                                                onClick={() => v.setFigureUseAs(key, val)}
+                                              >{lbl}</Box>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
                           </div>
                         );
                       })()}
