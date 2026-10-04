@@ -886,6 +886,8 @@ export default class MedFactory extends React.Component {
       createdWorkspaces: [],
       wsResearches: [],
       wsActiveResearch: null,
+      wsModal: null,
+      wsResearchModalName: '',
       sidebarExpandedWs: null,
       sidebarCollapsed: false,
       topic: 'Type 2 Diabetes — GLP-1 RA landscape',
@@ -977,6 +979,9 @@ export default class MedFactory extends React.Component {
       organizeExpandAll: false,
       organizeSelectedPaper: null,
       organizeArtifactFilter: { Deck: true, Blog: true, Protocol: true, Blurb: false, Facts: true },
+      organizeArtifactAssignments: {},
+      organizeTrackAssignments: {},
+      organizeArtifactTrackFilter: 'All',
       organizeView: 'track',
       manageExcerptIdx: null,
       paperExcerpts: {},
@@ -1020,6 +1025,9 @@ export default class MedFactory extends React.Component {
       sectionSelectTracks: CONTENT_TRACKS.map(t => t.id),
       sectionSelectCustom: [],
       sectionSelectInput: '',
+      aiSectionLoading: false,
+      aiSectionSuggestions: [],
+      aiSectionShown: false,
       figureSelections: {},
       uploadedFigures: [],
       combinedExcerptsModal: null,
@@ -1867,6 +1875,36 @@ export default class MedFactory extends React.Component {
       organizeExpandAll: st.organizeExpandAll,
       organizeSelectedPaper: st.organizeSelectedPaper,
       organizeArtifactFilter: st.organizeArtifactFilter,
+      organizeArtifactAssignments: st.organizeArtifactAssignments,
+      toggleExcerptArtifact: (paperIdx, artifact) => this.setState((s) => {
+        const paper = RESEARCH_PAPERS[paperIdx];
+        const current = s.organizeArtifactAssignments[paperIdx] !== undefined
+          ? s.organizeArtifactAssignments[paperIdx]
+          : Object.fromEntries(ALL_ARTIFACTS.map(a => [a, paper?.artifacts?.includes(a) || false]));
+        return { organizeArtifactAssignments: { ...s.organizeArtifactAssignments, [paperIdx]: { ...current, [artifact]: !current[artifact] } } };
+      }),
+      getExcerptArtifacts: (paperIdx) => {
+        const paper = RESEARCH_PAPERS[paperIdx];
+        return st.organizeArtifactAssignments[paperIdx] !== undefined
+          ? st.organizeArtifactAssignments[paperIdx]
+          : Object.fromEntries(ALL_ARTIFACTS.map(a => [a, paper?.artifacts?.includes(a) || false]));
+      },
+      organizeTrackAssignments: st.organizeTrackAssignments,
+      toggleExcerptTrack: (paperIdx, trackId) => this.setState((s) => {
+        const paper = RESEARCH_PAPERS[paperIdx];
+        const current = s.organizeTrackAssignments[paperIdx] !== undefined
+          ? s.organizeTrackAssignments[paperIdx]
+          : Object.fromEntries(CONTENT_TRACKS.map(t => [t.id, paper?.track === t.label || (t.paperTracks && t.paperTracks.includes(paper?.track))]));
+        return { organizeTrackAssignments: { ...s.organizeTrackAssignments, [paperIdx]: { ...current, [trackId]: !current[trackId] } } };
+      }),
+      getExcerptTracks: (paperIdx) => {
+        const paper = RESEARCH_PAPERS[paperIdx];
+        return st.organizeTrackAssignments[paperIdx] !== undefined
+          ? st.organizeTrackAssignments[paperIdx]
+          : Object.fromEntries(CONTENT_TRACKS.map(t => [t.id, paper?.track === t.label || (t.paperTracks && t.paperTracks.includes(paper?.track))]));
+      },
+      organizeArtifactTrackFilter: st.organizeArtifactTrackFilter,
+      setOrganizeArtifactTrackFilter: (t) => this.setState({ organizeArtifactTrackFilter: t }),
       setOrganizeSelected: (p) => this.setState({ organizeSelectedPaper: p }),
       organizeView: st.organizeView,
       setOrganizeView: (vw) => this.setState({ organizeView: vw }),
@@ -2137,16 +2175,47 @@ export default class MedFactory extends React.Component {
         this.setState((s) => ({
           createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
           wsResearches: [], wsActiveResearch: null, sidebarExpandedWs: id,
+          wsModal: null, wsResearchModalName: '',
+        }), () => this.go('workspace-hub'));
+      },
+      skipToHubWithModal: () => {
+        const id = Date.now();
+        const ws = {
+          id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
+          status: 'Research in Progress', created: 'Today', to: 'workspace-hub', dotColor: '#a78bfa',
+        };
+        this.setState((s) => ({
+          createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
+          wsResearches: [], wsActiveResearch: null, sidebarExpandedWs: id,
+          wsModal: 'create-research',
+          wsResearchModalName: `research-${Date.now().toString(36).slice(-5)}`,
         }), () => this.go('workspace-hub'));
       },
       wsResearches: st.wsResearches,
       wsActiveResearch: st.wsActiveResearch,
       setWsActiveResearch: (id) => this.setState({ wsActiveResearch: id }),
+      wsModal: st.wsModal,
+      wsResearchModalName: st.wsResearchModalName,
+      openWsModal: (modal) => this.setState({ wsModal: modal, wsResearchModalName: `research-${Date.now().toString(36).slice(-5)}` }),
+      closeWsModal: () => this.setState({ wsModal: null, wsResearchModalName: '' }),
+      setWsResearchModalName: (v2) => this.setState({ wsResearchModalName: v2 }),
       createWsResearch: () => this.setState((s) => {
         if (s.wsResearches.length >= 5) return null;
         const newId = s.wsResearches.length + 1;
-        return { wsResearches: [...s.wsResearches, { id: newId, name: `Research ${newId}`, status: 'in-progress', artifacts: [] }], wsActiveResearch: newId };
-      }, () => this.go('research')),
+        const name = s.wsResearchModalName.trim() || `Research ${newId}`;
+        return {
+          wsResearches: [...s.wsResearches, { id: newId, name, status: 'pending', artifacts: [] }],
+          wsActiveResearch: newId, wsModal: 'research-created',
+          sectionSelectTracks: CONTENT_TRACKS.map(t => t.id),
+          sectionSelectCustom: [], sectionSelectInput: '',
+          aiSectionLoading: false, aiSectionSuggestions: [], aiSectionShown: false,
+        };
+      }),
+      runWsResearchNow: () => this.setState((s) => ({
+        wsResearches: s.wsResearches.map(r => r.id === s.wsActiveResearch ? { ...r, status: 'in-progress' } : r),
+        wsModal: null,
+      }), () => this.go('section-select')),
+      doWsResearchLater: () => this.setState({ wsModal: null }),
       addWsResearch: () => this.setState((s) => {
         if (s.wsResearches.length >= 5) return null;
         const newId = s.wsResearches.length + 1;
@@ -2272,6 +2341,9 @@ export default class MedFactory extends React.Component {
       sectionSelectTracks: st.sectionSelectTracks,
       sectionSelectCustom: st.sectionSelectCustom,
       sectionSelectInput: st.sectionSelectInput,
+      aiSectionLoading: st.aiSectionLoading,
+      aiSectionSuggestions: st.aiSectionSuggestions,
+      aiSectionShown: st.aiSectionShown,
       onSectionSelectInput: (e) => this.setState({ sectionSelectInput: e.target.value }),
       toggleSectionTrack: (id) => this.setState((s) => ({
         sectionSelectTracks: s.sectionSelectTracks.includes(id)
@@ -2289,7 +2361,30 @@ export default class MedFactory extends React.Component {
           sectionSelectInput: '',
         }));
       },
+      addAISuggestion: (label, reason) => this.setState((s) => {
+        if (s.sectionSelectCustom.some(c => c.label === label)) return null;
+        return { sectionSelectCustom: [...s.sectionSelectCustom, { label, on: true, color: '#a78bfa', aiGenerated: true, reason }] };
+      }),
+      suggestAISections: () => {
+        this.setState({ aiSectionLoading: true, aiSectionShown: true });
+        setTimeout(() => {
+          this.setState({
+            aiSectionLoading: false,
+            aiSectionSuggestions: [
+              { label: 'Real-world adherence & persistence data', reason: `Relevant to ${st.topic} — adherence gaps are a key clinical challenge` },
+              { label: 'Comparative cost-effectiveness analysis', reason: 'Payers and KOLs increasingly request economic evidence alongside clinical data' },
+              { label: 'Renal outcomes in CKD patients', reason: `${st.heroProduct || 'This product'} has emerging data in cardiorenal populations` },
+              { label: 'Patient-reported outcomes & quality of life', reason: 'HCPs find PRO data compelling for shared decision-making conversations' },
+              { label: 'Combination therapy considerations', reason: 'Endocrinologists frequently ask about add-on scenarios in T2D management' },
+            ],
+          });
+        }, 2200);
+      },
       proceedFromSectionSelect: () => {
+        if (st.wsResearches.length > 0) {
+          this.go('research');
+          return;
+        }
         const id = Date.now();
         const ws = {
           id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
@@ -3070,48 +3165,21 @@ export default class MedFactory extends React.Component {
                   </div>
                 </div>
 
-                {/* CTA — two options */}
-                <div style={S('padding-top:28px;display:flex;flex-direction:column;gap:10px')}>
+                {/* CTA */}
+                <div style={S('padding-top:32px;display:flex;flex-direction:column;gap:14px')}>
                   {(!v.workspaceName.trim() || !v.topic.trim()) && (
-                    <div style={S('font:500 11.5px/1 Plus Jakarta Sans;color:var(--faint);margin-bottom:2px')}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 7, font: '500 11.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>
+                      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="var(--faint)" strokeWidth="1.2"/><path d="M6.5 5v3M6.5 9.5h.01" stroke="var(--faint)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                       Workspace name and topic are required to continue.
                     </div>
                   )}
-                  <div style={S('display:flex;gap:12px;align-items:stretch')}>
-                    {/* Option 1: Start Research Now */}
-                    <Box
-                      css={`flex:1;background:${v.workspaceName.trim() && v.topic.trim() ? 'var(--acc)' : 'var(--s2)'};color:${v.workspaceName.trim() && v.topic.trim() ? '#fff' : 'var(--faint)'};font-weight:700;font-size:14px;padding:18px 20px;cursor:${v.workspaceName.trim() && v.topic.trim() ? 'pointer' : 'default'};display:flex;align-items:center;gap:10px`}
-                      hover={v.workspaceName.trim() && v.topic.trim() ? 'opacity:0.88' : ''}
-                      onClick={() => { if (v.workspaceName.trim() && v.topic.trim()) v.startGen(); }}
-                    >
-                      <div>
-                        <div style={S('font:700 14px/1 Plus Jakarta Sans')}>Start Research Now</div>
-                        <div style={S('font:400 11px/1.4 Plus Jakarta Sans;opacity:0.72;margin-top:5px')}>Research agent starts immediately</div>
-                      </div>
-                      <span style={S('margin-left:auto;font-size:18px')}>→</span>
-                    </Box>
-
-                    {/* Option 2: Skip Research */}
-                    <Box
-                      css={`flex:1;background:var(--s1);border:1.5px solid var(--rule2);color:${v.workspaceName.trim() && v.topic.trim() ? 'var(--ink)' : 'var(--faint)'};font-weight:700;font-size:14px;padding:18px 20px;cursor:${v.workspaceName.trim() && v.topic.trim() ? 'pointer' : 'default'};display:flex;align-items:center;gap:10px`}
-                      hover={v.workspaceName.trim() && v.topic.trim() ? 'border-color:var(--dim);background:var(--s2)' : ''}
-                      onClick={() => { if (v.workspaceName.trim() && v.topic.trim()) v.skipToHub(); }}
-                    >
-                      <div>
-                        <div style={S('font:700 14px/1 Plus Jakarta Sans')}>Skip Research for Now</div>
-                        <div style={S('font:400 11px/1.4 Plus Jakarta Sans;color:var(--faint);margin-top:5px')}>Set up workspace, add research later</div>
-                      </div>
-                      <span style={S('margin-left:auto;font-size:18px;color:var(--faint)')}>→</span>
-                    </Box>
-                  </div>
-
                   <Box
-                    css="align-self:flex-start;padding:10px 16px;border:1px solid var(--rule);color:var(--faint);font:600 11.5px/1 Plus Jakarta Sans;cursor:pointer;border-radius:6px;display:inline-flex;align-items:center;gap:5px"
-                    hover="border-color:var(--ink);color:var(--ink)"
-                    onClick={v.goBack}
+                    css={`display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 28px;border-radius:12px;font:700 15px/1 Plus Jakarta Sans;cursor:${v.workspaceName.trim() && v.topic.trim() ? 'pointer' : 'default'};background:${v.workspaceName.trim() && v.topic.trim() ? 'linear-gradient(135deg,#2c52cc,#4468e0)' : 'var(--s2)'};color:${v.workspaceName.trim() && v.topic.trim() ? '#fff' : 'var(--faint)'};box-shadow:${v.workspaceName.trim() && v.topic.trim() ? '0 4px 18px rgba(44,82,204,0.28)' : 'none'};transition:all 0.15s`}
+                    hover={v.workspaceName.trim() && v.topic.trim() ? 'opacity:0.88;box-shadow:0 6px 24px rgba(44,82,204,0.36)' : ''}
+                    onClick={() => { if (v.workspaceName.trim() && v.topic.trim()) v.skipToHub(); }}
                   >
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    Back to Dashboard
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" strokeWidth="1.5"/><rect x="8.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" strokeWidth="1.5"/><rect x="1.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" strokeWidth="1.5"/><rect x="8.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" strokeWidth="1.5"/></svg>
+                    Create Workspace
                   </Box>
                 </div>
 
@@ -3121,222 +3189,348 @@ export default class MedFactory extends React.Component {
 
           {/* ============ WORKSPACE HUB ============ */}
           {v.isWsHub && (() => {
-            const activeR = v.wsResearches.find((r) => r.id === v.wsActiveResearch) || null;
-            const canAdd = v.wsResearches.length < 5;
+            const researchCount = v.wsResearches.length;
+            const wsCode = 'WS-' + String(v.activeWorkspaceId || 1).toString().slice(-3).padStart(3, '0');
             return (
-              <div style={S('display:flex;flex-direction:column;min-height:100%')}>
+              <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', background: 'var(--bg)', animation: 'fadeUp 0.22s cubic-bezier(0.22,1,0.36,1) both', position: 'relative' }}>
 
-                {/* Header bar */}
-                <div style={S('padding:28px 40px 22px;border-bottom:2px solid var(--rule2)')}>
-                  <div style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint);margin-bottom:10px')}>WORKSPACE</div>
-                  <div style={S('display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap')}>
-                    <div>
-                      <h1 style={S('font:800 26px/1.1 Plus Jakarta Sans;letter-spacing:-0.03em;margin:0 0 10px;color:var(--ink)')}>{v.workspaceName || 'Untitled Workspace'}</h1>
-                      <div style={S('display:flex;align-items:center;gap:10px;flex-wrap:wrap')}>
-                        <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>TOPIC</span>
-                        <span style={S('font:600 12px/1 Plus Jakarta Sans;color:var(--dim);padding:3px 10px;border:1px solid var(--rule2)')}>{v.topic}</span>
-                        <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>HERO PRODUCT</span>
-                        <span style={S('font:600 12px/1 Plus Jakarta Sans;color:var(--dim);padding:3px 10px;border:1px solid var(--warn);color:var(--warn)')}>{v.heroProduct}</span>
-                        <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>AUDIENCE</span>
-                        <span style={S('font:600 12px/1 Plus Jakarta Sans;padding:3px 10px;border:1px solid var(--acc);color:var(--acc)')}>HCP</span>
-                      </div>
+                {/* ── Page header ── */}
+                <div style={{ padding: '32px 44px 24px', background: 'var(--s1)', borderBottom: '1px solid var(--rule)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                    <span style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)', background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.18)', borderRadius: 4, padding: '3px 8px' }}>{wsCode}</span>
+                    <span style={{ font: '500 10px/1 Plus Jakarta Sans', letterSpacing: '0.08em', color: 'var(--faint)' }}>WORKSPACE · OCT 4, 2026</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                    <h1 style={{ font: '800 26px/1.1 Plus Jakarta Sans', letterSpacing: '-0.03em', margin: 0, color: 'var(--ink)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v.workspaceName || 'Untitled Workspace'}</h1>
+                    <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:10px;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
+                        hover="opacity:0.88"
+                        onClick={() => v.openWsModal('create-research')}
+                      >
+                        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        Create Research
+                      </Box>
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:var(--s1);color:var(--dim);font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:10px;border:1.5px solid var(--rule2)"
+                        hover="border-color:var(--dim);color:var(--ink);background:var(--s2)"
+                        onClick={() => v.openWsModal('create-artifact')}
+                      >
+                        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1" y="1" width="3.5" height="3.5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="6.5" y="1" width="3.5" height="3.5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="1" y="6.5" width="3.5" height="3.5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="6.5" y="6.5" width="3.5" height="3.5" rx="1" stroke="currentColor" strokeWidth="1.3"/></svg>
+                        Create Artifact
+                      </Box>
                     </div>
-                    <Box
-                      css="background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font:700 13px/1 Plus Jakarta Sans;padding:13px 22px;cursor:pointer;display:flex;align-items:center;gap:10px;flex-shrink:0;border-radius:8px"
-                      hover="opacity:0.88"
-                      onClick={v.createWsResearch}
-                    >
-                      {canAdd ? (
-                        <>{v.wsResearches.length === 0 ? 'Create Research' : '+ Add Research'}</>
-                      ) : (
-                        <>Max 5 reached</>
-                      )}
-                    </Box>
                   </div>
                 </div>
 
-                {/* Body */}
-                <div style={S('flex:1;padding:28px 40px 48px')}>
-
-                  {v.wsResearches.length === 0 ? (
-                    <div style={S('display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 40px;text-align:center')}>
-                      <div style={S('width:48px;height:48px;border:2px solid var(--rule2);display:grid;place-items:center;margin-bottom:24px')}>
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                          <circle cx="11" cy="11" r="9" stroke="var(--faint)" strokeWidth="1.5"/>
-                          <path d="M11 7v4M11 15h.01" stroke="var(--faint)" strokeWidth="1.5" strokeLinecap="square"/>
-                        </svg>
-                      </div>
-                      <div style={S('font:700 16px/1.3 Plus Jakarta Sans;color:var(--ink);margin-bottom:10px')}>No research sessions yet</div>
-                      <div style={S('font:400 13px/1.6 Plus Jakarta Sans;color:var(--faint);max-width:340px;margin-bottom:28px')}>Start a research session to gather scientific evidence, then create artifacts from it — decks, blogs, protocols and more.</div>
-                      <Box
-                        css="background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font:700 13px/1 Plus Jakarta Sans;padding:13px 28px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;border-radius:8px"
-                        hover="opacity:0.88"
-                        onClick={v.createWsResearch}
-                      >
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square"/></svg>
-                        Create Research
-                      </Box>
+                {/* ── Property strip ── */}
+                <div style={{ padding: '14px 44px', background: 'var(--s1)', borderBottom: '2px solid var(--rule2)', display: 'flex', gap: 28 }}>
+                  {[
+                    { label: 'TOPIC', value: v.topic || 'Type 2 Diabetes — GLP-1 RA landscape', accent: 'var(--dim)' },
+                    { label: 'HERO PRODUCT', value: v.heroProduct || 'Semaglutide (Ozempic/Rybelsus)', accent: 'var(--warn)' },
+                    { label: 'OWNER', value: 'Mayank Sinha', accent: 'var(--faint)' },
+                  ].map(({ label, value, accent }) => (
+                    <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)' }}>{label}</span>
+                      <span style={{ font: '600 12px/1 Plus Jakarta Sans', color: accent }}>{value}</span>
                     </div>
-                  ) : (
-                    <>
-                      {/* Research tabs */}
-                      <div style={S('display:flex;align-items:flex-end;gap:0;border-bottom:2px solid var(--rule2);margin-bottom:0')}>
-                        {v.wsResearches.map((r) => {
-                          const isActive = r.id === v.wsActiveResearch;
-                          const isDone = r.status === 'complete';
-                          return (
-                            <Box
-                              key={r.id}
-                              css={`padding:10px 22px;font:${isActive ? 700 : 600} 12.5px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid ${isActive ? 'var(--rule2)' : 'transparent'};border-bottom:none;margin-bottom:-2px;display:flex;align-items:center;gap:8px;background:${isActive ? 'var(--s1)' : 'transparent'};color:${isActive ? 'var(--ink)' : 'var(--dim)'}`}
-                              hover={!isActive ? 'color:var(--ink);background:var(--s2)' : ''}
-                              onClick={() => v.setWsActiveResearch(r.id)}
-                            >
-                              {isDone && (
-                                <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--ok)', flexShrink: 0 }} />
-                              )}
-                              {r.name}
-                              {isDone && (
-                                <span style={S('font:700 8px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--ok);border:1px solid var(--ok);padding:1px 5px;margin-left:2px')}>DONE</span>
-                              )}
-                            </Box>
-                          );
-                        })}
-                      </div>
-
-                      {/* Expanded panel for active research */}
-                      {activeR && (() => {
-                        const DONE_STEP = 20;
-                        const rPct = Math.round((Math.min(v.researchN, DONE_STEP) / DONE_STEP) * 100);
-                        const isInProgress = activeR.status === 'in-progress';
-                        const isDone = activeR.status === 'complete';
-                        const phases = [
-                          { label: 'Scanning databases', threshold: 6 },
-                          { label: 'Retrieving papers', threshold: 18 },
-                          { label: 'Deduplication', threshold: 19 },
-                          { label: 'Indexing evidence', threshold: 20 },
-                        ];
-                        const currentPhase = phases.findLast((p) => v.researchN >= p.threshold - 6) || phases[0];
-                        return (
-                          <div style={S('border:1px solid var(--rule2);border-top:none;background:var(--s1);animation:rise 0.2s ease')}>
-
-                            {/* In-progress banner */}
-                            {isInProgress && (
-                              <div style={S('padding:14px 24px;border-bottom:1px solid var(--rule);background:rgba(124,58,237,0.04)')}>
-                                <div style={S('display:flex;align-items:center;justify-content:space-between;margin-bottom:10px')}>
-                                  <div style={S('display:flex;align-items:center;gap:8px')}>
-                                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7c3aed', animation: 'puls 1.2s ease-in-out infinite' }} />
-                                    <span style={S('font:600 12px/1 Plus Jakarta Sans;color:#5b21b6')}>Research in progress</span>
-                                    <span style={S('font:400 11px/1 Plus Jakarta Sans;color:var(--faint)')}>{currentPhase.label}…</span>
-                                  </div>
-                                  <span style={S('font:700 11px/1 var(--mono);color:#7c3aed')}>{rPct}%</span>
-                                </div>
-                                <div style={S('height:4px;background:rgba(124,58,237,0.12);overflow:hidden')}>
-                                  <div style={{ width: `${rPct}%`, height: '100%', background: '#7c3aed', transition: 'width 0.8s ease' }} />
-                                </div>
-                                <div style={S('display:flex;gap:0;margin-top:8px')}>
-                                  {phases.map((p, pi) => {
-                                    const done = v.researchN >= p.threshold;
-                                    return (
-                                      <div key={pi} style={S('flex:1;display:flex;align-items:center;gap:4px')}>
-                                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: done ? '#7c3aed' : 'rgba(124,58,237,0.2)', flexShrink: 0 }} />
-                                        <span style={{ font: '500 9px/1 Plus Jakarta Sans', color: done ? '#5b21b6' : 'var(--faint)', letterSpacing: '0.02em' }}>{p.label}</span>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Action buttons row */}
-                            <div style={S('padding:14px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px')}>
-                              <Box
-                                css="padding:9px 18px;font:600 12px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:8px"
-                                hover="border-color:var(--ink);color:var(--ink)"
-                                onClick={() => this.go('research')}
-                              >
-                                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 5.5h9M6 1.5l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/></svg>
-                                {isDone ? 'View / Modify Research' : isInProgress ? 'View Research' : 'Start Research'}
-                              </Box>
-                              <Box
-                                css={`padding:9px 18px;font:600 12px/1 Plus Jakarta Sans;border:1px solid ${isDone ? 'var(--acc)' : 'var(--rule)'};color:${isDone ? 'var(--acc)' : 'var(--faint)'};cursor:${isDone ? 'pointer' : 'default'};background:${isDone ? 'rgba(44,82,204,0.07)' : 'transparent'};display:flex;align-items:center;gap:8px`}
-                                hover={isDone ? 'background:rgba(44,82,204,0.14)' : ''}
-                              >
-                                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="1" y="1" width="4" height="4" stroke="currentColor" strokeWidth="1.3"/><rect x="6" y="6" width="4" height="4" stroke="currentColor" strokeWidth="1.3"/><path d="M5 3h3V6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="square"/></svg>
-                                Create Artifact
-                                {!isDone && <span style={S('font:500 9px/1 Plus Jakarta Sans;color:var(--faint)')}>— complete research first</span>}
-                              </Box>
-                              {isDone && (
-                                <div style={S('margin-left:auto;display:flex;align-items:center;gap:6px')}>
-                                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(22,101,52,0.12)"/><path d="M4 7l2.5 2.5L10 5" stroke="var(--ok)" strokeWidth="1.5" strokeLinecap="square"/></svg>
-                                  <span style={S('font:600 11px/1 Plus Jakarta Sans;color:var(--ok)')}>Research complete</span>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Artifacts list */}
-                            {activeR.artifacts.length > 0 ? (
-                              <div style={S('padding:0')}>
-                                <div style={S('padding:10px 24px 8px;font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.14em;color:var(--faint)')}>ARTIFACTS</div>
-                                {activeR.artifacts.map((art, ai) => (
-                                  <div key={ai} style={S('display:flex;align-items:center;gap:16px;padding:12px 24px;border-top:1px solid var(--rule)')}>
-                                    <div style={S('font:600 13px/1 Plus Jakarta Sans;color:var(--ink);flex:1')}>{art.name}</div>
-                                    <span style={{ padding: '3px 9px', font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', border: `1px solid ${art.status === 'In Review' ? 'var(--acc)' : 'var(--rule2)'}`, color: art.status === 'In Review' ? 'var(--acc)' : 'var(--faint)' }}>{art.status.toUpperCase()}</span>
-                                    <Box
-                                      css="padding:7px 14px;font:600 11.5px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer;border-radius:6px"
-                                      hover="border-color:var(--ink);color:var(--ink)"
-                                      onClick={() => this.go('deliver')}
-                                    >Modify →</Box>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : isDone ? (
-                              /* Research complete — summary card */
-                              <div style={S('padding:24px')}>
-                                <div style={{ background: 'rgba(22,101,52,0.05)', border: '1px solid rgba(22,101,52,0.2)', borderRadius: 12, padding: '24px 28px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-                                  {/* Header */}
-                                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                                    <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(22,101,52,0.12)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
-                                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4.5 4.5L15 5" stroke="var(--ok)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                    </div>
-                                    <div>
-                                      <div style={S('font:700 15px/1.2 Plus Jakarta Sans;color:var(--ink);margin-bottom:4px')}>Research 1 complete</div>
-                                      <div style={S('font:400 12.5px/1.5 Plus Jakarta Sans;color:var(--faint)')}>12 papers retrieved across 6 databases. Evidence is indexed and ready for content generation.</div>
-                                    </div>
-                                  </div>
-                                  {/* Stats row */}
-                                  <div style={{ display: 'flex', gap: 12 }}>
-                                    {[['12', 'Papers'], ['6', 'Databases'], ['71', 'Raw sources'], ['97%', 'Top relevance']].map(([n, l]) => (
-                                      <div key={l} style={{ flex: 1, background: '#fff', border: '1px solid var(--rule)', borderRadius: 8, padding: '12px 10px', textAlign: 'center' }}>
-                                        <div style={S('font:800 18px/1 Plus Jakarta Sans;color:var(--ok);margin-bottom:4px')}>{n}</div>
-                                        <div style={S('font:500 10px/1 Plus Jakarta Sans;color:var(--faint);letter-spacing:0.06em')}>{l}</div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                  {/* CTA */}
-                                  <Box
-                                    css="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;cursor:pointer;border-radius:10px"
-                                    hover="opacity:0.9"
-                                    onClick={() => this.go('research')}
-                                  >
-                                    <div>
-                                      <div style={S('font:700 13px/1 Plus Jakarta Sans;margin-bottom:4px')}>View Research Papers</div>
-                                      <div style={S('font:400 11px/1 Plus Jakarta Sans;opacity:0.8')}>Review evidence, accept papers, then send to Scientific Review</div>
-                                    </div>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                  </Box>
-                                </div>
-                              </div>
-                            ) : (
-                              <div style={S('padding:28px 24px;color:var(--faint);font:400 12.5px/1.6 Plus Jakarta Sans;text-align:center')}>
-                                {isInProgress ? 'Artifacts will be available once research completes.' : 'Complete research first, then create artifacts here.'}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })()}
-                    </>
-                  )}
+                  ))}
                 </div>
+
+                {/* ── Two-panel body ── */}
+                <div style={{ flex: 1, display: 'flex', gap: 20, padding: '28px 44px 44px' }}>
+
+                  {/* Research panel */}
+                  <div style={{ flex: 1, background: 'var(--s1)', border: '1px solid var(--rule)', borderRadius: 14, display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 1px 4px rgba(12,26,61,0.06),0 4px 16px rgba(12,26,61,0.05)' }}>
+                    <div style={{ padding: '16px 22px 14px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="var(--acc)" strokeWidth="1.4"/><path d="M10 10l2.5 2.5" stroke="var(--acc)" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                        <span style={{ font: '700 13px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>Research</span>
+                        <span style={{ font: '700 10px/1 Plus Jakarta Sans', color: researchCount > 0 ? 'var(--acc)' : 'var(--faint)', background: researchCount > 0 ? 'rgba(44,82,204,0.08)' : 'var(--s2)', border: `1px solid ${researchCount > 0 ? 'rgba(44,82,204,0.18)' : 'var(--rule2)'}`, borderRadius: 100, padding: '2px 7px' }}>{researchCount}</span>
+                      </div>
+                      {researchCount > 0 && (
+                        <Box
+                          css="display:inline-flex;align-items:center;gap:5px;padding:5px 11px;font:700 10px/1 Plus Jakarta Sans;color:var(--acc);border:1px solid rgba(44,82,204,0.25);border-radius:6px;cursor:pointer;background:rgba(44,82,204,0.05)"
+                          hover="background:rgba(44,82,204,0.1)"
+                          onClick={() => v.openWsModal('create-research')}
+                        >
+                          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                          Add
+                        </Box>
+                      )}
+                    </div>
+
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: researchCount === 0 ? 'center' : 'stretch', justifyContent: researchCount === 0 ? 'center' : 'flex-start' }}>
+                      {researchCount === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '44px 32px' }}>
+                          <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(44,82,204,0.07)', border: '1px solid rgba(44,82,204,0.15)', display: 'grid', placeItems: 'center', margin: '0 auto 18px' }}>
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="7" stroke="var(--acc)" strokeWidth="1.5"/><path d="M15.5 15.5L20 20" stroke="var(--acc)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                          </div>
+                          <div style={{ font: '700 13px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>No research yet</div>
+                          <div style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 220, margin: '0 auto 22px' }}>Research is the input for every artifact you create.</div>
+                          <Box
+                            css="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:10px;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
+                            hover="opacity:0.88"
+                            onClick={() => v.openWsModal('create-research')}
+                          >
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>
+                            Create Research
+                          </Box>
+                        </div>
+                      ) : (
+                        <div style={{ padding: '10px 12px' }}>
+                          {v.wsResearches.map((r, ri) => {
+                            const isDone = r.status === 'complete';
+                            const isPending = r.status === 'pending';
+                            const dotColor = isDone ? 'var(--ok)' : isPending ? 'var(--warn)' : 'var(--acc)';
+                            const badgeColor = isDone ? 'var(--ok)' : isPending ? 'var(--warn)' : 'var(--acc)';
+                            const badgeBg = isDone ? 'rgba(21,128,61,0.08)' : isPending ? 'rgba(180,83,9,0.08)' : 'rgba(44,82,204,0.08)';
+                            const badgeBorder = isDone ? 'rgba(21,128,61,0.25)' : isPending ? 'rgba(180,83,9,0.25)' : 'rgba(44,82,204,0.25)';
+                            return (
+                              <div
+                                key={r.id}
+                                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 16px', borderRadius: 10, border: '1px solid var(--rule)', marginBottom: 8, background: 'var(--bg)', animation: 'rise 0.18s ease both', animationDelay: `${ri * 0.04}s` }}
+                              >
+                                <div style={{ width: 8, height: 8, borderRadius: '50%', background: dotColor, flexShrink: 0, animation: (!isDone && !isPending) ? 'puls 1.4s ease-in-out infinite' : 'none' }} />
+                                <div style={{ flex: 1, font: '600 13px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>{r.name}</div>
+                                <span style={{ font: '700 8px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: badgeColor, background: badgeBg, border: `1px solid ${badgeBorder}`, borderRadius: 4, padding: '2px 6px', flexShrink: 0 }}>
+                                  {isDone ? 'DONE' : isPending ? 'PENDING' : 'RUNNING'}
+                                </span>
+                                {isPending ? (
+                                  <Box
+                                    css="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;font:700 10px/1 Plus Jakarta Sans;color:var(--acc);border:1px solid rgba(44,82,204,0.25);border-radius:6px;cursor:pointer;background:rgba(44,82,204,0.06);flex-shrink:0"
+                                    hover="background:rgba(44,82,204,0.12)"
+                                    onClick={() => { v.setWsActiveResearch(r.id); this.setState((s) => ({ wsResearches: s.wsResearches.map(x => x.id === r.id ? { ...x, status: 'in-progress' } : x) }), () => this.go('section-select')); }}
+                                  >
+                                    <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><path d="M1 1l6 4-6 4V1z" fill="currentColor"/></svg>
+                                    Run
+                                  </Box>
+                                ) : (
+                                  <Box
+                                    css="display:inline-flex;align-items:center;cursor:pointer;color:var(--faint);flex-shrink:0"
+                                    hover="color:var(--ink)"
+                                    onClick={() => { v.setWsActiveResearch(r.id); this.go('research'); }}
+                                  >
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                                  </Box>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Artifacts panel */}
+                  <div style={{ flex: 1, background: 'var(--s1)', border: '1px solid var(--rule)', borderRadius: 14, display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 1px 4px rgba(12,26,61,0.06),0 4px 16px rgba(12,26,61,0.05)' }}>
+                    <div style={{ padding: '16px 22px 14px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="4.5" height="4.5" rx="1" stroke="var(--dim)" strokeWidth="1.3"/><rect x="8" y="1.5" width="4.5" height="4.5" rx="1" stroke="var(--dim)" strokeWidth="1.3"/><rect x="1.5" y="8" width="4.5" height="4.5" rx="1" stroke="var(--dim)" strokeWidth="1.3"/><rect x="8" y="8" width="4.5" height="4.5" rx="1" stroke="var(--dim)" strokeWidth="1.3"/></svg>
+                        <span style={{ font: '700 13px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>Artifacts</span>
+                        <span style={{ font: '700 10px/1 Plus Jakarta Sans', color: 'var(--faint)', background: 'var(--s2)', border: '1px solid var(--rule2)', borderRadius: 100, padding: '2px 7px' }}>0</span>
+                      </div>
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{ textAlign: 'center', padding: '44px 32px' }}>
+                        <div style={{ width: 48, height: 48, borderRadius: 14, background: 'var(--s2)', border: '1px solid var(--rule2)', display: 'grid', placeItems: 'center', margin: '0 auto 18px' }}>
+                          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="12.5" y="2" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="2" y="12.5" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="12.5" y="12.5" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/></svg>
+                        </div>
+                        <div style={{ font: '700 13px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>No artifacts yet</div>
+                        <div style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 240, margin: '0 auto 22px' }}>Any research with at least one excerpt or figure can feed an artifact.</div>
+                        <Box
+                          css="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:var(--s1);color:var(--dim);font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:10px;border:1.5px solid var(--rule2)"
+                          hover="border-color:var(--dim);color:var(--ink);background:var(--s2)"
+                          onClick={() => v.openWsModal('create-artifact')}
+                        >
+                          Create Artifact
+                        </Box>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* ── Modals ── */}
+                {v.wsModal && (
+                  <div
+                    style={{ position: 'fixed', inset: 0, background: 'rgba(12,26,61,0.6)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(2px)', animation: 'fill 0.15s ease' }}
+                    onClick={(e) => { if (e.target === e.currentTarget) v.closeWsModal(); }}
+                  >
+                    {/* Create Research modal */}
+                    {v.wsModal === 'create-research' && (
+                      <div style={{ width: 500, background: 'var(--s1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 40px rgba(12,26,61,0.22),0 1px 0 rgba(12,26,61,0.08)', animation: 'rise 0.18s ease', border: '1px solid var(--rule2)' }}>
+                        <div style={{ padding: '28px 32px 22px', borderBottom: '1px solid var(--rule)' }}>
+                          <div style={{ font: '800 18px/1.2 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 4 }}>Create research</div>
+                          <div style={{ font: '400 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>In {v.workspaceName || 'this workspace'}</div>
+                        </div>
+
+                        <div style={{ padding: '22px 32px 20px' }}>
+                          <label style={{ display: 'block', font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 8 }}>RESEARCH NAME</label>
+                          <input
+                            type="text"
+                            value={v.wsResearchModalName}
+                            onChange={(e) => v.setWsResearchModalName(e.target.value)}
+                            style={{ display: 'block', width: '100%', background: 'var(--bg)', border: '1.5px solid var(--rule2)', borderLeft: '3px solid var(--acc)', borderRadius: 8, padding: '12px 14px', font: '600 14px/1 Plus Jakarta Sans', color: 'var(--ink)', outline: 'none' }}
+                            onFocus={(e) => { e.target.style.borderColor = 'var(--acc)'; e.target.style.background = '#fff'; }}
+                            onBlur={(e) => { e.target.style.borderColor = 'var(--rule2)'; e.target.style.background = 'var(--bg)'; }}
+                            autoFocus
+                          />
+                          <div style={{ font: '400 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 6 }}>Must be unique among research and artifacts in this workspace.</div>
+                        </div>
+
+                        <div style={{ margin: '0 32px 16px', background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 10, padding: '14px 18px' }}>
+                          <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 10 }}>INHERITED FROM WORKSPACE</div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                              <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Topic</span>
+                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.topic || 'Type 2 Diabetes — GLP-1 RA landscape'}</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                              <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Hero product</span>
+                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.heroProduct || 'Semaglutide (Ozempic)'}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{ margin: '0 32px 24px', display: 'flex', gap: 10, background: 'rgba(44,82,204,0.05)', border: '1px solid rgba(44,82,204,0.15)', borderRadius: 8, padding: '11px 14px' }}>
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, marginTop: 1 }}><circle cx="7" cy="7" r="6" stroke="var(--acc)" strokeWidth="1.3"/><path d="M7 6v4M7 4h.01" stroke="var(--acc)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                          <span style={{ font: '400 11px/1.55 Plus Jakarta Sans', color: 'var(--dim)' }}>The research agent receives this name, the topic and the hero product. Topic and hero product are locked in the agent.</span>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: 10, padding: '0 32px 28px' }}>
+                          <Box
+                            css="flex:1;padding:12px;font:600 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;border:1.5px solid var(--rule2);color:var(--dim);text-align:center;background:var(--s1)"
+                            hover="background:var(--s2);border-color:var(--dim)"
+                            onClick={v.closeWsModal}
+                          >Cancel</Box>
+                          <Box
+                            css="flex:2;padding:12px;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;text-align:center;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
+                            hover="opacity:0.88"
+                            onClick={v.createWsResearch}
+                          >Create research</Box>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Create Artifact modal — empty state */}
+                    {/* Research created confirmation */}
+                    {v.wsModal === 'research-created' && (() => {
+                      const r = v.wsResearches.find(r2 => r2.id === v.wsActiveResearch);
+                      const wsCode = 'WS-' + String(v.activeWorkspaceId || 1).toString().slice(-3).padStart(3, '0');
+                      const rCode = `${wsCode}-R${String(v.wsActiveResearch).padStart(3, '0')}`;
+                      return (
+                        <div style={{ width: 520, background: '#0d1f4e', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.45)', animation: 'rise 0.18s ease', border: '1px solid rgba(232,238,248,0.1)' }}>
+                          {/* Header */}
+                          <div style={{ padding: '28px 32px 20px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                            <div>
+                              <div style={{ font: '800 20px/1.2 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 6 }}>Research created</div>
+                              <div style={{ font: '400 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4' }}>
+                                <span style={{ color: '#e8eef8', fontWeight: 600 }}>"{r?.name}"</span> is saved as <span style={{ fontFamily: 'ui-monospace,SFMono-Regular,Menlo,monospace', fontSize: 11, background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: 4, color: '#60a5fa' }}>{rCode}</span>.
+                              </div>
+                              <div style={{ font: '400 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4', marginTop: 12 }}>
+                                Open the research agent now, or run it later from the workspace.
+                              </div>
+                            </div>
+                            <Box
+                              css="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;cursor:pointer;color:#4d6fa0;flex-shrink:0;margin-left:16px"
+                              hover="background:rgba(255,255,255,0.08);color:#e8eef8"
+                              onClick={v.doWsResearchLater}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>
+                            </Box>
+                          </div>
+
+                          {/* Two option cards */}
+                          <div style={{ display: 'flex', gap: 12, padding: '4px 32px 32px' }}>
+                            {/* Run now */}
+                            <Box
+                              css="flex:1;padding:22px 22px;border:2px solid rgba(96,165,250,0.55);border-radius:14px;cursor:pointer;background:linear-gradient(135deg,rgba(44,82,204,0.28),rgba(96,165,250,0.18));display:flex;flex-direction:column;gap:12px;box-shadow:0 0 0 0 rgba(96,165,250,0);transition:all 0.18s"
+                              hover="background:linear-gradient(135deg,rgba(44,82,204,0.42),rgba(96,165,250,0.28));border-color:#60a5fa;box-shadow:0 4px 28px rgba(96,165,250,0.25)"
+                              onClick={v.runWsResearchNow}
+                            >
+                              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(96,165,250,0.2)', border: '1.5px solid rgba(96,165,250,0.4)', display: 'grid', placeItems: 'center' }}>
+                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M2 1.5l11 6.5-11 6.5V1.5z" fill="#60a5fa" stroke="#60a5fa" strokeWidth="0.5" strokeLinejoin="round"/></svg>
+                              </div>
+                              <div>
+                                <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 6 }}>Run now</div>
+                                <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: '#8aaad4' }}>Open the research agent with this research.</div>
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: '700 11px/1 Plus Jakarta Sans', color: '#60a5fa', marginTop: 2 }}>
+                                Select sections &amp; start
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 5.5h8M5.5 2l3.5 3.5L5.5 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              </div>
+                            </Box>
+
+                            {/* Do it later */}
+                            <Box
+                              css="flex:1;padding:22px 22px;border:2px solid rgba(232,238,248,0.12);border-radius:14px;cursor:pointer;background:rgba(255,255,255,0.04);display:flex;flex-direction:column;gap:12px;transition:all 0.18s"
+                              hover="background:rgba(255,255,255,0.09);border-color:rgba(232,238,248,0.26)"
+                              onClick={v.doWsResearchLater}
+                            >
+                              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(255,255,255,0.07)', border: '1.5px solid rgba(232,238,248,0.15)', display: 'grid', placeItems: 'center' }}>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#8aaad4" strokeWidth="1.4"/><path d="M8 5v3.5l2.5 2" stroke="#8aaad4" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              </div>
+                              <div>
+                                <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#c8d6ee', marginBottom: 6 }}>Do it later</div>
+                                <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: '#6688aa' }}>Saved as pending · not run yet.</div>
+                              </div>
+                              <div style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#4d6fa0', marginTop: 2 }}>Run anytime from workspace</div>
+                            </Box>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {v.wsModal === 'create-artifact' && (
+                      <div style={{ width: 480, background: 'var(--s1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 40px rgba(12,26,61,0.22),0 1px 0 rgba(12,26,61,0.08)', animation: 'rise 0.18s ease', border: '1px solid var(--rule2)' }}>
+                        <div style={{ padding: '28px 32px 22px', borderBottom: '1px solid var(--rule)' }}>
+                          <div style={{ font: '800 18px/1.2 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 4 }}>Create artifact</div>
+                          <div style={{ font: '400 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>In {v.workspaceName || 'this workspace'}</div>
+                        </div>
+
+                        <div style={{ margin: '20px 32px 16px', background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 10, padding: '14px 18px' }}>
+                          <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 10 }}>INHERITED FROM WORKSPACE</div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                            <div style={{ display: 'flex', gap: 12 }}>
+                              <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Topic</span>
+                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.topic || 'Type 2 Diabetes — GLP-1 RA landscape'}</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: 12 }}>
+                              <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Hero product</span>
+                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.heroProduct || 'Semaglutide (Ozempic)'}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{ margin: '0 32px 28px', textAlign: 'center', padding: '24px 16px', background: 'var(--bg)', borderRadius: 10, border: '1px solid var(--rule)' }}>
+                          <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--s2)', border: '1px solid var(--rule2)', display: 'grid', placeItems: 'center', margin: '0 auto 14px' }}>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="2" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/></svg>
+                          </div>
+                          <div style={{ font: '600 12.5px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>Research required first</div>
+                          <div style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 300, margin: '0 auto' }}>Artifacts are built from research. Run research in this workspace and accept at least one paper first.</div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: 10, padding: '0 32px 28px' }}>
+                          <Box
+                            css="flex:1;padding:12px;font:600 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;border:1.5px solid var(--rule2);color:var(--dim);text-align:center;background:var(--s1)"
+                            hover="background:var(--s2);border-color:var(--dim)"
+                            onClick={v.closeWsModal}
+                          >Close</Box>
+                          <Box
+                            css="flex:2;padding:12px;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
+                            hover="opacity:0.88"
+                            onClick={() => { v.closeWsModal(); v.openWsModal('create-research'); }}
+                          >
+                            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                            Create Research first
+                          </Box>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
               </div>
             );
           })()}
@@ -3344,147 +3538,227 @@ export default class MedFactory extends React.Component {
           {/* ============ SELECT RESEARCH SECTIONS ============ */}
           {v.isSectionSelect && (() => {
             const trackColors = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+            const totalSelected = v.sectionSelectTracks.length + v.sectionSelectCustom.filter(c => c.on).length;
             return (
-              <div style={{ minHeight: '100%', background: 'var(--bg)', padding: '52px 64px', animation: 'fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both' }}>
+              <div style={{ minHeight: '100%', background: 'var(--bg)', padding: '44px 64px 64px', animation: 'fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both' }}>
 
-                {/* Title + subtitle */}
-                <h1 style={{ font: '800 32px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', color: 'var(--ink)', margin: '0 0 14px' }}>Select Research Sections</h1>
-                <p style={{ font: '400 14px/1.65 Plus Jakarta Sans', color: 'var(--faint)', margin: '0 0 28px', maxWidth: 480 }}>
-                  These are the content sections this research will cover. Unselect any you don't need for this run, or add a new custom section — it gets its own color automatically. The rest of the research will only use whatever is selected here.
-                </p>
-
-                {/* Proceed button */}
+                {/* Back breadcrumb */}
                 <Box
-                  css="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:#2c52cc;color:#fff;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;margin-bottom:36px"
-                  hover="background:#4468e0"
-                  onClick={v.proceedFromSectionSelect}
-                >
-                  Proceed with selected sections →
-                </Box>
-
-                {/* Track rows */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 680, marginBottom: 28 }}>
-                  {CONTENT_TRACKS.map((track, i) => {
-                    const on = v.sectionSelectTracks.includes(track.id);
-                    const col = trackColors[i] || '#60a5fa';
-                    return (
-                      <div
-                        key={track.id}
-                        onClick={() => v.toggleSectionTrack(track.id)}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 16,
-                          padding: '16px 20px',
-                          background: on ? 'rgba(44,82,204,0.05)' : 'var(--s1)',
-                          border: `1px solid ${on ? 'rgba(44,82,204,0.3)' : 'var(--rule)'}`,
-                          borderRadius: 10, cursor: 'pointer',
-                          transition: 'background 0.15s, border-color 0.15s',
-                        }}
-                      >
-                        {/* Checkbox */}
-                        <div style={{
-                          width: 20, height: 20, borderRadius: 5, flexShrink: 0,
-                          background: on ? 'var(--acc)' : 'transparent',
-                          border: `2px solid ${on ? 'var(--acc)' : 'var(--rule2)'}`,
-                          display: 'grid', placeItems: 'center',
-                          transition: 'background 0.15s, border-color 0.15s',
-                        }}>
-                          {on && (
-                            <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
-                              <path d="M1 4l3 3 6-6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                          )}
-                        </div>
-                        {/* Color label pill */}
-                        <div style={{
-                          padding: '3px 10px', borderRadius: 20, fontSize: 10, fontWeight: 700,
-                          fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.02em',
-                          background: `${col}22`, color: col, border: `1px solid ${col}55`,
-                          whiteSpace: 'nowrap', flexShrink: 0,
-                        }}>
-                          {track.label}
-                        </div>
-                        {/* Name */}
-                        <span style={{ font: '500 14px/1 Plus Jakarta Sans', color: on ? 'var(--ink)' : 'var(--faint)' }}>
-                          {track.label}
-                        </span>
-                      </div>
-                    );
-                  })}
-
-                  {/* Custom sections */}
-                  {v.sectionSelectCustom.map((c, i) => (
-                    <div
-                      key={i}
-                      onClick={() => v.toggleCustomSection(c.label)}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: 16,
-                        padding: '16px 20px',
-                        background: c.on ? 'rgba(44,82,204,0.05)' : 'var(--s1)',
-                        border: `1px solid ${c.on ? 'rgba(44,82,204,0.3)' : 'var(--rule)'}`,
-                        borderRadius: 10, cursor: 'pointer',
-                        transition: 'background 0.15s, border-color 0.15s',
-                      }}
-                    >
-                      <div style={{
-                        width: 20, height: 20, borderRadius: 5, flexShrink: 0,
-                        background: c.on ? 'var(--acc)' : 'transparent',
-                        border: `2px solid ${c.on ? 'var(--acc)' : 'var(--rule2)'}`,
-                        display: 'grid', placeItems: 'center',
-                        transition: 'background 0.15s, border-color 0.15s',
-                      }}>
-                        {c.on && (
-                          <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
-                            <path d="M1 4l3 3 6-6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        )}
-                      </div>
-                      <div style={{
-                        padding: '3px 10px', borderRadius: 20, fontSize: 10, fontWeight: 700,
-                        fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.02em',
-                        background: `${c.color}22`, color: c.color, border: `1px solid ${c.color}55`,
-                        whiteSpace: 'nowrap', flexShrink: 0,
-                      }}>
-                        {c.label}
-                      </div>
-                      <span style={{ font: '500 14px/1 Plus Jakarta Sans', color: c.on ? 'var(--ink)' : 'var(--faint)' }}>{c.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Add custom section input */}
-                <div style={{ display: 'flex', gap: 10, alignItems: 'center', maxWidth: 500 }}>
-                  <input
-                    value={v.sectionSelectInput}
-                    onChange={v.onSectionSelectInput}
-                    onKeyDown={(e) => { if (e.key === 'Enter') v.addCustomSection(); }}
-                    placeholder="New section name (e.g. Patient adherence…)"
-                    style={{
-                      flex: 1, padding: '11px 16px',
-                      background: 'var(--s1)',
-                      border: '1px solid var(--rule2)',
-                      borderRadius: 8, color: 'var(--ink)',
-                      font: '400 13px/1 Plus Jakarta Sans',
-                      outline: 'none',
-                    }}
-                  />
-                  <Box
-                    css="padding:11px 20px;background:transparent;border:1.5px solid var(--rule2);color:var(--dim);font:600 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;white-space:nowrap"
-                    hover="background:var(--s2);border-color:var(--dim)"
-                    onClick={v.addCustomSection}
-                  >
-                    + Add section
-                  </Box>
-                </div>
-
-                {/* Back link */}
-                <Box
-                  css="display:inline-flex;align-items:center;gap:5px;margin-top:36px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
+                  css="display:inline-flex;align-items:center;gap:5px;margin-bottom:28px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
                   hover="color:var(--ink);border-color:var(--dim)"
                   onClick={v.goBack}
                 >
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  Back to Setup
+                  Back to Workspace
                 </Box>
+
+                {/* Header row */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24, marginBottom: 32 }}>
+                  <div>
+                    <div style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)', marginBottom: 10 }}>SELECT RESEARCH SECTIONS</div>
+                    <h1 style={{ font: '800 30px/1.1 Plus Jakarta Sans', letterSpacing: '-0.03em', color: 'var(--ink)', margin: '0 0 10px' }}>What should this research cover?</h1>
+                    <p style={{ font: '400 13.5px/1.65 Plus Jakarta Sans', color: 'var(--faint)', margin: 0, maxWidth: 480 }}>
+                      All 7 sections are selected by default. Uncheck any you don't need, or add custom sections below. The research agent will only pull evidence for selected sections.
+                    </p>
+                  </div>
+                  <Box
+                    css="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:10px;flex-shrink:0;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
+                    hover="opacity:0.88"
+                    onClick={v.proceedFromSectionSelect}
+                  >
+                    Run research with {totalSelected} section{totalSelected !== 1 ? 's' : ''}
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2l4.5 4.5L7 11" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </Box>
+                </div>
+
+                {/* Two-column layout: sections left, AI panel right */}
+                <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
+
+                  {/* Left — section list */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+
+                    {/* Standard tracks */}
+                    <div style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 10 }}>STANDARD SECTIONS</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+                      {CONTENT_TRACKS.map((track, i) => {
+                        const on = v.sectionSelectTracks.includes(track.id);
+                        const col = trackColors[i] || '#60a5fa';
+                        return (
+                          <div
+                            key={track.id}
+                            onClick={() => v.toggleSectionTrack(track.id)}
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: 14,
+                              padding: '14px 18px',
+                              background: on ? 'var(--s1)' : 'transparent',
+                              border: `1px solid ${on ? 'var(--rule2)' : 'var(--rule)'}`,
+                              borderLeft: `3px solid ${on ? col : 'transparent'}`,
+                              borderRadius: 10, cursor: 'pointer',
+                              boxShadow: on ? '0 1px 4px rgba(12,26,61,0.06)' : 'none',
+                              transition: 'all 0.15s',
+                            }}
+                          >
+                            <div style={{
+                              width: 18, height: 18, borderRadius: 4, flexShrink: 0,
+                              background: on ? col : 'transparent',
+                              border: `2px solid ${on ? col : 'var(--rule2)'}`,
+                              display: 'grid', placeItems: 'center',
+                              transition: 'all 0.15s',
+                            }}>
+                              {on && <svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3.5l2.5 2.5 5.5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                            </div>
+                            <div style={{ width: 8, height: 8, borderRadius: '50%', background: col, flexShrink: 0 }} />
+                            <span style={{ font: `${on ? 600 : 500} 13.5px/1 Plus Jakarta Sans`, color: on ? 'var(--ink)' : 'var(--faint)', flex: 1 }}>
+                              {track.label}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Custom / AI-suggested sections */}
+                    {v.sectionSelectCustom.length > 0 && (
+                      <>
+                        <div style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 10 }}>ADDED SECTIONS</div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+                          {v.sectionSelectCustom.map((c, i) => (
+                            <div
+                              key={i}
+                              onClick={() => v.toggleCustomSection(c.label)}
+                              style={{
+                                display: 'flex', alignItems: 'center', gap: 14,
+                                padding: '14px 18px',
+                                background: c.on ? 'var(--s1)' : 'transparent',
+                                border: `1px solid ${c.on ? 'var(--rule2)' : 'var(--rule)'}`,
+                                borderLeft: `3px solid ${c.on ? c.color : 'transparent'}`,
+                                borderRadius: 10, cursor: 'pointer',
+                                boxShadow: c.on ? '0 1px 4px rgba(12,26,61,0.06)' : 'none',
+                                transition: 'all 0.15s',
+                              }}
+                            >
+                              <div style={{
+                                width: 18, height: 18, borderRadius: 4, flexShrink: 0,
+                                background: c.on ? c.color : 'transparent',
+                                border: `2px solid ${c.on ? c.color : 'var(--rule2)'}`,
+                                display: 'grid', placeItems: 'center', transition: 'all 0.15s',
+                              }}>
+                                {c.on && <svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3.5l2.5 2.5 5.5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                              </div>
+                              <div style={{ width: 8, height: 8, borderRadius: '50%', background: c.color, flexShrink: 0 }} />
+                              <span style={{ font: `${c.on ? 600 : 500} 13.5px/1 Plus Jakarta Sans`, color: c.on ? 'var(--ink)' : 'var(--faint)', flex: 1 }}>{c.label}</span>
+                              {c.aiGenerated && (
+                                <span style={{ font: '700 8px/1 Plus Jakarta Sans', letterSpacing: '0.08em', color: '#7c3aed', background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', borderRadius: 4, padding: '2px 6px', flexShrink: 0 }}>AI</span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+
+                    {/* Manual add input */}
+                    <div style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 10 }}>ADD CUSTOM SECTION</div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <input
+                        value={v.sectionSelectInput}
+                        onChange={v.onSectionSelectInput}
+                        onKeyDown={(e) => { if (e.key === 'Enter') v.addCustomSection(); }}
+                        placeholder="e.g. Patient adherence & persistence…"
+                        style={{
+                          flex: 1, padding: '11px 14px',
+                          background: 'var(--s1)', border: '1.5px solid var(--rule2)',
+                          borderRadius: 8, color: 'var(--ink)',
+                          font: '400 13px/1 Plus Jakarta Sans', outline: 'none',
+                        }}
+                      />
+                      <Box
+                        css="padding:11px 18px;background:var(--s1);border:1.5px solid var(--rule2);color:var(--dim);font:600 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;white-space:nowrap"
+                        hover="background:var(--s2);border-color:var(--dim);color:var(--ink)"
+                        onClick={v.addCustomSection}
+                      >+ Add</Box>
+                    </div>
+
+                  </div>
+
+                  {/* Right — AI suggestions panel */}
+                  <div style={{ width: 320, flexShrink: 0 }}>
+                    <div style={{ background: 'var(--s1)', border: '1px solid var(--rule)', borderRadius: 14, overflow: 'hidden', boxShadow: '0 1px 4px rgba(12,26,61,0.06),0 4px 16px rgba(12,26,61,0.05)' }}>
+
+                      {/* Panel header */}
+                      <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--rule)', background: 'linear-gradient(135deg,rgba(124,58,237,0.06),rgba(44,82,204,0.04))' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <div style={{ width: 24, height: 24, borderRadius: 6, background: 'rgba(124,58,237,0.12)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1l1.2 3.7H11L8.3 6.9l1 3.1-2.8-2-2.8 2 1-3.1L2 4.7h3.3z" fill="#7c3aed" opacity="0.9"/></svg>
+                          </div>
+                          <span style={{ font: '700 12.5px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>AI Section Suggestions</span>
+                        </div>
+                        <p style={{ font: '400 11px/1.5 Plus Jakarta Sans', color: 'var(--faint)', margin: 0 }}>
+                          Based on your topic and hero product, the AI recommends additional sections worth covering.
+                        </p>
+                      </div>
+
+                      {/* Body */}
+                      <div style={{ padding: '16px 20px' }}>
+                        {!v.aiSectionShown ? (
+                          /* Not yet triggered */
+                          <div style={{ textAlign: 'center', padding: '20px 8px' }}>
+                            <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 16 }}>
+                              Let AI analyze your topic and suggest sections that are commonly missed but high-value for {v.topic || 'this topic'}.
+                            </div>
+                            <Box
+                              css="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:rgba(124,58,237,0.1);border:1.5px solid rgba(124,58,237,0.25);color:#7c3aed;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;width:100%;justify-content:center"
+                              hover="background:rgba(124,58,237,0.16)"
+                              onClick={v.suggestAISections}
+                            >
+                              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1l1.2 3.7H11L8.3 6.9l1 3.1-2.8-2-2.8 2 1-3.1L2 4.7h3.3z" fill="currentColor"/></svg>
+                              Suggest sections with AI
+                            </Box>
+                          </div>
+                        ) : v.aiSectionLoading ? (
+                          /* Loading */
+                          <div style={{ textAlign: 'center', padding: '24px 8px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'center', gap: 5, marginBottom: 12 }}>
+                              {[0,1,2].map(d => (
+                                <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: '#7c3aed', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
+                              ))}
+                            </div>
+                            <div style={{ font: '500 11.5px/1 Plus Jakarta Sans', color: '#7c3aed' }}>Analysing topic &amp; product…</div>
+                          </div>
+                        ) : (
+                          /* Suggestions list */
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 2 }}>SUGGESTED SECTIONS</div>
+                            {v.aiSectionSuggestions.map((s, si) => {
+                              const alreadyAdded = v.sectionSelectCustom.some(c => c.label === s.label);
+                              return (
+                                <div key={si} style={{ background: 'var(--bg)', border: '1px solid var(--rule)', borderRadius: 9, padding: '11px 14px', animation: 'rise 0.2s ease both', animationDelay: `${si * 0.07}s` }}>
+                                  <div style={{ font: '600 12px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 5 }}>{s.label}</div>
+                                  <div style={{ font: '400 10.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 8 }}>{s.reason}</div>
+                                  {alreadyAdded ? (
+                                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: '600 10px/1 Plus Jakarta Sans', color: 'var(--ok)' }}>
+                                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                      Added
+                                    </div>
+                                  ) : (
+                                    <Box
+                                      css="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;font:700 10px/1 Plus Jakarta Sans;color:#7c3aed;border:1px solid rgba(124,58,237,0.3);border-radius:6px;cursor:pointer;background:rgba(124,58,237,0.06)"
+                                      hover="background:rgba(124,58,237,0.12)"
+                                      onClick={() => v.addAISuggestion(s.label, s.reason)}
+                                    >
+                                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                                      Add section
+                                    </Box>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
 
               </div>
             );
@@ -4911,13 +5185,26 @@ export default class MedFactory extends React.Component {
                         )}
                       </div>
                     ))}
-                    {/* artifact tags + manage button */}
-                    <div style={S('display:flex;align-items:center;gap:5px;flex-wrap:wrap')}>
+                    {/* artifact tags — clickable toggles, only in By Track view */}
+                    {curView !== 'artifact' && <div style={S('display:flex;align-items:center;gap:5px;flex-wrap:wrap')}>
                       {ALL_ARTIFACTS.map((a) => {
-                        const active = p.artifacts.includes(a);
+                        const assignments = v.getExcerptArtifacts(p._idx);
+                        const active = assignments[a];
                         const PASTEL = { Deck:'#3b82f6', Blog:'#f97316', Protocol:'#10b981', Blurb:'#ef4444', Facts:'#8b5cf6' };
                         const pc = PASTEL[a];
-                        return <span key={a} style={{ padding: '3px 9px', font: '600 9px/1 Plus Jakarta Sans', borderRadius:20, border: `1.5px solid ${active ? pc : 'var(--rule2)'}`, color: active ? '#fff' : 'var(--faint)', background: active ? pc : 'transparent', transition:'all 0.15s' }}>{a}</span>;
+                        return (
+                          <button
+                            key={a}
+                            onClick={(e) => { e.stopPropagation(); v.toggleExcerptArtifact(p._idx, a); }}
+                            title={active ? `Remove from ${a}` : `Include in ${a}`}
+                            style={{ padding: '4px 10px', font: '700 9px/1 Plus Jakarta Sans', borderRadius: 20, border: `1.5px solid ${active ? pc : 'var(--rule2)'}`, color: active ? '#fff' : 'var(--faint)', background: active ? pc : 'transparent', cursor: 'pointer', transition: 'all 0.15s', display: 'inline-flex', alignItems: 'center', gap: 4, fontFamily: 'Plus Jakarta Sans' }}
+                            onMouseEnter={(e) => { if (!active) { e.currentTarget.style.borderColor = pc; e.currentTarget.style.color = pc; } else { e.currentTarget.style.opacity = '0.78'; } }}
+                            onMouseLeave={(e) => { e.currentTarget.style.borderColor = active ? pc : 'var(--rule2)'; e.currentTarget.style.color = active ? '#fff' : 'var(--faint)'; e.currentTarget.style.opacity = '1'; }}
+                          >
+                            {active && <svg width="7" height="6" viewBox="0 0 7 6" fill="none"><path d="M1 3l2 2 3-3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                            {a}
+                          </button>
+                        );
                       })}
                       <Box
                         css={`margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border-radius:6px;cursor:pointer;flex-shrink:0;transition:all 0.15s;color:${manageOpen ? '#fff' : 'var(--acc)'};background:${manageOpen ? 'var(--acc)' : 'transparent'};border:1px solid var(--acc)`}
@@ -4927,7 +5214,35 @@ export default class MedFactory extends React.Component {
                         <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/></svg>
                         Manage Excerpt
                       </Box>
-                    </div>
+                    </div>}
+
+                    {/* Track chips — only in By Artifact view */}
+                    {curView === 'artifact' && (() => {
+                      const TRACK_COLORS = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+                      const trackAssign = v.getExcerptTracks(p._idx);
+                      return (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap', paddingTop: 8, borderTop: '1px dashed var(--rule2)', marginTop: 2 }} onClick={(e) => e.stopPropagation()}>
+                          <span style={{ font: '600 8px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--faint)', flexShrink: 0, marginRight: 2 }}>TRACKS</span>
+                          {CONTENT_TRACKS.map((t, ti) => {
+                            const active = trackAssign[t.id];
+                            const col = TRACK_COLORS[ti] || 'var(--acc)';
+                            return (
+                              <button
+                                key={t.id}
+                                onClick={(e) => { e.stopPropagation(); v.toggleExcerptTrack(p._idx, t.id); }}
+                                title={active ? `Remove from "${t.label}"` : `Add to "${t.label}"`}
+                                style={{ padding: '3px 9px', font: `${active ? 700 : 500} 9px/1 Plus Jakarta Sans`, borderRadius: 20, border: `1.5px solid ${active ? col : 'var(--rule2)'}`, color: active ? '#fff' : 'var(--faint)', background: active ? col : 'transparent', cursor: 'pointer', transition: 'all 0.15s', display: 'inline-flex', alignItems: 'center', gap: 4, fontFamily: 'Plus Jakarta Sans' }}
+                                onMouseEnter={(e) => { if (!active) { e.currentTarget.style.borderColor = col; e.currentTarget.style.color = col; } else { e.currentTarget.style.opacity = '0.78'; } }}
+                                onMouseLeave={(e) => { e.currentTarget.style.borderColor = active ? col : 'var(--rule2)'; e.currentTarget.style.color = active ? '#fff' : 'var(--faint)'; e.currentTarget.style.opacity = '1'; }}
+                              >
+                                {active && <svg width="7" height="6" viewBox="0 0 7 6" fill="none"><path d="M1 3l2 2 3-3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                                {t.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
                   </div>
 
                   {/* Manage Excerpt panel — inline expanded */}
@@ -5271,8 +5586,39 @@ export default class MedFactory extends React.Component {
                       })}
 
                       {/* BY ARTIFACT */}
-                      {curView === 'artifact' && ALL_ARTIFACTS.map((art, ai) => {
-                        const artPapers = acceptedList.filter((p) => p.artifacts.includes(art));
+                      {curView === 'artifact' && (() => {
+                        const trackColors2 = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+                        return (
+                          <>
+                            {/* Track filter chips */}
+                            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16, padding: '10px 14px', background: 'var(--bg)', borderRadius: 10, border: '1px solid var(--rule)' }}>
+                              <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', alignSelf: 'center', marginRight: 4, flexShrink: 0 }}>FILTER BY TRACK</span>
+                              {['All', ...CONTENT_TRACKS.map(t => t.label)].map((label, li) => {
+                                const isActive = v.organizeArtifactTrackFilter === label;
+                                const col = li === 0 ? 'var(--acc)' : trackColors2[li - 1] || 'var(--acc)';
+                                return (
+                                  <button
+                                    key={label}
+                                    onClick={() => v.setOrganizeArtifactTrackFilter(label)}
+                                    style={{ padding: '5px 12px', font: `${isActive ? 700 : 500} 10.5px/1 Plus Jakarta Sans`, borderRadius: 20, border: `1.5px solid ${isActive ? col : 'var(--rule2)'}`, color: isActive ? (li === 0 ? '#fff' : '#fff') : 'var(--faint)', background: isActive ? col : 'transparent', cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'Plus Jakarta Sans' }}
+                                    onMouseEnter={(e) => { if (!isActive) { e.currentTarget.style.borderColor = col; e.currentTarget.style.color = col; } }}
+                                    onMouseLeave={(e) => { if (!isActive) { e.currentTarget.style.borderColor = 'var(--rule2)'; e.currentTarget.style.color = 'var(--faint)'; } }}
+                                  >{label}</button>
+                                );
+                              })}
+                            </div>
+
+                            {ALL_ARTIFACTS.map((art, ai) => {
+                        const artPapers = acceptedList.filter((p) => {
+                          const assignments = v.getExcerptArtifacts(p._idx);
+                          const inArt = assignments[art];
+                          if (!inArt) return false;
+                          if (v.organizeArtifactTrackFilter !== 'All') {
+                            const track = CONTENT_TRACKS.find(t => t.label === v.organizeArtifactTrackFilter);
+                            if (!track || !track.paperTracks?.includes(p.track)) return false;
+                          }
+                          return true;
+                        });
                         const isOpen = !!v.organizeExpanded[`art_${art}`];
                         const c = ART_COLORS[art];
                         return (
@@ -5299,6 +5645,9 @@ export default class MedFactory extends React.Component {
                           </div>
                         );
                       })}
+                          </>
+                        );
+                      })()}
 
                       {/* MANAGE FIGURES */}
                       {curView === 'figures' && (() => {
