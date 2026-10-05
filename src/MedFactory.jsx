@@ -1029,6 +1029,7 @@ export default class MedFactory extends React.Component {
       aiSectionSuggestions: [],
       aiSectionShown: false,
       figureSelections: {},
+      confirmedFigures: [],
       uploadedFigures: [],
       combinedExcerptsModal: null,
       renderStep: 2,
@@ -2422,8 +2423,26 @@ export default class MedFactory extends React.Component {
         const cur = s.figureSelections[key] || { included: true, artifacts: [], tracks: [], useAs: null };
         return { figureSelections: { ...s.figureSelections, [key]: { ...cur, useAs: val } } };
       }),
+      confirmedFigures: st.confirmedFigures,
       confirmFigures: () => {
-        this.setState({ figureSelections: st.figureSelections });
+        const sels = st.figureSelections;
+        const confirmed = [];
+        RESEARCH_PAPERS.forEach((p, pIdx) => {
+          (PAPER_FIGURES[pIdx] || []).forEach((fig, fi) => {
+            const key = `${pIdx}-${fi}`;
+            const fSel = sels[key];
+            if (fSel && fSel.included && fSel.artifacts.length > 0 && fSel.tracks.length > 0) {
+              confirmed.push({ key, type: fig.type, label: fig.label, caption: fig.caption, paperTitle: p.title, paperIdx: pIdx, artifacts: fSel.artifacts, tracks: fSel.tracks, useAs: fSel.useAs });
+            }
+          });
+        });
+        st.uploadedFigures.forEach((fig) => {
+          const fSel = sels[fig.id];
+          if (fSel && fSel.included && fSel.artifacts.length > 0 && fSel.tracks.length > 0) {
+            confirmed.push({ key: fig.id, type: 'uploaded', label: fig.name, caption: fig.name, src: fig.src, paperTitle: null, artifacts: fSel.artifacts, tracks: fSel.tracks, useAs: fSel.useAs });
+          }
+        });
+        this.setState({ confirmedFigures: confirmed, organizeView: 'track' });
       },
       uploadedFigures: st.uploadedFigures,
       addUploadedFigure: (fig) => this.setState((s) => ({ uploadedFigures: [...s.uploadedFigures, fig] })),
@@ -5530,7 +5549,8 @@ export default class MedFactory extends React.Component {
                       {curView === 'track' && CONTENT_TRACKS.map((track, ti) => {
                         const trackPapers = acceptedList.filter((p) => track.paperTracks.includes(p.track));
                         const customHere = v.customExcerpts.filter((e) => e.tracks.includes(track.id));
-                        const count = trackPapers.length + customHere.length;
+                        const figuresHere = v.confirmedFigures.filter((f) => f.tracks.includes(track.id));
+                        const count = trackPapers.length + customHere.length + figuresHere.length;
                         const isOpen = !!v.organizeExpanded[track.id];
                         return (
                           <div key={track.id} style={{ borderLeft: `4px solid ${track.color}`, background: '#fff', marginBottom: 8, transition: 'all 0.2s', animation: `rise 0.22s ease both`, animationDelay: `${ti * 0.04}s`, borderRadius: '0 12px 12px 0', boxShadow: isOpen ? '0 2px 12px rgba(15,31,74,0.08)' : '0 1px 4px rgba(15,31,74,0.04)', border: `1px solid ${isOpen ? track.color+'40' : 'var(--rule2)'}`, borderLeft: `4px solid ${track.color}` }}>
@@ -5541,7 +5561,12 @@ export default class MedFactory extends React.Component {
                             >
                               <div style={{ width: 10, height: 10, borderRadius: '50%', background: track.color, flexShrink: 0, boxShadow: `0 0 0 3px ${track.color}25` }} />
                               <span style={{ font: '700 13.5px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>{track.label}</span>
-                              <span style={{ padding:'2px 9px', font:'600 10px/1 Plus Jakarta Sans', borderRadius:20, background:`${track.color}18`, color:track.color, border:`1px solid ${track.color}35` }}>{count} {count === 1 ? 'excerpt' : 'excerpts'}</span>
+                              <span style={{ padding:'2px 9px', font:'600 10px/1 Plus Jakarta Sans', borderRadius:20, background:`${track.color}18`, color:track.color, border:`1px solid ${track.color}35` }}>{count} {count === 1 ? 'item' : 'items'}</span>
+                              {figuresHere.length > 0 && (
+                                <span style={{ padding:'2px 8px', font:'600 9px/1 Plus Jakarta Sans', borderRadius:20, background:'rgba(124,58,237,0.1)', color:'#7c3aed', border:'1px solid rgba(124,58,237,0.25)' }}>
+                                  {figuresHere.length} fig{figuresHere.length > 1 ? 's' : ''}
+                                </span>
+                              )}
                               {count > 0 && (
                                 <div style={{ display:'flex', gap:3 }}>
                                   {Array.from({ length: Math.min(count, 5) }).map((_, i) => (
@@ -5567,6 +5592,30 @@ export default class MedFactory extends React.Component {
                                   ? <div style={{ padding:'24px', textAlign:'center', color:'var(--faint)', font:'500 12px/1.6 Plus Jakarta Sans', border:'1.5px dashed #cbd5e1', borderRadius:10, background:'var(--s2)' }}>No excerpts yet in this track. Click <span style={{ color:'var(--acc)', fontWeight:700 }}>+ Add excerpt</span> to add one.</div>
                                   : trackPapers.map((p) => <React.Fragment key={p._idx}>{ExcerptCard({ p })}</React.Fragment>)
                                 }
+                                {figuresHere.map((fig) => (
+                                  <div key={fig.key} style={{ background:'#fff', border:'1px solid rgba(124,58,237,0.25)', borderLeft:'3px solid #7c3aed', padding:'12px 14px', display:'flex', flexDirection:'column', gap:8, animation:'rise 0.18s ease', borderRadius:'0 8px 8px 0' }}>
+                                    <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                                      <span style={{ padding:'2px 8px', border:'1px solid rgba(124,58,237,0.4)', background:'rgba(124,58,237,0.08)', font:'700 8.5px/1 Plus Jakarta Sans', letterSpacing:'0.12em', color:'#7c3aed', borderRadius:4 }}>FIGURE</span>
+                                      {fig.useAs === 'as-is' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--ok)', background:'rgba(21,128,61,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(21,128,61,0.2)' }}>Use as-is</span>}
+                                      {fig.useAs === 'redesign' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--warn)', background:'rgba(180,83,9,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(180,83,9,0.2)' }}>Needs redesign</span>}
+                                    </div>
+                                    <div style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
+                                      <div style={{ width:80, flexShrink:0, background:'var(--bg)', borderRadius:6, padding:6, border:'1px solid var(--rule)' }}>
+                                        {fig.type === 'uploaded'
+                                          ? <img src={fig.src} alt={fig.caption} style={{ width:'100%', height:50, objectFit:'contain', display:'block' }} />
+                                          : renderFigSVG(fig.type, fig.paperIdx)
+                                        }
+                                      </div>
+                                      <div style={{ flex:1, minWidth:0 }}>
+                                        <div style={{ font:'700 12px/1.4 Plus Jakarta Sans', color:'var(--ink)', marginBottom:3 }}>{fig.caption}</div>
+                                        {fig.paperTitle && <div style={{ font:'400 10.5px/1.4 Plus Jakarta Sans', color:'var(--faint)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>From: {fig.paperTitle.length > 55 ? fig.paperTitle.slice(0,55)+'…' : fig.paperTitle}</div>}
+                                      </div>
+                                    </div>
+                                    <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
+                                      {fig.artifacts.map((a) => <span key={a} style={{ padding:'2px 8px', font:'600 9px/1 Plus Jakarta Sans', border:`1px solid ${ART_COLORS[a]}`, color:ART_COLORS[a], background:`${ART_COLORS[a]}15`, borderRadius:20 }}>{a}</span>)}
+                                    </div>
+                                  </div>
+                                ))}
                                 {customHere.map((e) => (
                                   <div key={e.id} style={{ background:'#fff', border:'1px solid #e2e8f0', borderLeft:'3px solid var(--acc)', padding:'14px 16px', display:'flex', flexDirection:'column', gap:8, animation:'rise 0.18s ease', borderRadius:'0 8px 8px 0' }}>
                                     <div style={S('display:flex;align-items:center;gap:8px')}>

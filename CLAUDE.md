@@ -16,7 +16,7 @@
 - **Vite 5** — build tool; `npm run dev` for dev server, `npm run build` for production
 - **No TypeScript, no CSS modules, no external UI library** — all styles are inline React style objects
 - **Font**: Plus Jakarta Sans (Google Fonts, loaded in `index.css`)
-- **3 source files**: `src/MedFactory.jsx` (~5400 lines), `src/index.css`, `src/main.jsx`
+- **3 source files**: `src/MedFactory.jsx` (~5800 lines), `src/index.css`, `src/main.jsx`
 
 ---
 
@@ -79,22 +79,22 @@ Each screen is rendered as a conditional IIFE inside `<main>`:
 
 ### CSS Variables (Light Theme — `index.css` + `LIGHT_TOKENS`)
 ```css
---bg:    #f7f9fd   /* page background */
+--bg:    #f4f7fd   /* page background */
 --s1:    #ffffff   /* surface 1 (cards) */
---s2:    #eef2fb   /* surface 2 (inputs, lighter cards) */
---ink:   #0f1f4a   /* primary text */
---dim:   #2a4588   /* secondary text */
---faint: #5d78b0   /* muted text, labels */
---rule:  rgba(15,31,74,0.08)   /* light borders */
---rule2: rgba(15,31,74,0.16)   /* slightly stronger borders */
+--s2:    #e8eef9   /* surface 2 (inputs, lighter cards) */
+--ink:   #0c1a3d   /* primary text */
+--dim:   #1a3070   /* secondary text */
+--faint: #3d5499   /* muted text, labels */
+--rule:  rgba(12,26,61,0.10)   /* light borders */
+--rule2: rgba(12,26,61,0.20)   /* slightly stronger borders */
 --acc:   #2c52cc   /* accent blue */
 --acc2:  #4468e0   /* accent blue lighter (also in index.css) */
---ok:    #166534   /* green / success */
---warn:  #92400e   /* amber / warning */
+--ok:    #15803d   /* green / success */
+--warn:  #b45309   /* amber / warning */
 --mono:  ui-monospace, SFMono-Regular, Menlo, monospace
 ```
 
-`LIGHT_TOKENS` (line 662) is the JS mirror of these values — used by `applyTheme()` to set/remove CSS custom properties on the root element.
+`LIGHT_TOKENS` is the JS mirror of these values — used by `applyTheme()` to set/remove CSS custom properties on the root element.
 
 ### Dark Sidebar / Agent Panels
 The sidebar and dark navy panels override CSS variables inline:
@@ -135,7 +135,9 @@ Navigation is controlled by `this.state.screen`. The `go(s)` method switches scr
 |---|---|
 | `landing` | Login page |
 | `dash` | Dashboard — modern hero header, floating stat cards, workspace card grid |
-| `intake` | Brief definition (topic, audience, hero product) |
+| `intake` | Brief definition (topic, audience, hero product) — single "Create Workspace" CTA |
+| `workspace-hub` | Workspace hub — header with WS code badge, two-panel layout (Research + Artifacts) |
+| `section-select` | Section selection — 7 standard tracks + custom sections + AI suggestions panel |
 | `pipe` | Research screen — live agent feed + paper cards + evidence panels |
 | `organize` | Organize Research — excerpt grouping by track/artifact with agent panel |
 | `review` | MA Review — agent analysis + artifact readiness |
@@ -149,6 +151,106 @@ Lands on `dash` with MA Inbox view. Can open `ma-review` screen.
 Lands on `sci-dash`. Can open `sci-review` screen with `SciPaperReader`.
 
 **IMPORTANT**: Credentials are `static CREDENTIALS` on the class — never change them.
+
+---
+
+## Intake Screen (`intake`)
+
+Single-field brief form: topic, hero product, audience. One CTA button at the bottom:
+
+```jsx
+<Box
+  css={`...background:${ready ? 'linear-gradient(135deg,#2c52cc,#4468e0)' : 'var(--s2)'};
+        color:${ready ? '#fff' : 'var(--faint)'};...`}
+  onClick={() => { if (ready) v.skipToHub(); }}
+>
+  {/* workspace grid SVG icon */}
+  Create Workspace
+</Box>
+```
+
+`ready` = name + topic both non-empty. Button is visually disabled (gray) when not ready — no error, just no action. `skipToHub()` creates a workspace entry and navigates to `workspace-hub`.
+
+---
+
+## Workspace Hub Screen (`workspace-hub`)
+
+### Header
+Light-theme card (`var(--s1)` bg, subtle shadow):
+- WS code badge — accent blue pill: `WS-${String(id).slice(-3).padStart(3,'0')}`
+- Workspace name as `h1` (24px/700)
+- "Create Research" button (gradient blue) + "Create Artifact" button (outline)
+
+### Property Strip
+Inline row below header: `Topic · {value}  Hero Product · {value}  Owner · {value}`
+
+### Two-Panel Layout
+Equal-width flex row — Research panel (left) + Artifacts panel (right), both `var(--s1)` bg with portal card shadow.
+
+**Research panel:**
+- Count badge (accent blue when > 0)
+- "Add" icon button when research exists
+- Empty state with CTA when no research
+- List of research rows: name, status badge (PENDING=amber, RUNNING=pulsing blue, DONE=green), "Run" play button for pending items
+- Clicking "Run" on a pending research: sets status `in-progress` → navigates to `section-select`
+
+**Artifacts panel:**
+- Empty state with "Create Artifact" CTA
+
+### Research Status Lifecycle
+`'pending'` (created, not run) → `'in-progress'` (navigated to section-select/research) → `'complete'`
+
+### Research Code Format
+`${wsCode}-R${String(wsActiveResearch).padStart(3,'0')}` — e.g. `WS-001-R001`
+
+### Modals
+
+**`create-research` modal** (light-theme):
+- Name input with `border-left: 3px solid var(--acc)` accent
+- Inherited props box (`var(--s2)` bg) showing topic + hero product
+- Info note (blue tint background)
+- Cancel + "Create research" buttons (gradient)
+- On submit → sets `wsModal: 'research-created'`
+
+**`research-created` modal** (dark navy `#0d1f4e`):
+- Shows `"{name}" is saved as WS-001-R001`
+- Two option cards:
+  - **Run now** — `linear-gradient(135deg,rgba(44,82,204,0.28),rgba(96,165,250,0.18))` bg, `2px solid rgba(96,165,250,0.55)` border, glow on hover, play icon. Footer: "Select sections & start →". Calls `runWsResearchNow()` → navigates to `section-select`
+  - **Do it later** — very muted bg/border, dimmed text, clock icon. Footer: "Run anytime from workspace". Saves as `pending` on hub
+- "Run now" intentionally pops more than "Do it later"
+
+**`create-artifact` modal** (light-theme):
+- Shows inherited props box
+- Empty state message: research required first
+- Close + "Create Research first" buttons
+
+---
+
+## Section-Select Screen (`section-select`)
+
+Two-column layout with a header bar containing "Run research with N sections →" proceed button.
+
+### Left Column — Section List
+- **STANDARD SECTIONS** label + 7 rows (one per `CONTENT_TRACKS` entry)
+  - Each row: colored left border (track color), filled dot, checkbox, track label
+  - All selected by default on first load
+- **ADDED SECTIONS** group — custom + AI-generated sections
+  - Each shows the label; AI-generated ones show a purple `✦ AI` badge
+  - Inline remove button
+- **Manual add** — text input + "Add" button at bottom
+
+### Right Column — AI Suggestions Panel (320px fixed)
+Header with `✦` star icon + "AI Suggestions" title.
+
+**States:**
+1. **Idle** — "Suggest sections with AI" purple button
+2. **Loading** — 2.2s delay, three bouncing dots animation
+3. **Suggestions list** — 5 context-aware cards, each with label + reason text + "Add →" button
+
+AI suggestions are added to `sectionSelectCustom[]` with `aiGenerated: true` and `color: '#a78bfa'` (purple). Once added, "Add →" button grays out (duplicate guard).
+
+### `proceedFromSectionSelect()`
+When `wsResearches.length > 0` (research was created via workspace hub): navigates directly to `'pipe'` without recreating workspace. Otherwise creates workspace + research as before.
 
 ---
 
@@ -307,6 +409,33 @@ Only renders when `v.organizeSelectedPaper` is set. Clicking ✕ sets it to null
 ### Agent Auto-Run
 When navigating to organize screen (`go('organize')`), `runOrganizeAgent()` fires after 600ms. It runs through `ORGANIZE_AGENT_MSGS` with staggered delays, toggling `organizeAgentThinking` between each message.
 
+### ExcerptCard — Artifact Pills (By Track view)
+`ExcerptCard` is a plain function defined inside the organize IIFE and called as `ExcerptCard({ p })` (NOT as JSX `<ExcerptCard />`) to avoid remount flicker.
+
+In **By Track view** (`curView !== 'artifact'`), each excerpt card shows artifact pills as interactive `<button>` elements:
+- Active state: filled in artifact color with ✓ checkmark
+- Inactive state: outline/ghost with hover color
+- Clicking toggles `organizeArtifactAssignments[paperIdx][artifact]` via `v.toggleExcerptArtifact()`
+- Initial state lazily derived from `p.artifacts` if no override in state
+
+```js
+const PASTEL = { Deck:'#3b82f6', Blog:'#f97316', Protocol:'#10b981', Blurb:'#ef4444', Facts:'#8b5cf6' };
+const assignments = v.getExcerptArtifacts(p._idx);
+const active = assignments[a];
+```
+
+### ExcerptCard — Track Chips (By Artifact view)
+In **By Artifact view** (`curView === 'artifact'`), artifact pills are hidden. Instead each excerpt card shows 7 content track chips as clickable toggles:
+- Rendered via IIFE inside ExcerptCard: `{curView === 'artifact' && (() => { ... })()}`
+- Active state: filled in track color with ✓ checkmark
+- Inactive state: outline/ghost
+- Track colors array: `['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80']`
+- Clicking toggles `organizeTrackAssignments[paperIdx][trackId]` via `v.toggleExcerptTrack()`
+- Initial state lazily derived: track is active if `p.track === t.label` or `t.paperTracks.includes(p.track)`
+
+### By Artifact View Structure
+The By Artifact view is wrapped in an IIFE to scope a track filter chips row at top, then `ALL_ARTIFACTS.map(...)`. Each artifact group filters papers using live `getExcerptArtifacts()` state (not the original `p.artifacts`).
+
 ---
 
 ## Scientific Review Screen
@@ -335,6 +464,17 @@ All state in `this.state` (class component). Key fields:
   role: null,                  // 'creator' | 'ma' | 'sci'
   topic, heroProduct, audience,
   
+  // workspace hub
+  wsModal: null,               // null | 'create-research' | 'research-created' | 'create-artifact'
+  wsResearchModalName: '',     // name input value in create-research modal
+  wsResearches: [],            // [{ id, name, status: 'pending'|'in-progress'|'complete', artifacts: [] }]
+  wsActiveResearch: null,      // id of most recently created/run research
+  
+  // section-select AI suggestions
+  aiSectionLoading: false,
+  aiSectionSuggestions: [],    // [{ label, reason }]
+  aiSectionShown: false,       // true once user clicked "Suggest with AI"
+  
   // research
   researchTab: 'log',          // 'log'|'evidence'|'sources'|'brand'
   acceptedPapers: {},          // { [idx]: true }
@@ -355,6 +495,11 @@ All state in `this.state` (class component). Key fields:
   evidenceView: 'grid',        // 'grid' | 'list'
   sortDropdownOpen: false,
   
+  // organize excerpt assignments
+  organizeArtifactAssignments: {},    // { [paperIdx]: { Deck: bool, Blog: bool, ... } }
+  organizeTrackAssignments: {},       // { [paperIdx]: { [trackId]: bool } }
+  organizeArtifactTrackFilter: 'All', // kept in state, not actively used as filter
+
   // organize
   organizeView: 'track',       // 'track'|'artifact'|'figures'
   organizeExpanded: {},
@@ -383,40 +528,68 @@ All state in `this.state` (class component). Key fields:
 }
 ```
 
+### Key `renderVals()` Additions (workspace + organize)
+```js
+// Workspace hub
+wsModal, wsResearchModalName,
+openWsModal: (modal) => ...,
+closeWsModal: () => ...,
+setWsResearchModalName: (v2) => ...,
+createWsResearch: () => ...,       // creates research entry, opens research-created modal
+runWsResearchNow: () => ...,       // marks in-progress, navigates to section-select
+doWsResearchLater: () => ...,      // closes modal, research stays pending on hub
+skipToHub: () => ...,              // from intake: creates workspace, goes to workspace-hub
+
+// AI suggestions
+aiSectionLoading, aiSectionSuggestions, aiSectionShown,
+suggestAISections: () => ...,      // sets loading → 2.2s → populates suggestions
+addAISuggestion: (label, reason) => ...,
+
+// Organize excerpt assignments (lazy-init from paper data)
+organizeArtifactAssignments,
+toggleExcerptArtifact: (paperIdx, artifact) => ...,
+getExcerptArtifacts: (paperIdx) => ...,   // returns { Deck: bool, Blog: bool, ... }
+toggleExcerptTrack: (paperIdx, trackId) => ...,
+getExcerptTracks: (paperIdx) => ...,      // returns { [trackId]: bool }
+
+// Section-select
+proceedFromSectionSelect: () => ...,  // skips workspace creation when wsResearches.length > 0
+```
+
 ---
 
 ## Data Constants
 
-### `RESEARCH_PAPERS` (line 257)
+### `RESEARCH_PAPERS`
 12 paper objects. All have `flag: null` (warning badges removed). Fields: `db`, `type`, `title`, `journal`, `year`, `score`, `artifacts`, `track`, `designTier`, `appraisal`, `grade`, `citations`, `funding`, `statRigor`, `relevance`, `excerpt`, `excerptSrc`.
 
-### `EXTRA_PAPERS` (line 273)
+### `EXTRA_PAPERS`
 8 additional papers revealed when user clicks "show me more papers" in the evidence feed.
 
-### `CONTENT_TRACKS` (line 286)
-7 tracks with `id`, `label`, `color`, `paperTracks[]`. Used for evidence filter chips in the Evidence Review tab.
+### `CONTENT_TRACKS`
+7 tracks with `id`, `label`, `color`, `paperTracks[]`. Used for evidence filter chips in Evidence Review and track chips in Organize By Artifact view.
 
-### `ALL_ARTIFACTS` (line 291)
+### `ALL_ARTIFACTS`
 `['Deck', 'Blog', 'Protocol', 'Blurb', 'Facts']`
 
 ### `ART_COLORS` (inline in organize screen)
 `{ Deck: '#7eb8f7', Blog: '#fb923c', Protocol: '#4ade80', Blurb: '#f97b7b', Facts: '#a78bfa' }`
 
-### `PAPER_FIGURES` (line ~620)
+### `PAPER_FIGURES`
 Keyed by paper `_idx`. Each entry is an array of `{ type, label, caption }`. Types: `'km'` (Kaplan-Meier), `'forest'` (forest plot), `'bar'` (bar chart), `'line'` (line chart).
 
-### `ORGANIZE_AGENT_MSGS` (line ~582)
+### `ORGANIZE_AGENT_MSGS`
 6 messages with `**bold**` markdown. Messages starting with `⚠` are rendered as "GAP DETECTED" in amber.
 
-### `REVIEW_AGENT_MSGS` (line ~591)
+### `REVIEW_AGENT_MSGS`
 Array of `{ text, artifact, color, sources[] }` for the MA review agent.
 
-### `LIGHT_TOKENS` (line 662)
+### `LIGHT_TOKENS`
 JS object of CSS variable name → value for the light theme. Applied via `applyTheme()`.
 
 ---
 
-## Module-Level Evidence Helpers (line 668)
+## Module-Level Evidence Helpers
 
 ```js
 // Maps paper grade text → letter A/B/C
@@ -467,15 +640,19 @@ Vercel config: `vercel.json` — build command `npm run build`, output `dist`, S
 5. Expose values + setters in `renderVals()`
 
 ### Preventing JSX errors in IIFE screens
-- Close all divs before `})()}` 
+- Close all divs before `})()}`
 - When using `const leftPanel = (<div>` — don't add an extra `</div>` before `); /* end leftPanel */`
 - `return (` in IIFEs must be closed with `)` not `);` inside the return
+- When wrapping a section in an IIFE with `<>` fragment, ensure closing `</>`, `);`, and `})()}` are all present
 
 ### `renderMD()` helper
 Renders `**bold**` markdown inside agent message text. Only available inside the MA review screen IIFE — not global. For organize agent, use a manual `split(/(\*\*[^*]+\*\*)/g)` pattern.
 
 ### Theme toggling
 The `toggleDir` action calls `applyTheme(bool)` which sets/removes CSS custom properties on the root element via `LIGHT_TOKENS`. Default starts as light; theme direction is stored in `this.state.dir`.
+
+### Lazy-init state for per-paper assignments
+Both `organizeArtifactAssignments` and `organizeTrackAssignments` use lazy initialization: if no entry exists for a `paperIdx`, derive the default from the paper's original `p.artifacts` / `p.track`. Always use `getExcerptArtifacts(idx)` and `getExcerptTracks(idx)` helpers rather than reading state directly.
 
 ---
 
@@ -484,5 +661,5 @@ The `toggleDir` action calls `applyTheme(bool)` which sets/removes CSS custom pr
 - `static CREDENTIALS` — the three login accounts are fixed for the demo
 - `RESEARCH_PAPERS[*].flag` — all set to `null`, keep them that way (no warning badges)
 - Module-level placement of `SciPaperReader` and `ResizableSplit` — must stay outside the class
-- CSS variable names in `index.css` — referenced throughout ~5400 lines
+- CSS variable names in `index.css` — referenced throughout ~5800 lines
 - `gradeLetterFromPaper` and `evidenceSortFn` — must stay at module level (before the class), used in both `renderVals()` and the Evidence Review IIFE
