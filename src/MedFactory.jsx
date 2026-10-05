@@ -3526,21 +3526,21 @@ export default class MedFactory extends React.Component {
                       const wsCode = 'WS-' + String(v.activeWorkspaceId || 1).toString().slice(-3).padStart(3, '0');
                       const rCode = `${wsCode}-R${String(v.wsActiveResearch).padStart(3, '0')}`;
                       return (
-                        <div style={{ width: 520, background: '#0d1f4e', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.45)', animation: 'rise 0.18s ease', border: '1px solid rgba(232,238,248,0.1)' }}>
+                        <div style={{ width: 520, background: '#fff', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 40px rgba(12,26,61,0.14),0 1px 0 rgba(12,26,61,0.06)', animation: 'rise 0.18s ease', border: '1px solid var(--rule2)' }}>
                           {/* Header */}
-                          <div style={{ padding: '28px 32px 20px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                          <div style={{ padding: '28px 32px 20px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                             <div>
-                              <div style={{ font: '800 20px/1.2 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 6 }}>Research created</div>
-                              <div style={{ font: '600 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4' }}>
-                                <span style={{ color: '#e8eef8', fontWeight: 600 }}>"{r?.name}"</span> is saved as <span style={{ fontFamily: 'ui-monospace,SFMono-Regular,Menlo,monospace', fontSize: 11, background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: 4, color: '#60a5fa' }}>{rCode}</span>.
+                              <div style={{ font: '800 20px/1.2 Plus Jakarta Sans', color: '#000', marginBottom: 6 }}>Research created</div>
+                              <div style={{ font: '600 12.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>
+                                <span style={{ color: '#000', fontWeight: 700 }}>"{r?.name}"</span> is saved as <span style={{ fontFamily: 'ui-monospace,SFMono-Regular,Menlo,monospace', fontSize: 11, background: 'var(--s2)', padding: '2px 8px', borderRadius: 4, color: 'var(--acc)', fontWeight: 700 }}>{rCode}</span>.
                               </div>
-                              <div style={{ font: '600 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4', marginTop: 12 }}>
+                              <div style={{ font: '600 12.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 10 }}>
                                 Open the research agent now, or run it later from the workspace.
                               </div>
                             </div>
                             <Box
-                              css="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;cursor:pointer;color:#4d6fa0;flex-shrink:0;margin-left:16px"
-                              hover="background:rgba(255,255,255,0.08);color:#e8eef8"
+                              css="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;cursor:pointer;color:var(--faint);flex-shrink:0;margin-left:16px"
+                              hover="background:var(--s2);color:var(--ink)"
                               onClick={v.doWsResearchLater}
                             >
                               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>
@@ -3548,21 +3548,21 @@ export default class MedFactory extends React.Component {
                           </div>
 
                           {/* Two option cards */}
-                          <div style={{ display: 'flex', gap: 12, padding: '4px 32px 32px' }}>
+                          <div style={{ display: 'flex', gap: 12, padding: '20px 32px 28px' }}>
                             {/* Run now */}
                             <Box
-                              css="flex:1;padding:22px 22px;border:2px solid rgba(96,165,250,0.55);border-radius:14px;cursor:pointer;background:linear-gradient(135deg,rgba(44,82,204,0.28),rgba(96,165,250,0.18));display:flex;flex-direction:column;gap:12px;box-shadow:0 0 0 0 rgba(96,165,250,0);transition:all 0.18s"
-                              hover="background:linear-gradient(135deg,rgba(44,82,204,0.42),rgba(96,165,250,0.28));border-color:#60a5fa;box-shadow:0 4px 28px rgba(96,165,250,0.25)"
+                              css="flex:1;padding:20px;border:2px solid var(--acc);border-radius:14px;cursor:pointer;background:#fff;display:flex;flex-direction:column;gap:12px;transition:all 0.18s"
+                              hover="background:var(--s2);box-shadow:0 4px 20px rgba(44,82,204,0.14)"
                               onClick={v.runWsResearchNow}
                             >
-                              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(96,165,250,0.2)', border: '1.5px solid rgba(96,165,250,0.4)', display: 'grid', placeItems: 'center' }}>
-                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M2 1.5l11 6.5-11 6.5V1.5z" fill="#60a5fa" stroke="#60a5fa" strokeWidth="0.5" strokeLinejoin="round"/></svg>
+                              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(44,82,204,0.08)', border: '1.5px solid rgba(44,82,204,0.2)', display: 'grid', placeItems: 'center' }}>
+                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M2 1.5l11 6.5-11 6.5V1.5z" fill="var(--acc)" stroke="var(--acc)" strokeWidth="0.5" strokeLinejoin="round"/></svg>
                               </div>
                               <div>
-                                <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 6 }}>Run now</div>
-                                <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: '#8aaad4' }}>Open the research agent with this research.</div>
+                                <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#000', marginBottom: 6 }}>Run now</div>
+                                <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: 'var(--faint)' }}>Open the research agent with this research.</div>
                               </div>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: '700 11px/1 Plus Jakarta Sans', color: '#60a5fa', marginTop: 2 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: '700 11px/1 Plus Jakarta Sans', color: 'var(--acc)', marginTop: 2 }}>
                                 Select sections &amp; start
                                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 5.5h8M5.5 2l3.5 3.5L5.5 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
                               </div>
@@ -3570,18 +3570,18 @@ export default class MedFactory extends React.Component {
 
                             {/* Do it later */}
                             <Box
-                              css="flex:1;padding:22px 22px;border:2px solid rgba(232,238,248,0.12);border-radius:14px;cursor:pointer;background:rgba(255,255,255,0.04);display:flex;flex-direction:column;gap:12px;transition:all 0.18s"
-                              hover="background:rgba(255,255,255,0.09);border-color:rgba(232,238,248,0.26)"
+                              css="flex:1;padding:20px;border:2px solid var(--rule2);border-radius:14px;cursor:pointer;background:#fff;display:flex;flex-direction:column;gap:12px;transition:all 0.18s"
+                              hover="background:var(--s2);border-color:var(--faint)"
                               onClick={v.doWsResearchLater}
                             >
-                              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(255,255,255,0.07)', border: '1.5px solid rgba(232,238,248,0.15)', display: 'grid', placeItems: 'center' }}>
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#8aaad4" strokeWidth="1.4"/><path d="M8 5v3.5l2.5 2" stroke="#8aaad4" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--s2)', border: '1.5px solid var(--rule2)', display: 'grid', placeItems: 'center' }}>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--faint)" strokeWidth="1.4"/><path d="M8 5v3.5l2.5 2" stroke="var(--faint)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                               </div>
                               <div>
-                                <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#c8d6ee', marginBottom: 6 }}>Do it later</div>
-                                <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: '#6688aa' }}>Saved as pending · not run yet.</div>
+                                <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#000', marginBottom: 6 }}>Do it later</div>
+                                <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: 'var(--faint)' }}>Saved as pending · not run yet.</div>
                               </div>
-                              <div style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#4d6fa0', marginTop: 2 }}>Run anytime from workspace</div>
+                              <div style={{ font: '600 11px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 2 }}>Run anytime from workspace</div>
                             </Box>
                           </div>
                         </div>
