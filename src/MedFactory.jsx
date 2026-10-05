@@ -1270,7 +1270,6 @@ export default class MedFactory extends React.Component {
 
   static CREDENTIALS = [
     { email: 'mayank@medfactory.com',  password: 'Creator@2026',   role: 'creator', name: 'Mayank Gupta',   title: 'Medical Affairs Lead' },
-    { email: 'priya@medfactory.com',   password: 'MedReview@2026', role: 'ma',      name: 'Dr. Priya Nair', title: 'Lead MA Reviewer' },
     { email: 'arjun@medfactory.com',   password: 'SciReview@2026', role: 'sci',     name: 'Dr. Arjun Mehta',title: 'Scientific Adviser' },
   ];
 
@@ -2011,7 +2010,7 @@ export default class MedFactory extends React.Component {
       removeExcerptItem: (idx, text) => this.setState((s) => {
         const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
         const next = cur.filter((e) => e.text !== text);
-        return { paperExcerpts: { ...s.paperExcerpts, [idx]: next.length ? next : [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }] } };
+        return { paperExcerpts: { ...s.paperExcerpts, [idx]: next } };
       }),
       showMoreExcerpts: st.showMoreExcerpts,
       toggleShowMore: (idx) => this.setState((s) => ({ showMoreExcerpts: { ...s.showMoreExcerpts, [idx]: !s.showMoreExcerpts[idx] } })),
@@ -5273,17 +5272,24 @@ export default class MedFactory extends React.Component {
                     {/* title */}
                     <div style={{ font:'700 13.5px/1.45 Plus Jakarta Sans', letterSpacing:'-0.01em', color:'var(--ink)' }}>{p.title}</div>
                     {/* current excerpt(s) */}
-                    {currentExcerpts.map((exc, ei) => (
-                      <div key={ei} style={{ borderLeft:'3px solid var(--acc)', padding:'10px 14px', background:'#f0f2ff', borderRadius:'0 8px 8px 0', position: 'relative' }}>
-                        <div style={{ font:'700 13px/1.8 Plus Jakarta Sans', color:'#000000' }}>{exc.text}</div>
+                    {currentExcerpts.length === 0 ? (
+                      <div style={{ borderLeft:'3px solid var(--rule2)', padding:'10px 14px', background:'var(--s2)', borderRadius:'0 8px 8px 0', display:'flex', alignItems:'center', gap:8 }}>
+                        <span style={{ font:'600 11px/1.5 Plus Jakarta Sans', color:'var(--faint)', fontStyle:'italic' }}>No excerpt — removed</span>
+                      </div>
+                    ) : currentExcerpts.map((exc, ei) => (
+                      <div key={ei} style={{ borderLeft:'3px solid var(--acc)', padding:'10px 14px 10px 14px', background:'#f0f2ff', borderRadius:'0 8px 8px 0', position: 'relative' }}>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); v.removeExcerptItem(p._idx, exc.text); }}
+                          style={{ position:'absolute', top:8, right:8, display:'inline-flex', alignItems:'center', gap:4, background:'#fef2f2', border:'1px solid #fecaca', borderRadius:6, cursor:'pointer', color:'#dc2626', fontSize:9.5, fontWeight:700, lineHeight:1, padding:'4px 8px', fontFamily:'Plus Jakarta Sans', transition:'all 0.12s' }}
+                          title="Remove excerpt"
+                          onMouseEnter={(e) => { e.currentTarget.style.background='#dc2626'; e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='#dc2626'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background='#fef2f2'; e.currentTarget.style.color='#dc2626'; e.currentTarget.style.borderColor='#fecaca'; }}
+                        >
+                          <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                          Remove
+                        </button>
+                        <div style={{ font:'700 13px/1.8 Plus Jakarta Sans', color:'#000000', paddingRight: 70 }}>{exc.text}</div>
                         <div style={{ font:'600 9.5px/1 Plus Jakarta Sans', color:'var(--faint)', marginTop:7, letterSpacing:'0.04em', fontFamily:'var(--mono)' }}>{exc.src}</div>
-                        {currentExcerpts.length > 1 && (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); v.removeExcerptItem(p._idx, exc.text); }}
-                            style={{ position:'absolute', top:6, right:8, background:'none', border:'none', cursor:'pointer', color:'var(--faint)', fontSize:12, lineHeight:1, padding:'2px 4px' }}
-                            title="Remove this excerpt"
-                          >✕</button>
-                        )}
                       </div>
                     ))}
                     {/* artifact tags — clickable toggles, only in By Track view */}
@@ -6801,34 +6807,16 @@ export default class MedFactory extends React.Component {
                                   </div>
                                 )}
 
-                                {/* Highlighted excerpt with switch toggle */}
+                                {/* Current Excerpt */}
                                 {(() => {
-                                  const showRec = !!v.gapShowRecommendation[v.gapSelected];
                                   return (
                                     <div style={{ marginBottom: 14 }}>
-                                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
+                                      <div style={{ marginBottom: 7 }}>
                                         <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                                          {showRec ? 'AI Recommended Version' : 'Current Excerpt (Flagged)'}
+                                          Current Excerpt (Flagged)
                                         </div>
-                                        <button
-                                          onClick={() => v.toggleGapRecommendation(v.gapSelected)}
-                                          style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: `1.5px solid ${showRec ? '#16a34a' : '#2563eb'}`, borderRadius: 20, background: showRec ? '#f0fdf4' : '#eff6ff', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 700, color: showRec ? '#16a34a' : '#2563eb' }}
-                                        >
-                                          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5c0-1.93 1.57-3.5 3.5-3.5S9 3.57 9 5.5 7.43 9 5.5 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M9 3.5V5.5H7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                          {showRec ? 'Show original' : 'Switch to AI recommendation'}
-                                        </button>
                                       </div>
-                                      {showRec ? (
-                                        <div style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: '#f0fdf4', borderRadius: 7, padding: '12px 16px', border: '1px solid #bbf7d0', borderLeft: '3px solid #16a34a', animation: 'rise 0.18s ease' }}>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#16a34a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>✓ Recommended replacement</div>
-                                          {primaryExcerpt.text
-                                            .replace('causes', 'is associated with')
-                                            .replace('leads to', 'correlates with')
-                                            .replace('cause', 'associate with')}
-                                          <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{primaryExcerpt.src} · <em>language adjusted per AI recommendation</em></div>
-                                        </div>
-                                      ) : (
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                                           {/* Primary excerpt with highlight */}
                                           <div style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: v.gapLastAction?.type === 'replace' ? '#f0fdf4' : 'var(--s2)', borderRadius: 7, padding: '12px 16px', border: `1px solid ${v.gapLastAction?.type === 'replace' ? '#86efac' : 'var(--rule)'}`, position: 'relative', animation: v.gapLastAction?.type === 'replace' ? 'rise 0.22s ease both' : 'none' }}>
                                             {v.gapLastAction?.type === 'replace' && (
@@ -6859,7 +6847,6 @@ export default class MedFactory extends React.Component {
                                             );
                                           })}
                                         </div>
-                                      )}
                                     </div>
                                   );
                                 })()}
