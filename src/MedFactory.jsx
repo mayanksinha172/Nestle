@@ -475,7 +475,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
         <div style={{ width: 5, height: 38, background: trackColor, flexShrink: 0, borderRadius: 3 }} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ font: '700 13.5px/1.4 Plus Jakarta Sans', color: '#1a2d6b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
-          <div style={{ font: '400 11px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 4 }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
+          <div style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 4 }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           {activeCount > 0 && (
@@ -483,7 +483,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
               {activeCount} comment{activeCount > 1 ? 's' : ''}
             </span>
           )}
-          <span style={{ font: '400 10px/1 Plus Jakarta Sans', color: '#6878a8', letterSpacing: '0.02em' }}>Hover to comment</span>
+          <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: '#6878a8', letterSpacing: '0.02em' }}>Hover to comment</span>
           <button onClick={() => setSciSelectedPaper(null)} style={{ padding: '5px 13px', font: '600 10.5px/1 Plus Jakarta Sans', border: '1px solid rgba(26,45,107,0.18)', color: '#2d4a8a', background: 'transparent', cursor: 'pointer', borderRadius: 4 }}>&#x2715; Close</button>
         </div>
       </div>
@@ -498,7 +498,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
             {/* Paper title block */}
             <div style={{ marginBottom: 36 }}>
               <h1 style={{ font: '800 26px/1.3 Plus Jakarta Sans', letterSpacing: '-0.03em', color: '#1a2d6b', margin: '0 0 14px' }}>{paper.title}</h1>
-              <p style={{ font: '500 13px/1.6 Plus Jakarta Sans', color: '#6878a8', margin: '0 0 6px' }}>
+              <p style={{ font: '600 13px/1.6 Plus Jakarta Sans', color: '#6878a8', margin: '0 0 6px' }}>
                 Systematic Review &amp; Meta-Analysis &middot; {paper.journal} &middot; {paper.year}
               </p>
               {paper.n && <p style={{ font: '600 12px/1 Plus Jakarta Sans', color: '#2d4a8a', margin: '0 0 28px' }}>n = {paper.n.toLocaleString()} participants</p>}
@@ -570,7 +570,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
                             <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#2c52cc', display: 'grid', placeItems: 'center', font: '700 9px Plus Jakarta Sans', color: '#fff', flexShrink: 0 }}>AM</div>
                             <div>
                               <div style={{ font: '600 12px/1 Plus Jakarta Sans', color: '#1a2d6b' }}>Dr. Arjun Mehta</div>
-                              <div style={{ font: '400 10px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 2 }}>Scientific Adviser</div>
+                              <div style={{ font: '600 10px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 2 }}>Scientific Adviser</div>
                             </div>
                           </div>
                           <textarea
@@ -579,7 +579,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
                             placeholder="Add a scientific comment or concern…"
                             value={sciCommentDraft.text}
                             onChange={e => setSciCommentText(e.target.value)}
-                            style={{ width: '100%', background: 'var(--s2)', border: '1px solid rgba(26,45,107,0.15)', color: '#1a2d6b', padding: '10px 12px', font: '400 13.5px/1.6 Plus Jakarta Sans', resize: 'none', outline: 'none', display: 'block', borderRadius: 4 }}
+                            style={{ width: '100%', background: 'var(--s2)', border: '1px solid rgba(26,45,107,0.15)', color: '#1a2d6b', padding: '10px 12px', font: '600 13.5px/1.6 Plus Jakarta Sans', resize: 'none', outline: 'none', display: 'block', borderRadius: 4 }}
                           />
                           <div style={{ display: 'flex', gap: 8, marginTop: 10, justifyContent: 'flex-end' }}>
                             <button onClick={cancelSciComment} style={{ padding: '7px 14px', font: '600 11.5px/1 Plus Jakarta Sans', border: '1px solid rgba(26,45,107,0.18)', color: '#2d4a8a', background: '#fff', cursor: 'pointer', borderRadius: 4 }}>Cancel</button>
@@ -608,10 +608,10 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
                   <div style={{ width: 26, height: 26, borderRadius: '50%', background: '#2c52cc', display: 'grid', placeItems: 'center', font: '700 9px Plus Jakarta Sans', color: '#fff', flexShrink: 0 }}>AM</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ font: '600 12px/1 Plus Jakarta Sans', color: '#1a2d6b' }}>{cmt.author}</div>
-                    <div style={{ font: '400 10px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 3 }}>{cmt.time}</div>
+                    <div style={{ font: '600 10px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 3 }}>{cmt.time}</div>
                   </div>
                 </div>
-                <p style={{ margin: '0 0 10px', font: '400 13px/1.65 Plus Jakarta Sans', color: '#1a2d6b' }}>{cmt.text}</p>
+                <p style={{ margin: '0 0 10px', font: '600 13px/1.65 Plus Jakarta Sans', color: '#1a2d6b' }}>{cmt.text}</p>
                 <button
                   onClick={() => resolveSciComment(key, cmt.id)}
                   style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: '#6878a8', background: 'none', border: '1px solid rgba(26,45,107,0.12)', cursor: 'pointer', padding: '4px 10px', borderRadius: 3 }}>
@@ -620,7 +620,7 @@ const SciPaperReader = ({ paper, sciInlineComments, sciCommentDraft,
               </div>
             ))}
           {activeCount === 0 && (
-            <div style={{ font: '400 12.5px/1.8 Plus Jakarta Sans', color: '#6878a8', padding: '8px 0' }}>
+            <div style={{ font: '600 12.5px/1.8 Plus Jakarta Sans', color: '#6878a8', padding: '8px 0' }}>
               No comments yet.<br />
               Hover any paragraph and click the{' '}
               <strong style={{ color: '#2c52cc' }}>+</strong> button to add a comment.
@@ -748,9 +748,9 @@ const PAPER_FIGURES = {
 };
 
 const LIGHT_TOKENS = {
-  '--bg': '#f4f7fd', '--s1': '#ffffff', '--s2': '#e8eef9', '--ink': '#0c1a3d',
-  '--dim': '#1a3070', '--faint': '#3d5499', '--rule': 'rgba(12,26,61,0.10)',
-  '--rule2': 'rgba(12,26,61,0.20)', '--acc': '#2c52cc', '--ok': '#15803d', '--warn': '#b45309',
+  '--bg': '#ffffff', '--s1': '#ffffff', '--s2': '#f0f2ff', '--ink': '#000000',
+  '--dim': '#111111', '--faint': '#444444', '--rule': 'rgba(0,0,0,0.10)',
+  '--rule2': 'rgba(0,0,0,0.20)', '--acc': '#2c52cc', '--ok': '#15803d', '--warn': '#b45309',
 };
 
 const MOCK_CITE_PAPERS = [
@@ -828,6 +828,83 @@ const GAP_FINDINGS = [
     recommendation: 'Reorder evidence so SELECT (2023) leads the cardiovascular narrative, with LEADER (2016) as historical context. Update the evidence tier label from "primary" to "supporting — historical".',
     highlightText: 'The rate of first occurrence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke was lower with liraglutide than with placebo (HR 0.87; 95% CI 0.78–0.97)',
     excerptContext: 'LEADER was groundbreaking in 2016 but the effect size (HR 0.87) is smaller than semaglutide\'s SELECT result (HR 0.80). Leading with the stronger, more recent evidence is best practice.',
+  },
+  {
+    paperIdx: 1,
+    severity: 'Critical',
+    type: 'Population Mismatch',
+    title: 'SELECT enrolled non-diabetic patients — extrapolation to T2D claims is unsupported',
+    description: 'The SELECT trial exclusively enrolled adults with overweight or obesity and established cardiovascular disease who did NOT have type 2 diabetes at baseline. Using SELECT as primary evidence for a T2D product claim is a population mismatch that regulatory reviewers will flag.',
+    why: 'SELECT\'s inclusion criteria explicitly excluded patients with T2DM. While the CV benefit is real, applying it to T2D patient communications as if it directly supports the hero product\'s indication creates a material misrepresentation. ABPI Code clause 7.2 prohibits extrapolation beyond the approved indication.',
+    recommendation: 'Restrict SELECT citations to slide context that explicitly frames the non-diabetic population (e.g. "cardiovascular benefit independent of diabetes status"). For T2D-specific efficacy claims, use SUSTAIN-6 or PIONEER-6 as the primary source.',
+    highlightText: 'Treatment with semaglutide resulted in a significantly lower incidence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke than placebo (HR 0.80; 95% CI 0.72–0.90; P<0.001).',
+    excerptContext: 'SELECT is the largest and most powerful semaglutide CV trial, but its population (BMI ≥27, no T2D) is distinct from the hero product\'s licensed indication. Mixing trial populations without disclosure is a frequent cause of regulatory rejection.',
+  },
+  {
+    paperIdx: 3,
+    severity: 'Critical',
+    type: 'Guideline Excerpt Truncated',
+    title: 'ADA recommendation quoted without its material qualifier',
+    description: 'The ADA 2025 Standard of Care excerpt drops a critical qualifier: the full recommendation reads "...independently of baseline HbA1c or metformin use, when eGFR permits." The eGFR condition is absent from the current excerpt, making the recommendation appear broader than it is.',
+    why: 'Truncating a guideline recommendation to remove a safety or eligibility qualifier is classified as misleading promotion under EU Directive 2001/83/EC and ABPI Code clause 7.3. A reviewer, pharmacist, or HCP relying on the truncated excerpt may prescribe outside the intended patient population.',
+    recommendation: 'Restore the full recommendation text including the eGFR qualifier. If slide space is limited, paraphrase accurately: "Recommended in patients with established ASCVD and adequate renal function (eGFR as per labelling)." Add a footnote referencing the full recommendation section.',
+    highlightText: 'For adults with type 2 diabetes and established atherosclerotic cardiovascular disease, a GLP-1 receptor agonist with demonstrated cardiovascular benefit is recommended independently of baseline HbA1c or individualised glucose target.',
+    excerptContext: 'ADA Section 9.3 continues: "...provided renal function permits use per the product\'s approved labelling." This qualifier was present in the 2024 edition and was retained in 2025. Its omission is material, not stylistic.',
+  },
+  {
+    paperIdx: 4,
+    severity: 'Warning',
+    type: 'Heterogeneity Not Flagged',
+    title: 'Meta-analysis I² of 38% not disclosed — moderate heterogeneity present',
+    description: 'The Lancet Diabetes meta-analysis (41 cohorts, N=1.2M) reports an I² of 38%, indicating moderate between-study heterogeneity. The excerpt cites the pooled 47.2% attainment figure without acknowledging that this estimate may not apply uniformly across settings, care models, or geographies.',
+    why: 'I² values 25–50% are classified as moderate heterogeneity per Cochrane guidance. Presenting a pooled estimate as a universal benchmark without acknowledging variability in the underlying data risks misleading HCPs about the likely attainment rate in their own practice setting.',
+    recommendation: 'Add a supplementary footnote: "Pooled estimate; I²=38%. Attainment rates varied from 29% to 64% across included cohorts — local care model and patient demographics will influence observed rates." This does not weaken the claim but protects against challenge.',
+    highlightText: 'Across 41 cohorts totalling 1.2 million patients, only 47.2% achieved their individualised HbA1c target. Attainment was lowest in the first two years following treatment intensification, the window in which therapeutic inertia is most frequently recorded.',
+    excerptContext: 'The 47.2% figure is robust and widely cited, but the heterogeneity range (29–64%) means some practices will see very different rates. Disclosing the I² is standard practice in Cochrane-quality MA summaries.',
+  },
+  {
+    paperIdx: 8,
+    severity: 'Critical',
+    type: 'Dosing Threshold Misquoted',
+    title: 'ADA/KDIGO eGFR threshold cited incorrectly — ≥15 used where ≥20 applies',
+    description: 'The current evidence summary cites the ADA/KDIGO guideline as supporting GLP-1 RA use from "eGFR ≥15 mL/min/1.73m²." The actual guideline recommendation threshold is eGFR ≥20 mL/min/1.73m² for first-line SGLT2i, with GLP-1 RA recommended at eGFR ≥20 as second-line. The ≥15 threshold applies only to SGLT2 inhibitor continuation, not initiation.',
+    why: 'Citing an incorrect dosing threshold in MA communications constitutes a prescribing safety risk. If an HCP relies on the ≥15 threshold to initiate a GLP-1 RA in a patient with eGFR 15–19, this could result in off-label, potentially unsafe prescribing. This type of error attracts the highest regulatory scrutiny and must be corrected before any external distribution.',
+    recommendation: 'Correct the excerpt to read "eGFR ≥20 mL/min/1.73m²" throughout. Cross-check all references to this guideline across the full evidence pack — if the error appears elsewhere, correct all instances simultaneously. Flag for urgent review by regulatory medical writer before next use.',
+    highlightText: 'For patients with type 2 diabetes and chronic kidney disease with eGFR ≥15 mL/min/1.73m², a GLP-1 receptor agonist with demonstrated cardiovascular or kidney benefit is recommended as a preferred add-on therapy, independently of HbA1c.',
+    excerptContext: 'The ≥15 figure likely originated from conflation with the SGLT2i continuation threshold. The original ADA/KDIGO recommendation 4.2 explicitly states ≥20 for GLP-1 RA initiation. The discrepancy is subtle but clinically significant.',
+  },
+  {
+    paperIdx: 9,
+    severity: 'Warning',
+    type: 'NICE Guidance vs MHRA Approval Conflation',
+    title: 'NICE recommendation conflated with MHRA licensed indication',
+    description: 'The current evidence summary presents the NICE NG28 GLP-1 RA recommendation as equivalent to a licensed indication statement. NICE guidance describes reimbursement and prescribing conditions in England — it does not constitute MHRA approval and the two must not be conflated in HCP communications.',
+    why: 'MHRA labelling (SmPC) and NICE technology appraisals/guidelines serve different legal purposes. Presenting a NICE recommendation as if it defines the licensed indication may inadvertently widen the scope of a promotional claim beyond what the SmPC supports. This is a common PMCPA complaint trigger, particularly for UK-market materials.',
+    recommendation: 'Clearly distinguish between "NICE recommends" (reimbursement guidance, England) and "licensed for" (MHRA SmPC). Add a UK-specific disclaimer: "NICE recommendations are specific to NHS England and do not replace the approved Summary of Product Characteristics." Retain NICE citations as supporting evidence — not as the primary basis for efficacy claims.',
+    highlightText: 'Individualise HbA1c targets, taking account of the person\'s daily activities, likelihood of adherence, comorbidities, risk of hypoglycaemia, and the likelihood that achieving the target will not be outweighed by the risks of treatment.',
+    excerptContext: 'The NICE NG28 guidance is appropriate supporting evidence but must be contextualised as reimbursement guidance rather than licensing. This distinction matters especially in materials for use outside England (Scotland, Wales follow different frameworks).',
+  },
+  {
+    paperIdx: 6,
+    severity: 'Note',
+    type: 'Data Currency Risk',
+    title: 'IDF Atlas edition should be updated to 11th edition (2025)',
+    description: 'The epidemiology slides reference IDF Atlas prevalence figures without specifying the edition. The 10th edition (2021) data states 537 million adults with diabetes; the current 11th edition (2025) reports 589 million. Using unversioned or outdated epidemiology overstates the data currency gap and may draw scrutiny from specialist HCP audiences.',
+    why: 'Medical affairs slide decks are often circulated for 12–24 months. Using the most recent edition not only improves accuracy but also signals scientific rigour. An HCP who notices the figure discrepancy may lose confidence in the broader evidence pack. The IDF Atlas 11th edition is publicly available and widely cited in 2024–2025 publications.',
+    recommendation: 'Update all IDF Atlas references to the 11th edition (2025) figures: 589 million (2024 prevalence), 853 million (2050 projection). Explicitly cite "IDF Diabetes Atlas, 11th Edition, 2025" in footnotes. Remove any unversioned references to the IDF Atlas to avoid ambiguity.',
+    highlightText: 'An estimated 589 million adults aged 20–79 years were living with diabetes in 2024. This number is projected to reach 853 million by 2050, with the largest relative increases occurring in low- and middle-income regions.',
+    excerptContext: 'The 589 million figure from the 11th edition is already present in some slides but the source citation remains unversioned in others. Consistent citation practice across the full deck is required before submission.',
+  },
+  {
+    paperIdx: 2,
+    severity: 'Note',
+    type: 'Confidence Interval Breadth',
+    title: 'Cochrane pooled NNT confidence interval too wide to support strong claims',
+    description: 'The Cochrane meta-analysis supporting the class-level MACE reduction reports an NNT of 68 with a 95% CI of 51–115. The upper bound (NNT=115) suggests the effect may be substantially smaller in some populations. The current evidence summary cites the point estimate without acknowledging the CI range.',
+    why: 'An NNT upper confidence limit of 115 means the evidence is consistent with a modest absolute risk reduction in some populations. Presenting NNT=68 as a definitive figure in HCP materials without the CI range may overstate certainty. Critical appraisal-aware audiences (e.g. pharmacists, health economists) will notice the omission and may challenge the claim.',
+    recommendation: 'Report the full NNT with confidence interval: "NNT 68 (95% CI 51–115) over a mean 3.4-year follow-up." Add context that the estimate is based on a pooled population with established CVD and that absolute risk reduction will vary by baseline risk. This adds precision rather than weakening the claim.',
+    highlightText: 'GLP-1 receptor agonists reduced major adverse cardiovascular events compared with placebo or active comparator (RR 0.88; 95% CI 0.82–0.94), with evidence of low heterogeneity across trials, supporting a class effect.',
+    excerptContext: 'The RR 0.88 is the headline finding, but the NNT contextualises the absolute benefit. Both are required for a balanced, EFPIA-compliant evidence presentation. The CI breadth reflects genuine population variability, not a study quality concern.',
   },
 ];
 
@@ -1005,6 +1082,9 @@ export default class MedFactory extends React.Component {
       gapWhyExpanded: {},
       gapPaperOpen: false,
       gapShowRecommendation: {},
+      gapExcerptOpen: false,
+      gapLastAction: null,     // { type: 'replace'|'add', text: string } — feedback after excerpt action
+      sciReviewSent: false,    // true after creator clicks "Send to Scientific Review"
       sciSubmitted: false,
       sciOverallComment: '',
       sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
@@ -1155,7 +1235,7 @@ export default class MedFactory extends React.Component {
       setTimeout(() => this.runOrganizeAgent(), 600);
       return;
     } else if (s === 'med-review') {
-      this.setState({ screen: 'med-review', reviewN: 0 });
+      this.setState({ screen: 'med-review', reviewN: 0, sciReviewSent: false });
       setTimeout(() => this.runMedReview(), 400);
       return;
     } else if (s === 'sci-dash') {
@@ -1780,7 +1860,7 @@ export default class MedFactory extends React.Component {
         return { acceptedPapers: acc };
       }),
       gapSelected: st.gapSelected,
-      setGapSelected: (i) => this.setState({ gapSelected: i }),
+      setGapSelected: (i) => this.setState({ gapSelected: i, gapExcerptOpen: false, gapLastAction: null }),
       gapResolved: st.gapResolved,
       resolveGap: (i) => this.setState((s) => ({ gapResolved: { ...s.gapResolved, [i]: true } })),
       unresolveGap: (i) => this.setState((s) => { const r = { ...s.gapResolved }; delete r[i]; return { gapResolved: r }; }),
@@ -1790,6 +1870,8 @@ export default class MedFactory extends React.Component {
       setGapPaperOpen: (v) => this.setState({ gapPaperOpen: v }),
       gapShowRecommendation: st.gapShowRecommendation,
       toggleGapRecommendation: (i) => this.setState((s) => ({ gapShowRecommendation: { ...s.gapShowRecommendation, [i]: !s.gapShowRecommendation[i] } })),
+      gapExcerptOpen: st.gapExcerptOpen,
+      setGapExcerptOpen: (val) => this.setState({ gapExcerptOpen: val }),
       aiAcceptLoading: st.aiAcceptLoading,
       aiAcceptStep: st.aiAcceptStep,
       addPaperToChat: (p) => this.setState((s) => {
@@ -1918,6 +2000,13 @@ export default class MedFactory extends React.Component {
         const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
         if (cur.find((e) => e.text === exc.text)) return {};
         return { paperExcerpts: { ...s.paperExcerpts, [idx]: [...cur, exc] }, manageExcerptIdx: null };
+      }),
+      gapLastAction: st.gapLastAction,
+      gapReplaceExcerpt: (idx, exc) => this.setState((s) => ({ paperExcerpts: { ...s.paperExcerpts, [idx]: [exc] }, gapLastAction: { type: 'replace', text: exc.text } })),
+      gapAddExcerpt: (idx, exc) => this.setState((s) => {
+        const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
+        if (cur.find((e) => e.text === exc.text)) return {};
+        return { paperExcerpts: { ...s.paperExcerpts, [idx]: [...cur, exc] }, gapLastAction: { type: 'add', text: exc.text } };
       }),
       removeExcerptItem: (idx, text) => this.setState((s) => {
         const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
@@ -2424,26 +2513,22 @@ export default class MedFactory extends React.Component {
         return { figureSelections: { ...s.figureSelections, [key]: { ...cur, useAs: val } } };
       }),
       confirmedFigures: st.confirmedFigures,
-      confirmFigures: () => {
-        const sels = st.figureSelections;
-        const confirmed = [];
+      confirmFigure: (key) => this.setState((s) => {
+        const fSel = s.figureSelections[key];
+        if (!fSel || !fSel.included || fSel.artifacts.length === 0 || fSel.tracks.length === 0) return null;
+        let figData = null;
         RESEARCH_PAPERS.forEach((p, pIdx) => {
           (PAPER_FIGURES[pIdx] || []).forEach((fig, fi) => {
-            const key = `${pIdx}-${fi}`;
-            const fSel = sels[key];
-            if (fSel && fSel.included && fSel.artifacts.length > 0 && fSel.tracks.length > 0) {
-              confirmed.push({ key, type: fig.type, label: fig.label, caption: fig.caption, paperTitle: p.title, paperIdx: pIdx, artifacts: fSel.artifacts, tracks: fSel.tracks, useAs: fSel.useAs });
-            }
+            if (`${pIdx}-${fi}` === key) figData = { key, type: fig.type, label: fig.label, caption: fig.caption, paperTitle: p.title, paperIdx: pIdx, artifacts: fSel.artifacts, tracks: fSel.tracks, useAs: fSel.useAs };
           });
         });
-        st.uploadedFigures.forEach((fig) => {
-          const fSel = sels[fig.id];
-          if (fSel && fSel.included && fSel.artifacts.length > 0 && fSel.tracks.length > 0) {
-            confirmed.push({ key: fig.id, type: 'uploaded', label: fig.name, caption: fig.name, src: fig.src, paperTitle: null, artifacts: fSel.artifacts, tracks: fSel.tracks, useAs: fSel.useAs });
-          }
-        });
-        this.setState({ confirmedFigures: confirmed, organizeView: 'track' });
-      },
+        if (!figData) {
+          const up = s.uploadedFigures.find(f => f.id === key);
+          if (up) figData = { key, type: 'uploaded', label: up.name, caption: up.name, src: up.src, paperTitle: null, artifacts: fSel.artifacts, tracks: fSel.tracks, useAs: fSel.useAs };
+        }
+        if (!figData) return null;
+        return { confirmedFigures: [...s.confirmedFigures.filter(f => f.key !== key), figData] };
+      }),
       uploadedFigures: st.uploadedFigures,
       addUploadedFigure: (fig) => this.setState((s) => ({ uploadedFigures: [...s.uploadedFigures, fig] })),
       removeUploadedFigure: (id) => this.setState((s) => ({ uploadedFigures: s.uploadedFigures.filter(f => f.id !== id) })),
@@ -2454,6 +2539,8 @@ export default class MedFactory extends React.Component {
       doSendToMA: () => this.sendToMA(),
       doResubmitToMA: () => this.resubmitToMA(),
       doMAApprove: () => this.maApprove(),
+      sendToSciReview: () => this.setState({ pptStatus: 'sent-to-sci', sciReviewSent: true }),
+      sciReviewSent: st.sciReviewSent,
       doSciApprove: () => this.sciApprove(),
 
       /* ---------- notifications ---------- */
@@ -2813,7 +2900,7 @@ export default class MedFactory extends React.Component {
                                 </svg>
                                 <div style={S('flex:1;min-width:0')}>
                                   <div style={S('font:700 11.5px/1.3 Plus Jakarta Sans;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{ws.topic}</div>
-                                  {ws.isActive && <div style={{ font: '500 9.5px/1 Plus Jakarta Sans', color: 'var(--acc)', marginTop: 3 }}>Active workspace</div>}
+                                  {ws.isActive && <div style={{ font: '600 9.5px/1 Plus Jakarta Sans', color: 'var(--acc)', marginTop: 3 }}>Active workspace</div>}
                                 </div>
                                 {ws.isActive && (
                                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', flexShrink: 0, animation: 'puls 1.4s infinite' }} />
@@ -2827,7 +2914,7 @@ export default class MedFactory extends React.Component {
                               {isExpanded && (
                                 <div style={{ background: 'rgba(0,0,0,0.025)', paddingBottom: 6 }}>
                                   {v.wsResearches.length === 0 ? (
-                                    <div style={{ padding: '10px 14px 6px 36px', font: '400 11px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>
+                                    <div style={{ padding: '10px 14px 6px 36px', font: '600 11px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>
                                       No research sessions yet
                                     </div>
                                   ) : v.wsResearches.map((r, ri) => {
@@ -2853,7 +2940,7 @@ export default class MedFactory extends React.Component {
                                           <div style={{ width: 7, height: 7, borderRadius: '50%', background: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', flexShrink: 0 }} />
                                           <div style={{ flex: 1, minWidth: 0 }}>
                                             <div style={{ font: `${isActiveR ? 600 : 500} 11.5px/1.3 Plus Jakarta Sans`, color: isActiveR ? 'var(--ink)' : 'var(--dim)' }}>{r.name}</div>
-                                            <div style={{ font: '400 10px/1 Plus Jakarta Sans', color: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', marginTop: 2 }}>
+                                            <div style={{ font: '600 10px/1 Plus Jakarta Sans', color: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', marginTop: 2 }}>
                                               {isDone ? 'Complete' : isInProgress ? 'In progress' : 'Not started'}
                                             </div>
                                           </div>
@@ -2900,7 +2987,7 @@ export default class MedFactory extends React.Component {
                             <div style={S('flex:1;min-width:0')}>
                               <div style={S('font:500 11px/1.35 Plus Jakarta Sans;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px')}>{ws.topic}</div>
                               <div style={S('display:flex;align-items:center;justify-content:space-between;gap:6px')}>
-                                <span style={{ font: '500 9.5px/1 Plus Jakarta Sans', color: ws.dotColor }}>{ws.status}</span>
+                                <span style={{ font: '600 9.5px/1 Plus Jakarta Sans', color: ws.dotColor }}>{ws.status}</span>
                                 <span style={S('font:400 9.5px/1 var(--mono);color:var(--faint);flex-shrink:0')}>{ws.created}</span>
                               </div>
                             </div>
@@ -3043,7 +3130,7 @@ export default class MedFactory extends React.Component {
                       <div style={{ height: 3, background: d.leftBorder, flexShrink: 0 }} />
                       <div style={{ padding: '18px 20px 20px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-                          <div style={{ font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', letterSpacing: '0.02em' }}>Created {d.created}</div>
+                          <div style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', letterSpacing: '0.02em' }}>Created {d.created}</div>
                           <span style={S(d.pill)}>{d.status}</span>
                         </div>
                         <div style={{ font: '700 15px/1.4 Plus Jakarta Sans', letterSpacing: '-0.01em', color: 'var(--ink)', flex: 1 }}>{d.topic}</div>
@@ -3052,7 +3139,7 @@ export default class MedFactory extends React.Component {
                             <div style={{ height: 4, width: 80, background: 'var(--s2)', borderRadius: 4, overflow: 'hidden' }}>
                               <div style={{ height: '100%', width: `${d.stagePct}%`, background: d.leftBorder, borderRadius: 4 }} />
                             </div>
-                            <span style={{ font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>Stage {d.stage}/7</span>
+                            <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>Stage {d.stage}/7</span>
                           </div>
                           <div style={{ width: 28, height: 28, borderRadius: '50%', background: `${d.leftBorder}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <span style={{ fontSize: 13, color: d.leftBorder }}>→</span>
@@ -3187,7 +3274,7 @@ export default class MedFactory extends React.Component {
                 {/* CTA */}
                 <div style={S('padding-top:32px;display:flex;flex-direction:column;gap:14px')}>
                   {(!v.workspaceName.trim() || !v.topic.trim()) && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 7, font: '500 11.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 7, font: '600 11.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>
                       <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="var(--faint)" strokeWidth="1.2"/><path d="M6.5 5v3M6.5 9.5h.01" stroke="var(--faint)" strokeWidth="1.2" strokeLinecap="round"/></svg>
                       Workspace name and topic are required to continue.
                     </div>
@@ -3217,7 +3304,7 @@ export default class MedFactory extends React.Component {
                 <div style={{ padding: '32px 44px 24px', background: 'var(--s1)', borderBottom: '1px solid var(--rule)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                     <span style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)', background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.18)', borderRadius: 4, padding: '3px 8px' }}>{wsCode}</span>
-                    <span style={{ font: '500 10px/1 Plus Jakarta Sans', letterSpacing: '0.08em', color: 'var(--faint)' }}>WORKSPACE · OCT 4, 2026</span>
+                    <span style={{ font: '600 10px/1 Plus Jakarta Sans', letterSpacing: '0.08em', color: 'var(--faint)' }}>WORKSPACE · OCT 4, 2026</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                     <h1 style={{ font: '800 26px/1.1 Plus Jakarta Sans', letterSpacing: '-0.03em', margin: 0, color: 'var(--ink)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v.workspaceName || 'Untitled Workspace'}</h1>
@@ -3286,7 +3373,7 @@ export default class MedFactory extends React.Component {
                             <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="7" stroke="var(--acc)" strokeWidth="1.5"/><path d="M15.5 15.5L20 20" stroke="var(--acc)" strokeWidth="1.5" strokeLinecap="round"/></svg>
                           </div>
                           <div style={{ font: '700 13px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>No research yet</div>
-                          <div style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 220, margin: '0 auto 22px' }}>Research is the input for every artifact you create.</div>
+                          <div style={{ font: '600 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 220, margin: '0 auto 22px' }}>Research is the input for every artifact you create.</div>
                           <Box
                             css="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:10px;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
                             hover="opacity:0.88"
@@ -3356,7 +3443,7 @@ export default class MedFactory extends React.Component {
                           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="12.5" y="2" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="2" y="12.5" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="12.5" y="12.5" width="7.5" height="7.5" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/></svg>
                         </div>
                         <div style={{ font: '700 13px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>No artifacts yet</div>
-                        <div style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 240, margin: '0 auto 22px' }}>Any research with at least one excerpt or figure can feed an artifact.</div>
+                        <div style={{ font: '600 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 240, margin: '0 auto 22px' }}>Any research with at least one excerpt or figure can feed an artifact.</div>
                         <Box
                           css="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:var(--s1);color:var(--dim);font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:10px;border:1.5px solid var(--rule2)"
                           hover="border-color:var(--dim);color:var(--ink);background:var(--s2)"
@@ -3381,7 +3468,7 @@ export default class MedFactory extends React.Component {
                       <div style={{ width: 500, background: 'var(--s1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 40px rgba(12,26,61,0.22),0 1px 0 rgba(12,26,61,0.08)', animation: 'rise 0.18s ease', border: '1px solid var(--rule2)' }}>
                         <div style={{ padding: '28px 32px 22px', borderBottom: '1px solid var(--rule)' }}>
                           <div style={{ font: '800 18px/1.2 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 4 }}>Create research</div>
-                          <div style={{ font: '400 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>In {v.workspaceName || 'this workspace'}</div>
+                          <div style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>In {v.workspaceName || 'this workspace'}</div>
                         </div>
 
                         <div style={{ padding: '22px 32px 20px' }}>
@@ -3395,7 +3482,7 @@ export default class MedFactory extends React.Component {
                             onBlur={(e) => { e.target.style.borderColor = 'var(--rule2)'; e.target.style.background = 'var(--bg)'; }}
                             autoFocus
                           />
-                          <div style={{ font: '400 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 6 }}>Must be unique among research and artifacts in this workspace.</div>
+                          <div style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 6 }}>Must be unique among research and artifacts in this workspace.</div>
                         </div>
 
                         <div style={{ margin: '0 32px 16px', background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 10, padding: '14px 18px' }}>
@@ -3403,18 +3490,18 @@ export default class MedFactory extends React.Component {
                           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                               <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Topic</span>
-                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.topic || 'Type 2 Diabetes — GLP-1 RA landscape'}</span>
+                              <span style={{ font: '600 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.topic || 'Type 2 Diabetes — GLP-1 RA landscape'}</span>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                               <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Hero product</span>
-                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.heroProduct || 'Semaglutide (Ozempic)'}</span>
+                              <span style={{ font: '600 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.heroProduct || 'Semaglutide (Ozempic)'}</span>
                             </div>
                           </div>
                         </div>
 
                         <div style={{ margin: '0 32px 24px', display: 'flex', gap: 10, background: 'rgba(44,82,204,0.05)', border: '1px solid rgba(44,82,204,0.15)', borderRadius: 8, padding: '11px 14px' }}>
                           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, marginTop: 1 }}><circle cx="7" cy="7" r="6" stroke="var(--acc)" strokeWidth="1.3"/><path d="M7 6v4M7 4h.01" stroke="var(--acc)" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                          <span style={{ font: '400 11px/1.55 Plus Jakarta Sans', color: 'var(--dim)' }}>The research agent receives this name, the topic and the hero product. Topic and hero product are locked in the agent.</span>
+                          <span style={{ font: '600 11px/1.55 Plus Jakarta Sans', color: 'var(--dim)' }}>The research agent receives this name, the topic and the hero product. Topic and hero product are locked in the agent.</span>
                         </div>
 
                         <div style={{ display: 'flex', gap: 10, padding: '0 32px 28px' }}>
@@ -3444,10 +3531,10 @@ export default class MedFactory extends React.Component {
                           <div style={{ padding: '28px 32px 20px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                             <div>
                               <div style={{ font: '800 20px/1.2 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 6 }}>Research created</div>
-                              <div style={{ font: '400 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4' }}>
+                              <div style={{ font: '600 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4' }}>
                                 <span style={{ color: '#e8eef8', fontWeight: 600 }}>"{r?.name}"</span> is saved as <span style={{ fontFamily: 'ui-monospace,SFMono-Regular,Menlo,monospace', fontSize: 11, background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: 4, color: '#60a5fa' }}>{rCode}</span>.
                               </div>
-                              <div style={{ font: '400 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4', marginTop: 12 }}>
+                              <div style={{ font: '600 12.5px/1.5 Plus Jakarta Sans', color: '#8aaad4', marginTop: 12 }}>
                                 Open the research agent now, or run it later from the workspace.
                               </div>
                             </div>
@@ -3473,7 +3560,7 @@ export default class MedFactory extends React.Component {
                               </div>
                               <div>
                                 <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 6 }}>Run now</div>
-                                <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: '#8aaad4' }}>Open the research agent with this research.</div>
+                                <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: '#8aaad4' }}>Open the research agent with this research.</div>
                               </div>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: '700 11px/1 Plus Jakarta Sans', color: '#60a5fa', marginTop: 2 }}>
                                 Select sections &amp; start
@@ -3492,7 +3579,7 @@ export default class MedFactory extends React.Component {
                               </div>
                               <div>
                                 <div style={{ font: '800 15px/1 Plus Jakarta Sans', color: '#c8d6ee', marginBottom: 6 }}>Do it later</div>
-                                <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: '#6688aa' }}>Saved as pending · not run yet.</div>
+                                <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: '#6688aa' }}>Saved as pending · not run yet.</div>
                               </div>
                               <div style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#4d6fa0', marginTop: 2 }}>Run anytime from workspace</div>
                             </Box>
@@ -3505,7 +3592,7 @@ export default class MedFactory extends React.Component {
                       <div style={{ width: 480, background: 'var(--s1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 8px 40px rgba(12,26,61,0.22),0 1px 0 rgba(12,26,61,0.08)', animation: 'rise 0.18s ease', border: '1px solid var(--rule2)' }}>
                         <div style={{ padding: '28px 32px 22px', borderBottom: '1px solid var(--rule)' }}>
                           <div style={{ font: '800 18px/1.2 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 4 }}>Create artifact</div>
-                          <div style={{ font: '400 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>In {v.workspaceName || 'this workspace'}</div>
+                          <div style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>In {v.workspaceName || 'this workspace'}</div>
                         </div>
 
                         <div style={{ margin: '20px 32px 16px', background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 10, padding: '14px 18px' }}>
@@ -3513,11 +3600,11 @@ export default class MedFactory extends React.Component {
                           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                             <div style={{ display: 'flex', gap: 12 }}>
                               <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Topic</span>
-                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.topic || 'Type 2 Diabetes — GLP-1 RA landscape'}</span>
+                              <span style={{ font: '600 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.topic || 'Type 2 Diabetes — GLP-1 RA landscape'}</span>
                             </div>
                             <div style={{ display: 'flex', gap: 12 }}>
                               <span style={{ font: '600 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)', minWidth: 88 }}>Hero product</span>
-                              <span style={{ font: '500 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.heroProduct || 'Semaglutide (Ozempic)'}</span>
+                              <span style={{ font: '600 11.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{v.heroProduct || 'Semaglutide (Ozempic)'}</span>
                             </div>
                           </div>
                         </div>
@@ -3527,7 +3614,7 @@ export default class MedFactory extends React.Component {
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="2" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/></svg>
                           </div>
                           <div style={{ font: '600 12.5px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>Research required first</div>
-                          <div style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 300, margin: '0 auto' }}>Artifacts are built from research. Run research in this workspace and accept at least one paper first.</div>
+                          <div style={{ font: '600 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 300, margin: '0 auto' }}>Artifacts are built from research. Run research in this workspace and accept at least one paper first.</div>
                         </div>
 
                         <div style={{ display: 'flex', gap: 10, padding: '0 32px 28px' }}>
@@ -3576,7 +3663,7 @@ export default class MedFactory extends React.Component {
                   <div>
                     <div style={{ font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)', marginBottom: 10 }}>SELECT RESEARCH SECTIONS</div>
                     <h1 style={{ font: '800 30px/1.1 Plus Jakarta Sans', letterSpacing: '-0.03em', color: 'var(--ink)', margin: '0 0 10px' }}>What should this research cover?</h1>
-                    <p style={{ font: '400 13.5px/1.65 Plus Jakarta Sans', color: 'var(--faint)', margin: 0, maxWidth: 480 }}>
+                    <p style={{ font: '600 13.5px/1.65 Plus Jakarta Sans', color: 'var(--faint)', margin: 0, maxWidth: 480 }}>
                       All 7 sections are selected by default. Uncheck any you don't need, or add custom sections below. The research agent will only pull evidence for selected sections.
                     </p>
                   </div>
@@ -3686,7 +3773,7 @@ export default class MedFactory extends React.Component {
                           flex: 1, padding: '11px 14px',
                           background: 'var(--s1)', border: '1.5px solid var(--rule2)',
                           borderRadius: 8, color: 'var(--ink)',
-                          font: '400 13px/1 Plus Jakarta Sans', outline: 'none',
+                          font: '600 13px/1 Plus Jakarta Sans', outline: 'none',
                         }}
                       />
                       <Box
@@ -3710,7 +3797,7 @@ export default class MedFactory extends React.Component {
                           </div>
                           <span style={{ font: '700 12.5px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>AI Section Suggestions</span>
                         </div>
-                        <p style={{ font: '400 11px/1.5 Plus Jakarta Sans', color: 'var(--faint)', margin: 0 }}>
+                        <p style={{ font: '600 11px/1.5 Plus Jakarta Sans', color: 'var(--faint)', margin: 0 }}>
                           Based on your topic and hero product, the AI recommends additional sections worth covering.
                         </p>
                       </div>
@@ -3720,7 +3807,7 @@ export default class MedFactory extends React.Component {
                         {!v.aiSectionShown ? (
                           /* Not yet triggered */
                           <div style={{ textAlign: 'center', padding: '20px 8px' }}>
-                            <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 16 }}>
+                            <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 16 }}>
                               Let AI analyze your topic and suggest sections that are commonly missed but high-value for {v.topic || 'this topic'}.
                             </div>
                             <Box
@@ -3740,7 +3827,7 @@ export default class MedFactory extends React.Component {
                                 <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: '#7c3aed', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />
                               ))}
                             </div>
-                            <div style={{ font: '500 11.5px/1 Plus Jakarta Sans', color: '#7c3aed' }}>Analysing topic &amp; product…</div>
+                            <div style={{ font: '600 11.5px/1 Plus Jakarta Sans', color: '#7c3aed' }}>Analysing topic &amp; product…</div>
                           </div>
                         ) : (
                           /* Suggestions list */
@@ -3751,7 +3838,7 @@ export default class MedFactory extends React.Component {
                               return (
                                 <div key={si} style={{ background: 'var(--bg)', border: '1px solid var(--rule)', borderRadius: 9, padding: '11px 14px', animation: 'rise 0.2s ease both', animationDelay: `${si * 0.07}s` }}>
                                   <div style={{ font: '600 12px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 5 }}>{s.label}</div>
-                                  <div style={{ font: '400 10.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 8 }}>{s.reason}</div>
+                                  <div style={{ font: '600 10.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 8 }}>{s.reason}</div>
                                   {alreadyAdded ? (
                                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: '600 10px/1 Plus Jakarta Sans', color: 'var(--ok)' }}>
                                       <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -4041,7 +4128,7 @@ export default class MedFactory extends React.Component {
                         ))}
                         <button
                           onClick={v.clearChatAttachments}
-                          style={{ background: 'none', border: 'none', padding: '4px 6px', cursor: 'pointer', font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}
+                          style={{ background: 'none', border: 'none', padding: '4px 6px', cursor: 'pointer', font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}
                         >Clear all</button>
                       </div>
                     )}
@@ -4166,7 +4253,7 @@ export default class MedFactory extends React.Component {
                                         {/* Title */}
                                         <div style={{ font: '700 14px/1.4 Plus Jakarta Sans', color: '#1a2d6b', marginBottom: 4 }}>{p.title}</div>
                                         {/* Journal */}
-                                        <div style={{ font: '400 12px/1.3 Plus Jakarta Sans', color: '#6878a8' }}>{p.journal}</div>
+                                        <div style={{ font: '600 12px/1.3 Plus Jakarta Sans', color: '#6878a8' }}>{p.journal}</div>
                                       </div>
                                       {/* Relevance */}
                                       <div style={{ flexShrink: 0, width: 64, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, paddingTop: 2 }}>
@@ -4187,7 +4274,7 @@ export default class MedFactory extends React.Component {
                                           {[['Design', p.designTier], ['GRADE', p.grade], ['Sample', p.statRigor], ['Citations', p.citations]].map(([label, val]) => (
                                             <div key={label}>
                                               <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#6878a8', textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
-                                              <div style={{ font: '500 12px/1.4 Plus Jakarta Sans', color: '#2d4a8a' }}>{val}</div>
+                                              <div style={{ font: '600 12px/1.4 Plus Jakarta Sans', color: '#2d4a8a' }}>{val}</div>
                                             </div>
                                           ))}
                                         </div>
@@ -4195,14 +4282,14 @@ export default class MedFactory extends React.Component {
                                         {p.excerpt && (
                                           <div style={{ background: '#fff', border: '1px solid rgba(26,45,107,0.1)', borderLeft: '3px solid ' + tc, padding: '10px 14px' }}>
                                             <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#6878a8', textTransform: 'uppercase', marginBottom: 7 }}>Key Excerpt</div>
-                                            <p style={{ margin: 0, font: '400 13px/1.7 Georgia, serif', color: '#1a2d6b', fontStyle: 'italic' }}>{p.excerpt}</p>
+                                            <p style={{ margin: 0, font: '700 13px/1.7 Georgia, serif', color: '#000000' }}>{p.excerpt}</p>
                                             <div style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: '#6878a8', marginTop: 8 }}>{p.excerptSrc}</div>
                                           </div>
                                         )}
                                         {p.flag && (
                                           <div style={{ marginTop: 10, padding: '8px 12px', background: 'rgba(146,64,14,0.06)', border: '1px solid rgba(146,64,14,0.25)', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
                                             <span style={{ font: '700 10px/1 Plus Jakarta Sans', color: '#92400e', flexShrink: 0, marginTop: 1 }}>⚠ FLAG</span>
-                                            <span style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: '#92400e' }}>{p.flag}</span>
+                                            <span style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: '#92400e' }}>{p.flag}</span>
                                           </div>
                                         )}
                                       </div>
@@ -5170,11 +5257,6 @@ export default class MedFactory extends React.Component {
             /* ---- shared excerpt card ---- */
             const ExcerptCard = ({ p }) => {
               const currentExcerpts = v.paperExcerpts[p._idx] || [{ text: p.excerpt, src: p.excerptSrc }];
-              const alts = ALTERNATE_EXCERPTS[p._idx] || [];
-              const manageOpen = v.manageExcerptIdx === p._idx;
-              const aiGenerated = v.aiExcerpts[p._idx] || [];
-              const aiLoading = v.aiExcerptsLoading[p._idx];
-              const visibleAlts = alts;
               return (
                 <div style={{ position: 'relative', background: '#fff', border: `1px solid ${sel && sel._idx === p._idx ? 'var(--acc)' : 'var(--rule2)'}`, borderLeft: `4px solid ${tc2(p.type)}`, borderRadius: '0 10px 10px 0', transition: 'all 0.15s', overflow: 'hidden' }}>
                   {/* Clickable main content */}
@@ -5192,8 +5274,8 @@ export default class MedFactory extends React.Component {
                     <div style={{ font:'700 13.5px/1.45 Plus Jakarta Sans', letterSpacing:'-0.01em', color:'var(--ink)' }}>{p.title}</div>
                     {/* current excerpt(s) */}
                     {currentExcerpts.map((exc, ei) => (
-                      <div key={ei} style={{ borderLeft:'3px solid var(--acc)', padding:'10px 14px', background:'#eff6ff', borderRadius:'0 8px 8px 0', position: 'relative' }}>
-                        <div style={{ font:'400 12px/1.8 Plus Jakarta Sans', color:'var(--dim)', fontStyle:'italic' }}>{exc.text}</div>
+                      <div key={ei} style={{ borderLeft:'3px solid var(--acc)', padding:'10px 14px', background:'#f0f2ff', borderRadius:'0 8px 8px 0', position: 'relative' }}>
+                        <div style={{ font:'700 13px/1.8 Plus Jakarta Sans', color:'#000000' }}>{exc.text}</div>
                         <div style={{ font:'600 9.5px/1 Plus Jakarta Sans', color:'var(--faint)', marginTop:7, letterSpacing:'0.04em', fontFamily:'var(--mono)' }}>{exc.src}</div>
                         {currentExcerpts.length > 1 && (
                           <button
@@ -5225,14 +5307,6 @@ export default class MedFactory extends React.Component {
                           </button>
                         );
                       })}
-                      <Box
-                        css={`margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border-radius:6px;cursor:pointer;flex-shrink:0;transition:all 0.15s;color:${manageOpen ? '#fff' : 'var(--acc)'};background:${manageOpen ? 'var(--acc)' : 'transparent'};border:1px solid var(--acc)`}
-                        hover={manageOpen ? '' : 'background:rgba(44,82,204,0.08)'}
-                        onClick={(e) => { e.stopPropagation(); v.openManageExcerpt(p._idx); }}
-                      >
-                        <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/></svg>
-                        Manage Excerpt
-                      </Box>
                     </div>}
 
                     {/* Track chips — only in By Artifact view */}
@@ -5240,8 +5314,7 @@ export default class MedFactory extends React.Component {
                       const TRACK_COLORS = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
                       const trackAssign = v.getExcerptTracks(p._idx);
                       return (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap', paddingTop: 8, borderTop: '1px dashed var(--rule2)', marginTop: 2 }} onClick={(e) => e.stopPropagation()}>
-                          <span style={{ font: '600 8px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--faint)', flexShrink: 0, marginRight: 2 }}>TRACKS</span>
+                        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', paddingTop: 8, borderTop: '1px dashed var(--rule2)', marginTop: 2 }} onClick={(e) => e.stopPropagation()}>
                           {CONTENT_TRACKS.map((t, ti) => {
                             const active = trackAssign[t.id];
                             const col = TRACK_COLORS[ti] || 'var(--acc)';
@@ -5264,109 +5337,6 @@ export default class MedFactory extends React.Component {
                     })()}
                   </div>
 
-                  {/* Manage Excerpt panel — inline expanded */}
-                  {manageOpen && (
-                    <div
-                      onClick={(e) => e.stopPropagation()}
-                      style={{ borderTop: '2px solid var(--rule2)', background: '#f0f4ff', padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10, animation: 'rise 0.18s ease' }}
-                    >
-                      {/* Current excerpts section */}
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ font: '800 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--ink)' }}>CURRENT EXCERPT{currentExcerpts.length > 1 ? 'S' : ''}</span>
-                        <button
-                          onClick={() => v.closeManageExcerpt()}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--dim)', fontSize: 15, lineHeight: 1, padding: '2px 4px', fontWeight: 700 }}
-                        >✕</button>
-                      </div>
-                      {currentExcerpts.map((exc, ei) => (
-                        <div key={ei} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', background: '#fff', border: '1.5px solid var(--rule2)', borderRadius: 8, padding: '10px 12px' }}>
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ font: '500 12px/1.75 Plus Jakarta Sans', color: 'var(--ink)', fontStyle: 'italic' }}>{exc.text}</div>
-                            <div style={{ font: '700 9px/1 Plus Jakarta Sans', color: 'var(--dim)', marginTop: 6, fontFamily: 'var(--mono)' }}>{exc.src}</div>
-                          </div>
-                          <button
-                            onClick={() => v.removeExcerptItem(p._idx, exc.text)}
-                            style={{ flexShrink: 0, background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, cursor: 'pointer', color: '#dc2626', font: '700 9px/1 Plus Jakarta Sans', padding: '4px 8px', whiteSpace: 'nowrap' }}
-                          >Remove</button>
-                        </div>
-                      ))}
-
-                      {/* Alternatives section */}
-                      {alts.length > 0 && (
-                        <>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
-                            <span style={{ font: '800 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--ink)' }}>ALTERNATIVE EXCERPTS</span>
-                            {!aiGenerated.length && (
-                              <button
-                                onClick={() => v.generateAIExcerpts(p._idx, p)}
-                                disabled={!!aiLoading}
-                                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 10px', font: '700 9px/1 Plus Jakarta Sans', background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#2c52cc,#4468e0)', color: aiLoading ? 'var(--dim)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer', transition: 'all 0.2s' }}
-                              >
-                                {aiLoading ? (
-                                  <>
-                                    {[0,1,2].map(d => <div key={d} style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}
-                                    Extracting more…
-                                  </>
-                                ) : (
-                                  <><svg width="9" height="9" viewBox="0 0 20 20" fill="currentColor"><path d="M3 17h14M8 13V7m4 6V4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg> Extract more</>
-                                )}
-                              </button>
-                            )}
-                          </div>
-                          {visibleAlts.map((alt, ai) => {
-                            const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
-                            return (
-                              <div key={ai} style={{ background: '#fff', border: '1.5px solid var(--rule2)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                                <div style={{ font: '500 12px/1.75 Plus Jakarta Sans', color: 'var(--ink)', fontStyle: 'italic' }}>{alt.text}</div>
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                  <span style={{ font: '700 9px/1 Plus Jakarta Sans', color: 'var(--dim)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
-                                  {alreadyAdded ? (
-                                    <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6 }}>✓ Added</span>
-                                  ) : (
-                                    <div style={{ display: 'flex', gap: 6 }}>
-                                      <button onClick={() => v.replaceExcerpt(p._idx, alt)} style={{ background: 'var(--acc)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', font: '700 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Replace</button>
-                                      <button onClick={() => v.addExcerpt(p._idx, alt)} style={{ background: 'transparent', color: 'var(--acc)', border: '1px solid var(--acc)', borderRadius: 6, cursor: 'pointer', font: '600 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Add</button>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
-                          {/* AI-generated excerpts */}
-                          {aiGenerated.length > 0 && (
-                            <>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginTop: 6 }}>
-                                <span style={{ font: '800 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--ink)' }}>EXTRACTED FROM PAPER</span>
-                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 8px', font: '700 8px/1.4 Plus Jakarta Sans', background: '#dcfce7', color: '#15803d', border: '1px solid #86efac', borderRadius: 20 }}>
-                                  <svg width="7" height="7" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#15803d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                  New
-                                </span>
-                              </div>
-                              {aiGenerated.map((alt, ai) => {
-                                const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
-                                return (
-                                  <div key={`ai-${ai}`} style={{ background: 'rgba(44,82,204,0.05)', border: '1.5px solid rgba(44,82,204,0.22)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8, animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
-                                    <div style={{ font: '500 12px/1.75 Plus Jakarta Sans', color: 'var(--ink)', fontStyle: 'italic' }}>{alt.text}</div>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                      <span style={{ font: '700 9px/1 Plus Jakarta Sans', color: 'var(--dim)', fontFamily: 'var(--mono)' }}>{alt.src}</span>
-                                      {alreadyAdded ? (
-                                        <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6 }}>✓ Added</span>
-                                      ) : (
-                                        <div style={{ display: 'flex', gap: 6 }}>
-                                          <button onClick={() => v.replaceExcerpt(p._idx, alt)} style={{ background: 'var(--acc)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', font: '700 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Replace</button>
-                                          <button onClick={() => v.addExcerpt(p._idx, alt)} style={{ background: 'transparent', color: 'var(--acc)', border: '1px solid var(--acc)', borderRadius: 6, cursor: 'pointer', font: '600 9px/1 Plus Jakarta Sans', padding: '4px 10px' }}>Add</button>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  )}
                 </div>
               );
             };
@@ -5592,37 +5562,50 @@ export default class MedFactory extends React.Component {
                                   ? <div style={{ padding:'24px', textAlign:'center', color:'var(--faint)', font:'500 12px/1.6 Plus Jakarta Sans', border:'1.5px dashed #cbd5e1', borderRadius:10, background:'var(--s2)' }}>No excerpts yet in this track. Click <span style={{ color:'var(--acc)', fontWeight:700 }}>+ Add excerpt</span> to add one.</div>
                                   : trackPapers.map((p) => <React.Fragment key={p._idx}>{ExcerptCard({ p })}</React.Fragment>)
                                 }
-                                {figuresHere.map((fig) => (
-                                  <div key={fig.key} style={{ background:'#fff', border:'1px solid rgba(124,58,237,0.25)', borderLeft:'3px solid #7c3aed', padding:'12px 14px', display:'flex', flexDirection:'column', gap:8, animation:'rise 0.18s ease', borderRadius:'0 8px 8px 0' }}>
-                                    <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                                      <span style={{ padding:'2px 8px', border:'1px solid rgba(124,58,237,0.4)', background:'rgba(124,58,237,0.08)', font:'700 8.5px/1 Plus Jakarta Sans', letterSpacing:'0.12em', color:'#7c3aed', borderRadius:4 }}>FIGURE</span>
-                                      {fig.useAs === 'as-is' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--ok)', background:'rgba(21,128,61,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(21,128,61,0.2)' }}>Use as-is</span>}
-                                      {fig.useAs === 'redesign' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--warn)', background:'rgba(180,83,9,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(180,83,9,0.2)' }}>Needs redesign</span>}
-                                    </div>
-                                    <div style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
-                                      <div style={{ width:80, flexShrink:0, background:'var(--bg)', borderRadius:6, padding:6, border:'1px solid var(--rule)' }}>
-                                        {fig.type === 'uploaded'
-                                          ? <img src={fig.src} alt={fig.caption} style={{ width:'100%', height:50, objectFit:'contain', display:'block' }} />
-                                          : renderFigSVG(fig.type, fig.paperIdx)
-                                        }
-                                      </div>
+                                {figuresHere.map((fig) => {
+                                  const figPaper = fig.paperIdx != null ? { ...RESEARCH_PAPERS[fig.paperIdx], _idx: fig.paperIdx } : null;
+                                  const isSelFig = sel && figPaper && sel._idx === figPaper._idx;
+                                  const initials = fig.paperTitle ? fig.paperTitle.trim()[0].toUpperCase() : 'F';
+                                  return (
+                                  <div
+                                    key={fig.key}
+                                    onClick={() => { if (figPaper) v.setOrganizeSelected(figPaper); }}
+                                    style={{ background:'var(--s1)', border:`1.5px solid ${isSelFig ? 'var(--acc)' : 'var(--rule2)'}`, borderLeft:`3px solid #7c3aed`, borderRadius:'0 10px 10px 0', overflow:'hidden', animation:'rise 0.18s ease', cursor: figPaper ? 'pointer' : 'default', boxShadow: isSelFig ? '0 0 0 2px rgba(44,82,204,0.1)' : '0 1px 4px rgba(12,26,61,0.05)', transition:'box-shadow 0.15s,border-color 0.15s' }}
+                                  >
+                                    {/* Header — paper title + close hint */}
+                                    <div style={{ padding:'12px 14px 10px', display:'flex', alignItems:'flex-start', gap:10 }}>
+                                      <div style={{ width:28, height:28, borderRadius:'50%', background:'var(--acc)', color:'#fff', font:'700 11px/1 Plus Jakarta Sans', display:'grid', placeItems:'center', flexShrink:0, marginTop:1 }}>{initials}</div>
                                       <div style={{ flex:1, minWidth:0 }}>
-                                        <div style={{ font:'700 12px/1.4 Plus Jakarta Sans', color:'var(--ink)', marginBottom:3 }}>{fig.caption}</div>
-                                        {fig.paperTitle && <div style={{ font:'400 10.5px/1.4 Plus Jakarta Sans', color:'var(--faint)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>From: {fig.paperTitle.length > 55 ? fig.paperTitle.slice(0,55)+'…' : fig.paperTitle}</div>}
+                                        <div style={{ font:'700 12px/1.45 Plus Jakarta Sans', color:'var(--ink)', marginBottom:2, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>{fig.paperTitle || fig.caption}</div>
+                                        {figPaper && <div style={{ font:'500 10px/1 Plus Jakarta Sans', color:'var(--faint)' }}>{figPaper.journal?.split('·')[0].trim()}{figPaper.year ? ` · ${figPaper.year}` : ''}</div>}
                                       </div>
+                                      {fig.useAs === 'as-is' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--ok)', background:'rgba(21,128,61,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(21,128,61,0.2)', flexShrink:0 }}>As-is</span>}
+                                      {fig.useAs === 'redesign' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--warn)', background:'rgba(180,83,9,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(180,83,9,0.2)', flexShrink:0 }}>Redesign</span>}
                                     </div>
-                                    <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
-                                      {fig.artifacts.map((a) => <span key={a} style={{ padding:'2px 8px', font:'600 9px/1 Plus Jakarta Sans', border:`1px solid ${ART_COLORS[a]}`, color:ART_COLORS[a], background:`${ART_COLORS[a]}15`, borderRadius:20 }}>{a}</span>)}
+                                    {/* Figure — small thumbnail */}
+                                    <div style={{ margin:'0 14px 8px', width:200, height:126, overflow:'hidden', background:'var(--bg)', border:'1px solid var(--rule)', borderRadius:6, padding:'4px', flexShrink:0 }}>
+                                      {fig.type === 'uploaded'
+                                        ? <img src={fig.src} alt={fig.caption} style={{ width:'100%', height:'100%', objectFit:'contain', display:'block' }} />
+                                        : <div style={{ pointerEvents:'none', width:192 }}>{renderFigSVG(fig.type, fig.paperIdx)}</div>
+                                      }
+                                    </div>
+                                    {/* Caption + artifacts */}
+                                    <div style={{ padding:'0 14px 12px', display:'flex', flexDirection:'column', gap:6 }}>
+                                      <div style={{ font:'400 10.5px/1.5 Plus Jakarta Sans', color:'var(--dim)' }}>{fig.caption}</div>
+                                      <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
+                                        {fig.artifacts.map((a) => <span key={a} style={{ padding:'2px 9px', font:'600 9px/1 Plus Jakarta Sans', color:'var(--faint)', border:'1px solid var(--rule2)', borderRadius:20 }}>{a}</span>)}
+                                      </div>
                                     </div>
                                   </div>
-                                ))}
+                                  );
+                                })}
                                 {customHere.map((e) => (
                                   <div key={e.id} style={{ background:'#fff', border:'1px solid #e2e8f0', borderLeft:'3px solid var(--acc)', padding:'14px 16px', display:'flex', flexDirection:'column', gap:8, animation:'rise 0.18s ease', borderRadius:'0 8px 8px 0' }}>
                                     <div style={S('display:flex;align-items:center;gap:8px')}>
                                       <span style={{ padding:'2px 8px', border:'1px solid var(--acc)', background:'#dbeafe', font:'700 8.5px/1 Plus Jakarta Sans', letterSpacing:'0.12em', color:'#1d4ed8', borderRadius:4 }}>CUSTOM</span>
                                       <span style={{ font:'500 10px/1 Plus Jakarta Sans', color:'var(--faint)' }}>Added manually</span>
                                     </div>
-                                    <div style={{ borderLeft:'2px solid var(--acc)', padding:'8px 12px', background:'#eff6ff', font:'400 12px/1.75 Plus Jakarta Sans', color:'var(--dim)', fontStyle:'italic', borderRadius:'0 6px 6px 0' }}>{e.text}</div>
+                                    <div style={{ borderLeft:'2px solid var(--acc)', padding:'8px 12px', background:'#f0f2ff', font:'700 13px/1.75 Plus Jakarta Sans', color:'#000000', borderRadius:'0 6px 6px 0' }}>{e.text}</div>
                                     <div style={S('display:flex;gap:5px;flex-wrap:wrap')}>
                                       {e.artifacts.map((a) => <span key={a} style={{ padding: '2px 8px', font: '600 9px/1 Plus Jakarta Sans', border: `1px solid ${ART_COLORS[a]}`, color: ART_COLORS[a], background: `${ART_COLORS[a]}15` }}>{a}</span>)}
                                     </div>
@@ -5639,24 +5622,6 @@ export default class MedFactory extends React.Component {
                         const trackColors2 = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
                         return (
                           <>
-                            {/* Track filter chips */}
-                            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16, padding: '10px 14px', background: 'var(--bg)', borderRadius: 10, border: '1px solid var(--rule)' }}>
-                              <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', alignSelf: 'center', marginRight: 4, flexShrink: 0 }}>FILTER BY TRACK</span>
-                              {['All', ...CONTENT_TRACKS.map(t => t.label)].map((label, li) => {
-                                const isActive = v.organizeArtifactTrackFilter === label;
-                                const col = li === 0 ? 'var(--acc)' : trackColors2[li - 1] || 'var(--acc)';
-                                return (
-                                  <button
-                                    key={label}
-                                    onClick={() => v.setOrganizeArtifactTrackFilter(label)}
-                                    style={{ padding: '5px 12px', font: `${isActive ? 700 : 500} 10.5px/1 Plus Jakarta Sans`, borderRadius: 20, border: `1.5px solid ${isActive ? col : 'var(--rule2)'}`, color: isActive ? (li === 0 ? '#fff' : '#fff') : 'var(--faint)', background: isActive ? col : 'transparent', cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'Plus Jakarta Sans' }}
-                                    onMouseEnter={(e) => { if (!isActive) { e.currentTarget.style.borderColor = col; e.currentTarget.style.color = col; } }}
-                                    onMouseLeave={(e) => { if (!isActive) { e.currentTarget.style.borderColor = 'var(--rule2)'; e.currentTarget.style.color = 'var(--faint)'; } }}
-                                  >{label}</button>
-                                );
-                              })}
-                            </div>
-
                             {ALL_ARTIFACTS.map((art, ai) => {
                         const artPapers = acceptedList.filter((p) => {
                           const assignments = v.getExcerptArtifacts(p._idx);
@@ -5668,6 +5633,8 @@ export default class MedFactory extends React.Component {
                           }
                           return true;
                         });
+                        const artFigures = v.confirmedFigures.filter((f) => f.artifacts.includes(art));
+                        const totalCount = artPapers.length + artFigures.length;
                         const isOpen = !!v.organizeExpanded[`art_${art}`];
                         const c = ART_COLORS[art];
                         return (
@@ -5675,7 +5642,12 @@ export default class MedFactory extends React.Component {
                             <Box css={`display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;background:${isOpen ? c+'0a' : 'transparent'};border-radius:0 12px ${isOpen ? '0 0' : '12px 12px'};transition:background 0.15s`} hover={!isOpen ? `background:${c}08` : ''} onClick={() => v.toggleOrganizeTrack(`art_${art}`)}>
                               <div style={{ width:10, height:10, borderRadius:'50%', background:c, flexShrink:0, boxShadow:`0 0 0 3px ${c}25` }} />
                               <span style={{ font:'700 13.5px/1 Plus Jakarta Sans', color:'var(--ink)' }}>{art}</span>
-                              <span style={{ padding:'2px 9px', font:'600 10px/1 Plus Jakarta Sans', borderRadius:20, background:`${c}18`, color:c, border:`1px solid ${c}35` }}>{artPapers.length} {artPapers.length === 1 ? 'paper' : 'papers'}</span>
+                              <span style={{ padding:'2px 9px', font:'600 10px/1 Plus Jakarta Sans', borderRadius:20, background:`${c}18`, color:c, border:`1px solid ${c}35` }}>{totalCount} {totalCount === 1 ? 'item' : 'items'}</span>
+                              {artFigures.length > 0 && (
+                                <span style={{ padding:'2px 8px', font:'600 9px/1 Plus Jakarta Sans', borderRadius:20, background:'rgba(124,58,237,0.1)', color:'#7c3aed', border:'1px solid rgba(124,58,237,0.25)' }}>
+                                  {artFigures.length} fig{artFigures.length > 1 ? 's' : ''}
+                                </span>
+                              )}
                               <Box
                                 css="margin-left:auto;width:26px;height:26px;border-radius:50%;border:1.5px solid #e2e8f0;color:#64748b;font:700 11px/1 Plus Jakarta Sans;display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:all 0.15s"
                                 hover="border-color:var(--acc);color:var(--acc);background:#eff6ff"
@@ -5685,10 +5657,44 @@ export default class MedFactory extends React.Component {
                             </Box>
                             {isOpen && (
                               <div style={{ padding:'12px 18px 16px', display:'flex', flexDirection:'column', gap:10, borderTop:`1px solid ${c}25`, background:`${c}05`, animation:'rise 0.18s ease', borderRadius:'0 0 12px 12px' }}>
-                                {artPapers.length === 0
+                                {totalCount === 0
                                   ? <div style={{ padding:'24px', textAlign:'center', color:'var(--faint)', font:'500 12px/1.6 Plus Jakarta Sans', border:'1.5px dashed #cbd5e1', borderRadius:10, background:'var(--s2)' }}>No accepted papers produce this artifact type.</div>
                                   : artPapers.map((p) => <React.Fragment key={p._idx}>{ExcerptCard({ p })}</React.Fragment>)
                                 }
+                                {artFigures.map((fig) => {
+                                  const figPaper = fig.paperIdx != null ? { ...RESEARCH_PAPERS[fig.paperIdx], _idx: fig.paperIdx } : null;
+                                  const isSelFig = sel && figPaper && sel._idx === figPaper._idx;
+                                  const initials = fig.paperTitle ? fig.paperTitle.trim()[0].toUpperCase() : 'F';
+                                  return (
+                                    <div
+                                      key={fig.key}
+                                      onClick={() => { if (figPaper) v.setOrganizeSelected(figPaper); }}
+                                      style={{ background:'var(--s1)', border:`1.5px solid ${isSelFig ? 'var(--acc)' : 'var(--rule2)'}`, borderLeft:`3px solid #7c3aed`, borderRadius:'0 10px 10px 0', overflow:'hidden', animation:'rise 0.18s ease', cursor: figPaper ? 'pointer' : 'default', boxShadow: isSelFig ? '0 0 0 2px rgba(44,82,204,0.1)' : '0 1px 4px rgba(12,26,61,0.05)', transition:'box-shadow 0.15s,border-color 0.15s' }}
+                                    >
+                                      <div style={{ padding:'12px 14px 10px', display:'flex', alignItems:'flex-start', gap:10 }}>
+                                        <div style={{ width:28, height:28, borderRadius:'50%', background:'var(--acc)', color:'#fff', font:'700 11px/1 Plus Jakarta Sans', display:'grid', placeItems:'center', flexShrink:0, marginTop:1 }}>{initials}</div>
+                                        <div style={{ flex:1, minWidth:0 }}>
+                                          <div style={{ font:'700 12px/1.45 Plus Jakarta Sans', color:'var(--ink)', marginBottom:2, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>{fig.paperTitle || fig.caption}</div>
+                                          {figPaper && <div style={{ font:'500 10px/1 Plus Jakarta Sans', color:'var(--faint)' }}>{figPaper.journal?.split('·')[0].trim()}{figPaper.year ? ` · ${figPaper.year}` : ''}</div>}
+                                        </div>
+                                        {fig.useAs === 'as-is' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--ok)', background:'rgba(21,128,61,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(21,128,61,0.2)', flexShrink:0 }}>As-is</span>}
+                                        {fig.useAs === 'redesign' && <span style={{ font:'500 9px/1 Plus Jakarta Sans', color:'var(--warn)', background:'rgba(180,83,9,0.08)', padding:'2px 7px', borderRadius:4, border:'1px solid rgba(180,83,9,0.2)', flexShrink:0 }}>Redesign</span>}
+                                      </div>
+                                      <div style={{ margin:'0 14px 8px', width:50, height:32, overflow:'hidden', background:'var(--bg)', border:'1px solid var(--rule)', borderRadius:4, padding:'2px', flexShrink:0 }}>
+                                        {fig.type === 'uploaded'
+                                          ? <img src={fig.src} alt={fig.caption} style={{ width:'100%', height:'100%', objectFit:'contain', display:'block' }} />
+                                          : <div style={{ pointerEvents:'none', width:46 }}>{renderFigSVG(fig.type, fig.paperIdx)}</div>
+                                        }
+                                      </div>
+                                      <div style={{ padding:'0 14px 12px', display:'flex', flexDirection:'column', gap:6 }}>
+                                        <div style={{ font:'400 10.5px/1.5 Plus Jakarta Sans', color:'var(--dim)' }}>{fig.caption}</div>
+                                        <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
+                                          {fig.artifacts.map((a) => <span key={a} style={{ padding:'2px 9px', font:'600 9px/1 Plus Jakarta Sans', color:'var(--faint)', border:'1px solid var(--rule2)', borderRadius:20 }}>{a}</span>)}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -5710,13 +5716,12 @@ export default class MedFactory extends React.Component {
                           </div>
                         );
 
-                        // top action bar
-                        const includedCount = figCards.filter(f => v.figureSelections[f.key]?.included).length;
+                        const confirmedKeys = new Set(v.confirmedFigures.map(f => f.key));
 
                         return (
                           <div style={S('display:flex;flex-direction:column;gap:0')}>
 
-                            {/* Top bar: Upload + Confirm */}
+                            {/* Top bar: Upload only */}
                             <div style={S('display:flex;align-items:center;gap:10px;margin-bottom:20px')}>
                               <input
                                 id="fig-upload-input"
@@ -5748,16 +5753,9 @@ export default class MedFactory extends React.Component {
                                 Upload image
                               </Box>
                               <div style={S('flex:1')} />
-                              {includedCount > 0 && (
-                                <span style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint)')}>{includedCount} figure{includedCount > 1 ? 's' : ''} selected</span>
+                              {confirmedKeys.size > 0 && (
+                                <span style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--ok)')}>{confirmedKeys.size} figure{confirmedKeys.size > 1 ? 's' : ''} added to track view</span>
                               )}
-                              <Box
-                                css="padding:8px 22px;background:var(--acc);color:#fff;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px"
-                                hover="opacity:0.88"
-                                onClick={v.confirmFigures}
-                              >
-                                Confirm
-                              </Box>
                             </div>
 
                             {/* Figure cards grid */}
@@ -5765,7 +5763,8 @@ export default class MedFactory extends React.Component {
                               {figCards.map(({ type, label, caption, key, paper }, i) => {
                                 const fSel = v.figureSelections[key] || { included: false, artifacts: [], tracks: [], useAs: null };
                                 const included = fSel.included;
-                                const validationError = included && (fSel.artifacts.length === 0 || fSel.tracks.length === 0);
+                                const isConfirmed = confirmedKeys.has(key);
+                                const readyToConfirm = included && fSel.artifacts.length > 0 && fSel.tracks.length > 0;
 
                                 return (
                                   <div
@@ -5790,15 +5789,8 @@ export default class MedFactory extends React.Component {
                                       {/* Figure title */}
                                       <div>
                                         <div style={{ font: '700 13px/1.4 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 4 }}>{caption}</div>
-                                        <div style={{ font: '400 10.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>From: {paper.title.length > 60 ? paper.title.slice(0, 60) + '…' : paper.title}</div>
+                                        <div style={{ font: '600 10.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>From: {paper.title.length > 60 ? paper.title.slice(0, 60) + '…' : paper.title}</div>
                                       </div>
-
-                                      {/* Validation error */}
-                                      {validationError && (
-                                        <div style={{ padding: '8px 12px', background: 'rgba(220,38,38,0.07)', border: '1px solid rgba(220,38,38,0.25)', borderRadius: 6, font: '500 11px/1.5 Plus Jakarta Sans', color: '#dc2626' }}>
-                                          Select at least one artifact and one track to finish including this figure.
-                                        </div>
-                                      )}
 
                                       {/* Artifacts */}
                                       <div>
@@ -5810,8 +5802,8 @@ export default class MedFactory extends React.Component {
                                             return (
                                               <Box
                                                 key={a}
-                                                css={`padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${on ? ac : 'var(--rule2)'};background:${on ? `${ac}18` : 'transparent'};color:${on ? ac : 'var(--faint)'};transition:all 0.15s`}
-                                                hover={!on ? `border-color:${ac};color:${ac}` : ''}
+                                                css={`padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${on ? ac : 'var(--rule2)'};background:${on ? `${ac}25` : 'transparent'};color:${on ? 'var(--ink)' : 'var(--faint)'};transition:all 0.15s`}
+                                                hover={!on ? `border-color:${ac};color:var(--ink);background:${ac}10` : ''}
                                                 onClick={() => v.toggleFigureArtifact(key, a)}
                                               >{a}</Box>
                                             );
@@ -5828,8 +5820,8 @@ export default class MedFactory extends React.Component {
                                             return (
                                               <Box
                                                 key={tc.id}
-                                                css={`padding:6px 10px;font:500 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:6px;border:1px solid ${on ? tc.color : 'var(--rule)'};background:${on ? `${tc.color}14` : 'transparent'};color:${on ? tc.color : 'var(--dim)'};transition:all 0.15s`}
-                                                hover={!on ? `border-color:${tc.color};color:${tc.color};background:${tc.color}0a` : ''}
+                                                css={`padding:6px 10px;font:${on ? 700 : 500} 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:6px;border:1.5px solid ${on ? tc.color : 'var(--rule)'};background:${on ? `${tc.color}20` : 'transparent'};color:${on ? 'var(--ink)' : 'var(--dim)'};transition:all 0.15s`}
+                                                hover={!on ? `border-color:${tc.color};color:var(--ink);background:${tc.color}0d` : ''}
                                                 onClick={() => v.toggleFigureTrack(key, tc.id)}
                                               >{tc.label}</Box>
                                             );
@@ -5855,6 +5847,27 @@ export default class MedFactory extends React.Component {
                                         </div>
                                       </div>
 
+                                      {/* Per-card confirm button */}
+                                      {included && (
+                                        isConfirmed
+                                          ? <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, padding:'10px', background:'rgba(21,128,61,0.07)', border:'1px solid rgba(21,128,61,0.2)', borderRadius:8, font:'600 11px/1 Plus Jakarta Sans', color:'var(--ok)' }}>
+                                              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5l3.5 3.5 5.5-5.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                              Added to track view
+                                            </div>
+                                          : readyToConfirm
+                                            ? <Box
+                                                css="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:var(--acc);color:#fff;font:700 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;transition:opacity 0.15s"
+                                                hover="opacity:0.88"
+                                                onClick={() => v.confirmFigure(key)}
+                                              >
+                                                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                                                Add to track view
+                                              </Box>
+                                            : <div style={{ padding:'10px', background:'var(--bg)', border:'1px dashed var(--rule2)', borderRadius:8, font:'500 10.5px/1.4 Plus Jakarta Sans', color:'var(--faint)', textAlign:'center' }}>
+                                                Select artifacts &amp; tracks to add
+                                              </div>
+                                      )}
+
                                     </div>
                                   </div>
                                 );
@@ -5865,10 +5878,12 @@ export default class MedFactory extends React.Component {
                                 const uKey = fig.id;
                                 const fSel = v.figureSelections[uKey] || { included: false, artifacts: [], tracks: [], useAs: null };
                                 const included = fSel.included;
+                                const isConfirmedU = confirmedKeys.has(uKey);
+                                const readyToConfirmU = included && fSel.artifacts.length > 0 && fSel.tracks.length > 0;
                                 return (
                                   <div
                                     key={uKey}
-                                    style={{ background: 'var(--s1)', border: `1px solid ${included ? 'var(--acc)' : 'var(--rule)'}`, borderRadius: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column', animation: 'batchIn 0.4s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${i * 0.05}s`, transition: 'border-color 0.15s', boxShadow: included ? '0 0 0 2px rgba(44,82,204,0.12)' : '0 1px 4px rgba(15,31,74,0.06)' }}
+                                    style={{ background: 'var(--s1)', border: `1px solid ${isConfirmedU ? 'rgba(21,128,61,0.4)' : included ? 'var(--acc)' : 'var(--rule)'}`, borderRadius: 12, overflow: 'hidden', display: 'flex', flexDirection: 'column', animation: 'batchIn 0.4s cubic-bezier(0.22,1,0.36,1) both', animationDelay: `${i * 0.05}s`, transition: 'border-color 0.15s', boxShadow: included ? '0 0 0 2px rgba(44,82,204,0.12)' : '0 1px 4px rgba(15,31,74,0.06)' }}
                                   >
                                     {/* Image preview */}
                                     <div style={{ background: 'var(--bg)', padding: '10px', borderBottom: '1px solid var(--rule)', position: 'relative' }}>
@@ -5889,15 +5904,46 @@ export default class MedFactory extends React.Component {
                                         <span style={{ font: '600 12px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>Include this figure</span>
                                       </label>
                                       <div style={{ font: '700 13px/1.4 Plus Jakarta Sans', color: 'var(--ink)' }}>{fig.name || 'Uploaded figure'}</div>
-                                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                                        {ALL_ARTIFACTS.map((a) => {
-                                          const on = fSel.artifacts.includes(a);
-                                          const ac = ART_COLORS[a];
-                                          return (
-                                            <Box key={a} css={`padding:4px 10px;font:600 9px/1 Plus Jakarta Sans;border-radius:20px;cursor:pointer;border:1.5px solid ${on ? ac : 'var(--rule2)'};color:${on ? ac : 'var(--faint)'};background:${on ? `${ac}18` : 'transparent'};transition:all 0.15s`} hover={!on ? `border-color:${ac};color:${ac}` : ''} onClick={() => v.toggleFigureArtifact(uKey, a)}>{a}</Box>
-                                          );
-                                        })}
+                                      <div>
+                                        <div style={{ font:'600 9px/1 Plus Jakarta Sans', letterSpacing:'0.12em', color:'var(--faint)', marginBottom:8 }}>Artifacts</div>
+                                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                                          {ALL_ARTIFACTS.map((a) => {
+                                            const on = fSel.artifacts.includes(a);
+                                            const ac = ART_COLORS[a];
+                                            return (
+                                              <Box key={a} css={`padding:4px 10px;font:600 9px/1 Plus Jakarta Sans;border-radius:20px;cursor:pointer;border:1.5px solid ${on ? ac : 'var(--rule2)'};color:${on ? 'var(--ink)' : 'var(--faint)'};background:${on ? `${ac}25` : 'transparent'};transition:all 0.15s`} hover={!on ? `border-color:${ac};color:var(--ink);background:${ac}10` : ''} onClick={() => v.toggleFigureArtifact(uKey, a)}>{a}</Box>
+                                            );
+                                          })}
+                                        </div>
                                       </div>
+                                      <div>
+                                        <div style={{ font:'600 9px/1 Plus Jakarta Sans', letterSpacing:'0.12em', color:'var(--faint)', marginBottom:8 }}>Tracks</div>
+                                        <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
+                                          {CONTENT_TRACKS.map((tc) => {
+                                            const on = fSel.tracks.includes(tc.id);
+                                            return (
+                                              <Box key={tc.id} css={`padding:6px 10px;font:${on ? 700 : 500} 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:6px;border:1.5px solid ${on ? tc.color : 'var(--rule)'};background:${on ? `${tc.color}20` : 'transparent'};color:${on ? 'var(--ink)' : 'var(--dim)'};transition:all 0.15s`} hover={!on ? `border-color:${tc.color};color:var(--ink);background:${tc.color}0d` : ''} onClick={() => v.toggleFigureTrack(uKey, tc.id)}>{tc.label}</Box>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+
+                                      {/* Per-card confirm button */}
+                                      {included && (
+                                        isConfirmedU
+                                          ? <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, padding:'10px', background:'rgba(21,128,61,0.07)', border:'1px solid rgba(21,128,61,0.2)', borderRadius:8, font:'600 11px/1 Plus Jakarta Sans', color:'var(--ok)' }}>
+                                              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5l3.5 3.5 5.5-5.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                              Added to track view
+                                            </div>
+                                          : readyToConfirmU
+                                            ? <Box css="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:var(--acc);color:#fff;font:700 11px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;transition:opacity 0.15s" hover="opacity:0.88" onClick={() => v.confirmFigure(uKey)}>
+                                                <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                                                Add to track view
+                                              </Box>
+                                            : <div style={{ padding:'10px', background:'var(--bg)', border:'1px dashed var(--rule2)', borderRadius:8, font:'500 10.5px/1.4 Plus Jakarta Sans', color:'var(--faint)', textAlign:'center' }}>
+                                                Select artifacts &amp; tracks to add
+                                              </div>
+                                      )}
                                     </div>
                                   </div>
                                 );
@@ -6062,7 +6108,7 @@ export default class MedFactory extends React.Component {
 
                         {/* Description */}
                         <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
-                          <p style={{ font: '400 12px/1.65 Plus Jakarta Sans', color: 'var(--dim)', margin: 0 }}>
+                          <p style={{ font: '600 12px/1.65 Plus Jakarta Sans', color: 'var(--dim)', margin: 0 }}>
                             This is a concatenated view of the excerpts currently tagged to this {m.type === 'track' ? 'track' : 'artifact'}. In the full product, this section would instead show an AI-generated summary combining these excerpts.
                           </p>
                         </div>
@@ -6070,7 +6116,7 @@ export default class MedFactory extends React.Component {
                         {/* Paper excerpts list */}
                         <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
                           {m.papers.length === 0 ? (
-                            <div style={{ font: '400 12px/1.6 Plus Jakarta Sans', color: 'var(--dim)', textAlign: 'center', padding: '32px 0' }}>No excerpts in this {m.type} yet.</div>
+                            <div style={{ font: '600 12px/1.6 Plus Jakarta Sans', color: 'var(--dim)', textAlign: 'center', padding: '32px 0' }}>No excerpts in this {m.type} yet.</div>
                           ) : m.papers.map((p) => {
                             const lc = letterColor(p.type);
                             const figs = PAPER_FIGURES[p._idx] || [];
@@ -6082,9 +6128,9 @@ export default class MedFactory extends React.Component {
                                 </div>
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                   <div style={{ font: '700 13px/1.4 Plus Jakarta Sans', color: '#e8eef8', marginBottom: 3 }}>{p.title}</div>
-                                  <div style={{ font: '400 10.5px/1 Plus Jakarta Sans', color: 'var(--dim)', marginBottom: 10 }}>{p.journal.split('·')[0].trim()} · {p.year}</div>
+                                  <div style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--dim)', marginBottom: 10 }}>{p.journal.split('·')[0].trim()} · {p.year}</div>
                                   {/* Excerpt */}
-                                  <div style={{ font: '400 12px/1.7 Plus Jakarta Sans', color: 'var(--dim)', fontStyle: 'italic', borderLeft: `2px solid ${lc}40`, paddingLeft: 12, marginBottom: figs.length > 0 ? 10 : 0 }}>
+                                  <div style={{ font: '700 13px/1.7 Plus Jakarta Sans', color: '#000000', borderLeft: `2px solid ${lc}40`, paddingLeft: 12, marginBottom: figs.length > 0 ? 10 : 0 }}>
                                     {p.excerpt}
                                   </div>
                                   {/* Inline figure if any */}
@@ -6108,7 +6154,7 @@ export default class MedFactory extends React.Component {
                                             </svg>
                                           );
                                         }
-                                        return <div style={{ font: '500 10px/1 Plus Jakarta Sans', color: '#888', textAlign: 'center', padding: '8px 0' }}>{fig.label}</div>;
+                                        return <div style={{ font: '600 10px/1 Plus Jakarta Sans', color: '#888', textAlign: 'center', padding: '8px 0' }}>{fig.label}</div>;
                                       })()}
                                     </div>
                                   )}
@@ -6149,7 +6195,7 @@ export default class MedFactory extends React.Component {
                           <div key={a} style={S(`display:flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid ${ok ? 'var(--ok)' : 'var(--rule2)'};background:${ok ? 'rgba(22,101,52,0.1)' : 'var(--s2)'}`)}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', background: ok ? 'var(--ok)' : 'var(--faint)' }} />
                             <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: ok ? 'var(--ok)' : 'var(--faint)' }}>{a}</span>
-                            <span style={{ font: '500 10px/1 var(--mono)', color: ok ? 'var(--ok)' : 'var(--dim)' }}>{cur}/{tgt}</span>
+                            <span style={{ font: '600 10px/1 var(--mono)', color: ok ? 'var(--ok)' : 'var(--dim)' }}>{cur}/{tgt}</span>
                           </div>
                         ))}
                         <span style={S('font:500 11px/1 Plus Jakarta Sans;color:var(--faint);margin-left:4px')}>{totalEx} excerpts · {accepted.length} papers</span>
@@ -6344,6 +6390,55 @@ export default class MedFactory extends React.Component {
 
           {/* ============ MED REVIEW ============ */}
           {v.isMedReview && (() => {
+
+            /* ── Sent to Scientific Review confirmation screen ── */
+            if (v.sciReviewSent) {
+              return (
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#fff', gap: 0, padding: '40px 24px' }}>
+                  {/* Success icon */}
+                  <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24, boxShadow: '0 8px 32px rgba(124,58,237,0.28)' }}>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                      <path d="M4 16l9 9L28 8" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  {/* Status pill */}
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 14px', background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.22)', borderRadius: 20, marginBottom: 16 }}>
+                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#7c3aed', animation: 'puls 1.4s ease-in-out infinite' }} />
+                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#7c3aed', letterSpacing: '0.06em' }}>SENT TO SCIENTIFIC REVIEW</span>
+                  </div>
+                  {/* Heading */}
+                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 26, fontWeight: 800, color: '#000', textAlign: 'center', marginBottom: 10, letterSpacing: '-0.02em' }}>
+                    Research sent to Scientific Review
+                  </div>
+                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 14, color: '#444', textAlign: 'center', maxWidth: 440, lineHeight: 1.65, marginBottom: 32 }}>
+                    Your research has been forwarded to <strong>Dr. Arjun Mehta</strong> for scientific validation. You'll be notified once the review is complete.
+                  </div>
+                  {/* Info cards */}
+                  <div style={{ display: 'flex', gap: 12, marginBottom: 32, width: '100%', maxWidth: 480 }}>
+                    {[
+                      { label: 'Submitted by', value: 'Mayank Gupta', icon: '👤' },
+                      { label: 'Assigned to', value: 'Dr. Arjun Mehta', icon: '🔬' },
+                      { label: 'Status', value: 'Pending Review', icon: '⏳' },
+                    ].map(({ label, value, icon }) => (
+                      <div key={label} style={{ flex: 1, background: '#fafbff', border: '1px solid var(--rule2)', borderRadius: 10, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <div style={{ fontSize: 16, marginBottom: 2 }}>{icon}</div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: '#000' }}>{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* CTA */}
+                  <button
+                    onClick={() => this.go('dash')}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px', background: 'linear-gradient(135deg,#2c52cc,#4468e0)', color: '#fff', border: 'none', borderRadius: 10, fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 14px rgba(44,82,204,0.3)' }}
+                  >
+                    Back to Dashboard
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </button>
+                </div>
+              );
+            }
+
             const rN = v.reviewN;
             const isDone = rN > REVIEW_AGENT_MSGS.length;
             const visibleMsgs = REVIEW_AGENT_MSGS.slice(0, rN);
@@ -6507,7 +6602,7 @@ export default class MedFactory extends React.Component {
                       <Box
                         css="display:inline-flex;align-items:center;gap:8px;padding:11px 24px;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:10px;box-shadow:0 3px 12px rgba(44,82,204,0.3)"
                         hover="opacity:0.88"
-                        onClick={v.doMAApprove}
+                        onClick={v.sendToSciReview}
                       >
                         <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         Send to Scientific Review
@@ -6555,7 +6650,7 @@ export default class MedFactory extends React.Component {
                               style={{
                                 padding: '7px 12px',
                                 cursor: 'pointer',
-                                background: active ? '#f0f4ff' : 'transparent',
+                                background: active ? '#ffffff' : 'transparent',
                                 borderLeft: active ? '3px solid ' + color : '3px solid transparent',
                                 borderBottom: '1px solid var(--rule)',
                                 opacity: resolved ? 0.5 : 1,
@@ -6608,12 +6703,15 @@ export default class MedFactory extends React.Component {
                         </div>
 
                         {/* Main content */}
-                        <div style={{ flex: 1, minWidth: 0, overflowY: 'auto', background: '#fff' }}>
+                        <div style={{ flex: 1, minWidth: 0, overflowY: 'auto', background: '#fff', display: 'flex', flexDirection: 'column' }}>
                           {selGap && selPaper ? (() => {
-                            const excerptIdx = selPaper.excerpt.indexOf(selGap.highlightText);
-                            const beforeHL = excerptIdx >= 0 ? selPaper.excerpt.slice(0, excerptIdx) : selPaper.excerpt;
+                            const pIdx = selGap.paperIdx;
+                            const liveExcerpts = v.paperExcerpts[pIdx] || [{ text: selPaper.excerpt, src: selPaper.excerptSrc }];
+                            const primaryExcerpt = liveExcerpts[0];
+                            const excerptIdx = primaryExcerpt.text.indexOf(selGap.highlightText);
+                            const beforeHL = excerptIdx >= 0 ? primaryExcerpt.text.slice(0, excerptIdx) : primaryExcerpt.text;
                             const hl = excerptIdx >= 0 ? selGap.highlightText : '';
-                            const afterHL = excerptIdx >= 0 ? selPaper.excerpt.slice(excerptIdx + selGap.highlightText.length) : '';
+                            const afterHL = excerptIdx >= 0 ? primaryExcerpt.text.slice(excerptIdx + selGap.highlightText.length) : '';
                             return (
                               <div style={{ padding: '16px 20px', maxWidth: 760, width: '100%', margin: '0 auto' }}>
                                 {/* Paper header */}
@@ -6685,8 +6783,8 @@ export default class MedFactory extends React.Component {
                                         <div>
                                           <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 7 }}>Key Excerpt</div>
                                           <div style={{ fontFamily: 'Georgia, serif', fontSize: 12.5, lineHeight: 1.8, color: 'var(--ink)', background: 'var(--s2)', borderRadius: 7, padding: '12px 14px', border: '1px solid var(--rule)', borderLeft: '3px solid ' + typeColor(selPaper.type) }}>
-                                            {selPaper.excerpt}
-                                            <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{selPaper.excerptSrc}</div>
+                                            {primaryExcerpt.text}
+                                            <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{primaryExcerpt.src}</div>
                                           </div>
                                         </div>
                                         {/* Artifact tags */}
@@ -6723,18 +6821,43 @@ export default class MedFactory extends React.Component {
                                       {showRec ? (
                                         <div style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: '#f0fdf4', borderRadius: 7, padding: '12px 16px', border: '1px solid #bbf7d0', borderLeft: '3px solid #16a34a', animation: 'rise 0.18s ease' }}>
                                           <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#16a34a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>✓ Recommended replacement</div>
-                                          {selPaper.excerpt
+                                          {primaryExcerpt.text
                                             .replace('causes', 'is associated with')
                                             .replace('leads to', 'correlates with')
                                             .replace('cause', 'associate with')}
-                                          <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{selPaper.excerptSrc} · <em>language adjusted per AI recommendation</em></div>
+                                          <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{primaryExcerpt.src} · <em>language adjusted per AI recommendation</em></div>
                                         </div>
                                       ) : (
-                                        <div style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: 'var(--s2)', borderRadius: 7, padding: '12px 16px', border: '1px solid var(--rule)' }}>
-                                          {beforeHL}
-                                          {hl && <span style={{ background: 'rgba(251,191,36,0.35)', borderBottom: '2px solid #f59e0b', borderRadius: 2, padding: '1px 2px' }}>{hl}</span>}
-                                          {afterHL}
-                                          <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{selPaper.excerptSrc}</div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                          {/* Primary excerpt with highlight */}
+                                          <div style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: v.gapLastAction?.type === 'replace' ? '#f0fdf4' : 'var(--s2)', borderRadius: 7, padding: '12px 16px', border: `1px solid ${v.gapLastAction?.type === 'replace' ? '#86efac' : 'var(--rule)'}`, position: 'relative', animation: v.gapLastAction?.type === 'replace' ? 'rise 0.22s ease both' : 'none' }}>
+                                            {v.gapLastAction?.type === 'replace' && (
+                                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#16a34a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
+                                                <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                                Excerpt replaced
+                                              </div>
+                                            )}
+                                            {beforeHL}
+                                            {hl && <span style={{ background: 'rgba(251,191,36,0.35)', borderBottom: '2px solid #f59e0b', borderRadius: 2, padding: '1px 2px' }}>{hl}</span>}
+                                            {afterHL}
+                                            <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{primaryExcerpt.src}</div>
+                                          </div>
+                                          {/* Additional excerpts (from Add) */}
+                                          {liveExcerpts.slice(1).map((exc, addI) => {
+                                            const isNew = v.gapLastAction?.type === 'add' && exc.text === v.gapLastAction.text;
+                                            return (
+                                              <div key={addI} style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: isNew ? '#eff6ff' : 'var(--s2)', borderRadius: 7, padding: '12px 16px', border: `1px solid ${isNew ? '#bfdbfe' : 'var(--rule)'}`, animation: isNew ? 'rise 0.22s ease both' : 'none' }}>
+                                                {isNew && (
+                                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#1d4ed8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
+                                                    <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#1d4ed8" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                                                    New excerpt added
+                                                  </div>
+                                                )}
+                                                {exc.text}
+                                                <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{exc.src}</div>
+                                              </div>
+                                            );
+                                          })}
                                         </div>
                                       )}
                                     </div>
@@ -6774,28 +6897,26 @@ export default class MedFactory extends React.Component {
                                         </div>
                                       </div>
                                     </div>
-                                    {/* Actions */}
-                                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                                      {!isResolved ? (
-                                        <button onClick={() => v.resolveGap(v.gapSelected)} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px', background: 'linear-gradient(135deg,#16a34a,#22c55e)', color: '#fff', border: 'none', borderRadius: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, cursor: 'pointer', boxShadow: '0 2px 6px rgba(22,163,74,0.25)' }}>
-                                          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5l3 3 4.5-5" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                          Mark Resolved
-                                        </button>
-                                      ) : (
-                                        <button onClick={() => v.unresolveGap(v.gapSelected)} style={{ padding: '6px 12px', background: 'var(--s2)', color: 'var(--dim)', border: '1px solid var(--rule2)', borderRadius: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>
-                                          Undo Resolve
-                                        </button>
-                                      )}
-                                      <button onClick={() => v.deleteResearchPaper(selGap.paperIdx)} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '6px 12px', background: '#fff', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                                        Remove Paper
-                                      </button>
-                                      <button onClick={() => { v.toggleAccept(selGap.paperIdx); v.resolveGap(v.gapSelected); }} style={{ padding: '6px 12px', background: '#fff', color: 'var(--dim)', border: '1px solid var(--rule2)', borderRadius: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>
-                                        Accept Anyway
-                                      </button>
-                                    </div>
                                   </div>
                                 </div>
+
+                                {/* AI Normalise CTA */}
+                                <button
+                                  onClick={() => v.setGapExcerptOpen(!v.gapExcerptOpen)}
+                                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 0', marginBottom: 14, background: v.gapExcerptOpen ? 'rgba(124,58,237,0.08)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: v.gapExcerptOpen ? '#7c3aed' : '#fff', border: v.gapExcerptOpen ? '1.5px solid rgba(124,58,237,0.3)' : 'none', borderRadius: 9, fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', boxShadow: v.gapExcerptOpen ? 'none' : '0 3px 14px rgba(124,58,237,0.32)', transition: 'all 0.15s', letterSpacing: '-0.01em' }}
+                                >
+                                  {v.gapExcerptOpen ? (
+                                    <>
+                                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M9 2L4 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                      Close AI Normalisation
+                                    </>
+                                  ) : (
+                                    <>
+                                      <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="M9.663 17h4.673M12.5 3.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5v.5h-3v-.5zM5 17V7a3 3 0 016 0v5.5M3 17h14"/><path fillRule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.457-.73a1 1 0 011.09 1.68l-.73.364.632 1.265a1 1 0 01-.452 1.341L15 9.5v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-.5l-1.951-.976a1 1 0 01-.452-1.341l.632-1.265-.73-.364a1 1 0 011.09-1.68l1.457.73L9 3.323V3a1 1 0 011-1z" clipRule="evenodd"/></svg>
+                                      ✦ AI Normalisation
+                                    </>
+                                  )}
+                                </button>
 
                                 {/* Context */}
                                 <div style={{ background: 'var(--s2)', borderRadius: 7, padding: '10px 14px', border: '1px solid var(--rule)' }}>
@@ -6810,6 +6931,153 @@ export default class MedFactory extends React.Component {
                             </div>
                           )}
                         </div>
+
+                        {/* Excerpt Manager Panel — slides in from right */}
+                        {v.gapExcerptOpen && selGap && selPaper && (() => {
+                          const pIdx = selGap.paperIdx;
+                          const currentExcerpts = v.paperExcerpts[pIdx] || [{ text: selPaper.excerpt, src: selPaper.excerptSrc }];
+                          const alts = ALTERNATE_EXCERPTS[pIdx] || [];
+                          const aiGenerated = v.aiExcerpts[pIdx] || [];
+                          const aiLoading = v.aiExcerptsLoading[pIdx];
+                          return (
+                            <div style={{ width: 370, flexShrink: 0, borderLeft: '1px solid rgba(124,58,237,0.18)', background: '#fdfbff', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
+                              {/* Header */}
+                              <div style={{ padding: '12px 14px', borderBottom: '1px solid rgba(124,58,237,0.14)', background: 'linear-gradient(135deg,rgba(124,58,237,0.06),rgba(168,85,247,0.04))', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 2 }}>
+                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ AI Normalisation</span>
+                                  </div>
+                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 800, color: '#000000', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selPaper.title}</div>
+                                </div>
+                                <button onClick={() => v.setGapExcerptOpen(false)} style={{ flexShrink: 0, background: 'none', border: '1px solid rgba(124,58,237,0.2)', borderRadius: 6, width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7c3aed' }}>
+                                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                                </button>
+                              </div>
+                              {/* Body */}
+                              <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                {/* Active excerpt label */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--ink)', textTransform: 'uppercase' }}>
+                                    Active Excerpt{currentExcerpts.length > 1 ? 's' : ''}
+                                  </span>
+                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)' }}>{currentExcerpts.length} excerpt{currentExcerpts.length > 1 ? 's' : ''}</span>
+                                </div>
+                                {/* Action feedback banner */}
+                                {v.gapLastAction && (
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '7px 11px', borderRadius: 7, background: v.gapLastAction.type === 'replace' ? '#f0fdf4' : '#eff6ff', border: `1px solid ${v.gapLastAction.type === 'replace' ? '#86efac' : '#bfdbfe'}`, animation: 'rise 0.2s ease both' }}>
+                                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={v.gapLastAction.type === 'replace' ? '#16a34a' : '#2563eb'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: v.gapLastAction.type === 'replace' ? '#15803d' : '#1d4ed8' }}>
+                                      {v.gapLastAction.type === 'replace' ? 'Excerpt replaced — previous excerpt removed' : 'New excerpt added below existing excerpts'}
+                                    </span>
+                                  </div>
+                                )}
+                                {currentExcerpts.map((exc, ei) => {
+                                  const isLastAdded = v.gapLastAction?.type === 'add' && exc.text === v.gapLastAction.text;
+                                  const isReplaced = v.gapLastAction?.type === 'replace' && exc.text === v.gapLastAction.text;
+                                  return (
+                                    <div key={ei} style={{ background: isReplaced ? '#f0fdf4' : isLastAdded ? '#eff6ff' : '#fff', border: `1.5px solid ${isReplaced ? '#86efac' : isLastAdded ? '#bfdbfe' : 'var(--rule2)'}`, borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6, animation: (isLastAdded || isReplaced) ? 'rise 0.25s ease both' : 'none' }}>
+                                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+                                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, lineHeight: 1.75, color: '#000000', fontWeight: 700, flex: 1 }}>{exc.text}</div>
+                                        {isReplaced && (
+                                          <span style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac', borderRadius: 20, whiteSpace: 'nowrap' }}>
+                                            <svg width="6" height="6" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#15803d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                            Replaced
+                                          </span>
+                                        )}
+                                        {isLastAdded && (
+                                          <span style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, background: '#dbeafe', color: '#1d4ed8', border: '1px solid #bfdbfe', borderRadius: 20, whiteSpace: 'nowrap' }}>
+                                            <svg width="6" height="6" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#1d4ed8" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                                            New
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--faint)', fontWeight: 700 }}>{exc.src}</span>
+                                        {currentExcerpts.length > 1 && (
+                                          <button onClick={() => v.removeExcerptItem(pIdx, exc.text)} style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 5, cursor: 'pointer', color: '#dc2626', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Remove</button>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+
+                                {/* Alternative excerpts */}
+                                {alts.length > 0 && (
+                                  <>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
+                                      <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ Suggested Normalisations</span>
+                                      {!aiGenerated.length && (
+                                        <button
+                                          onClick={() => v.generateAIExcerpts(pIdx, selPaper)}
+                                          disabled={!!aiLoading}
+                                          style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#2c52cc,#4468e0)', color: aiLoading ? 'var(--dim)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer' }}
+                                        >
+                                          {aiLoading
+                                            ? <>{[0,1,2].map(d => <div key={d} style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}Extracting…</>
+                                            : <>✦ Generate more with AI</>
+
+                                          }
+                                        </button>
+                                      )}
+                                    </div>
+                                    {alts.map((alt, ai) => {
+                                      const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
+                                      return (
+                                        <div key={ai} style={{ background: '#fff', border: '1.5px solid var(--rule2)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, lineHeight: 1.75, color: '#000000', fontWeight: 700 }}>{alt.text}</div>
+                                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--faint)', fontWeight: 700 }}>{alt.src}</span>
+                                            {alreadyAdded ? (
+                                              <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 600 }}>✓ Added</span>
+                                            ) : (
+                                              <div style={{ display: 'flex', gap: 5 }}>
+                                                <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 9px' }}>Replace</button>
+                                                <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.35)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 9px' }}>Add</button>
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </>
+                                )}
+
+                                {/* AI-generated excerpts */}
+                                {aiGenerated.length > 0 && (
+                                  <>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                                      <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ AI-Generated Options</span>
+                                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', fontFamily: 'Plus Jakarta Sans', fontSize: 8, fontWeight: 700, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac', borderRadius: 20 }}>
+                                        <svg width="6" height="6" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#15803d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                        New
+                                      </span>
+                                    </div>
+                                    {aiGenerated.map((alt, ai) => {
+                                      const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
+                                      return (
+                                        <div key={`ai-${ai}`} style={{ background: 'rgba(44,82,204,0.05)', border: '1.5px solid rgba(44,82,204,0.22)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6, animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
+                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, lineHeight: 1.75, color: '#000000', fontWeight: 700 }}>{alt.text}</div>
+                                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--faint)', fontWeight: 700 }}>{alt.src}</span>
+                                            {alreadyAdded ? (
+                                              <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 600 }}>✓ Added</span>
+                                            ) : (
+                                              <div style={{ display: 'flex', gap: 5 }}>
+                                                <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 9px' }}>Replace</button>
+                                                <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.35)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 9px' }}>Add</button>
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })()}
+
                       </div>
                     );
                   })()}
@@ -6978,7 +7246,7 @@ export default class MedFactory extends React.Component {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                       <div style={{ flex: 1 }}>
                         <h2 style={{ font: '800 20px/1 Plus Jakarta Sans', letterSpacing: '-0.025em', color: '#1a2d6b', margin: '0 0 6px' }}>Scientific Review</h2>
-                        <div style={{ font: '500 13px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>
+                        <div style={{ font: '600 13px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>
                           {accepted.length} papers under review &middot;&nbsp;
                           {rejectedCount > 0
                             ? <span style={{ color: '#2c52cc', fontWeight: 700 }}>{rejectedCount} rejected</span>
@@ -7016,7 +7284,7 @@ export default class MedFactory extends React.Component {
                                 onClick={() => v.setSciSelectedPaper(isSel ? null : paper)}>
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                   <div style={{ font: '700 15px/1.45 Plus Jakarta Sans', color: '#1a2d6b', marginBottom: 5 }}>{paper.title}</div>
-                                  <div style={{ font: '500 12.5px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
+                                  <div style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5, flexShrink: 0 }}>
                                   {inlineCount > 0 && <span style={{ padding: '3px 8px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.35)', font: '700 10.5px/1.5 Plus Jakarta Sans', color: '#92400e', borderRadius: 4 }}>{inlineCount} comment{inlineCount > 1 ? 's' : ''}</span>}
@@ -7027,7 +7295,7 @@ export default class MedFactory extends React.Component {
                               {/* Excerpt */}
                               {paper.excerpt && (
                                 <div style={{ padding: '0 16px 12px', borderTop: '1px solid rgba(26,45,107,0.08)' }}>
-                                  <div style={{ paddingTop: 9, font: '400 13px/1.65 Plus Jakarta Sans', color: '#2d4a8a', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>"{paper.excerpt}"</div>
+                                  <div style={{ paddingTop: 9, font: '600 13px/1.65 Plus Jakarta Sans', color: '#2d4a8a', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>"{paper.excerpt}"</div>
                                 </div>
                               )}
                               {/* Reject / comment row */}
@@ -7037,7 +7305,7 @@ export default class MedFactory extends React.Component {
                                   value={cmt.text || ''}
                                   onChange={(e) => v.setSciComment(key, e.target.value)}
                                   onClick={(e) => e.stopPropagation()}
-                                  style={{ flex: 1, background: '#f4f7fb', border: `1px solid ${isRejected ? 'rgba(44,82,204,0.4)' : 'rgba(26,45,107,0.14)'}`, color: '#1a2d6b', padding: '7px 11px', font: '400 13px/1 Plus Jakarta Sans', outline: 'none', borderRadius: 4 }}
+                                  style={{ flex: 1, background: '#f4f7fb', border: `1px solid ${isRejected ? 'rgba(44,82,204,0.4)' : 'rgba(26,45,107,0.14)'}`, color: '#1a2d6b', padding: '7px 11px', font: '600 13px/1 Plus Jakarta Sans', outline: 'none', borderRadius: 4 }}
                                 />
                                 <Box
                                   css={`padding:7px 13px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid rgba(44,82,204,0.45);color:${isRejected ? '#fff' : '#2c52cc'};background:${isRejected ? '#2c52cc' : 'transparent'};white-space:nowrap;border-radius:4px`}
@@ -7063,13 +7331,13 @@ export default class MedFactory extends React.Component {
                         placeholder="Write your overall assessment of the research package — scientific rigour, evidence gaps, suitability for the intended audience, or any cross-paper observations…"
                         value={v.sciOverallComment}
                         onChange={(e) => v.setSciOverallComment(e.target.value)}
-                        style={{ width: '100%', resize: 'vertical', background: '#f4f7fb', border: '1.5px solid rgba(44,82,204,0.25)', borderRadius: 8, padding: '11px 14px', font: '400 13px/1.7 Plus Jakarta Sans', color: '#1a2d6b', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
+                        style={{ width: '100%', resize: 'vertical', background: '#f4f7fb', border: '1.5px solid rgba(44,82,204,0.25)', borderRadius: 8, padding: '11px 14px', font: '600 13px/1.7 Plus Jakarta Sans', color: '#1a2d6b', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
                         onFocus={(e) => { e.target.style.borderColor = 'rgba(44,82,204,0.6)'; }}
                         onBlur={(e) => { e.target.style.borderColor = 'rgba(44,82,204,0.25)'; }}
                       />
                       {v.sciOverallComment.trim().length > 0 && (
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 }}>
-                          <span style={{ font: '500 11px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{v.sciOverallComment.trim().length} characters</span>
+                          <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{v.sciOverallComment.trim().length} characters</span>
                           <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#166534', display: 'flex', alignItems: 'center', gap: 4 }}>
                             <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#166534" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                             Saved
@@ -7145,7 +7413,7 @@ export default class MedFactory extends React.Component {
                           <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.16em', color: 'var(--faint)', textTransform: 'uppercase' }}>Papers citing this source</span>
                         </div>
                         <div style={{ font: '700 15px/1.4 Plus Jakarta Sans', color: 'var(--ink)', letterSpacing: '-0.015em' }}>{cp.title}</div>
-                        {cp.journal && <div style={{ font: '400 11.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 4 }}>{cp.journal}{cp.year ? ` · ${cp.year}` : ''}</div>}
+                        {cp.journal && <div style={{ font: '600 11.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 4 }}>{cp.journal}{cp.year ? ` · ${cp.year}` : ''}</div>}
                       </div>
                       <button onClick={() => v.setPipeCitationsOpen(null)} style={{ flexShrink: 0, background: 'var(--s2)', border: '1px solid var(--rule2)', borderRadius: 8, width: 32, height: 32, cursor: 'pointer', color: 'var(--faint)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <svg width="12" height="12" fill="none" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
@@ -7153,9 +7421,9 @@ export default class MedFactory extends React.Component {
                     </div>
                     {/* Controls row */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{sortedCites.length} papers found</span>
+                      <span style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{sortedCites.length} papers found</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>Sort</span>
+                        <span style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>Sort</span>
                         <div style={{ position: 'relative' }}>
                           <select value={v.pipeCitationSort} onChange={(e) => v.setPipeCitationSort(e.target.value)} style={{ appearance: 'none', background: 'var(--s1)', border: '1px solid var(--rule2)', borderRadius: 7, padding: '5px 26px 5px 10px', font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--ink)', cursor: 'pointer', outline: 'none' }}>
                             <option value="year-desc">Newest first</option>
@@ -7182,11 +7450,11 @@ export default class MedFactory extends React.Component {
                           {/* Year pill */}
                           <div style={{ flexShrink: 0, width: 42, height: 42, borderRadius: 10, background: 'var(--s2)', border: '1px solid var(--rule2)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <span style={{ font: '700 12px/1 Plus Jakarta Sans', color: 'var(--acc)' }}>{String(cite.year).slice(2)}</span>
-                            <span style={{ font: '500 8px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 1 }}>{String(cite.year).slice(0,2)}</span>
+                            <span style={{ font: '600 8px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 1 }}>{String(cite.year).slice(0,2)}</span>
                           </div>
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ font: '600 13px/1.5 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 5, letterSpacing: '-0.005em' }}>{cite.title}</div>
-                            <div style={{ font: '400 11px/1 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 10 }}>{cite.journal}</div>
+                            <div style={{ font: '600 11px/1 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 10 }}>{cite.journal}</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                                 <div style={{ width: 56, height: 4, borderRadius: 2, background: 'var(--rule)', overflow: 'hidden' }}>
@@ -7221,10 +7489,10 @@ export default class MedFactory extends React.Component {
                         {[1,2,3].map(d => (
                           <div key={d} style={{ width: 7, height: 7, borderRadius: '50%', background: d <= currentDepth ? 'var(--acc)' : 'var(--rule2)', border: d === currentDepth ? '2px solid rgba(44,82,204,0.3)' : 'none', transition: 'all 0.2s' }} />
                         ))}
-                        <span style={{ font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)', marginLeft: 4 }}>Depth {currentDepth} of 3</span>
+                        <span style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)', marginLeft: 4 }}>Depth {currentDepth} of 3</span>
                       </div>
                     )}
-                    <span style={{ font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginLeft: 'auto' }}>Click Evaluate to open citation analysis</span>
+                    <span style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginLeft: 'auto' }}>Click Evaluate to open citation analysis</span>
                   </div>
                 </div>
               </div>
@@ -7303,16 +7571,16 @@ export default class MedFactory extends React.Component {
                             <span key={a} style={{ padding: '4px 12px', borderRadius: 20, background: `${ART_COLORS_CE[a]}15`, border: `1.5px solid ${ART_COLORS_CE[a]}40`, font: '700 10px/1 Plus Jakarta Sans', color: ART_COLORS_CE[a], letterSpacing: '0.04em' }}>{a}</span>
                           ))}
                           {variant.tracks.map((t) => (
-                            <span key={t} style={{ padding: '4px 12px', borderRadius: 20, background: 'var(--s2)', border: '1px solid var(--rule2)', font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{t}</span>
+                            <span key={t} style={{ padding: '4px 12px', borderRadius: 20, background: 'var(--s2)', border: '1px solid var(--rule2)', font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{t}</span>
                           ))}
                         </div>
                         <h2 style={{ margin: '0 0 12px', font: '700 20px/1.35 Plus Jakarta Sans', color: 'var(--ink)', letterSpacing: '-0.02em' }}>{ce.title}</h2>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                          <span style={{ font: '400 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{ce.journal}</span>
+                          <span style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{ce.journal}</span>
                           <span style={{ color: 'var(--rule2)', fontSize: 12 }}>·</span>
                           <span style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: 'var(--dim)' }}>{ce.year}</span>
                           <span style={{ color: 'var(--rule2)', fontSize: 12 }}>·</span>
-                          <span style={{ font: '500 11px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{variant.citations}</span>
+                          <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{variant.citations}</span>
                         </div>
                       </div>
 
@@ -7323,7 +7591,7 @@ export default class MedFactory extends React.Component {
                           <div style={{ position: 'absolute', left: 0, top: 4, bottom: 4, width: 3, background: 'linear-gradient(180deg,#2c52cc,#4468e0)', borderRadius: 2 }} />
                           <p style={{ margin: 0, font: 'italic 15px/1.85 Georgia, serif', color: 'var(--ink)', letterSpacing: '-0.005em' }}>{variant.excerpt}</p>
                         </div>
-                        <div style={{ marginTop: 14, font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{ce.journal}, {ce.year}</div>
+                        <div style={{ marginTop: 14, font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{ce.journal}, {ce.year}</div>
                       </div>
 
                       {/* Relevance bar */}
@@ -7333,7 +7601,7 @@ export default class MedFactory extends React.Component {
                           <div style={{ flex: 1, height: 6, borderRadius: 3, background: 'var(--rule)', overflow: 'hidden' }}>
                             <div style={{ height: '100%', width: `${relScore}%`, background: `linear-gradient(90deg,${relColor}88,${relColor})`, borderRadius: 3, transition: 'width 0.6s cubic-bezier(0.22,1,0.36,1)' }} />
                           </div>
-                          <span style={{ font: '800 16px/1 Plus Jakarta Sans', color: relColor, flexShrink: 0 }}>{relScore}<span style={{ font: '500 11px/1', color: 'var(--faint)' }}>/100</span></span>
+                          <span style={{ font: '800 16px/1 Plus Jakarta Sans', color: relColor, flexShrink: 0 }}>{relScore}<span style={{ font: '600 11px/1', color: 'var(--faint)' }}>/100</span></span>
                         </div>
                       </div>
                     </div>
@@ -7463,7 +7731,7 @@ export default class MedFactory extends React.Component {
                         <span style={{ font: '600 10px/1 var(--mono)', color: 'var(--faint)' }}>{mp.year}</span>
                       </div>
                       <div style={{ font: '800 17px/1.35 Plus Jakarta Sans', letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: 6 }}>{mp.title}</div>
-                      <div style={{ font: '500 11.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>{mp.journal}</div>
+                      <div style={{ font: '600 11.5px/1.5 Plus Jakarta Sans', color: 'var(--faint)' }}>{mp.journal}</div>
                     </div>
                     <button
                       onClick={() => v.setPipeViewPaper(null)}
@@ -7516,8 +7784,8 @@ export default class MedFactory extends React.Component {
                         {/* Excerpt */}
                         <div style={{ borderLeft: `3px solid ${tc}`, paddingLeft: 16, marginBottom: 20 }}>
                           <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--faint)', marginBottom: 10 }}>KEY EXCERPT</div>
-                          <blockquote style={{ margin: 0, font: '400 13.5px/1.75 Georgia, serif', color: 'var(--dim)', fontStyle: 'italic' }}>{mp.excerpt}</blockquote>
-                          <div style={{ font: '500 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 8 }}>{mp.excerptSrc}</div>
+                          <blockquote style={{ margin: 0, font: '700 13.5px/1.75 Georgia, serif', color: '#000000' }}>{mp.excerpt}</blockquote>
+                          <div style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 8 }}>{mp.excerptSrc}</div>
                         </div>
                       </>
                     ) : (
@@ -7527,7 +7795,7 @@ export default class MedFactory extends React.Component {
                           <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--acc)', marginBottom: 10 }}>CITATION COUNT</div>
                           <div style={{ font: '800 28px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', color: 'var(--ink)', marginBottom: 6 }}>{mp.citations.split('·')[0].trim()}</div>
                           {mp.citations.includes('·') && (
-                            <div style={{ font: '500 12px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{mp.citations.split('·').slice(1).join('·').trim()} citation rate</div>
+                            <div style={{ font: '600 12px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{mp.citations.split('·').slice(1).join('·').trim()} citation rate</div>
                           )}
                         </div>
 
