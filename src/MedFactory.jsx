@@ -1085,6 +1085,7 @@ export default class MedFactory extends React.Component {
       gapExcerptOpen: false,
       gapLastAction: null,     // { type: 'replace'|'add', text: string } — feedback after excerpt action
       sciReviewSent: false,    // true after creator clicks "Send to Scientific Review"
+      gapGroupBy: 'track',     // 'track' | 'artifact'
       sciSubmitted: false,
       sciOverallComment: '',
       sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
@@ -1859,7 +1860,7 @@ export default class MedFactory extends React.Component {
         return { acceptedPapers: acc };
       }),
       gapSelected: st.gapSelected,
-      setGapSelected: (i) => this.setState({ gapSelected: i, gapExcerptOpen: false, gapLastAction: null }),
+      setGapSelected: (i) => this.setState((s) => ({ gapSelected: s.gapSelected === i ? null : i, gapExcerptOpen: false, gapLastAction: null })),
       gapResolved: st.gapResolved,
       resolveGap: (i) => this.setState((s) => ({ gapResolved: { ...s.gapResolved, [i]: true } })),
       unresolveGap: (i) => this.setState((s) => { const r = { ...s.gapResolved }; delete r[i]; return { gapResolved: r }; }),
@@ -1871,6 +1872,8 @@ export default class MedFactory extends React.Component {
       toggleGapRecommendation: (i) => this.setState((s) => ({ gapShowRecommendation: { ...s.gapShowRecommendation, [i]: !s.gapShowRecommendation[i] } })),
       gapExcerptOpen: st.gapExcerptOpen,
       setGapExcerptOpen: (val) => this.setState({ gapExcerptOpen: val }),
+      gapGroupBy: st.gapGroupBy,
+      setGapGroupBy: (v2) => this.setState({ gapGroupBy: v2, gapSelected: null, gapExcerptOpen: false }),
       aiAcceptLoading: st.aiAcceptLoading,
       aiAcceptStep: st.aiAcceptStep,
       addPaperToChat: (p) => this.setState((s) => {
@@ -6584,39 +6587,40 @@ export default class MedFactory extends React.Component {
 
             const rightPanel = (<div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both' }}>
 
-                  {/* Back button — top */}
-                  <div style={S('padding:10px 20px;flex:none;border-bottom:1px solid var(--rule)')}>
+                  {/* Header bar */}
+                  <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule)', background: '#fff', padding: '10px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
                     <Box
                       css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
                       hover="color:var(--ink);border-color:var(--ink)"
                       onClick={v.goBack}
                     >
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      Back to Organize
+                      Back
+                    </Box>
+                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 800, color: '#000', letterSpacing: '-0.01em' }}>Gap Analysis</div>
+                    <span style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
+                      {GAP_FINDINGS.length} issues
+                    </span>
+                    {/* By Track / By Artifact toggle */}
+                    <div style={{ display: 'flex', background: 'var(--s2)', borderRadius: 8, padding: 3, gap: 2, marginLeft: 8 }}>
+                      {['track', 'artifact'].map((tab) => (
+                        <button key={tab} onClick={() => v.setGapGroupBy(tab)} style={{ padding: '5px 12px', borderRadius: 6, border: 'none', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, background: v.gapGroupBy === tab ? '#fff' : 'transparent', color: v.gapGroupBy === tab ? '#000' : 'var(--faint)', boxShadow: v.gapGroupBy === tab ? '0 1px 4px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.15s' }}>
+                          {tab === 'track' ? 'By Track' : 'By Artifact'}
+                        </button>
+                      ))}
+                    </div>
+                    <div style={{ flex: 1 }} />
+                    <Box
+                      css="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:9px;box-shadow:0 3px 12px rgba(44,82,204,0.28)"
+                      hover="opacity:0.88"
+                      onClick={v.sendToSciReview}
+                    >
+                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Send to Scientific Review
                     </Box>
                   </div>
 
-                  {/* Header */}
-                  <div style={S('border-bottom:1px solid var(--rule2);flex:none;background:var(--bg);padding:12px 20px')}>
-                    <div style={S('display:flex;align-items:center;gap:10px')}>
-                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: isDone ? 'var(--ok)' : 'var(--warn)', animation: isDone ? '' : 'puls 1.1s infinite' }} />
-                      <div style={S('font:700 12px/1 Plus Jakarta Sans;letter-spacing:-0.01em')}>Gap Analysis</div>
-                      <span style={{ background: '#dc2626', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
-                        {GAP_FINDINGS.filter((_g, i) => !v.gapResolved[i]).length} issues
-                      </span>
-                      <div style={{ flex: 1 }} />
-                      <Box
-                        css="display:inline-flex;align-items:center;gap:8px;padding:11px 24px;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:10px;box-shadow:0 3px 12px rgba(44,82,204,0.3)"
-                        hover="opacity:0.88"
-                        onClick={v.sendToSciReview}
-                      >
-                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        Send to Scientific Review
-                      </Box>
-                    </div>
-                  </div>
-
-                  {/* ── GAP ANALYSIS ── */}
+                  {/* ── GAP ANALYSIS — By Track / By Artifact ── */}
                   {(() => {
                     const sevColor = (s) => s === 'Critical' ? '#dc2626' : s === 'Warning' ? '#d97706' : '#2563eb';
                     const sevBg = (s) => s === 'Critical' ? '#fef2f2' : s === 'Warning' ? '#fffbeb' : '#eff6ff';
@@ -6629,442 +6633,233 @@ export default class MedFactory extends React.Component {
                       <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6" stroke="#2563eb" strokeWidth="1.2"/><path d="M6.5 6v3.5" stroke="#2563eb" strokeWidth="1.4" strokeLinecap="round"/><circle cx="6.5" cy="4" r="0.75" fill="#2563eb"/></svg>
                     );
 
-                    const critical = GAP_FINDINGS.map((g, i) => ({ ...g, gapIdx: i })).filter(g => g.severity === 'Critical');
-                    const warning = GAP_FINDINGS.map((g, i) => ({ ...g, gapIdx: i })).filter(g => g.severity === 'Warning');
-                    const note = GAP_FINDINGS.map((g, i) => ({ ...g, gapIdx: i })).filter(g => g.severity === 'Note');
+                    // Build a map from paperIdx → gap finding (if any)
+                    const gapByPaper = {};
+                    GAP_FINDINGS.forEach((g, i) => { gapByPaper[g.paperIdx] = { ...g, gapIdx: i }; });
 
-                    const selGap = GAP_FINDINGS[v.gapSelected];
+                    const selGap = v.gapSelected != null ? GAP_FINDINGS[v.gapSelected] : null;
                     const selPaper = selGap ? RESEARCH_PAPERS[selGap.paperIdx] : null;
-                    const isResolved = selGap ? !!v.gapResolved[v.gapSelected] : false;
                     const whyOpen = selGap ? !!v.gapWhyExpanded[v.gapSelected] : false;
-                    const resolvedCount = Object.values(v.gapResolved).filter(Boolean).length;
 
-                    const SidebarGroup = ({ label, items, color }) => items.length === 0 ? null : (
-                      <div style={{ marginBottom: 4 }}>
-                        <div style={{ padding: '5px 12px 3px', display: 'flex', alignItems: 'center', gap: 5 }}>
-                          <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--faint)', textTransform: 'uppercase' }}>{label}</span>
-                          <span style={{ background: color, color: '#fff', fontSize: 8.5, fontWeight: 700, padding: '1px 5px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>{items.length}</span>
-                        </div>
-                        {items.map((g) => {
-                          const active = v.gapSelected === g.gapIdx;
-                          const resolved = !!v.gapResolved[g.gapIdx];
-                          const p = RESEARCH_PAPERS[g.paperIdx];
-                          return (
-                            <div
-                              key={g.gapIdx}
-                              onClick={() => v.setGapSelected(g.gapIdx)}
-                              style={{
-                                padding: '7px 12px',
-                                cursor: 'pointer',
-                                background: active ? '#ffffff' : 'transparent',
-                                borderLeft: active ? '3px solid ' + color : '3px solid transparent',
-                                borderBottom: '1px solid var(--rule)',
-                                opacity: resolved ? 0.5 : 1,
-                              }}
-                            >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                                <span style={{ background: sevBg(g.severity), color: sevColor(g.severity), border: '1px solid ' + sevBorder(g.severity), fontSize: 8.5, fontWeight: 700, padding: '1px 5px', borderRadius: 3, fontFamily: 'Plus Jakarta Sans' }}>{g.severity}</span>
-                                {resolved && <span style={{ fontSize: 8.5, color: '#16a34a', fontWeight: 700, fontFamily: 'Plus Jakarta Sans' }}>✓</span>}
-                              </div>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.3, marginBottom: 2 }}>{g.title}</div>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }} title={p.title}>{p.title.length > 38 ? p.title.slice(0, 35) + '…' : p.title}</div>
+                    // Reusable AI Normalisation panel
+                    const NormPanel = ({ pIdx, paper }) => {
+                      const currentExcerpts = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
+                      const alts = ALTERNATE_EXCERPTS[pIdx] || [];
+                      const aiGenerated = v.aiExcerpts[pIdx] || [];
+                      const aiLoading = v.aiExcerptsLoading[pIdx];
+                      return (
+                        <div style={{ borderLeft: '1px solid rgba(124,58,237,0.18)', background: '#fdfbff', display: 'flex', flexDirection: 'column', width: 340, flexShrink: 0, animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
+                          <div style={{ padding: '10px 14px', borderBottom: '1px solid rgba(124,58,237,0.14)', background: 'linear-gradient(135deg,rgba(124,58,237,0.06),rgba(168,85,247,0.04))', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase', marginBottom: 2 }}>✦ AI Normalisation</div>
+                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 800, color: '#000', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
                             </div>
-                          );
-                        })}
-                      </div>
-                    );
-
-                    return (
-                      <div key="gaps" style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-                        {/* Sidebar */}
-                        <div style={{ width: 218, flexShrink: 0, borderRight: '1px solid var(--rule)', background: 'var(--s2)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-                          <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--rule)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
-                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 12.5H1L7 1z" stroke="#d97706" strokeWidth="1.2" strokeLinejoin="round" fill="rgba(217,119,6,0.08)"/><path d="M7 5.5v3" stroke="#d97706" strokeWidth="1.4" strokeLinecap="round"/><circle cx="7" cy="10.5" r="0.8" fill="#d97706"/></svg>
-                              <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>Gap Analysis</span>
-                            </div>
-                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)', lineHeight: 1.45, marginBottom: 8 }}>
-                              {GAP_FINDINGS.length} issues found across {RESEARCH_PAPERS.length} papers
-                            </div>
-                            <div style={{ display: 'flex', gap: 4 }}>
-                              {[['#dc2626','#fef2f2','#fecaca',critical.length,'C'],['#d97706','#fffbeb','#fde68a',warning.length,'W'],['#2563eb','#eff6ff','#bfdbfe',note.length,'N']].map(([c,bg,border,n,label]) => (
-                                <div key={label} style={{ flex: 1, background: bg, border: '1px solid ' + border, borderRadius: 6, padding: '5px 4px', textAlign: 'center' }}>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 15, fontWeight: 800, color: c }}>{n}</div>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8, color: c, fontWeight: 600 }}>{label === 'C' ? 'CRIT' : label === 'W' ? 'WARN' : 'NOTE'}</div>
-                                </div>
-                              ))}
-                            </div>
-                            {resolvedCount > 0 && (
-                              <div style={{ marginTop: 6, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, padding: '4px 7px', display: 'flex', alignItems: 'center', gap: 5 }}>
-                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" fill="#16a34a"/><path d="M3 5l1.5 1.5 3-3" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 600, color: '#16a34a' }}>{resolvedCount}/{GAP_FINDINGS.length} resolved</span>
+                            <button onClick={() => v.setGapExcerptOpen(false)} style={{ flexShrink: 0, background: 'none', border: '1px solid rgba(124,58,237,0.2)', borderRadius: 6, width: 22, height: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7c3aed' }}>
+                              <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                            </button>
+                          </div>
+                          <div style={{ flex: 1, overflowY: 'auto', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--ink)', textTransform: 'uppercase' }}>Active Excerpts</div>
+                            {v.gapLastAction && (
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 10px', borderRadius: 6, background: v.gapLastAction.type === 'replace' ? '#f0fdf4' : '#eff6ff', border: `1px solid ${v.gapLastAction.type === 'replace' ? '#86efac' : '#bfdbfe'}`, animation: 'rise 0.2s ease' }}>
+                                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={v.gapLastAction.type === 'replace' ? '#16a34a' : '#2563eb'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: v.gapLastAction.type === 'replace' ? '#15803d' : '#1d4ed8' }}>{v.gapLastAction.type === 'replace' ? 'Excerpt replaced' : 'Excerpt added'}</span>
                               </div>
                             )}
-                          </div>
-                          <div style={{ flex: 1, overflowY: 'auto', paddingTop: 3 }}>
-                            <SidebarGroup label="Critical" items={critical} color="#dc2626" />
-                            <SidebarGroup label="Warning" items={warning} color="#d97706" />
-                            <SidebarGroup label="Note" items={note} color="#2563eb" />
-                          </div>
-                        </div>
-
-                        {/* Main content */}
-                        <div style={{ flex: 1, minWidth: 0, overflowY: 'auto', background: '#fff', display: 'flex', flexDirection: 'column' }}>
-                          {selGap && selPaper ? (() => {
-                            const pIdx = selGap.paperIdx;
-                            const liveExcerpts = v.paperExcerpts[pIdx] || [{ text: selPaper.excerpt, src: selPaper.excerptSrc }];
-                            const primaryExcerpt = liveExcerpts[0];
-                            const excerptIdx = primaryExcerpt.text.indexOf(selGap.highlightText);
-                            const beforeHL = excerptIdx >= 0 ? primaryExcerpt.text.slice(0, excerptIdx) : primaryExcerpt.text;
-                            const hl = excerptIdx >= 0 ? selGap.highlightText : '';
-                            const afterHL = excerptIdx >= 0 ? primaryExcerpt.text.slice(excerptIdx + selGap.highlightText.length) : '';
-                            return (
-                              <div style={{ padding: '16px 20px', maxWidth: 760, width: '100%', margin: '0 auto' }}>
-                                {/* Paper header */}
-                                <div style={{ marginBottom: 14, paddingBottom: 12, borderBottom: '1px solid var(--rule)' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-                                    <span style={{ background: typeColor(selPaper.type), color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3, fontFamily: 'Plus Jakarta Sans' }}>{selPaper.type}</span>
-                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, color: 'var(--faint)' }}>{selPaper.year} · {selPaper.db}</span>
-                                    {isResolved && <span style={{ marginLeft: 'auto', background: '#16a34a', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>✓ RESOLVED</span>}
-                                  </div>
-                                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 4 }}>
-                                    <button
-                                      onClick={() => v.setGapPaperOpen(true)}
-                                      style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 13.5, fontWeight: 700, color: 'var(--ink)', lineHeight: 1.35, background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', flex: 1 }}
-                                    >
-                                      {selPaper.title}
-                                    </button>
-                                    <button
-                                      onClick={() => v.setGapPaperOpen(true)}
-                                      title="View paper details"
-                                      style={{ flexShrink: 0, marginTop: 2, width: 20, height: 20, borderRadius: '50%', border: '1.5px solid #94a3b8', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)' }}
-                                    >
-                                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="currentColor" strokeWidth="1.2"/><path d="M5 4.5v3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><circle cx="5" cy="3" r="0.6" fill="currentColor"/></svg>
-                                    </button>
-                                  </div>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, color: 'var(--faint)' }}>{selPaper.journal}</div>
+                            {currentExcerpts.length === 0 ? (
+                              <div style={{ padding: '8px 12px', background: 'var(--s2)', borderRadius: 7, border: '1px solid var(--rule)', fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--faint)', fontStyle: 'italic' }}>No excerpt — removed</div>
+                            ) : currentExcerpts.map((exc, ei) => {
+                              const isNew = v.gapLastAction?.type === 'add' && exc.text === v.gapLastAction.text;
+                              const isReplaced = v.gapLastAction?.type === 'replace' && exc.text === v.gapLastAction.text;
+                              return (
+                                <div key={ei} style={{ background: isReplaced ? '#f0fdf4' : isNew ? '#eff6ff' : '#fff', border: `1.5px solid ${isReplaced ? '#86efac' : isNew ? '#bfdbfe' : 'var(--rule2)'}`, borderRadius: 7, padding: '9px 11px', display: 'flex', flexDirection: 'column', gap: 5 }}>
+                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: '#000', fontWeight: 700 }}>{exc.text}</div>
+                                  <div style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)', fontWeight: 600 }}>{exc.src}</div>
                                 </div>
-
-                                {/* Paper detail modal */}
-                                {v.gapPaperOpen && (
-                                  <div style={{ position: 'fixed', inset: 0, zIndex: 400, background: 'rgba(15,31,74,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(2px)', animation: 'rise 0.15s ease' }}
-                                    onClick={(e) => { if (e.target === e.currentTarget) v.setGapPaperOpen(false); }}>
-                                    <div style={{ width: 560, maxHeight: '82vh', background: '#fff', borderRadius: 14, border: '1px solid var(--rule2)', boxShadow: '0 8px 40px rgba(15,31,74,0.18)', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.2s cubic-bezier(0.22,1,0.36,1) both' }}>
-                                      {/* Modal header */}
-                                      <div style={{ padding: '16px 20px 12px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'flex-start', gap: 10, flexShrink: 0 }}>
-                                        <div style={{ flex: 1 }}>
-                                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                                            <span style={{ background: typeColor(selPaper.type), color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 3, fontFamily: 'Plus Jakarta Sans' }}>{selPaper.type}</span>
-                                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, color: 'var(--faint)' }}>{selPaper.year} · {selPaper.db}</span>
-                                          </div>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 14, fontWeight: 700, color: 'var(--ink)', lineHeight: 1.35, marginBottom: 3 }}>{selPaper.title}</div>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, color: 'var(--faint)' }}>{selPaper.journal}</div>
-                                        </div>
-                                        <button onClick={() => v.setGapPaperOpen(false)} style={{ background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)', flexShrink: 0 }}>
-                                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                                        </button>
-                                      </div>
-                                      {/* Modal body */}
-                                      <div style={{ overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                                        {/* Metadata grid */}
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                                          {[['Study Design', selPaper.designTier], ['GRADE Certainty', selPaper.grade], ['Statistical Rigor', selPaper.statRigor], ['Citations', selPaper.citations], ['Funding', selPaper.funding], ['Appraisal', selPaper.appraisal]].map(([label, val]) => (
-                                            <div key={label} style={{ background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 7, padding: '8px 12px' }}>
-                                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
-                                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--dim)', lineHeight: 1.4 }}>{val}</div>
-                                            </div>
-                                          ))}
-                                        </div>
-                                        {/* Relevance bar */}
-                                        <div>
-                                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-                                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Relevance Score</span>
-                                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--ink)' }}>{selPaper.relevance}/100</span>
-                                          </div>
-                                          <div style={{ height: 5, background: 'var(--rule)', borderRadius: 10 }}>
-                                            <div style={{ height: '100%', width: `${selPaper.relevance}%`, background: selPaper.relevance >= 80 ? '#16a34a' : selPaper.relevance >= 60 ? '#d97706' : '#dc2626', borderRadius: 10, transition: 'width 0.5s ease' }} />
-                                          </div>
-                                        </div>
-                                        {/* Excerpt */}
-                                        <div>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 7 }}>Key Excerpt</div>
-                                          <div style={{ fontFamily: 'Georgia, serif', fontSize: 12.5, lineHeight: 1.8, color: 'var(--ink)', background: 'var(--s2)', borderRadius: 7, padding: '12px 14px', border: '1px solid var(--rule)', borderLeft: '3px solid ' + typeColor(selPaper.type) }}>
-                                            {primaryExcerpt.text}
-                                            <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{primaryExcerpt.src}</div>
-                                          </div>
-                                        </div>
-                                        {/* Artifact tags */}
-                                        <div>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>Used In</div>
-                                          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-                                            {selPaper.artifacts.map((a) => (
-                                              <span key={a} style={{ padding: '3px 10px', border: '1px solid var(--rule2)', borderRadius: 20, fontFamily: 'Plus Jakarta Sans', fontSize: 10, color: 'var(--dim)', fontWeight: 600 }}>{a}</span>
-                                            ))}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-
-                                {/* Current Excerpt */}
-                                {(() => {
-                                  return (
-                                    <div style={{ marginBottom: 14 }}>
-                                      <div style={{ marginBottom: 7 }}>
-                                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                                          Current Excerpt (Flagged)
-                                        </div>
-                                      </div>
-                                      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                                          {/* Primary excerpt with highlight */}
-                                          <div style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: v.gapLastAction?.type === 'replace' ? '#f0fdf4' : 'var(--s2)', borderRadius: 7, padding: '12px 16px', border: `1px solid ${v.gapLastAction?.type === 'replace' ? '#86efac' : 'var(--rule)'}`, position: 'relative', animation: v.gapLastAction?.type === 'replace' ? 'rise 0.22s ease both' : 'none' }}>
-                                            {v.gapLastAction?.type === 'replace' && (
-                                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#16a34a', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
-                                                <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#16a34a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                                Excerpt replaced
-                                              </div>
-                                            )}
-                                            {beforeHL}
-                                            {hl && <span style={{ background: 'rgba(251,191,36,0.35)', borderBottom: '2px solid #f59e0b', borderRadius: 2, padding: '1px 2px' }}>{hl}</span>}
-                                            {afterHL}
-                                            <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{primaryExcerpt.src}</div>
-                                          </div>
-                                          {/* Additional excerpts (from Add) */}
-                                          {liveExcerpts.slice(1).map((exc, addI) => {
-                                            const isNew = v.gapLastAction?.type === 'add' && exc.text === v.gapLastAction.text;
-                                            return (
-                                              <div key={addI} style={{ fontFamily: 'Georgia, serif', fontSize: 13, lineHeight: 1.8, color: 'var(--ink)', background: isNew ? '#eff6ff' : 'var(--s2)', borderRadius: 7, padding: '12px 16px', border: `1px solid ${isNew ? '#bfdbfe' : 'var(--rule)'}`, animation: isNew ? 'rise 0.22s ease both' : 'none' }}>
-                                                {isNew && (
-                                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#1d4ed8', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
-                                                    <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#1d4ed8" strokeWidth="1.6" strokeLinecap="round"/></svg>
-                                                    New excerpt added
-                                                  </div>
-                                                )}
-                                                {exc.text}
-                                                <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)' }}>{exc.src}</div>
-                                              </div>
-                                            );
-                                          })}
-                                        </div>
-                                    </div>
-                                  );
-                                })()}
-
-                                {/* Gap card */}
-                                <div style={{ border: '1px solid ' + sevBorder(selGap.severity), borderRadius: 8, overflow: 'hidden', marginBottom: 14, opacity: isResolved ? 0.65 : 1 }}>
-                                  <div style={{ background: sevBg(selGap.severity), borderBottom: '1px solid ' + sevBorder(selGap.severity), padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 7 }}>
-                                    {sevIcon(selGap.severity)}
-                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: sevColor(selGap.severity) }}>{selGap.severity}</span>
-                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: sevColor(selGap.severity), opacity: 0.7 }}>·</span>
-                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 600, color: sevColor(selGap.severity) }}>{selGap.type}</span>
-                                  </div>
-                                  <div style={{ background: '#fff', padding: '14px 16px' }}>
-                                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 700, color: 'var(--ink)', marginBottom: 7 }}>{selGap.title}</div>
-                                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, color: 'var(--dim)', lineHeight: 1.6, marginBottom: 12 }}>{selGap.description}</div>
-                                    {/* Why collapsible */}
-                                    <div style={{ marginBottom: 12 }}>
-                                      <button onClick={() => v.toggleGapWhy(v.gapSelected)} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, color: 'var(--dim)' }}>
-                                        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" style={{ transform: whyOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s' }}><path d="M3.5 2l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                        Why this was flagged
-                                      </button>
-                                      {whyOpen && (
-                                        <div style={{ marginTop: 6, background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 5, padding: '8px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--dim)', lineHeight: 1.6, animation: 'rise 0.15s ease' }}>
-                                          {selGap.why}
-                                        </div>
-                                      )}
-                                    </div>
-                                    {/* Recommendation */}
-                                    <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 7, padding: '9px 12px', marginBottom: 14 }}>
-                                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, marginTop: 1 }}><circle cx="6" cy="6" r="5.5" fill="#16a34a"/><path d="M3 6l2.5 2.5 4-4" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                        <div>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: '#16a34a', letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 3 }}>Recommendation</div>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: '#166534', lineHeight: 1.55 }}>{selGap.recommendation}</div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* AI Normalise CTA */}
-                                <button
-                                  onClick={() => v.setGapExcerptOpen(!v.gapExcerptOpen)}
-                                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 0', marginBottom: 14, background: v.gapExcerptOpen ? 'rgba(124,58,237,0.08)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: v.gapExcerptOpen ? '#7c3aed' : '#fff', border: v.gapExcerptOpen ? '1.5px solid rgba(124,58,237,0.3)' : 'none', borderRadius: 9, fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, cursor: 'pointer', boxShadow: v.gapExcerptOpen ? 'none' : '0 3px 14px rgba(124,58,237,0.32)', transition: 'all 0.15s', letterSpacing: '-0.01em' }}
-                                >
-                                  {v.gapExcerptOpen ? (
-                                    <>
-                                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M9 2L4 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                      Close AI Normalisation
-                                    </>
-                                  ) : (
-                                    <>
-                                      <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path d="M9.663 17h4.673M12.5 3.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5v.5h-3v-.5zM5 17V7a3 3 0 016 0v5.5M3 17h14"/><path fillRule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.457-.73a1 1 0 011.09 1.68l-.73.364.632 1.265a1 1 0 01-.452 1.341L15 9.5v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-.5l-1.951-.976a1 1 0 01-.452-1.341l.632-1.265-.73-.364a1 1 0 011.09-1.68l1.457.73L9 3.323V3a1 1 0 011-1z" clipRule="evenodd"/></svg>
-                                      ✦ AI Normalisation
-                                    </>
+                              );
+                            })}
+                            {alts.length > 0 && (
+                              <>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
+                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ Suggested Normalisations</span>
+                                  {!aiGenerated.length && (
+                                    <button onClick={() => v.generateAIExcerpts(pIdx, paper)} disabled={!!aiLoading} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: aiLoading ? 'var(--dim)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer' }}>
+                                      {aiLoading ? <>{[0,1,2].map(d => <div key={d} style={{ width: 4, height: 4, borderRadius: '50%', background: '#fff', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}</> : '✦ Generate with AI'}
+                                    </button>
                                   )}
-                                </button>
-
-                                {/* Context */}
-                                <div style={{ background: 'var(--s2)', borderRadius: 7, padding: '10px 14px', border: '1px solid var(--rule)' }}>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 5 }}>Evidence Context</div>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--faint)', lineHeight: 1.6 }}>{selGap.excerptContext}</div>
                                 </div>
-                              </div>
-                            );
-                          })() : (
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--faint)', fontFamily: 'Plus Jakarta Sans', fontSize: 12 }}>
-                              Select an issue from the sidebar
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Excerpt Manager Panel — slides in from right */}
-                        {v.gapExcerptOpen && selGap && selPaper && (() => {
-                          const pIdx = selGap.paperIdx;
-                          const currentExcerpts = v.paperExcerpts[pIdx] || [{ text: selPaper.excerpt, src: selPaper.excerptSrc }];
-                          const alts = ALTERNATE_EXCERPTS[pIdx] || [];
-                          const aiGenerated = v.aiExcerpts[pIdx] || [];
-                          const aiLoading = v.aiExcerptsLoading[pIdx];
-                          return (
-                            <div style={{ width: 370, flexShrink: 0, borderLeft: '1px solid rgba(124,58,237,0.18)', background: '#fdfbff', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
-                              {/* Header */}
-                              <div style={{ padding: '12px 14px', borderBottom: '1px solid rgba(124,58,237,0.14)', background: 'linear-gradient(135deg,rgba(124,58,237,0.06),rgba(168,85,247,0.04))', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 2 }}>
-                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ AI Normalisation</span>
-                                  </div>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 800, color: '#000000', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{selPaper.title}</div>
-                                </div>
-                                <button onClick={() => v.setGapExcerptOpen(false)} style={{ flexShrink: 0, background: 'none', border: '1px solid rgba(124,58,237,0.2)', borderRadius: 6, width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7c3aed' }}>
-                                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                                </button>
-                              </div>
-                              {/* Body */}
-                              <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                                {/* Active excerpt label */}
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--ink)', textTransform: 'uppercase' }}>
-                                    Active Excerpt{currentExcerpts.length > 1 ? 's' : ''}
-                                  </span>
-                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)' }}>{currentExcerpts.length} excerpt{currentExcerpts.length > 1 ? 's' : ''}</span>
-                                </div>
-                                {/* Action feedback banner */}
-                                {v.gapLastAction && (
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '7px 11px', borderRadius: 7, background: v.gapLastAction.type === 'replace' ? '#f0fdf4' : '#eff6ff', border: `1px solid ${v.gapLastAction.type === 'replace' ? '#86efac' : '#bfdbfe'}`, animation: 'rise 0.2s ease both' }}>
-                                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={v.gapLastAction.type === 'replace' ? '#16a34a' : '#2563eb'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: v.gapLastAction.type === 'replace' ? '#15803d' : '#1d4ed8' }}>
-                                      {v.gapLastAction.type === 'replace' ? 'Excerpt replaced — previous excerpt removed' : 'New excerpt added below existing excerpts'}
-                                    </span>
-                                  </div>
-                                )}
-                                {currentExcerpts.map((exc, ei) => {
-                                  const isLastAdded = v.gapLastAction?.type === 'add' && exc.text === v.gapLastAction.text;
-                                  const isReplaced = v.gapLastAction?.type === 'replace' && exc.text === v.gapLastAction.text;
+                                {alts.map((alt, ai) => {
+                                  const added = currentExcerpts.some(e => e.text === alt.text);
                                   return (
-                                    <div key={ei} style={{ background: isReplaced ? '#f0fdf4' : isLastAdded ? '#eff6ff' : '#fff', border: `1.5px solid ${isReplaced ? '#86efac' : isLastAdded ? '#bfdbfe' : 'var(--rule2)'}`, borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6, animation: (isLastAdded || isReplaced) ? 'rise 0.25s ease both' : 'none' }}>
-                                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-                                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, lineHeight: 1.75, color: '#000000', fontWeight: 700, flex: 1 }}>{exc.text}</div>
-                                        {isReplaced && (
-                                          <span style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac', borderRadius: 20, whiteSpace: 'nowrap' }}>
-                                            <svg width="6" height="6" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#15803d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                            Replaced
-                                          </span>
-                                        )}
-                                        {isLastAdded && (
-                                          <span style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, background: '#dbeafe', color: '#1d4ed8', border: '1px solid #bfdbfe', borderRadius: 20, whiteSpace: 'nowrap' }}>
-                                            <svg width="6" height="6" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#1d4ed8" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                                            New
-                                          </span>
-                                        )}
-                                      </div>
+                                    <div key={ai} style={{ background: '#fff', border: '1.5px solid var(--rule2)', borderRadius: 7, padding: '9px 11px', display: 'flex', flexDirection: 'column', gap: 5 }}>
+                                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: '#000', fontWeight: 700 }}>{alt.text}</div>
                                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--faint)', fontWeight: 700 }}>{exc.src}</span>
-                                        {currentExcerpts.length > 1 && (
-                                          <button onClick={() => v.removeExcerptItem(pIdx, exc.text)} style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 5, cursor: 'pointer', color: '#dc2626', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Remove</button>
-                                        )}
+                                        <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)', fontWeight: 600 }}>{alt.src}</span>
+                                        {added ? <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '2px 7px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 700 }}>✓ Added</span>
+                                          : <div style={{ display: 'flex', gap: 4 }}>
+                                              <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Replace</button>
+                                              <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.35)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 8px' }}>Add</button>
+                                            </div>
+                                        }
                                       </div>
                                     </div>
                                   );
                                 })}
-
-                                {/* Alternative excerpts */}
-                                {alts.length > 0 && (
-                                  <>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
-                                      <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ Suggested Normalisations</span>
-                                      {!aiGenerated.length && (
-                                        <button
-                                          onClick={() => v.generateAIExcerpts(pIdx, selPaper)}
-                                          disabled={!!aiLoading}
-                                          style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#2c52cc,#4468e0)', color: aiLoading ? 'var(--dim)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer' }}
-                                        >
-                                          {aiLoading
-                                            ? <>{[0,1,2].map(d => <div key={d} style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--acc)', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}Extracting…</>
-                                            : <>✦ Generate more with AI</>
-
-                                          }
-                                        </button>
-                                      )}
+                              </>
+                            )}
+                            {aiGenerated.length > 0 && (
+                              <>
+                                <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase', marginTop: 4 }}>✦ AI-Generated Options</div>
+                                {aiGenerated.map((alt, ai) => {
+                                  const added = currentExcerpts.some(e => e.text === alt.text);
+                                  return (
+                                    <div key={`ai-${ai}`} style={{ background: 'rgba(124,58,237,0.04)', border: '1.5px solid rgba(124,58,237,0.18)', borderRadius: 7, padding: '9px 11px', display: 'flex', flexDirection: 'column', gap: 5, animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
+                                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: '#000', fontWeight: 700 }}>{alt.text}</div>
+                                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)', fontWeight: 600 }}>{alt.src}</span>
+                                        {added ? <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '2px 7px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 700 }}>✓ Added</span>
+                                          : <div style={{ display: 'flex', gap: 4 }}>
+                                              <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Replace</button>
+                                              <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.35)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 8px' }}>Add</button>
+                                            </div>
+                                        }
+                                      </div>
                                     </div>
-                                    {alts.map((alt, ai) => {
-                                      const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
-                                      return (
-                                        <div key={ai} style={{ background: '#fff', border: '1.5px solid var(--rule2)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, lineHeight: 1.75, color: '#000000', fontWeight: 700 }}>{alt.text}</div>
-                                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--faint)', fontWeight: 700 }}>{alt.src}</span>
-                                            {alreadyAdded ? (
-                                              <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 600 }}>✓ Added</span>
-                                            ) : (
-                                              <div style={{ display: 'flex', gap: 5 }}>
-                                                <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 9px' }}>Replace</button>
-                                                <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.35)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 9px' }}>Add</button>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </>
-                                )}
+                                  );
+                                })}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    };
 
-                                {/* AI-generated excerpts */}
-                                {aiGenerated.length > 0 && (
-                                  <>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                                      <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ AI-Generated Options</span>
-                                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', fontFamily: 'Plus Jakarta Sans', fontSize: 8, fontWeight: 700, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac', borderRadius: 20 }}>
-                                        <svg width="6" height="6" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#15803d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                        New
-                                      </span>
-                                    </div>
-                                    {aiGenerated.map((alt, ai) => {
-                                      const alreadyAdded = currentExcerpts.some((e) => e.text === alt.text);
-                                      return (
-                                        <div key={`ai-${ai}`} style={{ background: 'rgba(44,82,204,0.05)', border: '1.5px solid rgba(44,82,204,0.22)', borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6, animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
-                                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, lineHeight: 1.75, color: '#000000', fontWeight: 700 }}>{alt.text}</div>
-                                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                            <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: 'var(--faint)', fontWeight: 700 }}>{alt.src}</span>
-                                            {alreadyAdded ? (
-                                              <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '3px 8px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 600 }}>✓ Added</span>
-                                            ) : (
-                                              <div style={{ display: 'flex', gap: 5 }}>
-                                                <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 9px' }}>Replace</button>
-                                                <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.35)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 9px' }}>Add</button>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </>
-                                )}
+                    // Renders a single paper excerpt card (clean or flagged)
+                    const GapExcerptCard = ({ paper, pIdx }) => {
+                      const gap = gapByPaper[pIdx];
+                      const isFlagged = !!gap;
+                      const isSelected = v.gapSelected === (gap?.gapIdx);
+                      const liveExcerpts = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
+                      const primaryExcerpt = liveExcerpts[0] || { text: '', src: '' };
+                      const highlightText = gap?.highlightText || '';
+                      const excerptIdx = primaryExcerpt.text.indexOf(highlightText);
+                      const beforeHL = excerptIdx >= 0 ? primaryExcerpt.text.slice(0, excerptIdx) : primaryExcerpt.text;
+                      const hl = excerptIdx >= 0 ? highlightText : '';
+                      const afterHL = excerptIdx >= 0 ? primaryExcerpt.text.slice(excerptIdx + highlightText.length) : '';
+
+                      return (
+                        <div style={{ background: '#fff', border: `1.5px solid ${isSelected ? sevBorder(gap?.severity) : isFlagged ? sevBorder(gap?.severity) : 'var(--rule2)'}`, borderLeft: `4px solid ${isFlagged ? sevColor(gap?.severity) : 'var(--ok)'}`, borderRadius: '0 12px 12px 0', marginBottom: 10, overflow: 'hidden', transition: 'box-shadow 0.15s', boxShadow: isSelected ? '0 4px 16px rgba(0,0,0,0.08)' : '0 1px 4px rgba(0,0,0,0.04)' }}>
+                          {/* Paper meta row */}
+                          <div style={{ padding: '10px 14px 0', display: 'flex', alignItems: 'center', gap: 7 }}>
+                            <span style={{ background: typeColor(paper.type), color: '#fff', fontSize: 8.5, fontWeight: 700, padding: '2px 6px', borderRadius: 3, fontFamily: 'Plus Jakarta Sans' }}>{paper.type}</span>
+                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)', fontWeight: 600 }}>{paper.year} · {paper.db}</span>
+                            <div style={{ flex: 1 }} />
+                            {isFlagged ? (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: sevBg(gap.severity), border: `1px solid ${sevBorder(gap.severity)}`, color: sevColor(gap.severity), fontSize: 8.5, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
+                                {sevIcon(gap.severity)}
+                                {gap.severity}
+                              </span>
+                            ) : (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#16a34a', fontSize: 8.5, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
+                                <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" fill="#16a34a"/><path d="M3 5l1.5 1.5 2.5-2.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                Clean
+                              </span>
+                            )}
+                          </div>
+                          {/* Title */}
+                          <div style={{ padding: '5px 14px 6px', fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: '#000', lineHeight: 1.35 }}>{paper.title}</div>
+                          {/* Excerpt */}
+                          <div style={{ margin: '0 14px 10px', padding: '10px 12px', background: isFlagged ? sevBg(gap?.severity) : '#f8fff8', border: `1px solid ${isFlagged ? sevBorder(gap?.severity) : '#bbf7d0'}`, borderRadius: 7, fontFamily: 'Georgia, serif', fontSize: 12, lineHeight: 1.75, color: 'var(--ink)' }}>
+                            {isFlagged && hl ? (
+                              <>{beforeHL}<span style={{ background: 'rgba(251,191,36,0.4)', borderBottom: '2px solid #f59e0b', borderRadius: 2, padding: '1px 2px' }}>{hl}</span>{afterHL}</>
+                            ) : (
+                              <>{primaryExcerpt.text}</>
+                            )}
+                            {liveExcerpts.slice(1).map((exc, i) => (
+                              <div key={i} style={{ marginTop: 8, paddingTop: 8, borderTop: '1px dashed var(--rule2)', fontStyle: 'italic', color: 'var(--dim)' }}>{exc.text}</div>
+                            ))}
+                            <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: 'var(--faint)', fontStyle: 'normal' }}>{primaryExcerpt.src}</div>
+                          </div>
+                          {/* Flagged issue detail + actions — shown when selected */}
+                          {isFlagged && (
+                            <div style={{ borderTop: `1px solid ${sevBorder(gap.severity)}` }}>
+                              {/* Issue summary row — always visible on flagged cards */}
+                              <div
+                                onClick={() => v.setGapSelected(gap.gapIdx)}
+                                style={{ padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', background: isSelected ? sevBg(gap.severity) : 'transparent', transition: 'background 0.15s' }}
+                              >
+                                <div style={{ flex: 1 }}>
+                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: sevColor(gap.severity), letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>{gap.type}</div>
+                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 700, color: 'var(--ink)', lineHeight: 1.35 }}>{gap.title}</div>
+                                </div>
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, transform: isSelected ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s', color: 'var(--faint)' }}><path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                               </div>
+                              {/* Expanded detail */}
+                              {isSelected && (
+                                <div style={{ padding: '0 14px 12px', animation: 'rise 0.18s ease' }}>
+                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--dim)', lineHeight: 1.6, marginBottom: 10 }}>{gap.description}</div>
+                                  {/* Why toggle */}
+                                  <button onClick={() => v.toggleGapWhy(gap.gapIdx)} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, color: 'var(--dim)', marginBottom: 6 }}>
+                                    <svg width="10" height="10" viewBox="0 0 11 11" fill="none" style={{ transform: whyOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s' }}><path d="M3.5 2l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                    Why this was flagged
+                                  </button>
+                                  {whyOpen && <div style={{ marginBottom: 10, background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 5, padding: '8px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--dim)', lineHeight: 1.6, animation: 'rise 0.15s ease' }}>{gap.why}</div>}
+                                  {/* Recommendation */}
+                                  <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 7, padding: '8px 12px', marginBottom: 10 }}>
+                                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#16a34a', letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 3 }}>Recommendation</div>
+                                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: '#166534', lineHeight: 1.55 }}>{gap.recommendation}</div>
+                                  </div>
+                                  {/* AI Normalisation button */}
+                                  <button
+                                    onClick={() => v.setGapExcerptOpen(!v.gapExcerptOpen)}
+                                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 0', background: v.gapExcerptOpen ? 'rgba(124,58,237,0.08)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: v.gapExcerptOpen ? '#7c3aed' : '#fff', border: v.gapExcerptOpen ? '1.5px solid rgba(124,58,237,0.3)' : 'none', borderRadius: 8, fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, cursor: 'pointer', boxShadow: v.gapExcerptOpen ? 'none' : '0 2px 10px rgba(124,58,237,0.3)', transition: 'all 0.15s' }}
+                                  >
+                                    {v.gapExcerptOpen
+                                      ? <><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M9 2L4 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Close AI Normalisation</>
+                                      : <>✦ AI Normalisation</>
+                                    }
+                                  </button>
+                                </div>
+                              )}
                             </div>
-                          );
-                        })()}
+                          )}
+                        </div>
+                      );
+                    };
 
+                    // Group papers by track or artifact
+                    const groups = v.gapGroupBy === 'track'
+                      ? CONTENT_TRACKS.map(t => ({
+                          label: t.label, color: t.color,
+                          papers: RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter(p => t.paperTracks.includes(p.track)),
+                        })).filter(g => g.papers.length > 0)
+                      : ALL_ARTIFACTS.map(a => ({
+                          label: a, color: '#2c52cc',
+                          papers: RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter(p => p.artifacts.includes(a)),
+                        })).filter(g => g.papers.length > 0);
+
+                    return (
+                      <div key="gaps-grouped" style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
+                        {/* Scrollable paper list */}
+                        <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', background: 'var(--s2)' }}>
+                          {groups.map((group) => (
+                            <div key={group.label} style={{ marginBottom: 24 }}>
+                              {/* Group header */}
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                                <div style={{ width: 10, height: 10, borderRadius: '50%', background: group.color, flexShrink: 0 }} />
+                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase' }}>{group.label}</span>
+                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)', background: 'var(--rule)', padding: '1px 7px', borderRadius: 10 }}>{group.papers.length}</span>
+                                <div style={{ flex: 1, height: 1, background: 'var(--rule2)', marginLeft: 4 }} />
+                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#dc2626' }}>
+                                  {group.papers.filter(p => gapByPaper[p._idx]).length} flagged
+                                </span>
+                              </div>
+                              {group.papers.map(p => GapExcerptCard({ paper: p, pIdx: p._idx }))}
+                            </div>
+                          ))}
+                        </div>
+                        {/* AI Normalisation slide-in panel */}
+                        {v.gapExcerptOpen && selGap && selPaper && NormPanel({ pIdx: selGap.paperIdx, paper: selPaper })}
                       </div>
                     );
                   })()}
