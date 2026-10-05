@@ -6734,7 +6734,7 @@ export default class MedFactory extends React.Component {
                       );
                     };
 
-                    // Renders a single paper excerpt card (clean or flagged)
+                    // Renders a single paper excerpt card (clean or flagged) — simple flat design
                     const GapExcerptCard = ({ paper, pIdx }) => {
                       const gap = gapByPaper[pIdx];
                       const isFlagged = !!gap;
@@ -6748,80 +6748,70 @@ export default class MedFactory extends React.Component {
                       const afterHL = excerptIdx >= 0 ? primaryExcerpt.text.slice(excerptIdx + highlightText.length) : '';
 
                       return (
-                        <div style={{ background: '#fff', border: `1.5px solid ${isSelected ? sevBorder(gap?.severity) : isFlagged ? sevBorder(gap?.severity) : 'var(--rule2)'}`, borderLeft: `4px solid ${isFlagged ? sevColor(gap?.severity) : 'var(--ok)'}`, borderRadius: '0 12px 12px 0', marginBottom: 10, overflow: 'hidden', transition: 'box-shadow 0.15s', boxShadow: isSelected ? '0 4px 16px rgba(0,0,0,0.08)' : '0 1px 4px rgba(0,0,0,0.04)' }}>
-                          {/* Paper meta row */}
-                          <div style={{ padding: '10px 14px 0', display: 'flex', alignItems: 'center', gap: 7 }}>
-                            <span style={{ background: typeColor(paper.type), color: '#fff', fontSize: 8.5, fontWeight: 700, padding: '2px 6px', borderRadius: 3, fontFamily: 'Plus Jakarta Sans' }}>{paper.type}</span>
-                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)', fontWeight: 600 }}>{paper.year} · {paper.db}</span>
-                            <div style={{ flex: 1 }} />
-                            {isFlagged ? (
-                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: sevBg(gap.severity), border: `1px solid ${sevBorder(gap.severity)}`, color: sevColor(gap.severity), fontSize: 8.5, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
-                                {sevIcon(gap.severity)}
-                                {gap.severity}
-                              </span>
-                            ) : (
-                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#16a34a', fontSize: 8.5, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
-                                <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" fill="#16a34a"/><path d="M3 5l1.5 1.5 2.5-2.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                Clean
-                              </span>
-                            )}
+                        <div style={{ background: '#fff', border: `1px solid ${isSelected ? sevBorder(gap?.severity) : 'var(--rule)'}`, borderRadius: 10, marginBottom: 8, overflow: 'hidden', transition: 'box-shadow 0.15s', boxShadow: isSelected ? `0 0 0 2px ${sevColor(gap?.severity)}22` : 'none' }}>
+                          {/* Top row: meta + title + badge */}
+                          <div style={{ padding: '11px 14px 0', display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                <span style={{ background: typeColor(paper.type), color: '#fff', fontSize: 8, fontWeight: 700, padding: '2px 6px', borderRadius: 3, fontFamily: 'Plus Jakarta Sans', flexShrink: 0 }}>{paper.type}</span>
+                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)', fontWeight: 600 }}>{paper.year} · {paper.db}</span>
+                              </div>
+                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: '#000', lineHeight: 1.4 }}>{paper.title}</div>
+                            </div>
+                            <div style={{ flexShrink: 0, marginTop: 2 }}>
+                              {isFlagged ? (
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: sevBg(gap.severity), border: `1px solid ${sevBorder(gap.severity)}`, color: sevColor(gap.severity), fontSize: 8.5, fontWeight: 700, padding: '3px 8px', borderRadius: 20, fontFamily: 'Plus Jakarta Sans' }}>
+                                  {sevIcon(gap.severity)} {gap.severity}
+                                </span>
+                              ) : (
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#16a34a', fontSize: 8.5, fontWeight: 700, padding: '3px 8px', borderRadius: 20, fontFamily: 'Plus Jakarta Sans' }}>
+                                  <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" fill="#16a34a"/><path d="M3 5l1.5 1.5 2.5-2.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                  Clean
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          {/* Title */}
-                          <div style={{ padding: '5px 14px 6px', fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: '#000', lineHeight: 1.35 }}>{paper.title}</div>
-                          {/* Excerpt */}
-                          <div style={{ margin: '0 14px 10px', padding: '10px 12px', background: isFlagged ? sevBg(gap?.severity) : '#f8fff8', border: `1px solid ${isFlagged ? sevBorder(gap?.severity) : '#bbf7d0'}`, borderRadius: 7, fontFamily: 'Georgia, serif', fontSize: 12, lineHeight: 1.75, color: 'var(--ink)' }}>
+
+                          {/* Excerpt — plain blockquote style */}
+                          <div style={{ margin: '8px 14px', paddingLeft: 10, borderLeft: `3px solid ${isFlagged ? sevColor(gap?.severity)+'55' : '#86efac'}`, fontFamily: 'Georgia, serif', fontSize: 12, lineHeight: 1.8, color: 'var(--dim)' }}>
                             {isFlagged && hl ? (
-                              <>{beforeHL}<span style={{ background: 'rgba(251,191,36,0.4)', borderBottom: '2px solid #f59e0b', borderRadius: 2, padding: '1px 2px' }}>{hl}</span>{afterHL}</>
-                            ) : (
-                              <>{primaryExcerpt.text}</>
-                            )}
+                              <>{beforeHL}<span style={{ background: 'rgba(251,191,36,0.35)', borderBottom: '1.5px solid #f59e0b', borderRadius: 2, padding: '0 1px' }}>{hl}</span>{afterHL}</>
+                            ) : primaryExcerpt.text}
                             {liveExcerpts.slice(1).map((exc, i) => (
-                              <div key={i} style={{ marginTop: 8, paddingTop: 8, borderTop: '1px dashed var(--rule2)', fontStyle: 'italic', color: 'var(--dim)' }}>{exc.text}</div>
+                              <div key={i} style={{ marginTop: 7, paddingTop: 7, borderTop: '1px dashed var(--rule2)', fontStyle: 'italic', opacity: 0.75 }}>{exc.text}</div>
                             ))}
-                            <div style={{ marginTop: 6, fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: 'var(--faint)', fontStyle: 'normal' }}>{primaryExcerpt.src}</div>
                           </div>
-                          {/* Flagged issue detail + actions — shown when selected */}
+                          <div style={{ padding: '0 14px 10px', fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: 'var(--faint)' }}>{primaryExcerpt.src}</div>
+
+                          {/* Flagged: issue row + expandable detail */}
                           {isFlagged && (
-                            <div style={{ borderTop: `1px solid ${sevBorder(gap.severity)}` }}>
-                              {/* Issue summary row — always visible on flagged cards */}
+                            <>
                               <div
                                 onClick={() => v.setGapSelected(gap.gapIdx)}
-                                style={{ padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', background: isSelected ? sevBg(gap.severity) : 'transparent', transition: 'background 0.15s' }}
+                                style={{ margin: '0 14px 10px', padding: '8px 12px', borderRadius: 7, background: isSelected ? sevBg(gap.severity) : 'var(--s2)', border: `1px solid ${isSelected ? sevBorder(gap.severity) : 'var(--rule)'}`, display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', transition: 'all 0.15s' }}
                               >
-                                <div style={{ flex: 1 }}>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: sevColor(gap.severity), letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>{gap.type}</div>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 700, color: 'var(--ink)', lineHeight: 1.35 }}>{gap.title}</div>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: sevColor(gap.severity), letterSpacing: '0.07em', textTransform: 'uppercase' }}>{gap.type} · </span>
+                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--ink)' }}>{gap.title}</span>
                                 </div>
-                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, transform: isSelected ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s', color: 'var(--faint)' }}><path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, transform: isSelected ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s', color: 'var(--faint)' }}><path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                               </div>
-                              {/* Expanded detail */}
                               {isSelected && (
-                                <div style={{ padding: '0 14px 12px', animation: 'rise 0.18s ease' }}>
-                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--dim)', lineHeight: 1.6, marginBottom: 10 }}>{gap.description}</div>
-                                  {/* Why toggle */}
-                                  <button onClick={() => v.toggleGapWhy(gap.gapIdx)} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, color: 'var(--dim)', marginBottom: 6 }}>
-                                    <svg width="10" height="10" viewBox="0 0 11 11" fill="none" style={{ transform: whyOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s' }}><path d="M3.5 2l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                    Why this was flagged
-                                  </button>
-                                  {whyOpen && <div style={{ marginBottom: 10, background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 5, padding: '8px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--dim)', lineHeight: 1.6, animation: 'rise 0.15s ease' }}>{gap.why}</div>}
-                                  {/* Recommendation */}
+                                <div style={{ margin: '0 14px 12px', animation: 'rise 0.18s ease' }}>
+                                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--dim)', lineHeight: 1.65, marginBottom: 10 }}>{gap.description}<br/><span style={{ color: 'var(--faint)', fontSize: 11 }}>{gap.why}</span></div>
                                   <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 7, padding: '8px 12px', marginBottom: 10 }}>
                                     <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#16a34a', letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 3 }}>Recommendation</div>
                                     <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: '#166534', lineHeight: 1.55 }}>{gap.recommendation}</div>
                                   </div>
-                                  {/* AI Normalisation button */}
                                   <button
                                     onClick={() => v.setGapExcerptOpen(!v.gapExcerptOpen)}
-                                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 0', background: v.gapExcerptOpen ? 'rgba(124,58,237,0.08)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: v.gapExcerptOpen ? '#7c3aed' : '#fff', border: v.gapExcerptOpen ? '1.5px solid rgba(124,58,237,0.3)' : 'none', borderRadius: 8, fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, cursor: 'pointer', boxShadow: v.gapExcerptOpen ? 'none' : '0 2px 10px rgba(124,58,237,0.3)', transition: 'all 0.15s' }}
+                                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 0', background: v.gapExcerptOpen ? 'rgba(124,58,237,0.07)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: v.gapExcerptOpen ? '#7c3aed' : '#fff', border: v.gapExcerptOpen ? '1.5px solid rgba(124,58,237,0.25)' : 'none', borderRadius: 8, fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 700, cursor: 'pointer', boxShadow: v.gapExcerptOpen ? 'none' : '0 2px 10px rgba(124,58,237,0.25)', transition: 'all 0.15s' }}
                                   >
-                                    {v.gapExcerptOpen
-                                      ? <><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M9 2L4 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Close AI Normalisation</>
-                                      : <>✦ AI Normalisation</>
-                                    }
+                                    {v.gapExcerptOpen ? 'Close AI Normalisation' : '✦ AI Normalisation'}
                                   </button>
                                 </div>
                               )}
-                            </div>
+                            </>
                           )}
                         </div>
                       );
@@ -6841,22 +6831,24 @@ export default class MedFactory extends React.Component {
                     return (
                       <div key="gaps-grouped" style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
                         {/* Scrollable paper list */}
-                        <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', background: 'var(--s2)' }}>
-                          {groups.map((group) => (
-                            <div key={group.label} style={{ marginBottom: 24 }}>
-                              {/* Group header */}
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                                <div style={{ width: 10, height: 10, borderRadius: '50%', background: group.color, flexShrink: 0 }} />
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase' }}>{group.label}</span>
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: 'var(--faint)', background: 'var(--rule)', padding: '1px 7px', borderRadius: 10 }}>{group.papers.length}</span>
-                                <div style={{ flex: 1, height: 1, background: 'var(--rule2)', marginLeft: 4 }} />
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#dc2626' }}>
-                                  {group.papers.filter(p => gapByPaper[p._idx]).length} flagged
-                                </span>
+                        <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px', background: '#f7f9fc' }}>
+                          {groups.map((group) => {
+                            const flaggedCount = group.papers.filter(p => gapByPaper[p._idx]).length;
+                            return (
+                              <div key={group.label} style={{ marginBottom: 28 }}>
+                                {/* Simple group header */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid var(--rule)' }}>
+                                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: group.color, flexShrink: 0 }} />
+                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.01em' }}>{group.label}</span>
+                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 600, color: 'var(--faint)', background: 'var(--rule)', padding: '1px 7px', borderRadius: 20 }}>{group.papers.length}</span>
+                                  {flaggedCount > 0 && (
+                                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: '#b45309', background: '#fffbeb', border: '1px solid #fde68a', padding: '1px 7px', borderRadius: 20 }}>{flaggedCount} flagged</span>
+                                  )}
+                                </div>
+                                {group.papers.map(p => GapExcerptCard({ paper: p, pIdx: p._idx }))}
                               </div>
-                              {group.papers.map(p => GapExcerptCard({ paper: p, pIdx: p._idx }))}
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                         {/* AI Normalisation slide-in panel */}
                         {v.gapExcerptOpen && selGap && selPaper && NormPanel({ pIdx: selGap.paperIdx, paper: selPaper })}
