@@ -6658,7 +6658,7 @@ export default class MedFactory extends React.Component {
                     const selGap = v.gapSelected != null ? GAP_FINDINGS[v.gapSelected] : null;
                     const selPaper = selGap ? RESEARCH_PAPERS[selGap.paperIdx] : null;
 
-                    // AI Normalisation slide-in panel
+                    // AI Recommendations slide-in panel
                     const NormPanel = ({ pIdx, paper }) => {
                       const currentExcerpts = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
                       const alts = ALTERNATE_EXCERPTS[pIdx] || [];
@@ -6668,7 +6668,7 @@ export default class MedFactory extends React.Component {
                         <div style={{ borderLeft: '1px solid rgba(124,58,237,0.15)', background: '#fff', display: 'flex', flexDirection: 'column', width: 340, flexShrink: 0, animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
                           <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(124,58,237,0.12)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                             <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase', marginBottom: 3 }}>✦ AI Normalisation</div>
+                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase', marginBottom: 3 }}>✦ AI Recommendations</div>
                               <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 800, color: '#000', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
                             </div>
                             <button onClick={() => v.setGapExcerptOpen(false)} style={{ flexShrink: 0, background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)' }}>
@@ -6801,7 +6801,7 @@ export default class MedFactory extends React.Component {
                               <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: '#16a34a', letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 3 }}>Recommendation</div>
                               <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: '#166534', lineHeight: 1.55 }}>{gap.recommendation}</div>
                             </div>
-                            {/* AI Normalisation button */}
+                            {/* AI Recommendations button */}
                             <button
                               onClick={() => {
                                 if (isOpen) { v.setGapExcerptOpen(false); }
@@ -6809,7 +6809,7 @@ export default class MedFactory extends React.Component {
                               }}
                               style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 0', background: isOpen ? 'rgba(124,58,237,0.08)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: isOpen ? '#7c3aed' : '#fff', border: isOpen ? '1.5px solid rgba(124,58,237,0.25)' : 'none', borderRadius: 8, fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, cursor: 'pointer', boxShadow: isOpen ? 'none' : '0 2px 8px rgba(124,58,237,0.22)', transition: 'all 0.15s' }}
                             >
-                              {isOpen ? 'Close AI Normalisation' : '✦ AI Normalisation'}
+                              {isOpen ? 'Close AI Recommendations' : '✦ AI Recommendations'}
                             </button>
                           </div>
                         </div>
@@ -6847,7 +6847,7 @@ export default class MedFactory extends React.Component {
                             </div>
                           ))}
                         </div>
-                        {/* AI Normalisation slide-in panel */}
+                        {/* AI Recommendations slide-in panel */}
                         {v.gapExcerptOpen && selGap && selPaper && NormPanel({ pIdx: selGap.paperIdx, paper: selPaper })}
                       </div>
                     );
