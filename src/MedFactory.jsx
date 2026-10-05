@@ -1086,6 +1086,7 @@ export default class MedFactory extends React.Component {
       gapLastAction: null,     // { type: 'replace'|'add', text: string } — feedback after excerpt action
       sciReviewSent: false,    // true after creator clicks "Send to Scientific Review"
       gapGroupBy: 'track',     // 'track' | 'artifact'
+      gapSeverityFilter: 'All', // 'All' | 'Critical' | 'Warning' | 'Note'
       sciSubmitted: false,
       sciOverallComment: '',
       sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
@@ -1874,6 +1875,8 @@ export default class MedFactory extends React.Component {
       setGapExcerptOpen: (val) => this.setState({ gapExcerptOpen: val }),
       gapGroupBy: st.gapGroupBy,
       setGapGroupBy: (v2) => this.setState({ gapGroupBy: v2, gapSelected: null, gapExcerptOpen: false }),
+      gapSeverityFilter: st.gapSeverityFilter,
+      setGapSeverityFilter: (f) => this.setState({ gapSeverityFilter: f, gapSelected: null, gapExcerptOpen: false }),
       aiAcceptLoading: st.aiAcceptLoading,
       aiAcceptStep: st.aiAcceptStep,
       addPaperToChat: (p) => this.setState((s) => {
@@ -6588,36 +6591,58 @@ export default class MedFactory extends React.Component {
             const rightPanel = (<div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both' }}>
 
                   {/* Header bar */}
-                  <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule)', background: '#fff', padding: '10px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <Box
-                      css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
-                      hover="color:var(--ink);border-color:var(--ink)"
-                      onClick={v.goBack}
-                    >
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      Back
-                    </Box>
-                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 800, color: '#000', letterSpacing: '-0.01em' }}>Gap Analysis</div>
-                    <span style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
-                      {GAP_FINDINGS.length} issues
-                    </span>
-                    {/* By Track / By Artifact toggle */}
-                    <div style={{ display: 'flex', background: 'var(--s2)', borderRadius: 8, padding: 3, gap: 2, marginLeft: 8 }}>
-                      {['track', 'artifact'].map((tab) => (
-                        <button key={tab} onClick={() => v.setGapGroupBy(tab)} style={{ padding: '5px 12px', borderRadius: 6, border: 'none', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, background: v.gapGroupBy === tab ? '#fff' : 'transparent', color: v.gapGroupBy === tab ? '#000' : 'var(--faint)', boxShadow: v.gapGroupBy === tab ? '0 1px 4px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.15s' }}>
-                          {tab === 'track' ? 'By Track' : 'By Artifact'}
-                        </button>
-                      ))}
+                  <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule)', background: '#fff' }}>
+                    {/* Top row */}
+                    <div style={{ padding: '10px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
+                        hover="color:var(--ink);border-color:var(--ink)"
+                        onClick={v.goBack}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Back
+                      </Box>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 800, color: '#000', letterSpacing: '-0.01em' }}>Gap Analysis</div>
+                      <span style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
+                        {GAP_FINDINGS.length} issues
+                      </span>
+                      <div style={{ flex: 1 }} />
+                      <Box
+                        css="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:9px;box-shadow:0 3px 12px rgba(44,82,204,0.28)"
+                        hover="opacity:0.88"
+                        onClick={v.sendToSciReview}
+                      >
+                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Send to Scientific Review
+                      </Box>
                     </div>
-                    <div style={{ flex: 1 }} />
-                    <Box
-                      css="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:9px;box-shadow:0 3px 12px rgba(44,82,204,0.28)"
-                      hover="opacity:0.88"
-                      onClick={v.sendToSciReview}
-                    >
-                      <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      Send to Scientific Review
-                    </Box>
+                    {/* Filter row */}
+                    <div style={{ padding: '0 20px 10px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      {/* Group toggle */}
+                      <div style={{ display: 'flex', background: 'var(--s2)', borderRadius: 7, padding: 3, gap: 2 }}>
+                        {['track', 'artifact'].map((tab) => (
+                          <button key={tab} onClick={() => v.setGapGroupBy(tab)} style={{ padding: '4px 11px', borderRadius: 5, border: 'none', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, background: v.gapGroupBy === tab ? '#fff' : 'transparent', color: v.gapGroupBy === tab ? '#000' : 'var(--faint)', boxShadow: v.gapGroupBy === tab ? '0 1px 3px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.15s' }}>
+                            {tab === 'track' ? 'By Track' : 'By Artifact'}
+                          </button>
+                        ))}
+                      </div>
+                      <div style={{ width: 1, height: 18, background: 'var(--rule2)', margin: '0 4px' }} />
+                      {/* Severity filter chips */}
+                      {[
+                        { label: 'All', color: null },
+                        { label: 'Critical', color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
+                        { label: 'Warning', color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
+                        { label: 'Note', color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
+                      ].map(({ label, color, bg, border }) => {
+                        const active = v.gapSeverityFilter === label;
+                        return (
+                          <button key={label} onClick={() => v.setGapSeverityFilter(label)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 11px', borderRadius: 20, border: `1px solid ${active && color ? border : active ? 'var(--ink)' : 'var(--rule2)'}`, background: active && color ? bg : active ? 'var(--ink)' : '#fff', color: active && color ? color : active ? '#fff' : 'var(--faint)', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s' }}>
+                            {color && <span style={{ width: 6, height: 6, borderRadius: '50%', background: active ? color : 'var(--faint)', flexShrink: 0, display: 'inline-block' }} />}
+                            {label}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
                   {/* ── GAP ANALYSIS — By Track / By Artifact ── */}
@@ -6791,13 +6816,20 @@ export default class MedFactory extends React.Component {
                       );
                     };
 
-                    // Groups — only include flagged papers, hide clean-only groups
+                    // Groups — only flagged papers, optionally filtered by severity
                     const allPapers = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i }));
                     const groups = (v.gapGroupBy === 'track'
                       ? CONTENT_TRACKS.map(t => ({ label: t.label, color: t.color, papers: allPapers.filter(p => t.paperTracks.includes(p.track)) }))
                       : ALL_ARTIFACTS.map(a => ({ label: a, color: '#7c3aed', papers: allPapers.filter(p => p.artifacts.includes(a)) }))
-                    ).map(g => ({ ...g, flagged: g.papers.filter(p => gapByPaper[p._idx]) }))
-                     .filter(g => g.flagged.length > 0);
+                    ).map(g => ({
+                      ...g,
+                      flagged: g.papers.filter(p => {
+                        const gap = gapByPaper[p._idx];
+                        if (!gap) return false;
+                        if (v.gapSeverityFilter !== 'All' && gap.severity !== v.gapSeverityFilter) return false;
+                        return true;
+                      }),
+                    })).filter(g => g.flagged.length > 0);
 
                     return (
                       <div key="gaps-grouped" style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
