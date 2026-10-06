@@ -5590,13 +5590,13 @@ export default class MedFactory extends React.Component {
                     {/* stat pills */}
                     <div style={S('display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:24px')}>
                       {[
-                        { label: 'Papers', val: acceptedList.length, color: 'var(--ok)' },
-                        { label: 'Excerpts', val: totalExcerpts, color: 'var(--acc)' },
-                        { label: 'Tracks', val: `${populatedTracks} / ${CONTENT_TRACKS.length}`, color: 'var(--warn)' },
-                      ].map(({ label, val, color }) => (
-                        <div key={label} style={{ textAlign:'center', padding:'10px 22px', background: label==='Papers'?'#dcfce7':label==='Excerpts'?'#dbeafe':'#fef3c7', borderRadius:14, border:'none' }}>
-                          <div style={{ font:'800 22px/1 Plus Jakarta Sans', color: label==='Papers'?'#166534':label==='Excerpts'?'#1d4ed8':'#92400e', marginBottom:5 }}>{val}</div>
-                          <div style={{ font:'700 9px/1 Plus Jakarta Sans', letterSpacing:'0.14em', color: label==='Papers'?'#15803d':label==='Excerpts'?'#1e40af':'#a16207' }}>{label.toUpperCase()}</div>
+                        { label: 'Papers', val: acceptedList.length, bg: '#15803d' },
+                        { label: 'Excerpts', val: totalExcerpts, bg: '#1d4ed8' },
+                        { label: 'Tracks', val: `${populatedTracks} / ${CONTENT_TRACKS.length}`, bg: '#b45309' },
+                      ].map(({ label, val, bg }) => (
+                        <div key={label} style={{ textAlign:'center', padding:'10px 22px', background: bg, borderRadius:14 }}>
+                          <div style={{ font:'800 22px/1 Plus Jakarta Sans', color:'#fff', marginBottom:5 }}>{val}</div>
+                          <div style={{ font:'700 9px/1 Plus Jakarta Sans', letterSpacing:'0.14em', color:'rgba(255,255,255,0.8)' }}>{label.toUpperCase()}</div>
                         </div>
                       ))}
                     </div>
@@ -5662,16 +5662,16 @@ export default class MedFactory extends React.Component {
                             >
                               <div style={{ width: 10, height: 10, borderRadius: '50%', background: track.color, flexShrink: 0, boxShadow: `0 0 0 3px ${track.color}25` }} />
                               <span style={{ font: '700 13.5px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>{track.label}</span>
-                              <span style={{ padding:'2px 9px', font:'600 10px/1 Plus Jakarta Sans', borderRadius:20, background:`${track.color}18`, color:track.color, border:`1px solid ${track.color}35` }}>{count} {count === 1 ? 'item' : 'items'}</span>
+                              <span style={{ padding:'2px 9px', font:'700 10px/1 Plus Jakarta Sans', borderRadius:20, background: count > 0 ? track.color : 'transparent', color: count > 0 ? '#fff' : track.color, border:`1.5px solid ${track.color}` }}>{count} {count === 1 ? 'item' : 'items'}</span>
                               {figuresHere.length > 0 && (
-                                <span style={{ padding:'2px 8px', font:'600 9px/1 Plus Jakarta Sans', borderRadius:20, background:'rgba(124,58,237,0.1)', color:'#7c3aed', border:'1px solid rgba(124,58,237,0.25)' }}>
+                                <span style={{ padding:'2px 8px', font:'700 9px/1 Plus Jakarta Sans', borderRadius:20, background:'#7c3aed', color:'#fff', border:'1.5px solid #7c3aed' }}>
                                   {figuresHere.length} fig{figuresHere.length > 1 ? 's' : ''}
                                 </span>
                               )}
                               {count > 0 && (
                                 <div style={{ display:'flex', gap:3 }}>
                                   {Array.from({ length: Math.min(count, 5) }).map((_, i) => (
-                                    <div key={i} style={{ width: 4, height: 16, background: track.color, opacity: 0.3 + i * 0.15, borderRadius:2 }} />
+                                    <div key={i} style={{ width: 4, height: 16, background: track.color, opacity: 0.55 + i * 0.1, borderRadius:2 }} />
                                   ))}
                                 </div>
                               )}
@@ -7144,13 +7144,13 @@ export default class MedFactory extends React.Component {
                     </div>
                     <div style={S('display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:24px')}>
                       {[
-                        { label: 'Issues',   val: GAP_FINDINGS.length,                                        bg: '#fef2f2', num: '#dc2626', fg: '#991b1b' },
-                        { label: 'Critical', val: GAP_FINDINGS.filter(g => g.severity === 'Critical').length, bg: '#fef2f2', num: '#dc2626', fg: '#7f1d1d' },
-                        { label: 'Warning',  val: GAP_FINDINGS.filter(g => g.severity === 'Warning').length,  bg: '#fffbeb', num: '#d97706', fg: '#78350f' },
-                      ].map(({ label, val, bg, num, fg }) => (
+                        { label: 'Issues',   val: GAP_FINDINGS.length,                                        bg: '#b91c1c' },
+                        { label: 'Critical', val: GAP_FINDINGS.filter(g => g.severity === 'Critical').length, bg: '#dc2626' },
+                        { label: 'Warning',  val: GAP_FINDINGS.filter(g => g.severity === 'Warning').length,  bg: '#b45309' },
+                      ].map(({ label, val, bg }) => (
                         <div key={label} style={{ textAlign: 'center', padding: '10px 22px', background: bg, borderRadius: 14 }}>
-                          <div style={{ font: '800 22px/1 Plus Jakarta Sans', color: num, marginBottom: 5 }}>{val}</div>
-                          <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: fg }}>{label.toUpperCase()}</div>
+                          <div style={{ font: '800 22px/1 Plus Jakarta Sans', color: '#fff', marginBottom: 5 }}>{val}</div>
+                          <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'rgba(255,255,255,0.8)' }}>{label.toUpperCase()}</div>
                         </div>
                       ))}
                     </div>
