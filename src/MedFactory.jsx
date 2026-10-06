@@ -5685,8 +5685,12 @@ export default class MedFactory extends React.Component {
 
                       {/* BY TRACK */}
                       {curView === 'track' && CONTENT_TRACKS.map((track, ti) => {
-                        const trackPapers = acceptedList.filter((p) => track.paperTracks.includes(p.track));
-                        const customHere = v.customExcerpts.filter((e) => e.tracks.includes(track.id));
+                        const trackPapers = acceptedList.filter((p) => {
+                          if (!track.paperTracks.includes(p.track)) return false;
+                          const assignments = v.getExcerptArtifacts(p._idx);
+                          return ALL_ARTIFACTS.some(a => v.organizeArtifactFilter[a] && assignments[a]);
+                        });
+                        const customHere = v.customExcerpts.filter((e) => e.tracks.includes(track.id) && e.artifacts && e.artifacts.some(a => v.organizeArtifactFilter[a]));
                         const figuresHere = v.confirmedFigures.filter((f) => f.tracks.includes(track.id));
                         const count = trackPapers.length + customHere.length + figuresHere.length;
                         const isOpen = !!v.organizeExpanded[track.id];
@@ -5791,6 +5795,7 @@ export default class MedFactory extends React.Component {
                         return (
                           <>
                             {ALL_ARTIFACTS.map((art, ai) => {
+                        if (!v.organizeArtifactFilter[art]) return null;
                         const artPapers = acceptedList.filter((p) => {
                           const assignments = v.getExcerptArtifacts(p._idx);
                           const inArt = assignments[art];
