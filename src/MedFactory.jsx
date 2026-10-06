@@ -209,7 +209,7 @@ const INTEL_CRITERIA = [
   {
     id: 'hero',
     label: 'Hero Product Relevance',
-    color: '#a78bfa',
+    color: '#6d28d9',
     opener: (topic, hero) =>
       `Let's zero in on **${hero || 'the hero product'}** specifically.\n\nWhat are its key differentiators in the context of **${topic || 'this topic'}**? What does it do that existing options don't — in terms of mechanism, outcomes data, tolerability, or patient experience?\n\nWhat's the single most compelling clinical argument for its place in therapy that you want HCPs to leave the room with?`,
   },
@@ -256,17 +256,17 @@ const SLIDES = [
 
 const RESEARCH_PAPERS = [
   { db: 'PubMed', type: 'RCT', title: 'Semaglutide CV outcomes — SUSTAIN-6', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2019, score: 0.97, artifacts: ['Deck', 'Protocol'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 22/25 (excellent)', grade: 'High certainty', citations: '891 citations · 148.5/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,297 · ITT · 104 wks', relevance: 97, flag: null, excerpt: '"The primary composite outcome of cardiovascular death, nonfatal myocardial infarction, or nonfatal stroke occurred in 6.6% of the semaglutide group versus 8.9% in the placebo group (HR 0.74; 95% CI 0.58–0.95; P=0.02 for noninferiority)."', excerptSrc: '— Results, p.12' },
-  { db: 'PubMed', type: 'RCT', title: 'SELECT: Semaglutide in obesity without diabetes', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2023, score: 0.95, artifacts: ['Deck', 'Blog'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 24/25 (excellent)', grade: 'High certainty', citations: '312 citations · 156/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=17,604 · ITT · 39.8 mo', relevance: 95, flag: null, excerpt: '"Treatment with semaglutide resulted in a significantly lower incidence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke than placebo (HR 0.80; 95% CI 0.72–0.90; P<0.001)."', excerptSrc: '— Primary outcomes, p.8' },
+  { db: 'PubMed', type: 'RCT', title: 'SELECT: Semaglutide in obesity without diabetes', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2023, score: 0.95, artifacts: ['Deck', 'Blog'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 24/25 (excellent)', grade: 'High certainty', citations: '312 citations · 156/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=17,604 · ITT · 39.8 mo', relevance: 95, flag: null, excerpt: '"Treatment with semaglutide, in adults with established cardiovascular disease without type 2 diabetes, resulted in a significantly lower incidence of MACE than placebo (HR 0.80; 95% CI 0.72–0.90; P<0.001)."', excerptSrc: '— Primary outcomes, p.8' },
   { db: 'EMBASE', type: 'Systematic Review', title: 'GLP-1 RA class effect on MACE — Cochrane review', journal: 'Cochrane Database Syst Rev · MEDLINE-indexed, high impact', year: 2024, score: 0.93, artifacts: ['Deck', 'Protocol', 'Blog'], track: 'General interventional evidence', designTier: 'Systematic review · meta-analysis of 7 RCTs', appraisal: 'AMSTAR-2: 15/16 (high confidence)', grade: 'High certainty', citations: '44 citations · 44/yr', funding: 'Independent — no industry funding', statRigor: 'Pooled N=56,004, I²=12%', relevance: 93, flag: null, excerpt: '"GLP-1 receptor agonists reduced major adverse cardiovascular events compared with placebo or active comparator (RR 0.88; 95% CI 0.82–0.94), with evidence of low heterogeneity across trials, supporting a class effect."', excerptSrc: '— Results, p.7' },
   { db: 'ADA Guidelines', type: 'Guideline', title: 'Standards of Care in Diabetes 2025 · Section 9', journal: 'Diabetes Care · ADA official guideline', year: 2025, score: 0.94, artifacts: ['Deck', 'Protocol'], track: 'Clinical practice guideline', designTier: 'Expert consensus · annual update', appraisal: 'AGREE II: A-rated', grade: 'Grade A — Strong recommendation', citations: '2,100+ citations · ongoing', funding: 'ADA · public-health grant', statRigor: 'N/A · evidence synthesis', relevance: 94, flag: null, excerpt: '"For adults with type 2 diabetes and established atherosclerotic cardiovascular disease, a GLP-1 receptor agonist with demonstrated cardiovascular benefit is recommended independently of baseline HbA1c or individualised glucose target."', excerptSrc: '— Section 9.3, p.S114' },
   { db: 'EMBASE', type: 'Meta-Analysis', title: 'Glycaemic attainment in T2D — 41 real-world cohorts', journal: 'Lancet Diabetes Endocrinol · MEDLINE-indexed, high impact', year: 2024, score: 0.91, artifacts: ['Deck', 'Blog'], track: 'Real-world outcomes evidence', designTier: 'Meta-analysis · 41 real-world cohorts', appraisal: 'AMSTAR-2: 13/16 (moderate confidence)', grade: 'Moderate certainty', citations: '62 citations · 62/yr', funding: 'Independent · public-health grant', statRigor: 'Pooled N=1.2M, I²=38%', relevance: 91, flag: null, excerpt: '"Across 41 cohorts totalling 1.2 million patients, only 47.2% achieved their individualised HbA1c target. Attainment was lowest in the first two years following treatment intensification, the window in which therapeutic inertia is most frequently recorded."', excerptSrc: '— Primary analysis, p.4' },
   { db: 'PubMed', type: 'RCT', title: 'LEADER: Liraglutide and cardiovascular outcomes', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2016, score: 0.86, artifacts: ['Deck'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 21/25 (good)', grade: 'High certainty', citations: '4,211 citations · 526/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=9,340 · ITT · 3.8 yrs', relevance: 86, flag: null, excerpt: '"The rate of first occurrence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke was lower with liraglutide than with placebo (HR 0.87; 95% CI 0.78–0.97; P=0.01 for superiority)."', excerptSrc: '— Primary endpoint, p.10' },
   { db: 'IDF Atlas', type: 'Registry', title: 'IDF Diabetes Atlas 11th edition — 2025', journal: 'International Diabetes Federation · global surveillance', year: 2025, score: 0.88, artifacts: ['Deck', 'Blog'], track: 'Epidemiological / burden of disease', designTier: 'Registry · global epidemiological survey', appraisal: 'N/A · surveillance report', grade: 'Grade B — Surveillance data', citations: '180 citations · ongoing', funding: 'IDF · multi-donor funded', statRigor: 'N=589M+ · global modelling', relevance: 88, flag: null, excerpt: '"An estimated 589 million adults aged 20–79 years were living with diabetes in 2024. This number is projected to reach 853 million by 2050, with the largest relative increases occurring in low- and middle-income regions."', excerptSrc: '— Executive Summary, p.6' },
-  { db: 'EMBASE', type: 'Real-World', title: 'Therapeutic inertia in T2D — UK primary care cohort', journal: 'Diabetes Obes Metab · MEDLINE-indexed', year: 2023, score: 0.87, artifacts: ['Deck', 'Protocol'], track: 'Real-world outcomes evidence', designTier: 'Retrospective cohort · UK primary care', appraisal: 'STROBE: 18/22 (good)', grade: 'Moderate certainty', citations: '39 citations · 13/yr', funding: 'Independent · NHS research grant', statRigor: 'N=82,000 · retrospective · 5 yr follow-up', relevance: 87, flag: null, excerpt: '"The median delay from first recorded HbA1c exceeding the individualised target to treatment intensification was 3.7 years (IQR 1.4–6.9), with the longest delays observed in patients managed exclusively in primary care without specialist referral."', excerptSrc: '— Results, p.5' },
+  { db: 'EMBASE', type: 'Real-World', title: 'Therapeutic inertia in T2D — UK primary care cohort', journal: 'Diabetes Obes Metab · MEDLINE-indexed', year: 2023, score: 0.87, artifacts: ['Deck', 'Protocol'], track: 'Real-world outcomes evidence', designTier: 'Retrospective cohort · UK primary care', appraisal: 'STROBE: 18/22 (good)', grade: 'Moderate certainty', citations: '39 citations · 13/yr', funding: 'Independent · NHS research grant', statRigor: 'N=82,000 · retrospective · 5 yr follow-up', relevance: 87, flag: null, excerpt: '"Therapeutic inertia causes a median delay of 3.7 years from first recorded HbA1c exceedance to treatment intensification, with the longest delays recorded in patients managed exclusively in primary care without specialist referral."', excerptSrc: '— Results, p.5' },
   { db: 'ADA/KDIGO', type: 'Guideline', title: 'Joint consensus on CKD management in T2D — 2025', journal: 'Diabetes Care / Kidney Int · joint ADA + KDIGO', year: 2025, score: 0.79, artifacts: ['Protocol', 'Deck'], track: 'Clinical practice guideline', designTier: 'Joint expert consensus guideline', appraisal: 'AGREE II: A-rated', grade: 'Grade A — Joint recommendation', citations: '94 citations · ongoing', funding: 'ADA + KDIGO · non-industry', statRigor: 'N/A · evidence synthesis panel', relevance: 79, flag: null, excerpt: '"For patients with type 2 diabetes and chronic kidney disease with eGFR ≥15 mL/min/1.73m², a GLP-1 receptor agonist with demonstrated cardiovascular or kidney benefit is recommended as a preferred add-on therapy, independently of HbA1c."', excerptSrc: '— Recommendation 4.2, p.S18' },
   { db: 'NICE', type: 'Guideline', title: 'Type 2 diabetes in adults: management — NG28', journal: 'NICE · UK national clinical guideline', year: 2024, score: 0.85, artifacts: ['Protocol', 'Deck'], track: 'Clinical practice guideline', designTier: 'NICE clinical guideline · evidence review', appraisal: 'AGREE II: A-rated', grade: 'Grade A — NICE evidence review', citations: '620 citations · ongoing', funding: 'NICE · UK government funded', statRigor: 'N/A · UK population-based review', relevance: 85, flag: null, excerpt: '"Individualise HbA1c targets, taking account of the person\'s daily activities, likelihood of adherence, comorbidities, risk of hypoglycaemia, and the likelihood that achieving the target will not be outweighed by the risks of treatment."', excerptSrc: '— Recommendation 1.7.1, p.22' },
   { db: 'PubMed', type: 'RCT', title: 'AMPLITUDE-O: Efpeglenatide CV outcomes in T2D', journal: 'N Engl J Med · MEDLINE-indexed', year: 2021, score: 0.74, artifacts: ['Deck'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 20/25 (good)', grade: 'High certainty', citations: '148 citations · 29.6/yr', funding: 'Industry-sponsored · Sanofi', statRigor: 'N=4,076 · ITT · 1.8 yrs', relevance: 74, flag: null, excerpt: '"The incidence of major adverse cardiovascular events was significantly lower with efpeglenatide than with placebo (HR 0.73; 95% CI 0.58–0.92; P=0.007), consistent with a GLP-1 class effect on cardiovascular risk reduction."', excerptSrc: '— Primary results, p.9' },
-  { db: 'EMBASE', type: 'RCT', title: 'Renal outcomes with GLP-1 RA in T2D and CKD', journal: 'N Engl J Med · post-hoc analysis', year: 2019, score: 0.82, artifacts: ['Deck', 'Protocol'], track: 'Renal outcomes evidence', designTier: 'Pre-specified post-hoc analysis of SUSTAIN-6', appraisal: 'CONSORT: 19/25 (post-hoc limitation noted)', grade: 'Moderate certainty', citations: '212 citations · 35.3/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,297 · CKD subgroup · post-hoc', relevance: 82, flag: null, excerpt: '"Treatment with semaglutide was associated with a lower rate of new or worsening nephropathy (3.8% vs 6.1%; HR 0.64; 95% CI 0.46–0.88), driven predominantly by a reduction in persistent macroalbuminuria."', excerptSrc: '— Secondary outcomes, p.14' },
+  { db: 'EMBASE', type: 'RCT', title: 'Renal outcomes with GLP-1 RA in T2D and CKD', journal: 'N Engl J Med · post-hoc analysis', year: 2019, score: 0.82, artifacts: ['Deck', 'Protocol'], track: 'Renal outcomes evidence', designTier: 'Pre-specified post-hoc analysis of SUSTAIN-6', appraisal: 'CONSORT: 19/25 (post-hoc limitation noted)', grade: 'Moderate certainty', citations: '212 citations · 35.3/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,297 · CKD subgroup · post-hoc', relevance: 82, flag: null, excerpt: '"In this post-hoc analysis of SUSTAIN-6, treatment with semaglutide was associated with a lower rate of new or worsening nephropathy (3.8% vs 6.1%; HR 0.64; 95% CI 0.46–0.88), driven predominantly by a reduction in persistent macroalbuminuria."', excerptSrc: '— Secondary outcomes, p.14' },
 ];
 
 /* ---------- Expanded evidence batch (revealed on "show me more papers") ---------- */
@@ -372,19 +372,19 @@ const ALTERNATE_EXCERPTS = {
 };
 
 const CONTENT_TRACKS = [
-  { id: 'condition', label: 'Condition & clinical problem', color: '#7eb8f7',
+  { id: 'condition', label: 'Condition & clinical problem', color: '#1d4ed8',
     paperTracks: ['Epidemiological / burden of disease', 'Real-world outcomes evidence'] },
-  { id: 'root', label: 'Root cause & mechanisms', color: '#7cc8b8',
+  { id: 'root', label: 'Root cause & mechanisms', color: '#0f766e',
     paperTracks: ['Clinical practice guideline'] },
-  { id: 'foundational', label: 'Foundational & lifestyle support', color: '#e5a14b',
+  { id: 'foundational', label: 'Foundational & lifestyle support', color: '#b45309',
     paperTracks: [] },
-  { id: 'general', label: 'General interventional evidence', color: '#f97b7b',
+  { id: 'general', label: 'General interventional evidence', color: '#dc2626',
     paperTracks: ['General interventional evidence', 'Cardiovascular outcomes evidence'] },
-  { id: 'targeted', label: 'Targeted support & ingredients', color: '#c084fc',
+  { id: 'targeted', label: 'Targeted support & ingredients', color: '#7c3aed',
     paperTracks: [] },
-  { id: 'hero', label: 'Hero product evidence', color: '#fb923c',
+  { id: 'hero', label: 'Hero product evidence', color: '#ea580c',
     paperTracks: [] },
-  { id: 'safety', label: 'Safety & clinical application', color: '#4ade80',
+  { id: 'safety', label: 'Safety & clinical application', color: '#15803d',
     paperTracks: ['Renal outcomes evidence'] },
 ];
 
@@ -690,19 +690,19 @@ const ORGANIZE_AGENT_MSGS = [
 
 const REVIEW_AGENT_MSGS = [
   { step: 1, text: 'Starting Medical Affairs review…\n\nScanning **12 accepted papers** across 6 databases. Loading excerpts from **7 content tracks**. Cross-referencing artifact coverage against required thresholds.' },
-  { step: 2, artifact: 'Deck', color: '#7eb8f7', quality: 89,
+  { step: 2, artifact: 'Deck', color: '#1d4ed8', quality: 89,
     text: '**HCP Deck (45 min) — Evidence quality: HIGH**\n\n8 of 9 required excerpts confirmed. Strong cardiovascular outcomes evidence from SUSTAIN-6 (RCT, HR 0.74), SELECT (RCT, HR 0.80), and LEADER (RCT, HR 0.87). ADA 2025 provides a Grade A recommendation anchor.\n\n**Gap identified:** Mechanistic GLP-1 receptor pathway detail is thin — 1 excerpt versus 3 recommended for slides 4–5.\n\n**Recommendation:** Proceed. Flag mechanistic gap to content writer.',
     sources: ['SUSTAIN-6', 'SELECT', 'LEADER', 'ADA 2025'] },
-  { step: 3, artifact: 'Blog', color: '#fb923c', quality: 100,
+  { step: 3, artifact: 'Blog', color: '#ea580c', quality: 100,
     text: '**Blog Post (500 words) — Evidence quality: HIGH**\n\nAll 5 required excerpts confirmed. Strong narrative arc from IDF Atlas burden data through real-world attainment gaps (47.2% target achievement) to GLP-1 RA class benefit.\n\n**No critical gaps identified.** Evidence base supports an evidence-led patient story without requiring specialist language.\n\n**Recommendation:** Proceed with full confidence.',
     sources: ['IDF Atlas 2025', 'Lancet DE 2024', 'SELECT'] },
-  { step: 4, artifact: 'Protocol', color: '#4ade80', quality: 74,
+  { step: 4, artifact: 'Protocol', color: '#15803d', quality: 74,
     text: '**Protocol — Evidence quality: MODERATE**\n\n6 of 7 required excerpts confirmed. ADA 2025 and ADA/KDIGO joint consensus provide strong guideline anchors. NICE NG28 adds UK-specific context.\n\n**Gap identified:** No excerpt covering dose-titration safety in eGFR 30–59 range. SUSTAIN-6 renal subgroup partially addresses this but was not designed for dose guidance.\n\n**Recommendation:** Proceed with caution. Add a dose-titration note citing the KDIGO joint consensus, section 4.2.',
     sources: ['ADA 2025', 'ADA/KDIGO 2025', 'NICE NG28'] },
-  { step: 5, artifact: 'Blurb', color: '#f97b7b', quality: 33,
+  { step: 5, artifact: 'Blurb', color: '#dc2626', quality: 33,
     text: '**Blurb (×5) — Evidence quality: LOW**\n\n1 of 3 required excerpts confirmed. Coverage is thin — only the SELECT primary endpoint excerpt maps cleanly to a short-form message.\n\n**Critical gaps:** No burden-of-disease hook, no treatment-inertia statistic, no branded call-to-action anchor.\n\n**Recommendation:** Accept at least 2 more excerpts before generating — suggest the IDF Atlas burden figure and the therapeutic inertia 3.7-year delay statistic.',
     sources: ['SELECT'] },
-  { step: 6, artifact: 'Facts', color: '#a78bfa', quality: 100,
+  { step: 6, artifact: 'Facts', color: '#6d28d9', quality: 100,
     text: '**Fact Sheet — Evidence quality: HIGH**\n\n5 excerpts confirmed (above 4 required). Excellent breadth: epidemiology (IDF Atlas), outcomes (SUSTAIN-6, SELECT, LEADER), guidelines (ADA), and real-world attainment gaps (Lancet DE 2024).\n\n**No gaps identified.** Fact sheet can be generated across all 5 target categories immediately.\n\n**Recommendation:** Proceed.',
     sources: ['IDF Atlas 2025', 'SUSTAIN-6', 'SELECT', 'LEADER', 'ADA 2025', 'Lancet DE'] },
   { step: 7, artifact: null, quality: 78,
@@ -782,52 +782,8 @@ const GAP_FINDINGS = [
     description: 'The excerpt states that therapeutic inertia "causes" delayed intensification, but this is a retrospective cohort study. Causal language cannot be supported by the study design — only association can be claimed.',
     why: 'Retrospective cohort designs (STROBE-rated) lack the randomisation required to attribute causation. Using causal language in MA communications derived from this paper creates regulatory risk under ABPI/EFPIA codes and could be challenged during medical review.',
     recommendation: 'Replace causal language ("causes", "leads to") with associative language ("is associated with", "correlates with"). Alternatively, pair this citation with an RCT that demonstrates the same direction of effect.',
-    highlightText: 'The median delay from first recorded HbA1c exceeding the individualised target to treatment intensification was 3.7 years',
+    highlightText: 'causes a median delay',
     excerptContext: 'The excerpt makes a strong directional claim about treatment patterns. In MA content (decks, protocols), this claim must be qualified with study design limitations per applicable regulatory guidance.',
-  },
-  {
-    paperIdx: 11,
-    severity: 'Critical',
-    type: 'Post-Hoc Analysis Undisclosed',
-    title: 'Post-hoc subgroup not disclosed in evidence summary',
-    description: 'This renal outcomes paper is a pre-specified post-hoc analysis of SUSTAIN-6, not an independent primary trial. The evidence summary does not flag this limitation, creating a misleading impression of the strength of evidence.',
-    why: 'Post-hoc analyses carry higher risk of false-positive findings due to multiple testing and are subject to regulatory scrutiny. Using this paper as a primary evidence source for renal benefit claims without disclosing the post-hoc origin violates standard evidence grading practices.',
-    recommendation: 'Add a prominent limitation note: "Pre-specified post-hoc analysis of SUSTAIN-6 — not a primary renal endpoint trial." Consider supplementing with data from FLOW (dedicated renal outcomes trial for semaglutide) if available.',
-    highlightText: 'Treatment with semaglutide was associated with a lower rate of new or worsening nephropathy (3.8% vs 6.1%; HR 0.64; 95% CI 0.46–0.88)',
-    excerptContext: 'This finding is real but derived from a post-hoc analysis. The original SUSTAIN-6 trial was powered for cardiovascular, not renal, endpoints — so confidence intervals for the renal subgroup are wide.',
-  },
-  {
-    paperIdx: 0,
-    severity: 'Warning',
-    type: 'Industry Funding Conflict',
-    title: 'Single industry-sponsored source for primary efficacy claim',
-    description: 'The primary cardiovascular efficacy narrative relies heavily on SUSTAIN-6, which is industry-sponsored by Novo Nordisk. Without independent replication flagged alongside this citation, the funding conflict is not adequately balanced.',
-    why: 'EFPIA and ABPI guidance requires that funding sources be disclosed and that industry-sponsored evidence be contextualised with independent or Cochrane-level confirmatory data. Presentations relying on a single sponsor-funded RCT may be challenged during regulatory medical review.',
-    recommendation: 'Pair SUSTAIN-6 with the Cochrane GLP-1 RA systematic review (independent, pooled N=56,004) or SELECT trial commentary from independent authors. Ensure funding disclosure is visible in the evidence appendix.',
-    highlightText: 'The primary composite outcome of cardiovascular death, nonfatal myocardial infarction, or nonfatal stroke occurred in 6.6% of the semaglutide group versus 8.9% in the placebo group',
-    excerptContext: 'This is the flagship efficacy claim. It is robust, but the sole reliance on industry-sponsored data for a primary efficacy statement in MA materials is a known audit vulnerability.',
-  },
-  {
-    paperIdx: 10,
-    severity: 'Warning',
-    type: 'Off-Label Product Conflation',
-    title: 'Non-semaglutide agent used as class proxy',
-    description: 'AMPLITUDE-O studies efpeglenatide (Sanofi), not semaglutide (Novo Nordisk). Citing this trial as supporting evidence for the hero product creates a class-conflation risk — regulatory reviewers may flag this as off-label extrapolation.',
-    why: 'While GLP-1 RA class effects on MACE are well-established, individual agents have different structures, dosing schedules, and regulatory indications. Using a competitor\'s trial to support hero product claims has been challenged in EU regulatory submissions and is flagged by the EMA as a common MA communications risk.',
-    recommendation: 'Either (a) remove AMPLITUDE-O from hero product evidence and move it to a "GLP-1 class evidence" supporting appendix, or (b) explicitly frame it as class-level evidence and clarify that it does not support semaglutide-specific claims.',
-    highlightText: 'The incidence of major adverse cardiovascular events was significantly lower with efpeglenatide than with placebo (HR 0.73; 95% CI 0.58–0.92)',
-    excerptContext: 'Efpeglenatide is a distinct molecule that failed to reach commercial approval in most markets. Its inclusion without qualification may confuse or mislead HCP audiences.',
-  },
-  {
-    paperIdx: 5,
-    severity: 'Note',
-    type: 'Superseded Evidence',
-    title: 'Older liraglutide data may be superseded by SELECT (2023)',
-    description: 'LEADER (2016) is an important historical anchor for GLP-1 RA CV evidence, but more recent and larger trials (SELECT, 2023; N=17,604) are available. Leading with LEADER may understate the current evidence base.',
-    why: 'Evidence hierarchies in MA materials are implicitly date-sensitive. Using 2016 data as a primary citation when a 2023 superiority trial for the same mechanism is available creates a perception gap. Some HCP audiences may be aware of SELECT and question why it\'s not primary.',
-    recommendation: 'Reorder evidence so SELECT (2023) leads the cardiovascular narrative, with LEADER (2016) as historical context. Update the evidence tier label from "primary" to "supporting — historical".',
-    highlightText: 'The rate of first occurrence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke was lower with liraglutide than with placebo (HR 0.87; 95% CI 0.78–0.97)',
-    excerptContext: 'LEADER was groundbreaking in 2016 but the effect size (HR 0.87) is smaller than semaglutide\'s SELECT result (HR 0.80). Leading with the stronger, more recent evidence is best practice.',
   },
   {
     paperIdx: 1,
@@ -837,19 +793,8 @@ const GAP_FINDINGS = [
     description: 'The SELECT trial exclusively enrolled adults with overweight or obesity and established cardiovascular disease who did NOT have type 2 diabetes at baseline. Using SELECT as primary evidence for a T2D product claim is a population mismatch that regulatory reviewers will flag.',
     why: 'SELECT\'s inclusion criteria explicitly excluded patients with T2DM. While the CV benefit is real, applying it to T2D patient communications as if it directly supports the hero product\'s indication creates a material misrepresentation. ABPI Code clause 7.2 prohibits extrapolation beyond the approved indication.',
     recommendation: 'Restrict SELECT citations to slide context that explicitly frames the non-diabetic population (e.g. "cardiovascular benefit independent of diabetes status"). For T2D-specific efficacy claims, use SUSTAIN-6 or PIONEER-6 as the primary source.',
-    highlightText: 'Treatment with semaglutide resulted in a significantly lower incidence of death from cardiovascular causes, nonfatal myocardial infarction, or nonfatal stroke than placebo (HR 0.80; 95% CI 0.72–0.90; P<0.001).',
+    highlightText: 'without type 2 diabetes',
     excerptContext: 'SELECT is the largest and most powerful semaglutide CV trial, but its population (BMI ≥27, no T2D) is distinct from the hero product\'s licensed indication. Mixing trial populations without disclosure is a frequent cause of regulatory rejection.',
-  },
-  {
-    paperIdx: 3,
-    severity: 'Critical',
-    type: 'Guideline Excerpt Truncated',
-    title: 'ADA recommendation quoted without its material qualifier',
-    description: 'The ADA 2025 Standard of Care excerpt drops a critical qualifier: the full recommendation reads "...independently of baseline HbA1c or metformin use, when eGFR permits." The eGFR condition is absent from the current excerpt, making the recommendation appear broader than it is.',
-    why: 'Truncating a guideline recommendation to remove a safety or eligibility qualifier is classified as misleading promotion under EU Directive 2001/83/EC and ABPI Code clause 7.3. A reviewer, pharmacist, or HCP relying on the truncated excerpt may prescribe outside the intended patient population.',
-    recommendation: 'Restore the full recommendation text including the eGFR qualifier. If slide space is limited, paraphrase accurately: "Recommended in patients with established ASCVD and adequate renal function (eGFR as per labelling)." Add a footnote referencing the full recommendation section.',
-    highlightText: 'For adults with type 2 diabetes and established atherosclerotic cardiovascular disease, a GLP-1 receptor agonist with demonstrated cardiovascular benefit is recommended independently of baseline HbA1c or individualised glucose target.',
-    excerptContext: 'ADA Section 9.3 continues: "...provided renal function permits use per the product\'s approved labelling." This qualifier was present in the 2024 edition and was retained in 2025. Its omission is material, not stylistic.',
   },
   {
     paperIdx: 4,
@@ -859,7 +804,7 @@ const GAP_FINDINGS = [
     description: 'The Lancet Diabetes meta-analysis (41 cohorts, N=1.2M) reports an I² of 38%, indicating moderate between-study heterogeneity. The excerpt cites the pooled 47.2% attainment figure without acknowledging that this estimate may not apply uniformly across settings, care models, or geographies.',
     why: 'I² values 25–50% are classified as moderate heterogeneity per Cochrane guidance. Presenting a pooled estimate as a universal benchmark without acknowledging variability in the underlying data risks misleading HCPs about the likely attainment rate in their own practice setting.',
     recommendation: 'Add a supplementary footnote: "Pooled estimate; I²=38%. Attainment rates varied from 29% to 64% across included cohorts — local care model and patient demographics will influence observed rates." This does not weaken the claim but protects against challenge.',
-    highlightText: 'Across 41 cohorts totalling 1.2 million patients, only 47.2% achieved their individualised HbA1c target. Attainment was lowest in the first two years following treatment intensification, the window in which therapeutic inertia is most frequently recorded.',
+    highlightText: 'only 47.2% achieved their individualised HbA1c target',
     excerptContext: 'The 47.2% figure is robust and widely cited, but the heterogeneity range (29–64%) means some practices will see very different rates. Disclosing the I² is standard practice in Cochrane-quality MA summaries.',
   },
   {
@@ -870,47 +815,25 @@ const GAP_FINDINGS = [
     description: 'The current evidence summary cites the ADA/KDIGO guideline as supporting GLP-1 RA use from "eGFR ≥15 mL/min/1.73m²." The actual guideline recommendation threshold is eGFR ≥20 mL/min/1.73m² for first-line SGLT2i, with GLP-1 RA recommended at eGFR ≥20 as second-line. The ≥15 threshold applies only to SGLT2 inhibitor continuation, not initiation.',
     why: 'Citing an incorrect dosing threshold in MA communications constitutes a prescribing safety risk. If an HCP relies on the ≥15 threshold to initiate a GLP-1 RA in a patient with eGFR 15–19, this could result in off-label, potentially unsafe prescribing. This type of error attracts the highest regulatory scrutiny and must be corrected before any external distribution.',
     recommendation: 'Correct the excerpt to read "eGFR ≥20 mL/min/1.73m²" throughout. Cross-check all references to this guideline across the full evidence pack — if the error appears elsewhere, correct all instances simultaneously. Flag for urgent review by regulatory medical writer before next use.',
-    highlightText: 'For patients with type 2 diabetes and chronic kidney disease with eGFR ≥15 mL/min/1.73m², a GLP-1 receptor agonist with demonstrated cardiovascular or kidney benefit is recommended as a preferred add-on therapy, independently of HbA1c.',
+    highlightText: 'eGFR ≥15 mL/min/1.73m²',
     excerptContext: 'The ≥15 figure likely originated from conflation with the SGLT2i continuation threshold. The original ADA/KDIGO recommendation 4.2 explicitly states ≥20 for GLP-1 RA initiation. The discrepancy is subtle but clinically significant.',
   },
   {
-    paperIdx: 9,
-    severity: 'Warning',
-    type: 'NICE Guidance vs MHRA Approval Conflation',
-    title: 'NICE recommendation conflated with MHRA licensed indication',
-    description: 'The current evidence summary presents the NICE NG28 GLP-1 RA recommendation as equivalent to a licensed indication statement. NICE guidance describes reimbursement and prescribing conditions in England — it does not constitute MHRA approval and the two must not be conflated in HCP communications.',
-    why: 'MHRA labelling (SmPC) and NICE technology appraisals/guidelines serve different legal purposes. Presenting a NICE recommendation as if it defines the licensed indication may inadvertently widen the scope of a promotional claim beyond what the SmPC supports. This is a common PMCPA complaint trigger, particularly for UK-market materials.',
-    recommendation: 'Clearly distinguish between "NICE recommends" (reimbursement guidance, England) and "licensed for" (MHRA SmPC). Add a UK-specific disclaimer: "NICE recommendations are specific to NHS England and do not replace the approved Summary of Product Characteristics." Retain NICE citations as supporting evidence — not as the primary basis for efficacy claims.',
-    highlightText: 'Individualise HbA1c targets, taking account of the person\'s daily activities, likelihood of adherence, comorbidities, risk of hypoglycaemia, and the likelihood that achieving the target will not be outweighed by the risks of treatment.',
-    excerptContext: 'The NICE NG28 guidance is appropriate supporting evidence but must be contextualised as reimbursement guidance rather than licensing. This distinction matters especially in materials for use outside England (Scotland, Wales follow different frameworks).',
-  },
-  {
-    paperIdx: 6,
-    severity: 'Note',
-    type: 'Data Currency Risk',
-    title: 'IDF Atlas edition should be updated to 11th edition (2025)',
-    description: 'The epidemiology slides reference IDF Atlas prevalence figures without specifying the edition. The 10th edition (2021) data states 537 million adults with diabetes; the current 11th edition (2025) reports 589 million. Using unversioned or outdated epidemiology overstates the data currency gap and may draw scrutiny from specialist HCP audiences.',
-    why: 'Medical affairs slide decks are often circulated for 12–24 months. Using the most recent edition not only improves accuracy but also signals scientific rigour. An HCP who notices the figure discrepancy may lose confidence in the broader evidence pack. The IDF Atlas 11th edition is publicly available and widely cited in 2024–2025 publications.',
-    recommendation: 'Update all IDF Atlas references to the 11th edition (2025) figures: 589 million (2024 prevalence), 853 million (2050 projection). Explicitly cite "IDF Diabetes Atlas, 11th Edition, 2025" in footnotes. Remove any unversioned references to the IDF Atlas to avoid ambiguity.',
-    highlightText: 'An estimated 589 million adults aged 20–79 years were living with diabetes in 2024. This number is projected to reach 853 million by 2050, with the largest relative increases occurring in low- and middle-income regions.',
-    excerptContext: 'The 589 million figure from the 11th edition is already present in some slides but the source citation remains unversioned in others. Consistent citation practice across the full deck is required before submission.',
-  },
-  {
-    paperIdx: 2,
-    severity: 'Note',
-    type: 'Confidence Interval Breadth',
-    title: 'Cochrane pooled NNT confidence interval too wide to support strong claims',
-    description: 'The Cochrane meta-analysis supporting the class-level MACE reduction reports an NNT of 68 with a 95% CI of 51–115. The upper bound (NNT=115) suggests the effect may be substantially smaller in some populations. The current evidence summary cites the point estimate without acknowledging the CI range.',
-    why: 'An NNT upper confidence limit of 115 means the evidence is consistent with a modest absolute risk reduction in some populations. Presenting NNT=68 as a definitive figure in HCP materials without the CI range may overstate certainty. Critical appraisal-aware audiences (e.g. pharmacists, health economists) will notice the omission and may challenge the claim.',
-    recommendation: 'Report the full NNT with confidence interval: "NNT 68 (95% CI 51–115) over a mean 3.4-year follow-up." Add context that the estimate is based on a pooled population with established CVD and that absolute risk reduction will vary by baseline risk. This adds precision rather than weakening the claim.',
-    highlightText: 'GLP-1 receptor agonists reduced major adverse cardiovascular events compared with placebo or active comparator (RR 0.88; 95% CI 0.82–0.94), with evidence of low heterogeneity across trials, supporting a class effect.',
-    excerptContext: 'The RR 0.88 is the headline finding, but the NNT contextualises the absolute benefit. Both are required for a balanced, EFPIA-compliant evidence presentation. The CI breadth reflects genuine population variability, not a study quality concern.',
+    paperIdx: 11,
+    severity: 'Critical',
+    type: 'Post-Hoc Analysis Undisclosed',
+    title: 'Post-hoc subgroup not disclosed in evidence summary',
+    description: 'This renal outcomes paper is a pre-specified post-hoc analysis of SUSTAIN-6, not an independent primary trial. The evidence summary does not flag this limitation, creating a misleading impression of the strength of evidence.',
+    why: 'Post-hoc analyses carry higher risk of false-positive findings due to multiple testing and are subject to regulatory scrutiny. Using this paper as a primary evidence source for renal benefit claims without disclosing the post-hoc origin violates standard evidence grading practices.',
+    recommendation: 'Add a prominent limitation note: "Pre-specified post-hoc analysis of SUSTAIN-6 — not a primary renal endpoint trial." Consider supplementing with data from FLOW (dedicated renal outcomes trial for semaglutide) if available.',
+    highlightText: 'post-hoc analysis of SUSTAIN-6',
+    excerptContext: 'This finding is real but derived from a post-hoc analysis. The original SUSTAIN-6 trial was powered for cardiovascular, not renal, endpoints — so confidence intervals for the renal subgroup are wide.',
   },
 ];
 
 /* ---------- evidence helpers ---------- */
 
-const typeColor = (t) => t === 'RCT' ? 'var(--ok)' : t === 'Guideline' ? 'var(--dim)' : t === 'Meta-Analysis' ? 'var(--warn)' : t === 'Systematic Review' ? '#a78bfa' : 'var(--faint)';
+const typeColor = (t) => t === 'RCT' ? 'var(--ok)' : t === 'Guideline' ? 'var(--dim)' : t === 'Meta-Analysis' ? 'var(--warn)' : t === 'Systematic Review' ? '#6d28d9' : 'var(--faint)';
 
 function gradeLetterFromPaper(p) {
   const g = p.grade.toLowerCase();
@@ -1061,6 +984,8 @@ export default class MedFactory extends React.Component {
       organizeArtifactTrackFilter: 'All',
       organizeView: 'track',
       manageExcerptIdx: null,
+      exploreExcerptPaper: null,
+      resolveAIPaper: null,
       paperExcerpts: {},
       showMoreExcerpts: {},
       aiExcerpts: {},           // { [idx]: [{text, src}] } AI-generated excerpts per paper
@@ -1085,11 +1010,19 @@ export default class MedFactory extends React.Component {
       gapExcerptOpen: false,
       gapLastAction: null,     // { type: 'replace'|'add', text: string } — feedback after excerpt action
       sciReviewSent: false,    // true after creator clicks "Send to Scientific Review"
-      gapGroupBy: 'track',     // 'track' | 'artifact'
+      sciReviewConfirmOpen: false,
+      gapGroupBy: 'track',      // 'track' | 'artifact'
       gapSeverityFilter: 'All', // 'All' | 'Critical' | 'Warning' | 'Note'
+      gapGroupExpanded: {},     // { [groupKey]: bool } — all open by default when empty
+      gapNavIndex: 0,           // current position in filtered GAP_FINDINGS for Prev/Next nav
+      rejectedNavIndex: 0,      // current position in sci-rejected papers navigator
       sciSubmitted: false,
       sciOverallComment: '',
-      sciReviewComments: {},   // keyed by `${paperIdx}-${excerptIdx}` → { text, rejected }
+      sciReviewComments: {},   // keyed by paperIdx → { rejected, reason }
+      sciRejectModalPaper: null,
+      sciRejectDraftReason: '',
+      sciReviewGroupExpanded: {},
+      sciGroupBy: 'track',
       sciReviewTab: 'track',
       sciChatInput: '',
       sciChatMessages: [],
@@ -1874,9 +1807,80 @@ export default class MedFactory extends React.Component {
       gapExcerptOpen: st.gapExcerptOpen,
       setGapExcerptOpen: (val) => this.setState({ gapExcerptOpen: val }),
       gapGroupBy: st.gapGroupBy,
-      setGapGroupBy: (v2) => this.setState({ gapGroupBy: v2, gapSelected: null, gapExcerptOpen: false }),
+      setGapGroupBy: (v2) => this.setState({ gapGroupBy: v2, gapSelected: null, gapExcerptOpen: false, gapGroupExpanded: {} }),
       gapSeverityFilter: st.gapSeverityFilter,
       setGapSeverityFilter: (f) => this.setState({ gapSeverityFilter: f, gapSelected: null, gapExcerptOpen: false }),
+      gapGroupExpanded: st.gapGroupExpanded,
+      toggleGapGroup: (key) => this.setState((s) => ({ gapGroupExpanded: { ...s.gapGroupExpanded, [key]: !s.gapGroupExpanded[key] } })),
+      expandAllGapGroups: (keys) => this.setState({ gapGroupExpanded: Object.fromEntries(keys.map(k => [k, true])) }),
+      collapseAllGapGroups: (keys) => this.setState({ gapGroupExpanded: Object.fromEntries(keys.map(k => [k, false])) }),
+      gapNavIndex: st.gapNavIndex,
+      gapNavNext: () => {
+        const s = this.state;
+        const filtered = GAP_FINDINGS.filter(g => s.gapSeverityFilter === 'All' || g.severity === s.gapSeverityFilter);
+        if (!filtered.length) return;
+        const next = (s.gapNavIndex + 1) % filtered.length;
+        const gapObj = filtered[next];
+        const gapIdx = GAP_FINDINGS.indexOf(gapObj);
+        const paper = RESEARCH_PAPERS[gapObj.paperIdx];
+        const groupKeys = s.gapGroupBy === 'artifact'
+          ? paper.artifacts
+          : CONTENT_TRACKS.filter(t => t.paperTracks.includes(paper.track)).map(t => t.id);
+        const expanded = { ...s.gapGroupExpanded };
+        groupKeys.forEach(k => { expanded[k] = true; });
+        this.setState({ gapNavIndex: next, gapSelected: gapIdx, gapExcerptOpen: false, gapLastAction: null, gapGroupExpanded: expanded }, () => {
+          setTimeout(() => document.getElementById(`gap-nav-card-${gapIdx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+        });
+      },
+      gapNavPrev: () => {
+        const s = this.state;
+        const filtered = GAP_FINDINGS.filter(g => s.gapSeverityFilter === 'All' || g.severity === s.gapSeverityFilter);
+        if (!filtered.length) return;
+        const prev = (s.gapNavIndex - 1 + filtered.length) % filtered.length;
+        const gapObj = filtered[prev];
+        const gapIdx = GAP_FINDINGS.indexOf(gapObj);
+        const paper = RESEARCH_PAPERS[gapObj.paperIdx];
+        const groupKeys = s.gapGroupBy === 'artifact'
+          ? paper.artifacts
+          : CONTENT_TRACKS.filter(t => t.paperTracks.includes(paper.track)).map(t => t.id);
+        const expanded = { ...s.gapGroupExpanded };
+        groupKeys.forEach(k => { expanded[k] = true; });
+        this.setState({ gapNavIndex: prev, gapSelected: gapIdx, gapExcerptOpen: false, gapLastAction: null, gapGroupExpanded: expanded }, () => {
+          setTimeout(() => document.getElementById(`gap-nav-card-${gapIdx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+        });
+      },
+      gapNavJump: (navIdx, severityFilter) => {
+        const s = this.state;
+        const filter = severityFilter !== undefined ? severityFilter : s.gapSeverityFilter;
+        const filtered = GAP_FINDINGS.filter(g => filter === 'All' || g.severity === filter);
+        const gapObj = filtered[navIdx];
+        if (!gapObj) return;
+        const gapIdx = GAP_FINDINGS.indexOf(gapObj);
+        const paper = RESEARCH_PAPERS[gapObj.paperIdx];
+        const groupKeys = s.gapGroupBy === 'artifact'
+          ? paper.artifacts
+          : CONTENT_TRACKS.filter(t => t.paperTracks.includes(paper.track)).map(t => t.id);
+        const expanded = { ...s.gapGroupExpanded };
+        groupKeys.forEach(k => { expanded[k] = true; });
+        this.setState({ gapNavIndex: navIdx, gapSelected: gapIdx, gapExcerptOpen: false, gapLastAction: null, gapGroupExpanded: expanded }, () => {
+          setTimeout(() => document.getElementById(`gap-nav-card-${gapIdx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+        });
+      },
+      rejectedNavIndex: st.rejectedNavIndex,
+      rejectedNavNext: () => this.setState((s) => {
+        const idxs = RESEARCH_PAPERS.map((_, i) => i).filter(i => s.sciReviewComments[i]?.rejected);
+        if (!idxs.length) return null;
+        const next = (s.rejectedNavIndex + 1) % idxs.length;
+        setTimeout(() => document.getElementById(`sci-rej-card-${idxs[next]}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+        return { rejectedNavIndex: next };
+      }),
+      rejectedNavPrev: () => this.setState((s) => {
+        const idxs = RESEARCH_PAPERS.map((_, i) => i).filter(i => s.sciReviewComments[i]?.rejected);
+        if (!idxs.length) return null;
+        const prev = (s.rejectedNavIndex - 1 + idxs.length) % idxs.length;
+        setTimeout(() => document.getElementById(`sci-rej-card-${idxs[prev]}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
+        return { rejectedNavIndex: prev };
+      }),
       aiAcceptLoading: st.aiAcceptLoading,
       aiAcceptStep: st.aiAcceptStep,
       addPaperToChat: (p) => this.setState((s) => {
@@ -1999,6 +2003,12 @@ export default class MedFactory extends React.Component {
       manageExcerptIdx: st.manageExcerptIdx,
       openManageExcerpt: (idx) => this.setState((s) => ({ manageExcerptIdx: s.manageExcerptIdx === idx ? null : idx })),
       closeManageExcerpt: () => this.setState({ manageExcerptIdx: null }),
+      exploreExcerptPaper: st.exploreExcerptPaper,
+      openExploreExcerpt: (paper) => this.setState({ exploreExcerptPaper: paper }),
+      closeExploreExcerpt: () => this.setState({ exploreExcerptPaper: null }),
+      resolveAIPaper: st.resolveAIPaper,
+      openResolveAI: (paper) => { this.setState({ resolveAIPaper: paper }); },
+      closeResolveAI: () => this.setState({ resolveAIPaper: null }),
       paperExcerpts: st.paperExcerpts,
       replaceExcerpt: (idx, exc) => this.setState((s) => ({ paperExcerpts: { ...s.paperExcerpts, [idx]: [exc] }, manageExcerptIdx: null })),
       addExcerpt: (idx, exc) => this.setState((s) => {
@@ -2007,7 +2017,28 @@ export default class MedFactory extends React.Component {
         return { paperExcerpts: { ...s.paperExcerpts, [idx]: [...cur, exc] }, manageExcerptIdx: null };
       }),
       gapLastAction: st.gapLastAction,
-      gapReplaceExcerpt: (idx, exc) => this.setState((s) => ({ paperExcerpts: { ...s.paperExcerpts, [idx]: [exc] }, gapLastAction: { type: 'replace', text: exc.text } })),
+      gapReplaceExcerpt: (idx, exc) => this.setState((s) => {
+        const prev = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
+        return { paperExcerpts: { ...s.paperExcerpts, [idx]: [exc] }, gapLastAction: { type: 'replace', text: exc.text, prev, prevIdx: idx } };
+      }),
+      gapUndoReplace: () => this.setState((s) => {
+        if (!s.gapLastAction || s.gapLastAction.type !== 'replace') return null;
+        const { prev, prevIdx } = s.gapLastAction;
+        const wasOriginal = prev.length === 1 && prev[0].text === (RESEARCH_PAPERS[prevIdx]?.excerpt || '');
+        const next = { ...s.paperExcerpts };
+        if (wasOriginal) { delete next[prevIdx]; } else { next[prevIdx] = prev; }
+        return { paperExcerpts: next, gapLastAction: { type: 'undone' } };
+      }),
+      gapRemoveExcerpt: (idx, text) => this.setState((s) => {
+        const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
+        const next = cur.filter((e) => e.text !== text);
+        return { paperExcerpts: { ...s.paperExcerpts, [idx]: next }, gapLastAction: { type: 'remove' } };
+      }),
+      gapResetExcerpts: (idx) => this.setState((s) => {
+        const next = { ...s.paperExcerpts };
+        delete next[idx];
+        return { paperExcerpts: next, gapLastAction: { type: 'reset' } };
+      }),
       gapAddExcerpt: (idx, exc) => this.setState((s) => {
         const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
         if (cur.find((e) => e.text === exc.text)) return {};
@@ -2017,6 +2048,11 @@ export default class MedFactory extends React.Component {
         const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
         const next = cur.filter((e) => e.text !== text);
         return { paperExcerpts: { ...s.paperExcerpts, [idx]: next } };
+      }),
+      addExcerptItem: (idx, exc) => this.setState((s) => {
+        const cur = s.paperExcerpts[idx] || [{ text: RESEARCH_PAPERS[idx]?.excerpt || '', src: RESEARCH_PAPERS[idx]?.excerptSrc || '' }];
+        if (cur.some((e) => e.text === exc.text)) return null;
+        return { paperExcerpts: { ...s.paperExcerpts, [idx]: [...cur, exc] } };
       }),
       showMoreExcerpts: st.showMoreExcerpts,
       toggleShowMore: (idx) => this.setState((s) => ({ showMoreExcerpts: { ...s.showMoreExcerpts, [idx]: !s.showMoreExcerpts[idx] } })),
@@ -2087,10 +2123,26 @@ export default class MedFactory extends React.Component {
       setSciOverallComment: (text) => this.setState({ sciOverallComment: text }),
       sciReviewComments: st.sciReviewComments,
       setSciComment: (key, text) => this.setState((s) => ({ sciReviewComments: { ...s.sciReviewComments, [key]: { ...s.sciReviewComments[key], text } } })),
-      toggleSciReject: (key) => this.setState((s) => {
-        const cur = s.sciReviewComments[key] || {};
-        return { sciReviewComments: { ...s.sciReviewComments, [key]: { ...cur, rejected: !cur.rejected } } };
+      sciRejectModalPaper: st.sciRejectModalPaper,
+      sciRejectDraftReason: st.sciRejectDraftReason,
+      openSciRejectModal: (idx) => this.setState({ sciRejectModalPaper: idx, sciRejectDraftReason: '' }),
+      closeSciRejectModal: () => this.setState({ sciRejectModalPaper: null, sciRejectDraftReason: '' }),
+      setSciRejectDraftReason: (t) => this.setState({ sciRejectDraftReason: t }),
+      confirmSciReject: (idx, reason) => this.setState((s) => ({
+        sciReviewComments: { ...s.sciReviewComments, [idx]: { rejected: true, reason } },
+        sciRejectModalPaper: null,
+        sciRejectDraftReason: '',
+      })),
+      revertSciReject: (idx) => this.setState((s) => {
+        const next = { ...s.sciReviewComments }; delete next[idx]; return { sciReviewComments: next };
       }),
+      sciGroupBy: st.sciGroupBy,
+      setSciGroupBy: (by) => this.setState({ sciGroupBy: by, sciReviewGroupExpanded: {} }),
+      sciReviewGroupExpanded: st.sciReviewGroupExpanded,
+      toggleSciReviewGroup: (key) => this.setState((s) => ({ sciReviewGroupExpanded: { ...s.sciReviewGroupExpanded, [key]: !s.sciReviewGroupExpanded[key] } })),
+      expandAllSciGroups: (keys) => this.setState({ sciReviewGroupExpanded: Object.fromEntries(keys.map(k => [k, true])) }),
+      doSciApproveResearch: () => this.setState({ pptStatus: 'sci-approved', screen: 'sci-dash' }),
+      doSciRejectResearch: () => this.setState({ pptStatus: 'sci-rejected', screen: 'sci-dash' }),
       sciReviewTab: st.sciReviewTab,
       setSciReviewTab: (t) => this.setState({ sciReviewTab: t }),
       sciChatInput: st.sciChatInput,
@@ -2139,12 +2191,14 @@ export default class MedFactory extends React.Component {
           ...st.createdWorkspaces.map((w) => ({
             id: w.id, topic: w.name, status: w.status, created: w.created,
             go: () => this.go(w.to), dotColor: w.dotColor, isActive: w.id === st.activeWorkspaceId,
+            isRejected: w.id === st.activeWorkspaceId && (st.pptStatus === 'sci-rejected' || st.pptStatus === 'ma-rejected'),
+            rejectedBy: st.pptStatus === 'sci-rejected' ? 'Sci Review' : st.pptStatus === 'ma-rejected' ? 'MA Review' : null,
             isCreated: true,
           })),
           ...DECKS.map((d) => ({
             id: d.topic, topic: d.topic, status: d.status, created: d.created,
             go: () => this.go(d.to),
-            dotColor: d.status === 'Completed' ? 'var(--ok)' : d.status === 'Awaiting MA Review' ? 'var(--acc)' : d.status === 'Research in Progress' ? '#a78bfa' : 'var(--faint)',
+            dotColor: d.status === 'Completed' ? 'var(--ok)' : d.status === 'Awaiting MA Review' ? 'var(--acc)' : d.status === 'Research in Progress' ? '#6d28d9' : 'var(--faint)',
             isActive: false, isCreated: false,
           })),
         ];
@@ -2167,17 +2221,30 @@ export default class MedFactory extends React.Component {
         numStyle: `font:700 40px/1 var(--mono);letter-spacing:-0.03em;color:${k.c}`,
       })),
 
-      decks: DECKS.map((d) => {
-        const barColor = d.status === 'Completed' ? 'var(--ok)' : d.status === 'Awaiting MA Review' ? 'var(--acc)' : d.status === 'Research in Progress' ? '#7c3aed' : 'var(--dim)';
-        const leftBorder = d.status === 'Completed' ? 'var(--ok)' : d.status === 'Awaiting MA Review' ? 'var(--acc)' : d.status === 'Research in Progress' ? '#7c3aed' : 'var(--dim)';
-        return {
-          topic: d.topic, area: d.area, status: d.status, created: d.created,
-          pill: this.pill(d.status), go: () => this.go(d.to),
-          stagePct: Math.round((d.stage / 7) * 100),
-          stage: d.stage, stageName: STAGE_NAMES[d.stage - 1] || '',
-          barColor, leftBorder,
-        };
-      }),
+      decks: (() => {
+        const mapped = DECKS.map((d) => {
+          const barColor = d.status === 'Completed' ? 'var(--ok)' : d.status === 'Awaiting MA Review' ? 'var(--acc)' : d.status === 'Research in Progress' ? '#7c3aed' : 'var(--dim)';
+          const leftBorder = d.status === 'Completed' ? 'var(--ok)' : d.status === 'Awaiting MA Review' ? 'var(--acc)' : d.status === 'Research in Progress' ? '#7c3aed' : 'var(--dim)';
+          return {
+            topic: d.topic, area: d.area, status: d.status, created: d.created,
+            pill: this.pill(d.status), go: () => this.go(d.to),
+            stagePct: Math.round((d.stage / 7) * 100),
+            stage: d.stage, stageName: STAGE_NAMES[d.stage - 1] || '',
+            barColor, leftBorder, sciRejected: false,
+          };
+        });
+        if (st.pptStatus === 'sci-rejected' && st.topic) {
+          mapped.unshift({
+            topic: st.topic, area: 'Scientific Review', status: 'Sci Review Rejected',
+            created: '2 Sep',
+            pill: 'background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.02em',
+            go: () => this.go('med-review'),
+            stagePct: Math.round((5 / 7) * 100), stage: 5, stageName: STAGE_NAMES[4] || '',
+            barColor: '#dc2626', leftBorder: '#dc2626', sciRejected: true,
+          });
+        }
+        return mapped;
+      })(),
 
       queue: [
         { topic: 'Tirzepatide in obesity — 2026 readouts', why: '12 new publications · EASD 2026 late-breaker', score: '0.91' },
@@ -2265,7 +2332,7 @@ export default class MedFactory extends React.Component {
         const id = Date.now();
         const ws = {
           id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
-          status: 'Research in Progress', created: 'Today', to: 'workspace-hub', dotColor: '#a78bfa',
+          status: 'Research in Progress', created: 'Today', to: 'workspace-hub', dotColor: '#6d28d9',
         };
         this.setState((s) => ({
           createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
@@ -2277,7 +2344,7 @@ export default class MedFactory extends React.Component {
         const id = Date.now();
         const ws = {
           id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
-          status: 'Research in Progress', created: 'Today', to: 'workspace-hub', dotColor: '#a78bfa',
+          status: 'Research in Progress', created: 'Today', to: 'workspace-hub', dotColor: '#6d28d9',
         };
         this.setState((s) => ({
           createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
@@ -2452,13 +2519,13 @@ export default class MedFactory extends React.Component {
         const label = st.sectionSelectInput.trim();
         if (!label) return;
         this.setState((s) => ({
-          sectionSelectCustom: [...s.sectionSelectCustom, { label, on: true, color: '#60a5fa' }],
+          sectionSelectCustom: [...s.sectionSelectCustom, { label, on: true, color: '#2563eb' }],
           sectionSelectInput: '',
         }));
       },
       addAISuggestion: (label, reason) => this.setState((s) => {
         if (s.sectionSelectCustom.some(c => c.label === label)) return null;
-        return { sectionSelectCustom: [...s.sectionSelectCustom, { label, on: true, color: '#a78bfa', aiGenerated: true, reason }] };
+        return { sectionSelectCustom: [...s.sectionSelectCustom, { label, on: true, color: '#6d28d9', aiGenerated: true, reason }] };
       }),
       suggestAISections: () => {
         this.setState({ aiSectionLoading: true, aiSectionShown: true });
@@ -2483,7 +2550,7 @@ export default class MedFactory extends React.Component {
         const id = Date.now();
         const ws = {
           id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
-          status: 'Research in Progress', created: 'Today', to: 'research', dotColor: '#a78bfa',
+          status: 'Research in Progress', created: 'Today', to: 'research', dotColor: '#6d28d9',
         };
         const r1 = { id: 1, name: 'Research 1', status: 'in-progress', artifacts: [] };
         this.setState((s) => ({
@@ -2544,7 +2611,10 @@ export default class MedFactory extends React.Component {
       doSendToMA: () => this.sendToMA(),
       doResubmitToMA: () => this.resubmitToMA(),
       doMAApprove: () => this.maApprove(),
-      sendToSciReview: () => this.setState({ pptStatus: 'sent-to-sci', sciReviewSent: true }),
+      sciReviewConfirmOpen: st.sciReviewConfirmOpen,
+      openSciReviewConfirm: () => this.setState({ sciReviewConfirmOpen: true }),
+      closeSciReviewConfirm: () => this.setState({ sciReviewConfirmOpen: false }),
+      sendToSciReview: () => this.setState({ pptStatus: 'sent-to-sci', sciReviewSent: true, sciReviewConfirmOpen: false }),
       sciReviewSent: st.sciReviewSent,
       doSciApprove: () => this.sciApprove(),
 
@@ -2673,7 +2743,7 @@ export default class MedFactory extends React.Component {
             <div>
               <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.18em', color: '#60a5fa', marginBottom: 18 }}>MEDICAL AFFAIRS · CONTENT PIPELINE</div>
               <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1.1, margin: '0 0 20px', color: '#ffffff' }}>Science-validated<br />content, faster.</h1>
-              <div style={{ color: '#8aaad4', fontSize: 13.5, lineHeight: 1.7, marginBottom: 44 }}>
+              <div style={{ color: '#dce8f8', fontSize: 13.5, lineHeight: 1.7, marginBottom: 44 }}>
                 Three roles. One pipeline. From brand brief to MA-approved webinar deck — with full audit trail.
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -2698,7 +2768,7 @@ export default class MedFactory extends React.Component {
                   style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '7px 0', borderBottom: '1px solid rgba(232,238,248,0.1)', cursor: 'pointer' }}
                   onClick={() => this.setState({ loginEmail: c.email, loginPassword: c.password, loginError: '' })}
                 >
-                  <div style={{ fontSize: 12, color: '#8aaad4' }}>{c.email}</div>
+                  <div style={{ fontSize: 12, color: '#dce8f8' }}>{c.email}</div>
                   <div style={{ fontSize: 11, color: '#4d6fa0', fontFamily: 'var(--mono)' }}>{c.password}</div>
                 </div>
               ))}
@@ -2779,7 +2849,7 @@ export default class MedFactory extends React.Component {
         style={S('font-family:Plus Jakarta Sans,system-ui,sans-serif;background:var(--bg);color:var(--ink);height:100vh;min-width:1280px;display:flex;overflow:hidden;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased')}
       >
         {/* ---------------- sidebar (role-aware) ---------------- */}
-        <aside style={{ width: v.sidebarCollapsed ? 56 : 240, flexShrink: 0, display: 'flex', flexDirection: 'column', background: 'linear-gradient(170deg,#1e3370 0%,#0d1a4a 100%)', transition: 'width 0.22s cubic-bezier(0.4,0,0.2,1)', overflow: 'hidden', '--ink': '#e8eef8', '--dim': '#a8c0e8', '--faint': '#5878a8', '--rule': 'rgba(232,238,248,0.1)', '--rule2': 'rgba(232,238,248,0.18)', '--s1': 'rgba(255,255,255,0.07)', '--s2': 'rgba(255,255,255,0.12)', '--bg': '#1a2d6b', '--acc': '#60a5fa', '--ok': '#4ade80', '--warn': '#fbbf24' }}>
+        <aside style={{ width: v.sidebarCollapsed ? 56 : 240, flexShrink: 0, display: 'flex', flexDirection: 'column', background: 'linear-gradient(170deg,#1e3370 0%,#0d1a4a 100%)', transition: 'width 0.22s cubic-bezier(0.4,0,0.2,1)', overflow: 'hidden', '--ink': '#e8eef8', '--dim': '#dce8f8', '--faint': '#dce8f8', '--rule': 'rgba(232,238,248,0.1)', '--rule2': 'rgba(232,238,248,0.18)', '--s1': 'rgba(255,255,255,0.07)', '--s2': 'rgba(255,255,255,0.12)', '--bg': '#1a2d6b', '--acc': '#60a5fa', '--ok': '#15803d', '--warn': '#d97706' }}>
           {/* Logo row + collapse toggle */}
           <div style={{ padding: '16px 14px 14px', borderBottom: '1px solid rgba(232,238,248,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 9, overflow: 'hidden' }}>
@@ -2788,7 +2858,7 @@ export default class MedFactory extends React.Component {
             </div>
             <button
               onClick={v.toggleSidebar}
-              style={{ background: 'rgba(255,255,255,0.08)', border: 'none', cursor: 'pointer', padding: '5px 7px', display: 'flex', alignItems: 'center', borderRadius: 4, color: '#a8c0e8', flexShrink: 0 }}
+              style={{ background: 'rgba(255,255,255,0.08)', border: 'none', cursor: 'pointer', padding: '5px 7px', display: 'flex', alignItems: 'center', borderRadius: 4, color: '#dce8f8', flexShrink: 0 }}
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 {v.sidebarCollapsed
@@ -2819,7 +2889,7 @@ export default class MedFactory extends React.Component {
                   return (
                     <Box
                       key={i}
-                      css={`display:flex;align-items:center;gap:10px;padding:9px ${v.sidebarCollapsed ? '0' : '16px'};cursor:pointer;font-size:12.5px;font-weight:${it.active ? 600 : 400};color:${it.active ? '#e8eef8' : '#a8c0e8'};${v.sidebarCollapsed ? 'justify-content:center' : ''}`}
+                      css={`display:flex;align-items:center;gap:10px;padding:9px ${v.sidebarCollapsed ? '0' : '16px'};cursor:pointer;font-size:12.5px;font-weight:${it.active ? 600 : 400};color:${it.active ? '#e8eef8' : '#dce8f8'};${v.sidebarCollapsed ? 'justify-content:center' : ''}`}
                       hover="background:rgba(255,255,255,0.08);color:#e8eef8"
                       onClick={it.go}
                     >
@@ -2846,7 +2916,7 @@ export default class MedFactory extends React.Component {
                 ) : (
                   /* Section header + New button */
                   <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
-                    <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#5878a8' }}>WORKSPACES</span>
+                    <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: '#a8c0e8' }}>WORKSPACES</span>
                     <Box
                       css="font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.06em;color:#60a5fa;cursor:pointer;padding:3px 8px;border:1px solid rgba(96,165,250,0.3)"
                       hover="background:rgba(96,165,250,0.12)"
@@ -2891,23 +2961,29 @@ export default class MedFactory extends React.Component {
                         {/* Created workspaces — tree */}
                         {created.map((ws) => {
                           const isExpanded = v.sidebarExpandedWs === ws.id;
+                          const rejAccent = ws.rejectedBy === 'Sci Review' ? '#f87171' : '#fbbf24';
                           return (
-                            <div key={ws.id} style={S(`border-bottom:1px solid var(--rule)`)}>
+                            <div key={ws.id} style={{ borderBottom: '1px solid var(--rule)', background: ws.isRejected ? 'rgba(220,38,38,0.1)' : 'transparent', transition: 'background 0.2s' }}>
                               {/* Workspace header row */}
                               <Box
-                                css={`display:flex;align-items:center;gap:9px;padding:11px 14px 11px 14px;cursor:pointer;${ws.isActive ? 'background:rgba(44,82,204,0.1);border-left:2px solid var(--acc)' : 'padding-left:16px'}`}
-                                hover={!ws.isActive ? 'background:var(--s1)' : ''}
+                                css={`display:flex;align-items:center;gap:9px;padding:11px 14px 11px 14px;cursor:pointer;${ws.isRejected ? 'border-left:2px solid #f87171' : ws.isActive ? 'background:rgba(44,82,204,0.1);border-left:2px solid var(--acc)' : 'padding-left:16px'}`}
+                                hover={!ws.isActive && !ws.isRejected ? 'background:var(--s1)' : ''}
                                 onClick={() => { ws.go(); v.toggleSidebarWs(ws.id); }}
                               >
                                 {/* Folder icon */}
-                                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" style={{ flexShrink: 0, color: ws.isActive ? 'var(--acc)' : 'var(--faint)' }}>
-                                  <path d="M1 2.5h4l1.5 1.5H13v7H1V2.5z" stroke="currentColor" strokeWidth="1.3" fill={ws.isActive ? 'rgba(44,82,204,0.15)' : 'transparent'}/>
+                                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" style={{ flexShrink: 0, color: ws.isRejected ? '#f87171' : ws.isActive ? 'var(--acc)' : 'var(--faint)' }}>
+                                  <path d="M1 2.5h4l1.5 1.5H13v7H1V2.5z" stroke="currentColor" strokeWidth="1.3" fill={ws.isRejected ? 'rgba(220,38,38,0.2)' : ws.isActive ? 'rgba(44,82,204,0.15)' : 'transparent'}/>
                                 </svg>
                                 <div style={S('flex:1;min-width:0')}>
-                                  <div style={S('font:700 11.5px/1.3 Plus Jakarta Sans;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap')}>{ws.topic}</div>
-                                  {ws.isActive && <div style={{ font: '600 9.5px/1 Plus Jakarta Sans', color: 'var(--acc)', marginTop: 3 }}>Active workspace</div>}
+                                  <div style={{ font: '700 11.5px/1.3 Plus Jakarta Sans', color: ws.isRejected ? '#fca5a5' : 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ws.topic}</div>
+                                  {ws.isRejected
+                                    ? <div style={{ font: '600 9px/1 Plus Jakarta Sans', color: '#f87171', marginTop: 3 }}>⚠ Rejected by {ws.rejectedBy}</div>
+                                    : ws.isActive && <div style={{ font: '600 9.5px/1 Plus Jakarta Sans', color: 'var(--acc)', marginTop: 3 }}>Active workspace</div>
+                                  }
                                 </div>
-                                {ws.isActive && (
+                                {ws.isRejected ? (
+                                  <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#f87171', flexShrink: 0, animation: 'puls 1.4s infinite' }} />
+                                ) : ws.isActive && (
                                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--acc)', flexShrink: 0, animation: 'puls 1.4s infinite' }} />
                                 )}
                                 <svg width="8" height="8" viewBox="0 0 8 8" fill="none" style={{ flexShrink: 0, transform: isExpanded ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s', color: 'var(--faint)' }}>
@@ -2942,10 +3018,10 @@ export default class MedFactory extends React.Component {
                                         {/* Content */}
                                         <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px 8px 4px' }}>
                                           {/* Status dot */}
-                                          <div style={{ width: 7, height: 7, borderRadius: '50%', background: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', flexShrink: 0 }} />
+                                          <div style={{ width: 7, height: 7, borderRadius: '50%', background: isDone ? 'var(--ok)' : isInProgress ? '#6d28d9' : 'var(--faint)', flexShrink: 0 }} />
                                           <div style={{ flex: 1, minWidth: 0 }}>
                                             <div style={{ font: `${isActiveR ? 600 : 500} 11.5px/1.3 Plus Jakarta Sans`, color: isActiveR ? 'var(--ink)' : 'var(--dim)' }}>{r.name}</div>
-                                            <div style={{ font: '600 10px/1 Plus Jakarta Sans', color: isDone ? 'var(--ok)' : isInProgress ? '#a78bfa' : 'var(--faint)', marginTop: 2 }}>
+                                            <div style={{ font: '600 10px/1 Plus Jakarta Sans', color: isDone ? 'var(--ok)' : isInProgress ? '#6d28d9' : 'var(--faint)', marginTop: 2 }}>
                                               {isDone ? 'Complete' : isInProgress ? 'In progress' : 'Not started'}
                                             </div>
                                           </div>
@@ -3007,13 +3083,24 @@ export default class MedFactory extends React.Component {
           ) : (
             <>
               <nav style={S('display:flex;flex-direction:column;padding:12px 0;flex:1')}>
-                {reviewerSidebarItems.map(([lbl, scr], i) => (
-                  <Box key={i} css={`display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;font-size:13px;color:${S_ === scr && i === 0 ? 'var(--ink)' : 'var(--dim)'};font-weight:${S_ === scr && i === 0 ? 700 : 400}`} hover="color:var(--ink)" onClick={() => this.go(scr)}>
-                    <span style={S(`width:2px;height:14px;background:${S_ === scr && i === 0 ? reviewerAccent : 'transparent'}`)} />
-                    {lbl}
-                    {i === 0 && v.unreadCount > 0 && <span style={S(`margin-left:auto;background:${reviewerAccent};color:${v.isMA ? '#000' : '#fff'};font:700 9px/1 Plus Jakarta Sans;padding:2px 6px`)}>{v.unreadCount}</span>}
-                  </Box>
-                ))}
+                {reviewerSidebarItems.map(([lbl, scr], i) => {
+                  const isActive = S_ === scr && i === 0;
+                  const icons = [
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3"/></svg>,
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" stroke="currentColor" strokeWidth="1.3"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.6 2.6l1 1M10.4 10.4l1 1M11.4 2.6l-1 1M3.6 10.4l-1 1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+                  ];
+                  return (
+                    <Box key={i}
+                      css={`display:flex;align-items:center;gap:10px;padding:10px ${v.sidebarCollapsed ? '0' : '20px'};cursor:pointer;font-size:13px;color:${isActive ? 'var(--ink)' : 'var(--dim)'};font-weight:${isActive ? 700 : 400};${v.sidebarCollapsed ? 'justify-content:center' : ''}`}
+                      hover="color:var(--ink)"
+                      onClick={() => this.go(scr)}
+                    >
+                      {!v.sidebarCollapsed && <span style={S(`width:2px;height:14px;flex-shrink:0;background:${isActive ? reviewerAccent : 'transparent'}`)} />}
+                      {v.sidebarCollapsed ? icons[i] : <span style={{ whiteSpace: 'nowrap' }}>{lbl}</span>}
+                      {!v.sidebarCollapsed && i === 0 && v.unreadCount > 0 && <span style={S(`margin-left:auto;background:${reviewerAccent};color:${v.isMA ? '#000' : '#fff'};font:700 9px/1 Plus Jakarta Sans;padding:2px 6px`)}>{v.unreadCount}</span>}
+                    </Box>
+                  );
+                })}
               </nav>
             </>
           )}
@@ -3025,7 +3112,7 @@ export default class MedFactory extends React.Component {
               onClick={v.toggleDir}
             >
               <span>Direction</span>
-              <span style={{ fontWeight: 700, color: '#60a5fa' }}>{v.dirLabel}</span>
+              <span style={{ fontWeight: 700, color: '#2563eb' }}>{v.dirLabel}</span>
             </Box>
           )}
 
@@ -3034,7 +3121,7 @@ export default class MedFactory extends React.Component {
             {!v.sidebarCollapsed && (
               <div style={{ minWidth: 0 }}>
                 <div style={{ fontWeight: 600, fontSize: 12, color: '#e8eef8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.isCreator ? 'Mayank Gupta' : reviewerName}</div>
-                <div style={{ color: '#5878a8', fontSize: 10.5, marginTop: 2 }}>{v.isCreator ? 'Medical Affairs Lead' : reviewerRole}</div>
+                <div style={{ color: '#a8c0e8', fontSize: 10.5, marginTop: 2 }}>{v.isCreator ? 'Medical Affairs Lead' : reviewerRole}</div>
               </div>
             )}
           </div>
@@ -3126,13 +3213,22 @@ export default class MedFactory extends React.Component {
                   {v.decks.map((d, i) => (
                     <Box
                       key={i}
-                      css={`display:flex;flex-direction:column;background:#fff;border:1px solid var(--rule);cursor:pointer;border-radius:14px;overflow:hidden;animation:cardIn 0.32s ease both`}
+                      css={`display:flex;flex-direction:column;background:#fff;border:1px solid ${d.sciRejected ? '#fca5a5' : 'var(--rule)'};cursor:pointer;border-radius:14px;overflow:hidden;animation:cardIn 0.32s ease both`}
                       hover={`border-color:${d.leftBorder};box-shadow:0 8px 28px rgba(15,31,74,0.12);transform:translateY(-2px)`}
                       onClick={d.go}
-                      style={{ animationDelay: `${i * 0.06}s`, boxShadow: '0 1px 4px rgba(15,31,74,0.06),0 4px 16px rgba(15,31,74,0.05)', transition: 'transform 0.18s,box-shadow 0.18s,border-color 0.18s' }}
+                      style={{ animationDelay: `${i * 0.06}s`, boxShadow: d.sciRejected ? '0 0 0 3px rgba(220,38,38,0.10),0 4px 16px rgba(220,38,38,0.08)' : '0 1px 4px rgba(15,31,74,0.06),0 4px 16px rgba(15,31,74,0.05)', transition: 'transform 0.18s,box-shadow 0.18s,border-color 0.18s' }}
                     >
                       {/* top accent bar */}
-                      <div style={{ height: 3, background: d.leftBorder, flexShrink: 0 }} />
+                      <div style={{ height: d.sciRejected ? 4 : 3, background: d.leftBorder, flexShrink: 0 }} />
+                      {d.sciRejected && (
+                        <div style={{ background: '#fef2f2', borderBottom: '1px solid #fecaca', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <span style={{ fontSize: 15 }}>⚠</span>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ font: '700 11px/1 Plus Jakarta Sans', color: '#dc2626', letterSpacing: '0.04em' }}>SCI REVIEW REJECTED · NEEDS ATTENTION</div>
+                            <div style={{ font: '500 10.5px/1.4 Plus Jakarta Sans', color: '#b91c1c', marginTop: 3 }}>Scientific reviewer rejected items — open to review</div>
+                          </div>
+                        </div>
+                      )}
                       <div style={{ padding: '18px 20px 20px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                           <div style={{ font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)', letterSpacing: '0.02em' }}>Created {d.created}</div>
@@ -3648,7 +3744,7 @@ export default class MedFactory extends React.Component {
 
           {/* ============ SELECT RESEARCH SECTIONS ============ */}
           {v.isSectionSelect && (() => {
-            const trackColors = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+            const trackColors = ['#1d4ed8','#0f766e','#b45309','#dc2626','#7c3aed','#ea580c','#15803d'];
             const totalSelected = v.sectionSelectTracks.length + v.sectionSelectCustom.filter(c => c.on).length;
             return (
               <div style={{ minHeight: '100%', background: 'var(--bg)', padding: '44px 64px 64px', animation: 'fadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both' }}>
@@ -5083,11 +5179,11 @@ export default class MedFactory extends React.Component {
             const curView = v.organizeView || 'track';
 
             const tc2 = (type) => {
-              if (type === 'RCT') return '#7eb8f7';
-              if (type === 'Systematic Review' || type === 'Meta-Analysis') return '#a78bfa';
-              if (type === 'Guideline') return '#4ade80';
-              if (type === 'Real-World') return '#fb923c';
-              if (type === 'Registry') return '#f97b7b';
+              if (type === 'RCT') return '#1d4ed8';
+              if (type === 'Systematic Review' || type === 'Meta-Analysis') return '#6d28d9';
+              if (type === 'Guideline') return '#15803d';
+              if (type === 'Real-World') return '#ea580c';
+              if (type === 'Registry') return '#dc2626';
               return 'var(--dim)';
             };
 
@@ -5099,9 +5195,9 @@ export default class MedFactory extends React.Component {
                 <line x1="36" y1="18" x2="36" y2="118" stroke="#4a4848" strokeWidth="1.2" />
                 <line x1="36" y1="118" x2="210" y2="118" stroke="#4a4848" strokeWidth="1.2" />
                 {/* treatment line stays high */}
-                <polyline points="36,22 65,22 65,24 95,24 95,26 125,26 130,28 160,28 165,31 200,31 205,33" fill="none" stroke="#7eb8f7" strokeWidth="2" strokeLinejoin="round" />
+                <polyline points="36,22 65,22 65,24 95,24 95,26 125,26 130,28 160,28 165,31 200,31 205,33" fill="none" stroke="#1d4ed8" strokeWidth="2" strokeLinejoin="round" />
                 {/* placebo drops faster */}
-                <polyline points="36,22 60,22 60,28 85,28 85,36 110,36 115,46 140,46 145,58 170,58 175,72 205,75" fill="none" stroke="#f97b7b" strokeWidth="2" strokeLinejoin="round" />
+                <polyline points="36,22 60,22 60,28 85,28 85,36 110,36 115,46 140,46 145,58 170,58 175,72 205,75" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinejoin="round" />
                 <polygon points="36,22 65,22 65,24 95,24 95,26 125,26 130,28 160,28 165,31 200,31 205,33 205,75 175,72 170,58 145,58 140,46 115,46 110,36 85,36 85,28 60,28 60,22 36,22" fill="rgba(126,184,247,0.07)" />
                 {['1.00','0.95','0.90','0.85','0.80'].map((lbl, i) => (
                   <text key={i} x="33" y={22 + i*20} fontSize="6.5" fill="#605d5d" textAnchor="end" dominantBaseline="middle">{lbl}</text>
@@ -5110,8 +5206,8 @@ export default class MedFactory extends React.Component {
                   <text key={m} x={36 + mi*43.5} y="126" fontSize="7" fill="#605d5d" textAnchor="middle">{m}</text>
                 ))}
                 <text x="122" y="136" fontSize="7.5" fill="#605d5d" textAnchor="middle">Months from randomisation</text>
-                <line x1="90" y1="131" x2="105" y2="131" stroke="#7eb8f7" strokeWidth="2"/><text x="107" y="134" fontSize="7" fill="#9b9797">Treatment</text>
-                <line x1="148" y1="131" x2="163" y2="131" stroke="#f97b7b" strokeWidth="2"/><text x="165" y="134" fontSize="7" fill="#9b9797">Placebo</text>
+                <line x1="90" y1="131" x2="105" y2="131" stroke="#1d4ed8" strokeWidth="2"/><text x="107" y="134" fontSize="7" fill="#9b9797">Treatment</text>
+                <line x1="148" y1="131" x2="163" y2="131" stroke="#dc2626" strokeWidth="2"/><text x="165" y="134" fontSize="7" fill="#9b9797">Placebo</text>
               </svg>
             );
 
@@ -5145,28 +5241,28 @@ export default class MedFactory extends React.Component {
                     return (
                       <React.Fragment key={s.name}>
                         <text x="50" y={y2} fontSize="7" fill="#9b9797" textAnchor="end" dominantBaseline="middle">{s.name}</text>
-                        <line x1={xScale(s.lo)} y1={y2} x2={xScale(s.hi)} y2={y2} stroke="#7eb8f7" strokeWidth="1.2" />
-                        <rect x={cx - hw / 2} y={y2 - hw / 2} width={hw} height={hw} fill="#7eb8f7" />
-                        <text x="254" y={y2} fontSize="6.5" fill="#7eb8f7" dominantBaseline="middle">{s.rr.toFixed(2)}</text>
+                        <line x1={xScale(s.lo)} y1={y2} x2={xScale(s.hi)} y2={y2} stroke="#1d4ed8" strokeWidth="1.2" />
+                        <rect x={cx - hw / 2} y={y2 - hw / 2} width={hw} height={hw} fill="#1d4ed8" />
+                        <text x="254" y={y2} fontSize="6.5" fill="#1d4ed8" dominantBaseline="middle">{s.rr.toFixed(2)}</text>
                       </React.Fragment>
                     );
                   })}
                   {/* pooled diamond */}
-                  <polygon points={`${xScale(pooled.rr)},${148-8} ${xScale(pooled.hi)},${148-2} ${xScale(pooled.rr)},${148+4} ${xScale(pooled.lo)},${148-2}`} fill="#a78bfa" opacity="0.9" />
-                  <text x="50" y="146" fontSize="7" fill="#a78bfa" textAnchor="end" dominantBaseline="middle">Pooled</text>
-                  <text x="20" y="85" fontSize="7" fill="#4ade80" textAnchor="middle">Favours</text>
-                  <text x="20" y="93" fontSize="7" fill="#4ade80" textAnchor="middle">treatment</text>
-                  <text x="245" y="85" fontSize="7" fill="#f97b7b" textAnchor="middle">Favours</text>
-                  <text x="245" y="93" fontSize="7" fill="#f97b7b" textAnchor="middle">placebo</text>
+                  <polygon points={`${xScale(pooled.rr)},${148-8} ${xScale(pooled.hi)},${148-2} ${xScale(pooled.rr)},${148+4} ${xScale(pooled.lo)},${148-2}`} fill="#6d28d9" opacity="0.9" />
+                  <text x="50" y="146" fontSize="7" fill="#6d28d9" textAnchor="end" dominantBaseline="middle">Pooled</text>
+                  <text x="20" y="85" fontSize="7" fill="#15803d" textAnchor="middle">Favours</text>
+                  <text x="20" y="93" fontSize="7" fill="#15803d" textAnchor="middle">treatment</text>
+                  <text x="245" y="85" fontSize="7" fill="#dc2626" textAnchor="middle">Favours</text>
+                  <text x="245" y="93" fontSize="7" fill="#dc2626" textAnchor="middle">placebo</text>
                 </svg>
               );
             };
 
             const FigBar = ({ variant = 0 }) => {
               const sets = [
-                { bars: [{l:'CV death',v:3.2,c:'#f97b7b'},{l:'Nonfatal MI',v:4.1,c:'#fb923c'},{l:'Stroke',v:1.8,c:'#a78bfa'}], pair: true },
-                { bars: [{l:'<45',v:52,c:'#7eb8f7'},{l:'45–64',v:48,c:'#7eb8f7'},{l:'65–74',v:44,c:'#7eb8f7'},{l:'75+',v:38,c:'#7eb8f7'}], pair: false },
-                { bars: [{l:'2024',v:589,c:'#4ade80'},{l:'2030',v:643,c:'#fb923c'},{l:'2040',v:722,c:'#f97b7b'},{l:'2050',v:853,c:'#f97b7b'}], pair: false },
+                { bars: [{l:'CV death',v:3.2,c:'#dc2626'},{l:'Nonfatal MI',v:4.1,c:'#ea580c'},{l:'Stroke',v:1.8,c:'#6d28d9'}], pair: true },
+                { bars: [{l:'<45',v:52,c:'#1d4ed8'},{l:'45–64',v:48,c:'#1d4ed8'},{l:'65–74',v:44,c:'#1d4ed8'},{l:'75+',v:38,c:'#1d4ed8'}], pair: false },
+                { bars: [{l:'2024',v:589,c:'#15803d'},{l:'2030',v:643,c:'#ea580c'},{l:'2040',v:722,c:'#dc2626'},{l:'2050',v:853,c:'#dc2626'}], pair: false },
               ][variant % 3];
               const max = Math.max(...sets.bars.map(b => b.v)) * 1.15;
               const bw = sets.bars.length <= 3 ? 28 : 20; const gap = sets.bars.length <= 3 ? 20 : 14;
@@ -5207,9 +5303,9 @@ export default class MedFactory extends React.Component {
                       <text x="25" y={116 - v2 * 0.98} fontSize="6" fill="#605d5d" textAnchor="end">{v2}%</text>
                     </React.Fragment>
                   ))}
-                  <line x1="32" y1="108" x2="208" y2="28" stroke="#a78bfa" strokeWidth="1" strokeDasharray="3,2" opacity="0.5" />
+                  <line x1="32" y1="108" x2="208" y2="28" stroke="#6d28d9" strokeWidth="1" strokeDasharray="3,2" opacity="0.5" />
                   {pts.map(([x, y, r], i) => (
-                    <circle key={i} cx={28 + x * 1.96} cy={115 - y * 0.98} r={Math.sqrt(r) * 1.2} fill="#7eb8f7" opacity="0.65" />
+                    <circle key={i} cx={28 + x * 1.96} cy={115 - y * 0.98} r={Math.sqrt(r) * 1.2} fill="#1d4ed8" opacity="0.65" />
                   ))}
                   <text x="120" y="128" fontSize="7" fill="#605d5d" textAnchor="middle">Follow-up duration (months)</text>
                   <text x="12" y="65" fontSize="7" fill="#605d5d" textAnchor="middle" transform="rotate(-90,12,65)">Attainment %</text>
@@ -5255,7 +5351,7 @@ export default class MedFactory extends React.Component {
               return <FigBar variant={pIdx % 3} />;
             };
 
-            const ART_COLORS = { Deck: '#7eb8f7', Blog: '#fb923c', Protocol: '#4ade80', Blurb: '#f97b7b', Facts: '#a78bfa' };
+            const ART_COLORS = { Deck: '#1d4ed8', Blog: '#ea580c', Protocol: '#15803d', Blurb: '#dc2626', Facts: '#6d28d9' };
             const totalExcerpts = acceptedList.length + v.customExcerpts.length;
             const populatedTracks = CONTENT_TRACKS.filter((t) => acceptedList.some((p) => t.paperTracks.includes(p.track)) || v.customExcerpts.some((e) => e.tracks.includes(t.id))).length;
 
@@ -5282,28 +5378,37 @@ export default class MedFactory extends React.Component {
                       <div style={{ borderLeft:'3px solid var(--rule2)', padding:'10px 14px', background:'var(--s2)', borderRadius:'0 8px 8px 0', display:'flex', alignItems:'center', gap:8 }}>
                         <span style={{ font:'600 11px/1.5 Plus Jakarta Sans', color:'var(--faint)', fontStyle:'italic' }}>No excerpt — removed</span>
                       </div>
-                    ) : currentExcerpts.map((exc, ei) => (
-                      <div key={ei} style={{ borderLeft:'3px solid var(--acc)', padding:'10px 14px 10px 14px', background:'#f0f2ff', borderRadius:'0 8px 8px 0', position: 'relative' }}>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); v.removeExcerptItem(p._idx, exc.text); }}
-                          style={{ position:'absolute', top:8, right:8, display:'inline-flex', alignItems:'center', gap:4, background:'#fef2f2', border:'1px solid #fecaca', borderRadius:6, cursor:'pointer', color:'#dc2626', fontSize:9.5, fontWeight:700, lineHeight:1, padding:'4px 8px', fontFamily:'Plus Jakarta Sans', transition:'all 0.12s' }}
-                          title="Remove excerpt"
-                          onMouseEnter={(e) => { e.currentTarget.style.background='#dc2626'; e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='#dc2626'; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background='#fef2f2'; e.currentTarget.style.color='#dc2626'; e.currentTarget.style.borderColor='#fecaca'; }}
-                        >
-                          <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
-                          Remove
-                        </button>
-                        <div style={{ font:'700 13px/1.8 Plus Jakarta Sans', color:'#000000', paddingRight: 70 }}>{exc.text}</div>
-                        <div style={{ font:'600 9.5px/1 Plus Jakarta Sans', color:'var(--faint)', marginTop:7, letterSpacing:'0.04em', fontFamily:'var(--mono)' }}>{exc.src}</div>
-                      </div>
-                    ))}
+                    ) : currentExcerpts.map((exc, ei) => {
+                      const isRejectedExc = !exc.resolvedFromRejection && v.sciReviewComments[p._idx]?.rejected;
+                      return (
+                        <div key={ei} style={{ borderLeft:`3px solid ${exc.resolvedFromRejection ? '#7c3aed' : isRejectedExc ? '#dc2626' : 'var(--acc)'}`, padding:'10px 14px 10px 14px', background: exc.resolvedFromRejection ? 'rgba(124,58,237,0.05)' : isRejectedExc ? '#fef2f2' : '#f0f2ff', borderRadius:'0 8px 8px 0', position: 'relative' }}>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); v.removeExcerptItem(p._idx, exc.text); }}
+                            style={{ position:'absolute', top:8, right:8, display:'inline-flex', alignItems:'center', gap:4, background:'#fef2f2', border:'1px solid #fecaca', borderRadius:6, cursor:'pointer', color:'#dc2626', fontSize:9.5, fontWeight:700, lineHeight:1, padding:'4px 8px', fontFamily:'Plus Jakarta Sans', transition:'all 0.12s' }}
+                            title="Remove excerpt"
+                            onMouseEnter={(e) => { e.currentTarget.style.background='#dc2626'; e.currentTarget.style.color='#fff'; e.currentTarget.style.borderColor='#dc2626'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background='#fef2f2'; e.currentTarget.style.color='#dc2626'; e.currentTarget.style.borderColor='#fecaca'; }}
+                          >
+                            <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                            Remove
+                          </button>
+                          {isRejectedExc && (
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, fontFamily: 'Plus Jakarta Sans', fontSize: 8, fontWeight: 700, color: '#dc2626', letterSpacing: '0.08em', marginBottom: 6 }}>✕ REJECTED BY SCI REVIEWER</div>
+                          )}
+                          {exc.resolvedFromRejection && (
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.25)', borderRadius: 10, fontFamily: 'Plus Jakarta Sans', fontSize: 8, fontWeight: 700, color: '#7c3aed', letterSpacing: '0.08em', marginBottom: 6 }}>✦ RESOLVED FROM REJECTION</div>
+                          )}
+                          <div style={{ font:'700 13px/1.8 Plus Jakarta Sans', color:'#000000', paddingRight: 70 }}>{exc.text}</div>
+                          <div style={{ font:'600 9.5px/1 Plus Jakarta Sans', color:'var(--faint)', marginTop:7, letterSpacing:'0.04em', fontFamily:'var(--mono)' }}>{exc.src}</div>
+                        </div>
+                      );
+                    })}
                     {/* artifact tags — clickable toggles, only in By Track view */}
                     {curView !== 'artifact' && <div style={S('display:flex;align-items:center;gap:5px;flex-wrap:wrap')}>
                       {ALL_ARTIFACTS.map((a) => {
                         const assignments = v.getExcerptArtifacts(p._idx);
                         const active = assignments[a];
-                        const PASTEL = { Deck:'#3b82f6', Blog:'#f97316', Protocol:'#10b981', Blurb:'#ef4444', Facts:'#8b5cf6' };
+                        const PASTEL = { Deck:'#1d4ed8', Blog:'#ea580c', Protocol:'#059669', Blurb:'#dc2626', Facts:'#7c3aed' };
                         const pc = PASTEL[a];
                         return (
                           <button
@@ -5321,9 +5426,22 @@ export default class MedFactory extends React.Component {
                       })}
                     </div>}
 
+                    {/* Explore More Excerpts button */}
+                    <div style={{ paddingTop: 6, borderTop: '1px solid var(--rule)' }} onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); v.openExploreExcerpt(p); }}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--acc)', background: 'rgba(44,82,204,0.06)', border: '1px solid rgba(44,82,204,0.2)', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'rgba(44,82,204,0.12)'; e.currentTarget.style.borderColor = 'var(--acc)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(44,82,204,0.06)'; e.currentTarget.style.borderColor = 'rgba(44,82,204,0.2)'; }}
+                      >
+                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.3"/><path d="M6 4v4M4 6h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                        Explore More Excerpts
+                      </button>
+                    </div>
+
                     {/* Track chips — only in By Artifact view */}
                     {curView === 'artifact' && (() => {
-                      const TRACK_COLORS = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+                      const TRACK_COLORS = ['#1d4ed8','#0f766e','#b45309','#dc2626','#7c3aed','#ea580c','#15803d'];
                       const trackAssign = v.getExcerptTracks(p._idx);
                       return (
                         <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', paddingTop: 8, borderTop: '1px dashed var(--rule2)', marginTop: 2 }} onClick={(e) => e.stopPropagation()}>
@@ -5449,7 +5567,8 @@ export default class MedFactory extends React.Component {
             );
 
             return (
-              <div style={S('display:flex;flex-direction:column;height:100%;overflow:hidden;animation:fadeUp 0.3s cubic-bezier(0.22,1,0.36,1) both')}>
+              <div style={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
+              <div style={S('display:flex;flex-direction:column;flex:1;min-width:0;overflow:hidden;animation:fadeUp 0.3s cubic-bezier(0.22,1,0.36,1) both;position:relative')}>
 
                 {/* ══ TOP HEADER BAR ══ */}
                 <div style={S('padding:0 0 0;flex:none;border-bottom:1px solid var(--rule2)')}>
@@ -5631,7 +5750,7 @@ export default class MedFactory extends React.Component {
 
                       {/* BY ARTIFACT */}
                       {curView === 'artifact' && (() => {
-                        const trackColors2 = ['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+                        const trackColors2 = ['#1d4ed8','#0f766e','#b45309','#dc2626','#7c3aed','#ea580c','#15803d'];
                         return (
                           <>
                             {ALL_ARTIFACTS.map((art, ai) => {
@@ -6097,7 +6216,7 @@ export default class MedFactory extends React.Component {
                 {/* ══ COMBINED EXCERPTS MODAL ══ */}
                 {v.combinedExcerptsModal && (() => {
                   const m = v.combinedExcerptsModal;
-                  const letterColor = (type) => ({ RCT: '#7eb8f7', 'Systematic Review': '#fb923c', 'Meta-Analysis': '#4ade80', Guideline: '#c084fc', Registry: '#f97b7b', 'Real-World': '#e5a14b' })[type] || 'var(--dim)';
+                  const letterColor = (type) => ({ RCT: '#1d4ed8', 'Systematic Review': '#ea580c', 'Meta-Analysis': '#15803d', Guideline: '#7c3aed', Registry: '#dc2626', 'Real-World': '#b45309' })[type] || 'var(--dim)';
                   return (
                     <div
                       style={{ position: 'fixed', inset: 0, background: 'rgba(5,10,30,0.72)', zIndex: 250, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32 }}
@@ -6150,7 +6269,7 @@ export default class MedFactory extends React.Component {
                                     <div style={{ background: '#fff', borderRadius: 8, padding: '10px 12px', marginTop: 8 }}>
                                       {(() => {
                                         const fig = figs[0];
-                                        const tc3 = (type) => ({ RCT: '#7eb8f7', 'Systematic Review': '#fb923c', 'Meta-Analysis': '#4ade80', Guideline: '#c084fc', Registry: '#f97b7b', 'Real-World': '#e5a14b' })[type] || 'var(--dim)';
+                                        const tc3 = (type) => ({ RCT: '#1d4ed8', 'Systematic Review': '#ea580c', 'Meta-Analysis': '#15803d', Guideline: '#7c3aed', Registry: '#dc2626', 'Real-World': '#b45309' })[type] || 'var(--dim)';
                                         if (fig.type === 'bar') {
                                           const vals = [72, 48, 38, 20].map(n => n + (p._idx * 7) % 15);
                                           const mx = Math.max(...vals);
@@ -6160,7 +6279,7 @@ export default class MedFactory extends React.Component {
                                               <text x="100" y="10" textAnchor="middle" fontSize="7" fontWeight="700" fill="#333">{fig.label}</text>
                                               {vals.map((v2, i) => {
                                                 const bh = (v2 / mx) * 58; const bx = 20 + i * 44; const by = 72 - bh;
-                                                const cols = ['#60a5fa','#34d399','#f59e0b','#f87171'];
+                                                const cols = ['#60a5fa','#34d399','#f59e0b','#dc2626'];
                                                 return <g key={i}><rect x={bx} y={by} width="30" height={bh} fill={cols[i]} rx="2"/><text x={bx+15} y={by-3} textAnchor="middle" fontSize="6" fill="#555">{v2}%</text><text x={bx+15} y="82" textAnchor="middle" fontSize="5.5" fill="#888">{lbls[i]}</text></g>;
                                               })}
                                             </svg>
@@ -6397,7 +6516,113 @@ export default class MedFactory extends React.Component {
 
               </div>
 
-          );
+              {/* ═══ EXPLORE MORE EXCERPTS SIDEBAR ═══ */}
+              {v.exploreExcerptPaper && (() => {
+                const ep = v.exploreExcerptPaper;
+                const pIdx = ep._idx;
+                const currentExcerpts = v.paperExcerpts[pIdx] || [{ text: ep.excerpt, src: ep.excerptSrc }];
+                const alts = (ALTERNATE_EXCERPTS[pIdx] || []).filter(a => !currentExcerpts.some(e => e.text === a.text));
+                const aiGenerated = (v.aiExcerpts[pIdx] || []).filter(a => !currentExcerpts.some(e => e.text === a.text));
+                const aiLoading = v.aiExcerptsLoading[pIdx];
+                const tc2loc = (type) => ({ RCT:'#2563eb', 'Meta-Analysis':'#7c3aed', Guideline:'#059669', 'Real-World':'#d97706', 'Expert Consensus':'#db2777' })[type] || '#64748b';
+                return (
+                  <div style={{ width: 380, flexShrink: 0, borderLeft: '2px solid var(--rule2)', background: '#fff', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideInRight 0.24s cubic-bezier(0.22,1,0.36,1) both', boxShadow: '-4px 0 20px rgba(15,31,74,0.08)' }}>
+                      {/* Header */}
+                      <div style={{ padding: '18px 20px', borderBottom: '1px solid var(--rule)', flexShrink: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                          <span style={{ padding: '3px 10px', fontSize: 9, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.1em', borderRadius: 20, border: `1.5px solid ${tc2loc(ep.type)}`, color: '#fff', background: tc2loc(ep.type) }}>{ep.type}</span>
+                          <button onClick={v.closeExploreExcerpt} style={{ marginLeft: 'auto', background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)' }}>
+                            <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                          </button>
+                        </div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--acc)', textTransform: 'uppercase', marginBottom: 4 }}>Explore More Excerpts</div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 800, color: 'var(--ink)', lineHeight: 1.4 }}>{ep.title}</div>
+                      </div>
+
+                      {/* Active excerpts strip */}
+                      <div style={{ padding: '10px 20px', background: '#f8faff', borderBottom: '1px solid var(--rule)', flexShrink: 0 }}>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase', marginBottom: 6 }}>Currently Active ({currentExcerpts.length})</div>
+                        {currentExcerpts.length === 0
+                          ? <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--faint)', fontStyle: 'italic' }}>No excerpts — all removed</div>
+                          : currentExcerpts.map((exc, ei) => (
+                            <div key={ei} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: ei < currentExcerpts.length - 1 ? 6 : 0 }}>
+                              <div style={{ flex: 1, fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--dim)', lineHeight: 1.5, fontWeight: 600 }}>{exc.text.slice(0, 80)}{exc.text.length > 80 ? '…' : ''}</div>
+                              <button onClick={() => v.removeExcerptItem(pIdx, exc.text)} style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 3, padding: '3px 7px', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 5, cursor: 'pointer' }}>✕ Remove</button>
+                            </div>
+                          ))
+                        }
+                      </div>
+
+                      {/* Scrollable content */}
+                      <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+
+                        {/* Available alternates */}
+                        {alts.length > 0 && (
+                          <>
+                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase' }}>Available Excerpts</div>
+                            {alts.map((alt, ai) => (
+                              <div key={ai} style={{ background: 'var(--s2)', border: '1px solid var(--rule)', borderRadius: 8, padding: '10px 12px' }}>
+                                <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.7, marginBottom: 6 }}>{alt.text}</div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                  <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{alt.src}</span>
+                                  <button
+                                    onClick={() => v.addExcerptItem(pIdx, alt)}
+                                    style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 700, color: '#fff', background: 'var(--acc)', border: 'none', borderRadius: 6, cursor: 'pointer', transition: 'opacity 0.15s' }}
+                                    onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; }}
+                                    onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+                                  >
+                                    + Add
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </>
+                        )}
+
+                        {alts.length === 0 && aiGenerated.length === 0 && !aiLoading && (
+                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, color: 'var(--faint)', fontStyle: 'italic', textAlign: 'center', padding: '16px 0' }}>All available excerpts already added.</div>
+                        )}
+
+                        {/* Generate with AI */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
+                          <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ AI-Extracted Excerpts</span>
+                          {!aiGenerated.length && (
+                            <button
+                              onClick={() => v.generateAIExcerpts(pIdx, ep)}
+                              disabled={!!aiLoading}
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 700, background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: aiLoading ? 'var(--dim)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer', boxShadow: aiLoading ? 'none' : '0 2px 8px rgba(124,58,237,0.2)' }}
+                            >
+                              {aiLoading
+                                ? <>{[0,1,2].map(d => <div key={d} style={{ width: 4, height: 4, borderRadius: '50%', background: '#7c3aed', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}<span>Extracting…</span></>
+                                : <>✦ Extract with AI</>
+                              }
+                            </button>
+                          )}
+                        </div>
+
+                        {aiGenerated.length > 0 && aiGenerated.map((alt, ai) => (
+                          <div key={`ai-${ai}`} style={{ background: 'rgba(124,58,237,0.04)', border: '1px solid rgba(124,58,237,0.15)', borderRadius: 8, padding: '10px 12px', animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.08}s` }}>
+                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.7, marginBottom: 6 }}>{alt.text}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{alt.src}</span>
+                              <button
+                                onClick={() => v.addExcerptItem(pIdx, alt)}
+                                style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 700, color: '#7c3aed', background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.25)', borderRadius: 6, cursor: 'pointer', transition: 'all 0.15s' }}
+                                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.15)'; }}
+                                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.08)'; }}
+                              >
+                                + Add
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                  </div>
+                );
+              })()}
+
+              </div>
+            );
           })()}
 
           {/* ============ MED REVIEW ============ */}
@@ -6588,274 +6813,606 @@ export default class MedFactory extends React.Component {
 
             ); /* end leftPanel */
 
-            const rightPanel = (<div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both' }}>
 
-                  {/* Header bar */}
-                  <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule)', background: '#fff' }}>
-                    {/* Top row */}
-                    <div style={{ padding: '10px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <Box
-                        css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
-                        hover="color:var(--ink);border-color:var(--ink)"
-                        onClick={v.goBack}
-                      >
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            // Gap Analysis — Organize-style layout (no Manage Figures)
+            const gapArtColors = { Deck: '#1d4ed8', Blog: '#ea580c', Protocol: '#15803d', Blurb: '#dc2626', Facts: '#6d28d9' };
+            const sevColor = (s) => s === 'Critical' ? '#dc2626' : s === 'Warning' ? '#d97706' : '#2563eb';
+            const sevBg   = (s) => s === 'Critical' ? '#fef2f2' : s === 'Warning' ? '#fffbeb' : '#eff6ff';
+            const sevBorder = (s) => s === 'Critical' ? '#fecaca' : s === 'Warning' ? '#fde68a' : '#bfdbfe';
+
+            const gapByPaper = {};
+            GAP_FINDINGS.forEach((g, i) => { gapByPaper[g.paperIdx] = { ...g, gapIdx: i }; });
+
+            const selGap    = v.gapSelected != null ? GAP_FINDINGS[v.gapSelected] : null;
+            const selPaper2 = selGap ? RESEARCH_PAPERS[selGap.paperIdx] : null;
+
+            const allGapPapers = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i }));
+            const gapGroups = (v.gapGroupBy === 'track'
+              ? CONTENT_TRACKS.map(t => ({ key: t.id, label: t.label, color: t.color, papers: allGapPapers.filter(p => t.paperTracks.includes(p.track)) }))
+              : ALL_ARTIFACTS.map(a => ({ key: a, label: a, color: gapArtColors[a] || '#7c3aed', papers: allGapPapers.filter(p => p.artifacts.includes(a)) }))
+            ).map(g => ({
+              ...g,
+              flagged: g.papers.filter(p => {
+                const gap = gapByPaper[p._idx];
+                if (!gap) return false;
+                if (v.gapSeverityFilter !== 'All' && gap.severity !== v.gapSeverityFilter) return false;
+                return true;
+              }),
+            })).filter(g => g.papers.length > 0);
+
+            const allGroupKeys = gapGroups.map(g => g.key);
+            const filteredGaps = GAP_FINDINGS.filter(g => v.gapSeverityFilter === 'All' || g.severity === v.gapSeverityFilter);
+            const resolvedCount = filteredGaps.filter(g => v.paperExcerpts[g.paperIdx] !== undefined).length;
+            const toReviewCount = filteredGaps.length - resolvedCount;
+            const safeNavIdx = filteredGaps.length > 0 ? Math.min(v.gapNavIndex, filteredGaps.length - 1) : 0;
+
+            // AI Recommendations panel
+            const GapNormPanel = ({ pIdx, paper }) => {
+              const currentExcerpts = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
+              const alts        = ALTERNATE_EXCERPTS[pIdx] || [];
+              const aiGenerated = v.aiExcerpts[pIdx] || [];
+              const aiLoading   = v.aiExcerptsLoading[pIdx];
+              return (
+                <div style={{ borderLeft: '1px solid rgba(124,58,237,0.15)', background: '#fff', display: 'flex', flexDirection: 'column', width: 340, flexShrink: 0, animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
+                  <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase', marginBottom: 3 }}>✦ AI Recommendations</div>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 800, color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
+                    </div>
+                    <button onClick={() => v.setGapExcerptOpen(false)} style={{ flexShrink: 0, background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)' }}>
+                      <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                    </button>
+                  </div>
+                  <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase' }}>Active Excerpts</span>
+                      {v.paperExcerpts[pIdx] && (
+                        <button onClick={() => v.gapResetExcerpts(pIdx)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: '#d97706', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 20, cursor: 'pointer' }}>
+                          <svg width="8" height="8" viewBox="0 0 12 12" fill="none"><path d="M10 2a6 6 0 1 0 .6 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 2V5h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          Reset to original
+                        </button>
+                      )}
+                    </div>
+                    {v.gapLastAction && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 10px', borderRadius: 6, background: v.gapLastAction.type === 'replace' ? '#f0fdf4' : v.gapLastAction.type === 'remove' || v.gapLastAction.type === 'reset' || v.gapLastAction.type === 'undone' ? '#fffbeb' : '#eff6ff', border: `1px solid ${v.gapLastAction.type === 'replace' ? '#86efac' : v.gapLastAction.type === 'remove' || v.gapLastAction.type === 'reset' || v.gapLastAction.type === 'undone' ? '#fde68a' : '#bfdbfe'}`, animation: 'rise 0.2s ease' }}>
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={v.gapLastAction.type === 'replace' ? '#16a34a' : v.gapLastAction.type === 'remove' || v.gapLastAction.type === 'reset' || v.gapLastAction.type === 'undone' ? '#d97706' : '#2563eb'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: v.gapLastAction.type === 'replace' ? '#15803d' : v.gapLastAction.type === 'remove' ? '#92400e' : v.gapLastAction.type === 'reset' || v.gapLastAction.type === 'undone' ? '#92400e' : '#1d4ed8' }}>
+                          {v.gapLastAction.type === 'replace' ? 'Excerpt replaced' : v.gapLastAction.type === 'remove' ? 'Excerpt removed' : v.gapLastAction.type === 'reset' ? 'Reset to original' : v.gapLastAction.type === 'undone' ? 'Undo applied' : 'Excerpt added'}
+                        </span>
+                        {v.gapLastAction.type === 'replace' && (
+                          <button
+                            onClick={() => v.gapUndoReplace()}
+                            style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: '#15803d', background: '#fff', border: '1px solid #86efac', borderRadius: 20, cursor: 'pointer' }}
+                          >
+                            <svg width="8" height="8" viewBox="0 0 12 12" fill="none"><path d="M10 2a6 6 0 1 0 .6 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 2V5h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            Undo
+                          </button>
+                        )}
+                      </div>
+                    )}
+                    {currentExcerpts.length === 0
+                      ? <div style={{ padding: '8px 12px', background: 'var(--s2)', borderRadius: 7, border: '1px solid var(--rule)', fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--faint)', fontStyle: 'italic' }}>No excerpt — all removed</div>
+                      : currentExcerpts.map((exc, ei) => {
+                          const isNew      = v.gapLastAction?.type === 'add'     && exc.text === v.gapLastAction.text;
+                          const isReplaced = v.gapLastAction?.type === 'replace' && exc.text === v.gapLastAction.text;
+                          return (
+                            <div key={ei} style={{ background: isReplaced ? '#f0fdf4' : isNew ? '#eff6ff' : 'var(--s2)', border: `1px solid ${isReplaced ? '#86efac' : isNew ? '#bfdbfe' : 'var(--rule)'}`, borderRadius: 7, padding: '9px 11px' }}>
+                              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 4 }}>
+                                <div style={{ flex: 1, fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: 'var(--ink)', fontWeight: 600 }}>{exc.text}</div>
+                                <button
+                                  onClick={() => v.gapRemoveExcerpt(pIdx, exc.text)}
+                                  title="Remove this excerpt"
+                                  style={{ flexShrink: 0, marginTop: 3, background: 'none', border: '1px solid var(--rule2)', borderRadius: 4, width: 18, height: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)', opacity: 0.7 }}
+                                  onMouseEnter={e => { e.currentTarget.style.borderColor = '#dc2626'; e.currentTarget.style.color = '#dc2626'; e.currentTarget.style.opacity = '1'; }}
+                                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--rule2)'; e.currentTarget.style.color = 'var(--faint)'; e.currentTarget.style.opacity = '0.7'; }}
+                                >
+                                  <svg width="7" height="7" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                                </button>
+                              </div>
+                              <div style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{exc.src}</div>
+                            </div>
+                          );
+                        })
+                    }
+                    {alts.length > 0 && (
+                      <>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
+                          <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ Suggested Alternatives</span>
+                          {!aiGenerated.length && (
+                            <button onClick={() => v.generateAIExcerpts(pIdx, paper)} disabled={!!aiLoading} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: aiLoading ? 'var(--dim)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer' }}>
+                              {aiLoading ? <>{[0,1,2].map(d => <div key={d} style={{ width: 4, height: 4, borderRadius: '50%', background: '#7c3aed', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}</> : '✦ Extract with AI'}
+                            </button>
+                          )}
+                        </div>
+                        {alts.map((alt, ai) => {
+                          const added = currentExcerpts.some(e => e.text === alt.text);
+                          return (
+                            <div key={ai} style={{ background: '#fff', border: '1px solid var(--rule2)', borderRadius: 7, padding: '9px 11px' }}>
+                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: 'var(--ink)', fontWeight: 600, marginBottom: 6 }}>{alt.text}</div>
+                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{alt.src}</span>
+                                {added
+                                  ? <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '2px 7px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 700 }}>✓ Added</span>
+                                  : <div style={{ display: 'flex', gap: 4 }}>
+                                      <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Replace</button>
+                                      <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 8px' }}>Add</button>
+                                    </div>
+                                }
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
+                    {aiGenerated.length > 0 && (
+                      <>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase', marginTop: 4 }}>✦ AI-Extracted Options</div>
+                        {aiGenerated.map((alt, ai) => {
+                          const added = currentExcerpts.some(e => e.text === alt.text);
+                          return (
+                            <div key={`ai-${ai}`} style={{ background: 'rgba(124,58,237,0.04)', border: '1px solid rgba(124,58,237,0.15)', borderRadius: 7, padding: '9px 11px', animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
+                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: 'var(--ink)', fontWeight: 600, marginBottom: 6 }}>{alt.text}</div>
+                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{alt.src}</span>
+                                {added
+                                  ? <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '2px 7px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 700 }}>✓ Added</span>
+                                  : <div style={{ display: 'flex', gap: 4 }}>
+                                      <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Replace</button>
+                                      <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 8px' }}>Add</button>
+                                    </div>
+                                }
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            };
+
+            const tc2 = (type) => ({ RCT:'#2563eb', 'Meta-Analysis':'#7c3aed', Guideline:'#059669', 'Real-World':'#d97706', 'Expert Consensus':'#db2777' })[type] || '#64748b';
+
+            // Organize-style card — ALL papers, issue section only when a gap exists
+            const GapPaperCard = ({ paper, pIdx }) => {
+              const gap              = gapByPaper[pIdx]; // may be undefined (no issue on this paper)
+              const gapVisible       = gap && (v.gapSeverityFilter === 'All' || gap.severity === v.gapSeverityFilter);
+              const isPanelOpen      = gapVisible && v.gapExcerptOpen && v.gapSelected === gap.gapIdx;
+              const isNavActive      = gapVisible && filteredGaps[safeNavIdx] === gap && v.gapSelected === gap.gapIdx;
+              const liveExcerpts     = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
+              const hl               = gapVisible ? (gap.highlightText || '') : '';
+              const PASTEL           = { Deck: '#1d4ed8', Blog: '#ea580c', Protocol: '#059669', Blurb: '#dc2626', Facts: '#7c3aed' };
+              const sciRejection     = v.pptStatus === 'sci-rejected' ? v.sciReviewComments[pIdx] : null;
+              const sciRejected      = sciRejection && sciRejection.rejected;
+              return (
+                <div
+                  id={sciRejected ? `sci-rej-card-${pIdx}` : gapVisible ? `gap-nav-card-${gap.gapIdx}` : undefined}
+                  style={{
+                    position: 'relative', background: '#fff', marginBottom: 10, overflow: 'hidden', transition: 'all 0.2s',
+                    border: `1px solid ${isNavActive ? 'rgba(124,58,237,0.5)' : isPanelOpen ? 'var(--acc)' : 'var(--rule2)'}`,
+                    borderLeft: `4px solid ${tc2(paper.type)}`,
+                    borderRadius: '0 10px 10px 0',
+                    boxShadow: isNavActive
+                      ? '0 0 0 3px rgba(124,58,237,0.18), 0 4px 20px rgba(124,58,237,0.12)'
+                      : isPanelOpen ? '0 2px 12px rgba(15,31,74,0.08)' : '0 1px 4px rgba(15,31,74,0.04)',
+                  }}
+                >
+                  <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {/* Top row — type pill · db/year · nav badge · score · severity */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ padding: '3px 10px', fontSize: 9, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.1em', borderRadius: 20, border: `1.5px solid ${tc2(paper.type)}`, color: '#fff', background: tc2(paper.type) }}>{paper.type}</span>
+                      <span style={{ font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)', fontFamily: 'var(--mono)' }}>{paper.db} · {paper.year}</span>
+                      {isNavActive && (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', borderRadius: 20, background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: '#7c3aed', animation: 'puls 1.8s ease-in-out infinite' }}>
+                          <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#7c3aed', display: 'inline-block' }} />
+                          {safeNavIdx + 1} of {filteredGaps.length}
+                        </span>
+                      )}
+                      <span style={{ marginLeft: 'auto', font: '800 12px/1 Plus Jakarta Sans', color: '#166534', background: '#dcfce7', padding: '2px 8px', borderRadius: 20 }}>{paper.score.toFixed(2)}</span>
+                      {sciRejected && (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 9px', borderRadius: 20, background: '#fef2f2', border: '1px solid #fecaca', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#dc2626' }}>✕ Sci Rejected</span>
+                      )}
+                      {gapVisible && (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 9px', borderRadius: 20, border: `1px solid ${sevBorder(gap.severity)}`, background: sevBg(gap.severity), color: sevColor(gap.severity), fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700 }}>
+                          {gap.severity === 'Critical' ? '●' : gap.severity === 'Warning' ? '▲' : 'ℹ'} {gap.severity}
+                        </span>
+                      )}
+                    </div>
+                    {/* Title */}
+                    <div style={{ font: '700 13.5px/1.45 Plus Jakarta Sans', letterSpacing: '-0.01em', color: 'var(--ink)' }}>{paper.title}</div>
+                    {/* Excerpt(s) — exact Organize style, with yellow highlight on flagged text */}
+                    {liveExcerpts.map((exc, ei) => {
+                      const hlIdx = hl ? exc.text.indexOf(hl) : -1;
+                      const before = hlIdx >= 0 ? exc.text.slice(0, hlIdx) : exc.text;
+                      const after  = hlIdx >= 0 ? exc.text.slice(hlIdx + hl.length) : '';
+                      return (
+                        <div key={ei} style={{ position: 'relative', borderLeft: '3px solid var(--acc)', padding: '10px 14px', paddingRight: 34, background: '#f0f2ff', borderRadius: '0 8px 8px 0' }}>
+                          <div style={{ font: '700 13px/1.8 Plus Jakarta Sans', color: '#000000' }}>
+                            {hlIdx >= 0
+                              ? <>{before}<mark style={{ background: 'rgba(251,191,36,0.45)', borderBottom: '2px solid #f59e0b', borderRadius: 2, padding: '0 3px', fontWeight: 'inherit' }}>{hl}</mark>{after}</>
+                              : exc.text}
+                          </div>
+                          <div style={{ font: '600 9.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 7, letterSpacing: '0.04em', fontFamily: 'var(--mono)' }}>{exc.src}</div>
+                          {v.gapLastAction?.type === 'replace' && exc.text === v.gapLastAction.text
+                            ? <button
+                                onClick={() => v.gapUndoReplace()}
+                                style={{ position: 'absolute', top: 8, right: 8, display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 10px', fontFamily: 'Plus Jakarta Sans', fontSize: 10, fontWeight: 700, color: '#15803d', background: '#f0fdf4', border: '1px solid #86efac', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }}
+                                onMouseEnter={e => { e.currentTarget.style.background = '#dcfce7'; e.currentTarget.style.borderColor = '#16a34a'; }}
+                                onMouseLeave={e => { e.currentTarget.style.background = '#f0fdf4'; e.currentTarget.style.borderColor = '#86efac'; }}
+                              >
+                                ↩ Undo
+                              </button>
+                            : <button
+                                onClick={() => v.gapRemoveExcerpt(pIdx, exc.text)}
+                                title="Remove excerpt"
+                                style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.12)', borderRadius: 4, width: 18, height: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', padding: 0, transition: 'all 0.15s' }}
+                                onMouseEnter={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#dc2626'; e.currentTarget.style.color = '#dc2626'; }}
+                                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.7)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.12)'; e.currentTarget.style.color = '#94a3b8'; }}
+                              >
+                                <svg width="7" height="7" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                              </button>
+                          }
+                        </div>
+                      );
+                    })}
+                    {/* Artifact pills — exact Organize style */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
+                      {paper.artifacts.map((a) => {
+                        const pc = PASTEL[a] || '#64748b';
+                        return (
+                          <span key={a} style={{ padding: '4px 10px', font: '700 9px/1 Plus Jakarta Sans', borderRadius: 20, border: `1.5px solid ${pc}`, color: pc, background: `${pc}14`, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                            <svg width="7" height="6" viewBox="0 0 7 6" fill="none"><path d="M1 3l2 2 3-3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            {a}
+                          </span>
+                        );
+                      })}
+                    </div>
+                    {/* Sci reviewer rejection reason — shown when MA views after sci-rejected */}
+                    {sciRejected && (
+                      <div style={{ padding: '9px 12px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: '#dc2626', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Scientific Reviewer — Reason for Rejection</div>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); v.openResolveAI(paper); v.generateAIExcerpts(pIdx, paper); }}
+                            style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 11px', fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: 'none', borderRadius: 20, cursor: 'pointer', boxShadow: '0 2px 8px rgba(124,58,237,0.25)', transition: 'all 0.15s', flexShrink: 0 }}
+                            onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }}
+                            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+                          >
+                            <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1v2M5 7v2M1 5h2M7 5h2M2.05 2.05l1.42 1.42M6.53 6.53l1.42 1.42M2.05 7.95l1.42-1.42M6.53 3.47l1.42-1.42" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                            ✦ Resolve with AI
+                          </button>
+                        </div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 600, color: '#991b1b', lineHeight: 1.6 }}>{sciRejection.reason || 'No reason provided'}</div>
+                      </div>
+                    )}
+                    {/* Issue section — only for papers with a visible gap, hidden when sci-rejected (Resolve with AI covers it) */}
+                    {gapVisible && !sciRejected && (
+                      <div style={{ padding: '10px 12px', background: sevBg(gap.severity), border: `1px solid ${sevBorder(gap.severity)}`, borderRadius: 8 }}>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: sevColor(gap.severity), letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>{gap.type}</div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: 'var(--ink)', marginBottom: 5 }}>{gap.title}</div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--dim)', lineHeight: 1.6, marginBottom: 8 }}>{gap.description}</div>
+                        <div style={{ padding: '7px 10px', background: 'rgba(255,255,255,0.75)', borderRadius: 6, marginBottom: 10, border: '1px solid rgba(0,0,0,0.06)' }}>
+                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: '#16a34a', letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 3 }}>Recommendation</div>
+                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: '#166534', lineHeight: 1.55 }}>{gap.recommendation}</div>
+                        </div>
+                        <button
+                          onClick={() => { if (isPanelOpen) { v.setGapExcerptOpen(false); } else { this.setState({ gapSelected: gap.gapIdx, gapExcerptOpen: true, gapLastAction: null }); } }}
+                          style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '8px 0', background: isPanelOpen ? 'rgba(124,58,237,0.08)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: isPanelOpen ? '#7c3aed' : '#fff', border: isPanelOpen ? '1.5px solid rgba(124,58,237,0.25)' : 'none', borderRadius: 7, fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, cursor: 'pointer', boxShadow: isPanelOpen ? 'none' : '0 2px 8px rgba(124,58,237,0.2)', transition: 'all 0.15s' }}
+                        >
+                          {isPanelOpen ? 'Close AI Recommendations' : '✦ AI Recommendations'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            };
+
+            return (
+              <div style={{ display: 'flex', height: '100%', overflow: 'hidden', animation: 'fadeUp 0.3s cubic-bezier(0.22,1,0.36,1) both' }}>
+              <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                {/* ══ SCI REJECTION BANNER ══ */}
+                {v.pptStatus === 'sci-rejected' && (
+                  <div style={{ flexShrink: 0, background: '#fef2f2', borderBottom: '2px solid #fecaca', padding: '12px 40px', display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0, marginTop: 1 }}><path d="M10 3L18.5 17H1.5L10 3z" stroke="#dc2626" strokeWidth="1.5" strokeLinejoin="round"/><path d="M10 9v4M10 14.5v.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 800, color: '#dc2626', marginBottom: 3 }}>Scientific Reviewer Rejected This Research</div>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 600, color: '#991b1b', lineHeight: 1.5 }}>
+                        Dr. Arjun Mehta has sent back one or more excerpts. Excerpts marked <strong>Rejected</strong> include the reviewer's reason — revert or replace them, then re-send for review.
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                      {Object.values(v.sciReviewComments).filter(c => c.rejected).length > 0 && (
+                        <span style={{ padding: '4px 10px', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: '#dc2626', background: '#fff', border: '1px solid #fecaca', borderRadius: 20 }}>
+                          {Object.values(v.sciReviewComments).filter(c => c.rejected).length} excerpt{Object.values(v.sciReviewComments).filter(c => c.rejected).length > 1 ? 's' : ''} rejected
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {/* ══ HEADER ══ */}
+                <div style={S('flex:none;border-bottom:1px solid var(--rule2)')}>
+                  <div style={S('padding:22px 40px 16px;display:flex;align-items:flex-end;gap:0')}>
+                    <div style={S('flex:1')}>
+                      <Box css="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;font:600 10.5px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;margin-bottom:12px" hover="color:var(--ink);border-color:var(--ink)" onClick={v.goBack}>
+                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         Back
                       </Box>
-                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 800, color: '#000', letterSpacing: '-0.01em' }}>Gap Analysis</div>
-                      <span style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, fontFamily: 'Plus Jakarta Sans' }}>
-                        {GAP_FINDINGS.length} issues
-                      </span>
-                      <div style={{ flex: 1 }} />
-                      <Box
-                        css="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border-radius:9px;box-shadow:0 3px 12px rgba(44,82,204,0.28)"
-                        hover="opacity:0.88"
-                        onClick={v.sendToSciReview}
-                      >
-                        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        Send to Scientific Review
-                      </Box>
+                      <div style={{ font: '800 26px/1.2 Plus Jakarta Sans', letterSpacing: '-0.03em', color: 'var(--ink)', marginBottom: 6 }}>Gap Analysis</div>
+                      <div style={{ font: '400 13px/1.6 Plus Jakarta Sans', color: 'var(--dim)', maxWidth: 520 }}>Flagged excerpts grouped by {v.gapGroupBy === 'track' ? 'content track' : 'artifact'} — review each issue and apply AI recommendations.</div>
                     </div>
-                    {/* Filter row */}
-                    <div style={{ padding: '0 20px 10px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      {/* Group toggle */}
-                      <div style={{ display: 'flex', background: 'var(--s2)', borderRadius: 7, padding: 3, gap: 2 }}>
-                        {['track', 'artifact'].map((tab) => (
-                          <button key={tab} onClick={() => v.setGapGroupBy(tab)} style={{ padding: '4px 11px', borderRadius: 5, border: 'none', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, background: v.gapGroupBy === tab ? '#fff' : 'transparent', color: v.gapGroupBy === tab ? '#000' : 'var(--faint)', boxShadow: v.gapGroupBy === tab ? '0 1px 3px rgba(0,0,0,0.08)' : 'none', transition: 'all 0.15s' }}>
-                            {tab === 'track' ? 'By Track' : 'By Artifact'}
-                          </button>
-                        ))}
-                      </div>
-                      <div style={{ width: 1, height: 18, background: 'var(--rule2)', margin: '0 4px' }} />
-                      {/* Severity filter chips */}
+                    <div style={S('display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:24px')}>
                       {[
-                        { label: 'All', color: null },
-                        { label: 'Critical', color: '#dc2626', bg: '#fef2f2', border: '#fecaca' },
-                        { label: 'Warning', color: '#d97706', bg: '#fffbeb', border: '#fde68a' },
-                        { label: 'Note', color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' },
-                      ].map(({ label, color, bg, border }) => {
+                        { label: 'Issues',   val: GAP_FINDINGS.length,                                        bg: '#fef2f2', num: '#dc2626', fg: '#991b1b' },
+                        { label: 'Critical', val: GAP_FINDINGS.filter(g => g.severity === 'Critical').length, bg: '#fef2f2', num: '#dc2626', fg: '#7f1d1d' },
+                        { label: 'Warning',  val: GAP_FINDINGS.filter(g => g.severity === 'Warning').length,  bg: '#fffbeb', num: '#d97706', fg: '#78350f' },
+                      ].map(({ label, val, bg, num, fg }) => (
+                        <div key={label} style={{ textAlign: 'center', padding: '10px 22px', background: bg, borderRadius: 14 }}>
+                          <div style={{ font: '800 22px/1 Plus Jakarta Sans', color: num, marginBottom: 5 }}>{val}</div>
+                          <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: fg }}>{label.toUpperCase()}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Tab bar */}
+                  <div style={S('padding:0 40px;display:flex;align-items:center;gap:0')}>
+                    {[{ id: 'track', label: 'By Track' }, { id: 'artifact', label: 'By Artifact' }].map((tab) => {
+                      const active = v.gapGroupBy === tab.id;
+                      return (
+                        <Box key={tab.id} css={`padding:11px 22px;font:600 12.5px/1 Plus Jakarta Sans;cursor:pointer;color:${active ? 'var(--ink)' : 'var(--faint)'};border-bottom:3px solid ${active ? 'var(--acc)' : 'transparent'};margin-bottom:-1px;transition:color 0.15s,border-color 0.15s`} hover={!active ? 'color:#334155' : ''} onClick={() => v.setGapGroupBy(tab.id)}>{tab.label}</Box>
+                      );
+                    })}
+                    <div style={S('flex:1')} />
+                    <div style={S('display:flex;align-items:center;gap:6px;padding-bottom:10px')}>
+                      {[{ label: 'All', color: null }, { label: 'Critical', color: '#dc2626', bg: '#fef2f2', border: '#fecaca' }, { label: 'Warning', color: '#d97706', bg: '#fffbeb', border: '#fde68a' }, { label: 'Note', color: '#2563eb', bg: '#eff6ff', border: '#bfdbfe' }].map(({ label, color, bg, border }) => {
                         const active = v.gapSeverityFilter === label;
                         return (
-                          <button key={label} onClick={() => v.setGapSeverityFilter(label)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 11px', borderRadius: 20, border: `1px solid ${active && color ? border : active ? 'var(--ink)' : 'var(--rule2)'}`, background: active && color ? bg : active ? 'var(--ink)' : '#fff', color: active && color ? color : active ? '#fff' : 'var(--faint)', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s' }}>
-                            {color && <span style={{ width: 6, height: 6, borderRadius: '50%', background: active ? color : 'var(--faint)', flexShrink: 0, display: 'inline-block' }} />}
+                          <button key={label} onClick={() => v.setGapSeverityFilter(label)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 11px', borderRadius: 20, border: `1px solid ${active && color ? border : active ? 'var(--ink)' : 'var(--rule2)'}`, background: active && color ? bg : active ? 'var(--ink)' : 'transparent', color: active && color ? color : active ? '#fff' : 'var(--faint)', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s' }}>
+                            {color && <span style={{ width: 6, height: 6, borderRadius: '50%', background: active ? color : 'currentColor', opacity: active ? 1 : 0.5, flexShrink: 0, display: 'inline-block' }} />}
                             {label}
                           </button>
                         );
                       })}
+                      <div style={S('width:1px;height:16px;background:var(--rule);margin:0 4px')} />
+                      <Box css="padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => v.expandAllGapGroups(allGroupKeys)}>Expand all</Box>
+                      <Box css="padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => v.collapseAllGapGroups(allGroupKeys)}>Collapse all</Box>
+                      <div style={S('width:1px;height:16px;background:var(--rule);margin:0 4px')} />
+                      <button
+                        onClick={v.openSciReviewConfirm}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 22px', fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#2c52cc,#4468e0)', border: 'none', borderRadius: 10, cursor: 'pointer', boxShadow: '0 4px 14px rgba(44,82,204,0.35)', transition: 'opacity 0.15s', letterSpacing: '-0.01em' }}
+                        onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }}
+                        onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Send to Scientific Review
+                      </button>
                     </div>
                   </div>
-
-                  {/* ── GAP ANALYSIS — By Track / By Artifact ── */}
-                  {(() => {
-                    const sevColor = (s) => s === 'Critical' ? '#dc2626' : s === 'Warning' ? '#d97706' : '#2563eb';
-                    const sevBg = (s) => s === 'Critical' ? '#fef2f2' : s === 'Warning' ? '#fffbeb' : '#eff6ff';
-                    const sevBorder = (s) => s === 'Critical' ? '#fecaca' : s === 'Warning' ? '#fde68a' : '#bfdbfe';
-
-                    // Build map: paperIdx → gap finding
-                    const gapByPaper = {};
-                    GAP_FINDINGS.forEach((g, i) => { gapByPaper[g.paperIdx] = { ...g, gapIdx: i }; });
-
-                    const selGap = v.gapSelected != null ? GAP_FINDINGS[v.gapSelected] : null;
-                    const selPaper = selGap ? RESEARCH_PAPERS[selGap.paperIdx] : null;
-
-                    // AI Recommendations slide-in panel
-                    const NormPanel = ({ pIdx, paper }) => {
-                      const currentExcerpts = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
-                      const alts = ALTERNATE_EXCERPTS[pIdx] || [];
-                      const aiGenerated = v.aiExcerpts[pIdx] || [];
-                      const aiLoading = v.aiExcerptsLoading[pIdx];
-                      return (
-                        <div style={{ borderLeft: '1px solid rgba(124,58,237,0.15)', background: '#fff', display: 'flex', flexDirection: 'column', width: 340, flexShrink: 0, animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
-                          <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(124,58,237,0.12)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase', marginBottom: 3 }}>✦ AI Recommendations</div>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 800, color: '#000', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{paper.title}</div>
-                            </div>
-                            <button onClick={() => v.setGapExcerptOpen(false)} style={{ flexShrink: 0, background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)' }}>
-                              <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                            </button>
-                          </div>
-                          <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase' }}>Active Excerpts</div>
-                            {v.gapLastAction && (
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 10px', borderRadius: 6, background: v.gapLastAction.type === 'replace' ? '#f0fdf4' : '#eff6ff', border: `1px solid ${v.gapLastAction.type === 'replace' ? '#86efac' : '#bfdbfe'}`, animation: 'rise 0.2s ease' }}>
-                                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke={v.gapLastAction.type === 'replace' ? '#16a34a' : '#2563eb'} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: v.gapLastAction.type === 'replace' ? '#15803d' : '#1d4ed8' }}>{v.gapLastAction.type === 'replace' ? 'Excerpt replaced' : 'Excerpt added'}</span>
-                              </div>
-                            )}
-                            {currentExcerpts.length === 0
-                              ? <div style={{ padding: '8px 12px', background: 'var(--s2)', borderRadius: 7, border: '1px solid var(--rule)', fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--faint)', fontStyle: 'italic' }}>No excerpt — removed</div>
-                              : currentExcerpts.map((exc, ei) => {
-                                const isNew = v.gapLastAction?.type === 'add' && exc.text === v.gapLastAction.text;
-                                const isReplaced = v.gapLastAction?.type === 'replace' && exc.text === v.gapLastAction.text;
-                                return (
-                                  <div key={ei} style={{ background: isReplaced ? '#f0fdf4' : isNew ? '#eff6ff' : 'var(--s2)', border: `1px solid ${isReplaced ? '#86efac' : isNew ? '#bfdbfe' : 'var(--rule)'}`, borderRadius: 7, padding: '9px 11px' }}>
-                                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: '#000', fontWeight: 600, marginBottom: 4 }}>{exc.text}</div>
-                                    <div style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{exc.src}</div>
-                                  </div>
-                                );
-                              })
-                            }
-                            {alts.length > 0 && (
-                              <>
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
-                                  <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ Suggested Normalisations</span>
-                                  {!aiGenerated.length && (
-                                    <button onClick={() => v.generateAIExcerpts(pIdx, paper)} disabled={!!aiLoading} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, background: aiLoading ? 'var(--s2)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: aiLoading ? 'var(--dim)' : '#fff', border: 'none', borderRadius: 20, cursor: aiLoading ? 'default' : 'pointer' }}>
-                                      {aiLoading ? <>{[0,1,2].map(d => <div key={d} style={{ width: 4, height: 4, borderRadius: '50%', background: '#7c3aed', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}</> : '✦ Generate with AI'}
-                                    </button>
-                                  )}
-                                </div>
-                                {alts.map((alt, ai) => {
-                                  const added = currentExcerpts.some(e => e.text === alt.text);
-                                  return (
-                                    <div key={ai} style={{ background: '#fff', border: '1px solid var(--rule2)', borderRadius: 7, padding: '9px 11px' }}>
-                                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: '#000', fontWeight: 600, marginBottom: 6 }}>{alt.text}</div>
-                                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{alt.src}</span>
-                                        {added
-                                          ? <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '2px 7px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 700 }}>✓ Added</span>
-                                          : <div style={{ display: 'flex', gap: 4 }}>
-                                              <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Replace</button>
-                                              <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 8px' }}>Add</button>
-                                            </div>
-                                        }
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </>
-                            )}
-                            {aiGenerated.length > 0 && (
-                              <>
-                                <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase', marginTop: 4 }}>✦ AI-Generated Options</div>
-                                {aiGenerated.map((alt, ai) => {
-                                  const added = currentExcerpts.some(e => e.text === alt.text);
-                                  return (
-                                    <div key={`ai-${ai}`} style={{ background: 'rgba(124,58,237,0.04)', border: '1px solid rgba(124,58,237,0.15)', borderRadius: 7, padding: '9px 11px', animation: 'rise 0.2s ease both', animationDelay: `${ai * 0.1}s` }}>
-                                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, lineHeight: 1.7, color: '#000', fontWeight: 600, marginBottom: 6 }}>{alt.text}</div>
-                                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <span style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)' }}>{alt.src}</span>
-                                        {added
-                                          ? <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: '#16a34a', padding: '2px 7px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 5, fontWeight: 700 }}>✓ Added</span>
-                                          : <div style={{ display: 'flex', gap: 4 }}>
-                                              <button onClick={() => v.gapReplaceExcerpt(pIdx, alt)} style={{ background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, padding: '3px 8px' }}>Replace</button>
-                                              <button onClick={() => v.gapAddExcerpt(pIdx, alt)} style={{ background: 'transparent', color: '#7c3aed', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 5, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 600, padding: '3px 8px' }}>Add</button>
-                                            </div>
-                                        }
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    };
-
-                    // Flagged-only card — issue always shown inline, no expand/collapse
-                    const GapCard = ({ paper, pIdx }) => {
-                      const gap = gapByPaper[pIdx];
-                      if (!gap) return null;
-                      const isOpen = v.gapExcerptOpen && v.gapSelected === gap.gapIdx;
-                      const liveExcerpts = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
-                      const primaryExcerpt = liveExcerpts[0] || { text: '', src: '' };
-                      const hl = gap.highlightText || '';
-                      const hlIdx = primaryExcerpt.text.indexOf(hl);
-                      const before = hlIdx >= 0 ? primaryExcerpt.text.slice(0, hlIdx) : primaryExcerpt.text;
-                      const after = hlIdx >= 0 ? primaryExcerpt.text.slice(hlIdx + hl.length) : '';
-
-                      return (
-                        <div style={{ background: '#fff', border: `1px solid ${sevBorder(gap.severity)}`, borderLeft: `3px solid ${sevColor(gap.severity)}`, borderRadius: 10, marginBottom: 10, overflow: 'hidden' }}>
-                          {/* Paper meta + title */}
-                          <div style={{ padding: '12px 16px 8px', display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
-                                <span style={{ background: typeColor(paper.type), color: '#fff', fontSize: 8, fontWeight: 700, padding: '2px 6px', borderRadius: 3, fontFamily: 'Plus Jakarta Sans', flexShrink: 0 }}>{paper.type}</span>
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, color: 'var(--faint)', fontWeight: 600 }}>{paper.year} · {paper.db}</span>
-                              </div>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: '#000', lineHeight: 1.4 }}>{paper.title}</div>
-                            </div>
-                            <span style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 3, background: sevBg(gap.severity), border: `1px solid ${sevBorder(gap.severity)}`, color: sevColor(gap.severity), fontSize: 8.5, fontWeight: 700, padding: '3px 8px', borderRadius: 20, fontFamily: 'Plus Jakarta Sans', marginTop: 2 }}>
-                              {gap.severity === 'Critical' ? '●' : gap.severity === 'Warning' ? '▲' : 'ℹ'} {gap.severity}
-                            </span>
-                          </div>
-
-                          {/* Excerpt with highlight */}
-                          <div style={{ margin: '0 16px 12px', paddingLeft: 12, borderLeft: `2px solid ${sevColor(gap.severity)}33`, fontFamily: 'Georgia, serif', fontSize: 12.5, lineHeight: 1.8, color: 'var(--dim)' }}>
-                            {hl && hlIdx >= 0
-                              ? <>{before}<mark style={{ background: 'rgba(251,191,36,0.3)', borderBottom: '1.5px solid #f59e0b', borderRadius: 2, padding: '0 1px', fontStyle: 'inherit' }}>{hl}</mark>{after}</>
-                              : primaryExcerpt.text
-                            }
-                          </div>
-                          <div style={{ padding: '0 16px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 9, color: 'var(--faint)' }}>{primaryExcerpt.src}</div>
-
-                          {/* Issue section — always visible */}
-                          <div style={{ margin: '0 16px 14px', padding: '12px 14px', background: sevBg(gap.severity), border: `1px solid ${sevBorder(gap.severity)}`, borderRadius: 8 }}>
-                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: sevColor(gap.severity), letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>{gap.type}</div>
-                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: '#000', marginBottom: 6 }}>{gap.title}</div>
-                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--dim)', lineHeight: 1.6, marginBottom: 10 }}>{gap.description}</div>
-                            {/* Recommendation */}
-                            <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.7)', borderRadius: 6, marginBottom: 12, border: '1px solid rgba(0,0,0,0.06)' }}>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: '#16a34a', letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: 3 }}>Recommendation</div>
-                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: '#166534', lineHeight: 1.55 }}>{gap.recommendation}</div>
-                            </div>
-                            {/* AI Recommendations button */}
-                            <button
-                              onClick={() => {
-                                if (isOpen) { v.setGapExcerptOpen(false); }
-                                else { this.setState({ gapSelected: gap.gapIdx, gapExcerptOpen: true, gapLastAction: null }); }
-                              }}
-                              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '9px 0', background: isOpen ? 'rgba(124,58,237,0.08)' : 'linear-gradient(135deg,#7c3aed,#a855f7)', color: isOpen ? '#7c3aed' : '#fff', border: isOpen ? '1.5px solid rgba(124,58,237,0.25)' : 'none', borderRadius: 8, fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, cursor: 'pointer', boxShadow: isOpen ? 'none' : '0 2px 8px rgba(124,58,237,0.22)', transition: 'all 0.15s' }}
-                            >
-                              {isOpen ? 'Close AI Recommendations' : '✦ AI Recommendations'}
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    };
-
-                    // Groups — only flagged papers, optionally filtered by severity
-                    const allPapers = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i }));
-                    const groups = (v.gapGroupBy === 'track'
-                      ? CONTENT_TRACKS.map(t => ({ label: t.label, color: t.color, papers: allPapers.filter(p => t.paperTracks.includes(p.track)) }))
-                      : ALL_ARTIFACTS.map(a => ({ label: a, color: '#7c3aed', papers: allPapers.filter(p => p.artifacts.includes(a)) }))
-                    ).map(g => ({
-                      ...g,
-                      flagged: g.papers.filter(p => {
-                        const gap = gapByPaper[p._idx];
-                        if (!gap) return false;
-                        if (v.gapSeverityFilter !== 'All' && gap.severity !== v.gapSeverityFilter) return false;
-                        return true;
-                      }),
-                    })).filter(g => g.flagged.length > 0);
-
-                    return (
-                      <div key="gaps-grouped" style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-                        <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px', background: '#f7f9fc' }}>
-                          {groups.map((group) => (
-                            <div key={group.label} style={{ marginBottom: 32 }}>
-                              {/* Group header */}
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                                <div style={{ width: 8, height: 8, borderRadius: '50%', background: group.color, flexShrink: 0 }} />
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.01em' }}>{group.label}</span>
-                                <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, color: '#b45309', background: '#fffbeb', border: '1px solid #fde68a', padding: '1px 8px', borderRadius: 20 }}>{group.flagged.length} {group.flagged.length === 1 ? 'issue' : 'issues'}</span>
-                                <div style={{ flex: 1, height: 1, background: 'var(--rule)' }} />
-                              </div>
-                              {group.flagged.map(p => GapCard({ paper: p, pIdx: p._idx }))}
-                            </div>
-                          ))}
-                        </div>
-                        {/* AI Recommendations slide-in panel */}
-                        {v.gapExcerptOpen && selGap && selPaper && NormPanel({ pIdx: selGap.paperIdx, paper: selPaper })}
+                </div>
+                {/* ══ NAVIGATOR BAR — switches based on pptStatus ══ */}
+                {v.pptStatus === 'sci-rejected' ? (() => {
+                  const rejIdxs = RESEARCH_PAPERS.map((_, i) => i).filter(i => v.sciReviewComments[i]?.rejected);
+                  const safeRejIdx = rejIdxs.length > 0 ? Math.min(v.rejectedNavIndex, rejIdxs.length - 1) : 0;
+                  if (!rejIdxs.length) return null;
+                  return (
+                    <div style={{ flexShrink: 0, borderBottom: '2px solid #fecaca', background: '#fff5f5', padding: '9px 40px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}><circle cx="6" cy="6" r="5" stroke="#dc2626" strokeWidth="1.4"/><path d="M6 4v3M6 8.5v.2" stroke="#dc2626" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                      <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.1em', color: '#dc2626', textTransform: 'uppercase', flexShrink: 0 }}>Rejected Excerpts</span>
+                      <div style={{ width: 1, height: 14, background: '#fecaca', margin: '0 2px', flexShrink: 0 }} />
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 10px', borderRadius: 20, border: '1px solid #fecaca', background: '#fef2f2' }}>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: '#dc2626' }}>Rejected</span>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 800, color: '#dc2626' }}>{rejIdxs.length}</span>
                       </div>
-                    );
-                  })()}
+                      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <button onClick={v.rejectedNavPrev} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--dim)', background: '#fff', border: '1px solid #fecaca', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#dc2626'; e.currentTarget.style.color = '#dc2626'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#fecaca'; e.currentTarget.style.color = 'var(--dim)'; }}>
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M5 1L2 4l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          Prev
+                        </button>
+                        <div style={{ minWidth: 64, textAlign: 'center', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: '#dc2626' }}>{safeRejIdx + 1} of {rejIdxs.length}</div>
+                        <button onClick={v.rejectedNavNext} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#dc2626,#ef4444)', border: 'none', borderRadius: 20, cursor: 'pointer', boxShadow: '0 2px 8px rgba(220,38,38,0.25)', transition: 'opacity 0.15s' }} onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
+                          Next
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M3 1l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })() : filteredGaps.length > 0 && (
+                  <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule)', background: '#fafbff', padding: '9px 40px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}><path d="M6 1l1.5 3 3.5.5-2.5 2.5.5 3.5L6 9l-3 1.5.5-3.5L1 4.5 4.5 4z" fill="#7c3aed" opacity="0.9"/></svg>
+                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase', flexShrink: 0 }}>Issue Navigator</span>
+                    <div style={{ width: 1, height: 14, background: 'var(--rule)', margin: '0 2px', flexShrink: 0 }} />
+                    {[
+                      { label: 'To review', count: toReviewCount, bg: 'rgba(124,58,237,0.08)', border: 'rgba(124,58,237,0.28)', color: '#7c3aed' },
+                      { label: 'Resolved', count: resolvedCount, bg: 'rgba(21,128,61,0.07)', border: 'rgba(21,128,61,0.22)', color: '#15803d' },
+                    ].map(({ label, count, bg, border, color }) => (
+                      <div key={label} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 10px', borderRadius: 20, border: `1px solid ${border}`, background: bg }}>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color }}>{label}</span>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 800, color }}>{count}</span>
+                      </div>
+                    ))}
+                    <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <button onClick={v.gapNavPrev} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--dim)', background: '#fff', border: '1px solid var(--rule2)', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#7c3aed'; e.currentTarget.style.color = '#7c3aed'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--rule2)'; e.currentTarget.style.color = 'var(--dim)'; }}>
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M5 1L2 4l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Prev
+                      </button>
+                      <div style={{ minWidth: 56, textAlign: 'center', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>{filteredGaps.length > 0 ? `${safeNavIdx + 1} of ${filteredGaps.length}` : '0 issues'}</div>
+                      <button onClick={v.gapNavNext} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: 'none', borderRadius: 20, cursor: 'pointer', boxShadow: '0 2px 8px rgba(124,58,237,0.25)', transition: 'opacity 0.15s' }} onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
+                        Next
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M3 1l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {/* ══ BODY ══ */}
+                <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
+                  <div style={{ flex: 1, overflowY: 'auto', padding: '20px 40px 40px', animation: 'fadeUp 0.2s ease both' }}>
+                    {gapGroups.length === 0
+                      ? <div style={{ padding: 48, textAlign: 'center', color: 'var(--faint)', font: '500 13px/1.6 Plus Jakarta Sans' }}>No papers found.</div>
+                      : gapGroups.map((group, gi) => {
+                          const isOpen = v.gapGroupExpanded[group.key] === true;
+                          const critCount = group.flagged.filter(p => gapByPaper[p._idx]?.severity === 'Critical').length;
+                          const warnCount = group.flagged.filter(p => gapByPaper[p._idx]?.severity === 'Warning').length;
+                          return (
+                            <div key={group.key} style={{ borderLeft: `4px solid ${group.color}`, background: '#fff', marginBottom: 8, transition: 'all 0.2s', animation: `rise 0.22s ease both`, animationDelay: `${gi * 0.04}s`, borderRadius: '0 12px 12px 0', boxShadow: isOpen ? '0 2px 12px rgba(15,31,74,0.08)' : '0 1px 4px rgba(15,31,74,0.04)', border: `1px solid ${isOpen ? group.color+'40' : 'var(--rule2)'}`, borderLeft: `4px solid ${group.color}` }}>
+                              <Box css={`display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;background:${isOpen ? group.color+'0a' : 'transparent'};border-radius:0 12px ${isOpen ? '0 0' : '12px 12px'};transition:background 0.15s`} hover={!isOpen ? `background:${group.color}08` : ''} onClick={() => v.toggleGapGroup(group.key)}>
+                                <div style={{ width: 10, height: 10, borderRadius: '50%', background: group.color, flexShrink: 0, boxShadow: `0 0 0 3px ${group.color}25` }} />
+                                <span style={{ font: '700 13.5px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>{group.label}</span>
+                                <span style={{ padding: '2px 9px', font: '600 10px/1 Plus Jakarta Sans', borderRadius: 20, background: 'var(--s2)', color: 'var(--dim)', border: '1px solid var(--rule2)' }}>{group.papers.length} paper{group.papers.length !== 1 ? 's' : ''}</span>
+                                {group.flagged.length > 0 && <span style={{ padding: '2px 9px', font: '600 10px/1 Plus Jakarta Sans', borderRadius: 20, background: `${group.color}18`, color: group.color, border: `1px solid ${group.color}35` }}>{group.flagged.length} {group.flagged.length === 1 ? 'issue' : 'issues'}</span>}
+                                {critCount > 0 && <span style={{ padding: '1px 7px', font: '700 9px/1 Plus Jakarta Sans', borderRadius: 20, background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }}>{critCount} critical</span>}
+                                {warnCount > 0 && <span style={{ padding: '1px 7px', font: '700 9px/1 Plus Jakarta Sans', borderRadius: 20, background: '#fffbeb', color: '#d97706', border: '1px solid #fde68a' }}>{warnCount} warning</span>}
+                                <span style={{ color: 'var(--faint)', fontSize: 11, marginLeft: 'auto', width: 18, textAlign: 'center', display: 'inline-block', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
+                              </Box>
+                              {isOpen && (
+                                <div style={{ padding: '12px 18px 16px', display: 'flex', flexDirection: 'column', gap: 0, borderTop: `1px solid ${group.color}25`, background: `${group.color}05`, animation: 'rise 0.18s ease', borderRadius: '0 0 12px 12px' }}>
+                                  {group.papers.map(p => <React.Fragment key={p._idx}>{GapPaperCard({ paper: p, pIdx: p._idx })}</React.Fragment>)}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })
+                    }
+                  </div>
+                  {v.gapExcerptOpen && selGap && selPaper2 && GapNormPanel({ pIdx: selGap.paperIdx, paper: selPaper2 })}
+                </div>
+              {/* ── Send to Scientific Review confirmation modal ── */}
+              {v.sciReviewConfirmOpen && (
+                <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(12,26,61,0.45)', backdropFilter: 'blur(4px)', animation: 'fill 0.18s ease' }}
+                  onClick={(e) => { if (e.target === e.currentTarget) v.closeSciReviewConfirm(); }}>
+                  <div style={{ background: '#fff', borderRadius: 16, width: 420, boxShadow: '0 20px 60px rgba(12,26,61,0.22)', animation: 'fadeUp 0.22s cubic-bezier(0.22,1,0.36,1) both', overflow: 'hidden' }}>
+                    <div style={{ height: 4, background: 'linear-gradient(90deg,#2c52cc,#4468e0)' }} />
+                    <div style={{ padding: '28px 28px 24px' }}>
+                      <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#eff2ff,#dce3ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10h14M11 4l6 6-6 6" stroke="#2c52cc" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </div>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 17, fontWeight: 800, color: 'var(--ink)', marginBottom: 8, letterSpacing: '-0.02em' }}>Send to Scientific Review</div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '12px 14px', background: '#f0f4ff', border: '1px solid #c7d4f8', borderRadius: 10, marginBottom: 14 }}>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}><circle cx="8" cy="8" r="7" stroke="#2c52cc" strokeWidth="1.4"/><path d="M8 7v4M8 5.5v.5" stroke="#2c52cc" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: '#1e3a8a', lineHeight: 1.5 }}>You are approving this as <strong>Medical Affairs</strong>. This will be forwarded to the Scientific Reviewer for final sign-off.</span>
+                      </div>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, color: 'var(--dim)', lineHeight: 1.6, marginBottom: 22 }}>
+                        The Scientific Reviewer will receive all excerpts, gap annotations, and your MA approval. They can approve or request changes before final delivery.
+                      </div>
+                      <div style={{ display: 'flex', gap: 10 }}>
+                        <button onClick={v.closeSciReviewConfirm} style={{ flex: 1, padding: '10px 0', fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: 'var(--dim)', background: 'var(--s2)', border: '1px solid var(--rule2)', borderRadius: 9, cursor: 'pointer', transition: 'all 0.15s' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = '#e2e8f0'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'var(--s2)'; }}>
+                          Cancel
+                        </button>
+                        <button onClick={v.sendToSciReview} style={{ flex: 2, padding: '10px 0', fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#2c52cc,#4468e0)', border: 'none', borderRadius: 9, cursor: 'pointer', boxShadow: '0 4px 14px rgba(44,82,204,0.3)', transition: 'opacity 0.15s' }}
+                          onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }}
+                          onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
+                          Confirm & Send to Scientific Review →
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              </div>{/* end inner column */}
 
-            </div>); /* end rightPanel */
+              {/* ══ RESOLVE WITH AI SIDEBAR ══ */}
+              {v.resolveAIPaper && (() => {
+                const rp = v.resolveAIPaper;
+                const rIdx = rp._idx;
+                const sciRej = v.sciReviewComments[rIdx];
+                const currentExcerpts = v.paperExcerpts[rIdx] || [{ text: rp.excerpt, src: rp.excerptSrc }];
+                const aiSuggestions = (v.aiExcerpts[rIdx] || []);
+                const aiLoading = v.aiExcerptsLoading[rIdx];
+                const tc2r = (type) => ({ RCT:'#2563eb', 'Meta-Analysis':'#7c3aed', Guideline:'#059669', 'Real-World':'#d97706', 'Expert Consensus':'#db2777' })[type] || '#64748b';
+                return (
+                  <div style={{ width: 400, flexShrink: 0, borderLeft: '2px solid #fecaca', background: '#fff', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideInRight 0.26s cubic-bezier(0.22,1,0.36,1) both', boxShadow: '-6px 0 24px rgba(220,38,38,0.08)' }}>
+                      {/* Header */}
+                      <div style={{ padding: '18px 20px 14px', borderBottom: '1px solid #fecaca', background: 'linear-gradient(135deg,#fff5f5,#fff)', flexShrink: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 10px', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', borderRadius: 20, color: '#fff', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em' }}>✦ RESOLVE WITH AI</div>
+                          <button onClick={v.closeResolveAI} style={{ marginLeft: 'auto', background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)' }}>
+                            <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                          </button>
+                        </div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 800, color: 'var(--ink)', lineHeight: 1.4, marginBottom: 8 }}>{rp.title}</div>
+                        {/* Rejection reason context */}
+                        {sciRej && (
+                          <div style={{ padding: '7px 10px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 7 }}>
+                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8, fontWeight: 700, color: '#dc2626', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 3 }}>Rejection reason</div>
+                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 600, color: '#991b1b', lineHeight: 1.5 }}>{sciRej.reason || 'No reason provided'}</div>
+                          </div>
+                        )}
+                      </div>
 
-            return <div style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>{rightPanel}</div>;
+                      {/* Current excerpts */}
+                      <div style={{ padding: '10px 20px', background: '#fafafa', borderBottom: '1px solid var(--rule)', flexShrink: 0 }}>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase', marginBottom: 6 }}>Current Excerpts ({currentExcerpts.length})</div>
+                        {currentExcerpts.map((exc, ei) => {
+                          const isRejectedExc = !exc.resolvedFromRejection && sciRej?.rejected;
+                          return (
+                            <div key={ei} style={{ marginBottom: ei < currentExcerpts.length - 1 ? 7 : 0, padding: '7px 9px', background: exc.resolvedFromRejection ? 'rgba(124,58,237,0.04)' : isRejectedExc ? '#fef2f2' : 'var(--s2)', border: `1px solid ${exc.resolvedFromRejection ? 'rgba(124,58,237,0.2)' : isRejectedExc ? '#fecaca' : 'var(--rule)'}`, borderRadius: 6 }}>
+                              {isRejectedExc && (
+                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '1px 7px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 10, fontFamily: 'Plus Jakarta Sans', fontSize: 7.5, fontWeight: 700, color: '#dc2626', letterSpacing: '0.08em', marginBottom: 4 }}>✕ REJECTED</div>
+                              )}
+                              {exc.resolvedFromRejection && (
+                                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '1px 7px', background: 'rgba(124,58,237,0.1)', borderRadius: 10, fontFamily: 'Plus Jakarta Sans', fontSize: 7.5, fontWeight: 700, color: '#7c3aed', letterSpacing: '0.08em', marginBottom: 4 }}>✦ RESOLVED</div>
+                              )}
+                              <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: 'var(--dim)', lineHeight: 1.5, fontWeight: 600 }}>{exc.text.slice(0, 90)}{exc.text.length > 90 ? '…' : ''}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Scrollable AI suggestions */}
+                      <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        {/* AI section header + trigger */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase' }}>✦ AI-Extracted Suggestions</span>
+                          {!aiSuggestions.length && !aiLoading && (
+                            <button
+                              onClick={() => v.generateAIExcerpts(rIdx, rp)}
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 11px', fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 700, background: 'linear-gradient(135deg,#7c3aed,#a855f7)', color: '#fff', border: 'none', borderRadius: 20, cursor: 'pointer', boxShadow: '0 2px 8px rgba(124,58,237,0.2)' }}
+                            >✦ Extract with AI</button>
+                          )}
+                        </div>
+
+                        {/* Loading dots */}
+                        {aiLoading && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px 0' }}>
+                            {[0,1,2].map(d => <div key={d} style={{ width: 6, height: 6, borderRadius: '50%', background: '#7c3aed', animation: 'dotBounce 1.3s ease-in-out infinite', animationDelay: `${d * 0.18}s` }} />)}
+                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, color: '#7c3aed', fontWeight: 600, marginLeft: 4 }}>Extracting excerpts…</span>
+                          </div>
+                        )}
+
+                        {/* Suggestion cards */}
+                        {aiSuggestions.map((sug, si) => (
+                          <div key={si} style={{ background: 'rgba(124,58,237,0.04)', border: '1px solid rgba(124,58,237,0.15)', borderRadius: 9, padding: '11px 13px', animation: 'rise 0.2s ease both', animationDelay: `${si * 0.07}s` }}>
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 8px', background: 'rgba(124,58,237,0.1)', borderRadius: 10, fontFamily: 'Plus Jakarta Sans', fontSize: 8, fontWeight: 700, color: '#7c3aed', letterSpacing: '0.08em', marginBottom: 7 }}>✦ AI SUGGESTION {si + 1}</div>
+                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.75, marginBottom: 8 }}>{sug.text}</div>
+                            <div style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)', marginBottom: 8 }}>{sug.src}</div>
+                            <div style={{ display: 'flex', gap: 6 }}>
+                              <button
+                                onClick={() => { v.gapReplaceExcerpt(rIdx, { ...sug, resolvedFromRejection: true }); v.closeResolveAI(); }}
+                                style={{ flex: 1, padding: '7px 0', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#2c52cc,#4468e0)', border: 'none', borderRadius: 7, cursor: 'pointer', boxShadow: '0 2px 8px rgba(44,82,204,0.2)', transition: 'opacity 0.15s' }}
+                                onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }}
+                                onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+                              >↔ Replace</button>
+                              <button
+                                onClick={() => { v.addExcerptItem(rIdx, { ...sug, resolvedFromRejection: true }); v.closeResolveAI(); }}
+                                style={{ flex: 1, padding: '7px 0', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#7c3aed', background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.25)', borderRadius: 7, cursor: 'pointer', transition: 'all 0.15s' }}
+                                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.14)'; }}
+                                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.08)'; }}
+                              >+ Add</button>
+                            </div>
+                          </div>
+                        ))}
+
+                        {!aiLoading && !aiSuggestions.length && (
+                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, color: 'var(--faint)', fontStyle: 'italic', textAlign: 'center', padding: '20px 0' }}>Click "Extract with AI" to get suggestions based on this paper.</div>
+                        )}
+                      </div>
+                    </div>
+                  );
+              })()}
+              </div>
+            );
           })()}
 
           {/* ============ SCI DASHBOARD ============ */}
@@ -6939,11 +7496,11 @@ export default class MedFactory extends React.Component {
                   <div style={S('padding:12px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex-wrap:wrap')}>
                     <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-right:4px')}>ARTIFACTS</span>
                     {[
-                      { name: 'HCP Deck', q: 89, color: '#7eb8f7' },
-                      { name: 'Blog', q: 100, color: '#fb923c' },
-                      { name: 'Protocol', q: 74, color: '#4ade80' },
-                      { name: 'Blurb ×5', q: 33, color: '#f97b7b' },
-                      { name: 'Fact Sheet', q: 100, color: '#a78bfa' },
+                      { name: 'HCP Deck', q: 89, color: '#1d4ed8' },
+                      { name: 'Blog', q: 100, color: '#ea580c' },
+                      { name: 'Protocol', q: 74, color: '#15803d' },
+                      { name: 'Blurb ×5', q: 33, color: '#dc2626' },
+                      { name: 'Fact Sheet', q: 100, color: '#6d28d9' },
                     ].map((a) => (
                       <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: `1px solid ${a.color}44`, background: `${a.color}0d` }}>
                         <div style={{ width: 5, height: 5, borderRadius: '50%', background: a.q >= 80 ? 'var(--ok)' : a.q >= 50 ? 'var(--warn)' : 'var(--acc)' }} />
@@ -6975,183 +7532,236 @@ export default class MedFactory extends React.Component {
 
           {/* ============ SCI REVIEW ============ */}
           {v.isSciReview && (() => {
-            const accepted = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i })).filter((_, i) => v.acceptedPapers[i] || i < 7);
+            const tc2 = (type) => ({ RCT:'#2563eb', 'Meta-Analysis':'#7c3aed', Guideline:'#059669', 'Real-World':'#d97706', 'Expert Consensus':'#db2777' })[type] || '#64748b';
+            const PASTEL = { Deck: '#1d4ed8', Blog: '#ea580c', Protocol: '#059669', Blurb: '#dc2626', Facts: '#7c3aed' };
+            const allPapers = RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i }));
             const comments = v.sciReviewComments;
             const rejectedCount = Object.values(comments).filter(c => c.rejected).length;
+            const ART_COLORS = { Deck: '#1d4ed8', Blog: '#ea580c', Protocol: '#15803d', Blurb: '#dc2626', Facts: '#6d28d9' };
+            const sciGroups = (v.sciGroupBy === 'track'
+              ? CONTENT_TRACKS.map(t => ({ key: t.id, label: t.label, color: t.color, papers: allPapers.filter(p => t.paperTracks.includes(p.track)) }))
+              : ALL_ARTIFACTS.map(a => ({ key: a, label: a, color: ART_COLORS[a] || '#7c3aed', papers: allPapers.filter(p => p.artifacts.includes(a)) }))
+            ).filter(g => g.papers.length > 0);
+            const allGroupKeys = sciGroups.map(g => g.key);
             const selPaper = v.sciSelectedPaper;
 
-            const artifactStatus = ALL_ARTIFACTS.map(a => {
-              const anyRejected = accepted.some((p) => {
-                const key = `${p._idx}-0`;
-                return (comments[key] || {}).rejected && p.artifacts && p.artifacts.includes(a);
-              });
-              const msg = REVIEW_AGENT_MSGS.find(m => m.artifact === a);
-              return { name: a, ok: !anyRejected, color: msg ? msg.color : 'var(--dim)' };
-            });
+            const SciExcerptCard = ({ paper }) => {
+              const pIdx = paper._idx;
+              const rejection = comments[pIdx];
+              const isRejected = rejection && rejection.rejected;
+              const liveExcerpts = v.paperExcerpts[pIdx] || [{ text: paper.excerpt, src: paper.excerptSrc }];
+              const isSel = selPaper && selPaper._idx === pIdx;
+              return (
+                <div style={{ position: 'relative', background: '#fff', marginBottom: 10, border: `1px solid ${isRejected ? '#fecaca' : isSel ? 'var(--acc)' : 'var(--rule2)'}`, borderLeft: `4px solid ${isRejected ? '#dc2626' : tc2(paper.type)}`, borderRadius: '0 10px 10px 0', boxShadow: isRejected ? '0 2px 8px rgba(220,38,38,0.08)' : isSel ? '0 2px 12px rgba(44,82,204,0.10)' : '0 1px 4px rgba(15,31,74,0.04)', transition: 'all 0.18s' }}>
+                  <div style={{ padding: '14px 18px 10px', cursor: 'pointer' }} onClick={() => v.setSciSelectedPaper(isSel ? null : paper)}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                      <span style={{ padding: '3px 10px', fontSize: 9, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.1em', borderRadius: 20, border: `1.5px solid ${tc2(paper.type)}`, color: '#fff', background: tc2(paper.type) }}>{paper.type}</span>
+                      <span style={{ font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)', fontFamily: 'var(--mono)' }}>{paper.db} · {paper.year}</span>
+                      <span style={{ marginLeft: 'auto', font: '800 12px/1 Plus Jakarta Sans', color: '#166534', background: '#dcfce7', padding: '2px 8px', borderRadius: 20 }}>{paper.score.toFixed(2)}</span>
+                      {isRejected
+                        ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 9px', borderRadius: 20, background: '#fef2f2', border: '1px solid #fecaca', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#dc2626' }}>● Rejected</span>
+                        : <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '2px 9px', borderRadius: 20, background: '#f0fdf4', border: '1px solid #bbf7d0', fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, color: '#16a34a' }}>✓ Approved</span>
+                      }
+                    </div>
+                    <div style={{ font: '700 13.5px/1.45 Plus Jakarta Sans', letterSpacing: '-0.01em', color: 'var(--ink)', marginBottom: 10 }}>{paper.title}</div>
+                    {liveExcerpts.map((exc, ei) => (
+                      <div key={ei} style={{ position: 'relative', borderLeft: `3px solid ${isRejected ? '#dc2626' : 'var(--acc)'}`, padding: '10px 14px', background: isRejected ? '#fff5f5' : '#f0f2ff', borderRadius: '0 8px 8px 0', marginBottom: isRejected ? 8 : 0 }}>
+                        <div style={{ font: '700 13px/1.8 Plus Jakarta Sans', color: isRejected ? '#991b1b' : '#000000', textDecoration: isRejected ? 'line-through' : 'none', opacity: isRejected ? 0.7 : 1 }}>{exc.text}</div>
+                        <div style={{ font: '600 9.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 7, letterSpacing: '0.04em', fontFamily: 'var(--mono)' }}>{exc.src}</div>
+                      </div>
+                    ))}
+                    {isRejected && (
+                      <div style={{ padding: '9px 12px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, marginBottom: 4 }}>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 800, color: '#dc2626' }}>Reason for rejection: </span>
+                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 600, color: '#991b1b' }}>{rejection.reason || 'No reason provided'}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ padding: '0 18px 12px', display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
+                    {paper.artifacts.map((a) => {
+                      const pc = PASTEL[a] || '#64748b';
+                      return (
+                        <span key={a} style={{ padding: '4px 10px', font: '700 9px/1 Plus Jakarta Sans', borderRadius: 20, border: `1.5px solid ${pc}`, color: pc, background: `${pc}14`, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                          <svg width="7" height="6" viewBox="0 0 7 6" fill="none"><path d="M1 3l2 2 3-3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          {a}
+                        </span>
+                      );
+                    })}
+                    <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+                      {isRejected
+                        ? <button onClick={(e) => { e.stopPropagation(); v.revertSciReject(pIdx); }} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: '#d97706', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.background = '#fef3c7'; }} onMouseLeave={e => { e.currentTarget.style.background = '#fffbeb'; }}>
+                            <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M10 2a5 5 0 1 0 .5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 2V5H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            Revert
+                          </button>
+                        : <button onClick={(e) => { e.stopPropagation(); v.openSciRejectModal(pIdx); }} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: '#dc2626', background: 'transparent', border: '1px solid #fecaca', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.background = '#fef2f2'; e.currentTarget.style.borderColor = '#dc2626'; }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#fecaca'; }}>
+                            ✕ Reject
+                          </button>
+                      }
+                    </div>
+                  </div>
+                </div>
+              );
+            };
 
-            const trackGroups = CONTENT_TRACKS.map(tc => ({
-              ...tc,
-              papers: accepted.filter(p => tc.paperTracks.includes(p.track)),
-            })).filter(tc => tc.papers.length > 0);
+            const SciDetailPanel = ({ paper }) => (
+              <div style={{ width: 360, flexShrink: 0, borderLeft: '1px solid var(--rule2)', background: '#fff', display: 'flex', flexDirection: 'column', animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both', overflow: 'hidden' }}>
+                <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                  <span style={{ flex: 1, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Paper Details</span>
+                  <button onClick={() => v.setSciSelectedPaper(null)} style={{ background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 24, height: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)' }}>
+                    <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                  </button>
+                </div>
+                <div style={{ flex: 1, overflowY: 'auto', padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <span style={{ padding: '3px 10px', fontSize: 9, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', letterSpacing: '0.1em', borderRadius: 20, border: `1.5px solid ${tc2(paper.type)}`, color: '#fff', background: tc2(paper.type), alignSelf: 'flex-start' }}>{paper.type}</span>
+                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 14, fontWeight: 800, color: 'var(--ink)', lineHeight: 1.4 }}>{paper.title}</div>
+                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--faint)' }}>{paper.journal} · {paper.year}</div>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {[['Score', paper.score.toFixed(2), '#f0fdf4', '#bbf7d0', '#166534', '#15803d'], ['Relevance', `${paper.relevance}%`, 'var(--s2)', 'var(--rule)', 'var(--ink)', 'var(--faint)'], ['Grade', paper.grade, 'var(--s2)', 'var(--rule)', 'var(--ink)', 'var(--faint)']].map(([label, val, bg, border, valColor, labelColor]) => (
+                      <div key={label} style={{ padding: '6px 10px', background: bg, border: `1px solid ${border}`, borderRadius: 7 }}>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: labelColor, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 2 }}>{label}</div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 14, fontWeight: 800, color: valColor }}>{val}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8.5, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Evidence Summary</div>
+                  <div style={{ borderLeft: '3px solid var(--acc)', padding: '10px 14px', background: '#f0f2ff', borderRadius: '0 8px 8px 0' }}>
+                    <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, lineHeight: 1.8, color: '#000', fontWeight: 600 }}>{paper.excerpt}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 8.5, color: 'var(--faint)', marginTop: 6 }}>{paper.excerptSrc}</div>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    {[['Study Design', paper.designTier], ['Funding', paper.funding], ['Stat Rigor', paper.statRigor], ['Citations', paper.citations]].map(([label, val]) => (
+                      <div key={label} style={{ padding: '7px 10px', background: 'var(--s2)', borderRadius: 7, border: '1px solid var(--rule)' }}>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 8, fontWeight: 700, color: 'var(--faint)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
+                        <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--ink)', lineHeight: 1.4 }}>{val}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                    {paper.artifacts.map(a => { const pc = PASTEL[a] || '#64748b'; return <span key={a} style={{ padding: '4px 10px', font: '700 9px/1 Plus Jakarta Sans', borderRadius: 20, border: `1.5px solid ${pc}`, color: pc, background: `${pc}14` }}>{a}</span>; })}
+                  </div>
+                </div>
+              </div>
+            );
 
             return (
-              <div style={{ display: 'flex', height: '100%', overflow: 'hidden', animation: 'fadeUp 0.24s ease both' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', animation: 'fadeUp 0.24s ease both' }}>
 
-                {/* ═══ LEFT: Paper List ═══ */}
-                <div style={{ width: selPaper ? 400 : '100%', flexShrink: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', transition: 'width 0.32s cubic-bezier(0.22,1,0.36,1)', borderRight: selPaper ? '1px solid rgba(26,45,107,0.12)' : 'none', background: 'var(--s1)' }}>
-
-                  {/* Back — top */}
-                  <div style={{ padding: '10px 22px', borderBottom: '1px solid rgba(26,45,107,0.12)', flexShrink: 0, background: '#fff' }}>
-                    <Box
-                      css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px"
-                      hover="color:var(--ink);border-color:var(--ink)"
-                      onClick={v.goBack}
-                    >
+                {/* HEADER */}
+                <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule2)', background: '#fff', padding: '16px 40px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 10 }}>
+                    <Box css="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;font:600 10.5px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px" hover="color:var(--ink);border-color:var(--ink)" onClick={v.goBack}>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Back to Inbox
                     </Box>
-                  </div>
-
-                  {/* Header */}
-                  <div style={{ padding: '18px 22px', borderBottom: '1px solid rgba(26,45,107,0.12)', flexShrink: 0, background: '#fff' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-                      <div style={{ flex: 1 }}>
-                        <h2 style={{ font: '800 20px/1 Plus Jakarta Sans', letterSpacing: '-0.025em', color: '#1a2d6b', margin: '0 0 6px' }}>Scientific Review</h2>
-                        <div style={{ font: '600 13px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>
-                          {accepted.length} papers under review &middot;&nbsp;
-                          {rejectedCount > 0
-                            ? <span style={{ color: '#2c52cc', fontWeight: 700 }}>{rejectedCount} rejected</span>
-                            : <span style={{ color: '#166534', fontWeight: 700 }}>none rejected</span>}
-                        </div>
-                      </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', color: 'var(--ok)', textTransform: 'uppercase', marginBottom: 4 }}>Scientific Review</div>
+                      <h2 style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 20, fontWeight: 800, color: 'var(--ink)', margin: 0, letterSpacing: '-0.02em' }}>{v.topic || 'Type 2 Diabetes — GLP-1 RA Landscape'}</h2>
                     </div>
-                    {/* Artifact readiness pills */}
-                    <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
-                      {artifactStatus.map(a => (
-                        <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 11px', border: `1px solid ${a.ok ? 'rgba(22,101,52,0.4)' : 'rgba(44,82,204,0.4)'}`, background: a.ok ? 'rgba(22,101,52,0.08)' : 'rgba(44,82,204,0.06)', borderRadius: 99 }}>
-                          <div style={{ width: 15, height: 15, borderRadius: '50%', background: a.ok ? '#166534' : '#2c52cc', display: 'grid', placeItems: 'center', fontSize: 9, color: '#fff', fontWeight: 800 }}>{a.ok ? '✓' : '!'}</div>
-                          <span style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: '#1a2d6b' }}>{a.name}</span>
-                        </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <div style={{ padding: '6px 14px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 20, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#15803d' }}>{allPapers.length - rejectedCount} approved</div>
+                      {rejectedCount > 0 && <div style={{ padding: '6px 14px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 20, fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#dc2626' }}>{rejectedCount} rejected</div>}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: 'var(--faint)' }}>Submitted by Mayank Gupta (Medical Affairs)</span>
+                    <Box css="margin-left:12px;padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => v.expandAllSciGroups(allGroupKeys)}>Expand all</Box>
+                    <Box css="padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => this.setState({ sciReviewGroupExpanded: {} })}>Collapse all</Box>
+                    {/* By Track / By Artifact toggle */}
+                    <div style={{ marginLeft: 'auto', display: 'flex', background: '#eef0f6', borderRadius: 10, padding: 4, gap: 3 }}>
+                      {[['track','By Track'],['artifact','By Artifact']].map(([val, label]) => (
+                        <button key={val} onClick={() => v.setSciGroupBy(val)} style={{ padding: '7px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, borderRadius: 7, border: 'none', cursor: 'pointer', background: v.sciGroupBy === val ? '#fff' : 'transparent', color: v.sciGroupBy === val ? 'var(--ink)' : 'var(--faint)', boxShadow: v.sciGroupBy === val ? '0 1px 4px rgba(15,31,74,0.13)' : 'none', transition: 'all 0.15s' }}>{label}</button>
                       ))}
-                    </div>
-                  </div>
-
-                  {/* Scrollable paper list */}
-                  <div style={{ flex: 1, overflowY: 'auto', padding: '20px 22px' }}>
-                    <div style={{ font: '700 11px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#2d4a8a', marginBottom: 16, textTransform: 'uppercase' }}>Papers — click to open full view</div>
-                    {trackGroups.map((tc) => (
-                      <div key={tc.id} style={{ marginBottom: 24 }}>
-                        <div style={{ font: '800 12px/1 Plus Jakarta Sans', letterSpacing: '0.08em', color: tc.color, marginBottom: 10, paddingBottom: 8, borderBottom: `2px solid ${tc.color}40`, textTransform: 'uppercase' }}>{tc.label}</div>
-                        {tc.papers.map((paper) => {
-                          const key = `${paper._idx}-0`;
-                          const cmt = comments[key] || {};
-                          const isRejected = cmt.rejected;
-                          const isSel = selPaper && selPaper._idx === paper._idx;
-                          const inlineCount = Object.entries(v.sciInlineComments).filter(([k]) => k.startsWith(`${paper._idx}-`)).flatMap(([, c]) => c).filter(c => !c.resolved).length;
-                          return (
-                            <div key={paper._idx} style={{ border: `1px solid ${isSel ? tc.color + '66' : 'rgba(26,45,107,0.12)'}`, borderLeft: `4px solid ${isRejected ? '#2c52cc' : isSel ? tc.color : tc.color}`, background: isSel ? `${tc.color}0d` : '#fff', marginBottom: 10, borderRadius: '0 6px 6px 0', transition: 'all 0.15s', boxShadow: isSel ? `0 2px 12px ${tc.color}18` : 'none' }}>
-                              {/* Clickable title row */}
-                              <div style={{ padding: '14px 16px', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: 10 }}
-                                onClick={() => v.setSciSelectedPaper(isSel ? null : paper)}>
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                  <div style={{ font: '700 15px/1.45 Plus Jakarta Sans', color: '#1a2d6b', marginBottom: 5 }}>{paper.title}</div>
-                                  <div style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{paper.journal} &middot; {paper.year}{paper.n ? ` · n=${paper.n.toLocaleString()}` : ''}</div>
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5, flexShrink: 0 }}>
-                                  {inlineCount > 0 && <span style={{ padding: '3px 8px', background: 'rgba(146,64,14,0.09)', border: '1px solid rgba(146,64,14,0.35)', font: '700 10.5px/1.5 Plus Jakarta Sans', color: '#92400e', borderRadius: 4 }}>{inlineCount} comment{inlineCount > 1 ? 's' : ''}</span>}
-                                  {isRejected && <span style={{ padding: '3px 8px', background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.35)', font: '700 10.5px/1.5 Plus Jakarta Sans', color: '#2c52cc', borderRadius: 4 }}>REJECTED</span>}
-                                  <span style={{ font: '600 12px/1 Plus Jakarta Sans', color: isSel ? tc.color : '#2d4a8a' }}>{isSel ? '← close' : 'open →'}</span>
-                                </div>
-                              </div>
-                              {/* Excerpt */}
-                              {paper.excerpt && (
-                                <div style={{ padding: '0 16px 12px', borderTop: '1px solid rgba(26,45,107,0.08)' }}>
-                                  <div style={{ paddingTop: 9, font: '600 13px/1.65 Plus Jakarta Sans', color: '#2d4a8a', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>"{paper.excerpt}"</div>
-                                </div>
-                              )}
-                              {/* Reject / comment row */}
-                              <div style={{ padding: '8px 16px 12px', display: 'flex', gap: 8, alignItems: 'center', borderTop: '1px solid rgba(26,45,107,0.08)' }}>
-                                <input
-                                  placeholder={isRejected ? 'Rejection reason (required)…' : 'Optional comment…'}
-                                  value={cmt.text || ''}
-                                  onChange={(e) => v.setSciComment(key, e.target.value)}
-                                  onClick={(e) => e.stopPropagation()}
-                                  style={{ flex: 1, background: '#f4f7fb', border: `1px solid ${isRejected ? 'rgba(44,82,204,0.4)' : 'rgba(26,45,107,0.14)'}`, color: '#1a2d6b', padding: '7px 11px', font: '600 13px/1 Plus Jakarta Sans', outline: 'none', borderRadius: 4 }}
-                                />
-                                <Box
-                                  css={`padding:7px 13px;font:700 12px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid rgba(44,82,204,0.45);color:${isRejected ? '#fff' : '#2c52cc'};background:${isRejected ? '#2c52cc' : 'transparent'};white-space:nowrap;border-radius:4px`}
-                                  hover="opacity:0.82"
-                                  onClick={(e) => { e.stopPropagation(); v.toggleSciReject(key); }}>
-                                  {isRejected ? '✕ Rejected' : '✕ Reject'}
-                                </Box>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ))}
-
-                    {/* Overall comment */}
-                    <div style={{ marginTop: 16, paddingTop: 18, borderTop: '2px solid rgba(26,45,107,0.1)' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V5z" fill="#2c52cc" fillOpacity="0.15" stroke="#2c52cc" strokeWidth="1.5" strokeLinejoin="round"/></svg>
-                        <span style={{ font: '800 11px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: '#1a2d6b' }}>OVERALL RESEARCH COMMENTARY</span>
-                      </div>
-                      <textarea
-                        rows={4}
-                        placeholder="Write your overall assessment of the research package — scientific rigour, evidence gaps, suitability for the intended audience, or any cross-paper observations…"
-                        value={v.sciOverallComment}
-                        onChange={(e) => v.setSciOverallComment(e.target.value)}
-                        style={{ width: '100%', resize: 'vertical', background: '#f4f7fb', border: '1.5px solid rgba(44,82,204,0.25)', borderRadius: 8, padding: '11px 14px', font: '600 13px/1.7 Plus Jakarta Sans', color: '#1a2d6b', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
-                        onFocus={(e) => { e.target.style.borderColor = 'rgba(44,82,204,0.6)'; }}
-                        onBlur={(e) => { e.target.style.borderColor = 'rgba(44,82,204,0.25)'; }}
-                      />
-                      {v.sciOverallComment.trim().length > 0 && (
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 }}>
-                          <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#2d4a8a' }}>{v.sciOverallComment.trim().length} characters</span>
-                          <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: '#166534', display: 'flex', alignItems: 'center', gap: 4 }}>
-                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#166534" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                            Saved
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Final CTA */}
-                    <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 9 }}>
-                      <div style={{ display: 'flex', gap: 9 }}>
-                        <Box css="flex:1;padding:13px 0;text-align:center;font:600 13px/1 Plus Jakarta Sans;border:1px solid var(--rule2);color:var(--dim);cursor:pointer" hover="background:var(--s2);color:var(--ink)">&#x2193; Download report</Box>
-                        <Box css="flex:2;padding:13px 0;text-align:center;font:700 13.5px/1 Plus Jakarta Sans;background:var(--ok);color:#fff;cursor:pointer" hover="opacity:0.87" onClick={v.sciApproveAll}>
-                          {rejectedCount > 0 ? `Send back · ${rejectedCount} rejection${rejectedCount > 1 ? 's' : ''} →` : 'Approve & finalise →'}
-                        </Box>
-                      </div>
-                      <Box
-                        css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;align-self:flex-start"
-                        hover="color:var(--ink);border-color:var(--ink)"
-                        onClick={v.goBack}
-                      >
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        Back to Inbox
-                      </Box>
                     </div>
                   </div>
                 </div>
 
-                {/* ═══ RIGHT: Paper Reader (stable module-level component) ═══ */}
-                {selPaper && (
-                  <SciPaperReader
-                    key={selPaper._idx}
-                    paper={selPaper}
-                    sciInlineComments={v.sciInlineComments}
-                    sciCommentDraft={v.sciCommentDraft}
-                    setSciSelectedPaper={v.setSciSelectedPaper}
-                    setSciCommentDraft={v.setSciCommentDraft}
-                    setSciCommentText={v.setSciCommentText}
-                    submitSciComment={v.submitSciComment}
-                    cancelSciComment={v.cancelSciComment}
-                    resolveSciComment={v.resolveSciComment}
-                  />
-                )}
+                {/* BODY */}
+                <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
+                  <div style={{ flex: 1, overflowY: 'auto', padding: '20px 40px 120px' }}>
+                    {sciGroups.map((group, gi) => {
+                      const isOpen = v.sciReviewGroupExpanded[group.key] === true;
+                      const groupRejected = group.papers.filter(p => comments[p._idx]?.rejected).length;
+                      return (
+                        <div key={group.key} style={{ marginBottom: 8, background: '#fff', borderRadius: '0 12px 12px 0', boxShadow: isOpen ? '0 2px 12px rgba(15,31,74,0.08)' : '0 1px 4px rgba(15,31,74,0.04)', border: `1px solid ${isOpen ? group.color + '40' : 'var(--rule2)'}`, borderLeft: `4px solid ${group.color}`, transition: 'all 0.2s', animation: `rise 0.22s ease both`, animationDelay: `${gi * 0.04}s` }}>
+                          <Box css={`display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;background:${isOpen ? group.color + '0a' : 'transparent'};border-radius:0 12px ${isOpen ? '0 0' : '12px 12px'};transition:background 0.15s`} hover={!isOpen ? `background:${group.color}08` : ''} onClick={() => v.toggleSciReviewGroup(group.key)}>
+                            <div style={{ width: 10, height: 10, borderRadius: '50%', background: group.color, flexShrink: 0, boxShadow: `0 0 0 3px ${group.color}25` }} />
+                            <span style={{ font: '700 13.5px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>{group.label}</span>
+                            <span style={{ padding: '2px 9px', font: '600 10px/1 Plus Jakarta Sans', borderRadius: 20, background: 'var(--s2)', color: 'var(--dim)', border: '1px solid var(--rule2)' }}>{group.papers.length} paper{group.papers.length !== 1 ? 's' : ''}</span>
+                            {groupRejected > 0 && <span style={{ padding: '2px 9px', font: '700 9px/1 Plus Jakarta Sans', borderRadius: 20, background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }}>{groupRejected} rejected</span>}
+                            <span style={{ color: 'var(--faint)', fontSize: 11, marginLeft: 'auto', width: 18, textAlign: 'center', transition: 'transform 0.2s', transform: `rotate(${isOpen ? 180 : 0}deg)` }}>▼</span>
+                          </Box>
+                          {isOpen && (
+                            <div style={{ padding: '12px 18px 16px', display: 'flex', flexDirection: 'column', borderTop: `1px solid ${group.color}25`, background: `${group.color}05`, animation: 'rise 0.18s ease', borderRadius: '0 0 12px 12px' }}>
+                              {group.papers.map(p => <React.Fragment key={p._idx}>{SciExcerptCard({ paper: p })}</React.Fragment>)}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {selPaper && SciDetailPanel({ paper: selPaper })}
+                </div>
+
+                {/* STICKY FOOTER */}
+                <div style={{ flexShrink: 0, borderTop: '1px solid var(--rule2)', background: '#fff', padding: '14px 40px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 -2px 12px rgba(15,31,74,0.06)' }}>
+                  {rejectedCount > 0
+                    ? <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#d97706" strokeWidth="1.4"/><path d="M8 5v3.5M8 10.5v.5" stroke="#d97706" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                          <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: '#92400e' }}>{rejectedCount} item{rejectedCount > 1 ? 's' : ''} rejected — Revert the rejection to approve</span>
+                        </div>
+                        <button disabled style={{ padding: '10px 22px', fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 700, color: '#94a3b8', background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 10, cursor: 'not-allowed' }}>Approve Research</button>
+                        <button onClick={v.doSciRejectResearch} style={{ padding: '10px 22px', fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#dc2626,#ef4444)', border: 'none', borderRadius: 10, cursor: 'pointer', boxShadow: '0 4px 14px rgba(220,38,38,0.3)', transition: 'opacity 0.15s' }} onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
+                          Reject & Send Back to MA →
+                        </button>
+                      </>
+                    : <>
+                        <button onClick={v.doSciRejectResearch} style={{ padding: '10px 22px', fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 700, color: '#dc2626', background: 'transparent', border: '1.5px solid #fecaca', borderRadius: 10, cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.background = '#fef2f2'; }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                          Reject Research
+                        </button>
+                        <button onClick={v.doSciApproveResearch} style={{ marginLeft: 'auto', padding: '10px 28px', fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#15803d,#16a34a)', border: 'none', borderRadius: 10, cursor: 'pointer', boxShadow: '0 4px 14px rgba(21,128,61,0.3)', transition: 'opacity 0.15s' }} onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
+                          ✓ Approve Research
+                        </button>
+                      </>
+                  }
+                </div>
+
+                {/* REJECT MODAL */}
+                {v.sciRejectModalPaper !== null && (() => {
+                  const mPaper = RESEARCH_PAPERS[v.sciRejectModalPaper];
+                  return (
+                    <div style={{ position: 'fixed', inset: 0, zIndex: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(12,26,61,0.55)', backdropFilter: 'blur(4px)', animation: 'fill 0.15s ease' }}
+                      onClick={(e) => { if (e.target === e.currentTarget) v.closeSciRejectModal(); }}>
+                      <div style={{ background: '#fff', borderRadius: 16, width: 440, boxShadow: '0 20px 60px rgba(12,26,61,0.22)', animation: 'fadeUp 0.2s cubic-bezier(0.22,1,0.36,1) both', overflow: 'hidden' }}>
+                        <div style={{ height: 4, background: 'linear-gradient(90deg,#dc2626,#ef4444)' }} />
+                        <div style={{ padding: '24px 26px' }}>
+                          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 6 }}>
+                            <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 16, fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em' }}>Reason for rejecting this item</div>
+                            <button onClick={v.closeSciRejectModal} style={{ background: 'none', border: '1px solid var(--rule2)', borderRadius: 6, width: 26, height: 26, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--faint)', flexShrink: 0 }}>
+                              <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                            </button>
+                          </div>
+                          {mPaper && <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, color: 'var(--faint)', marginBottom: 14, fontWeight: 600 }}>{mPaper.title}</div>}
+                          <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, color: 'var(--dim)', marginBottom: 12, fontWeight: 600 }}>Explain what's wrong so Medical Affairs knows what to revise.</div>
+                          <textarea
+                            autoFocus
+                            rows={4}
+                            placeholder="e.g. Grade F source can't support this clinical claim"
+                            value={v.sciRejectDraftReason}
+                            onChange={(e) => v.setSciRejectDraftReason(e.target.value)}
+                            style={{ width: '100%', resize: 'vertical', fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 600, color: 'var(--ink)', background: 'var(--s2)', border: '1.5px solid var(--rule2)', borderRadius: 8, padding: '11px 14px', outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s', marginBottom: 16 }}
+                            onFocus={e => { e.target.style.borderColor = '#dc2626'; e.target.style.background = '#fff'; }}
+                            onBlur={e => { e.target.style.borderColor = 'var(--rule2)'; e.target.style.background = 'var(--s2)'; }}
+                          />
+                          <div style={{ display: 'flex', gap: 10 }}>
+                            <button onClick={v.closeSciRejectModal} style={{ flex: 1, padding: '10px 0', fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: 'var(--dim)', background: 'var(--s2)', border: '1px solid var(--rule2)', borderRadius: 9, cursor: 'pointer', transition: 'background 0.15s' }} onMouseEnter={e => { e.currentTarget.style.background = '#e2e8f0'; }} onMouseLeave={e => { e.currentTarget.style.background = 'var(--s2)'; }}>Cancel</button>
+                            <button onClick={() => v.confirmSciReject(v.sciRejectModalPaper, v.sciRejectDraftReason)} disabled={!v.sciRejectDraftReason.trim()} style={{ flex: 1, padding: '10px 0', fontFamily: 'Plus Jakarta Sans', fontSize: 12.5, fontWeight: 700, color: '#fff', background: v.sciRejectDraftReason.trim() ? 'linear-gradient(135deg,#dc2626,#ef4444)' : '#e2e8f0', border: 'none', borderRadius: 9, cursor: v.sciRejectDraftReason.trim() ? 'pointer' : 'not-allowed', transition: 'opacity 0.15s', boxShadow: v.sciRejectDraftReason.trim() ? '0 4px 14px rgba(220,38,38,0.25)' : 'none' }} onMouseEnter={e => { if (v.sciRejectDraftReason.trim()) e.currentTarget.style.opacity = '0.88'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>Reject</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
 
               </div>
             );
@@ -7167,7 +7777,7 @@ export default class MedFactory extends React.Component {
               if (v.pipeCitationSort === 'title') return a.title.localeCompare(b.title);
               return 0;
             });
-            const relevanceColors = ['#4ade80','#4ade80','#fbbf24','#fb923c','#f87171','#f87171'];
+            const relevanceColors = ['#15803d','#15803d','#d97706','#ea580c','#dc2626','#dc2626'];
             return (
               <div
                 style={{ position: 'fixed', inset: 0, background: 'rgba(5,12,30,0.72)', zIndex: 325, display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 24px", backdropFilter: 'blur(6px)' }}
@@ -7277,9 +7887,9 @@ export default class MedFactory extends React.Component {
             const key = `${ce.title}-${ce.depth}`;
             const added = v.citeEvalAdded[key];
             const ART_COLORS_CE = { Deck: '#2563eb', Blog: '#d97706', Protocol: '#7c3aed', Blurb: '#dc2626', Facts: 'var(--dim)' };
-            const gradeColor = variant.grade.includes('High') ? '#22c55e' : variant.grade.includes('Moderate') ? '#f59e0b' : '#ef4444';
+            const gradeColor = variant.grade.includes('High') ? '#22c55e' : variant.grade.includes('Moderate') ? '#f59e0b' : '#dc2626';
             const relScore = variant.relevance;
-            const relColor = relScore >= 85 ? '#22c55e' : relScore >= 70 ? '#f59e0b' : '#ef4444';
+            const relColor = relScore >= 85 ? '#22c55e' : relScore >= 70 ? '#f59e0b' : '#dc2626';
             const canCite = ce.depth < 3;
             const mockViewPaper = { ...ce, type: 'Guideline', score: relScore, relevance: relScore, grade: variant.grade, citations: variant.citations, funding: 'Not disclosed on source page', statRigor: 'Not formally assessed (auto-evaluated)', appraisal: 'Auto-evaluated', designTier: variant.designTier, artifacts: variant.artifacts, track: variant.tracks[0] || '', excerpt: variant.excerpt, excerptSrc: `${ce.journal}, ${ce.year}`, _idx: -1 };
             return (
