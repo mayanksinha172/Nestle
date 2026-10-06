@@ -1194,7 +1194,14 @@ export default class MedFactory extends React.Component {
   /* ---------- role & approval methods ---------- */
 
   enterRole = (role) => {
-    const screen = role === 'creator' ? 'dash' : role === 'sci' ? 'sci-dash' : 'dash';
+    let screen;
+    if (role === 'creator') {
+      screen = this.state.pptStatus === 'ma-approved' ? 'med-review' : 'dash';
+    } else if (role === 'sci') {
+      screen = 'sci-dash';
+    } else {
+      screen = 'dash';
+    }
     window.history.pushState({ screen }, '');
     this.setState({ role, screen, notifOpen: false, openPin: null, pendingPin: null });
   };
@@ -1360,7 +1367,7 @@ export default class MedFactory extends React.Component {
 
   maApprove = () => {
     this.setState((s) => ({
-      pptStatus: 'ma-approved', screen: 'dash',
+      pptStatus: 'ma-approved', screen: 'med-review',
       createdWorkspaces: s.createdWorkspaces.map((w) =>
         w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'ma-approved' } : w
       ),
@@ -1371,7 +1378,7 @@ export default class MedFactory extends React.Component {
   maSendBack = () => {
     const total = Object.values(this.state.maComments).reduce((a, arr) => a + arr.length, 0);
     this.setState((s) => ({
-      pptStatus: 'ma-rejected', screen: 'dash', sendBackOpen: false, sendBackNote: '',
+      pptStatus: 'ma-rejected', screen: 'med-review', sendBackOpen: false, sendBackNote: '',
       createdWorkspaces: s.createdWorkspaces.map((w) =>
         w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'ma-rejected' } : w
       ),
@@ -2763,7 +2770,7 @@ export default class MedFactory extends React.Component {
         return [...liveItems, ...hist].map((r) => ({
           ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status),
           open: r.live && r.status === 'sent-to-ma' ? () => {
-            this.setState({ activeWorkspaceId: r.id }, () => this.go('ma-review'));
+            this.setState({ activeWorkspaceId: r.id, pptStatus: r.status }, () => this.go('ma-review'));
           } : null,
         }));
       })(),
@@ -2786,7 +2793,7 @@ export default class MedFactory extends React.Component {
         return [...liveItems, ...hist].map((r) => ({
           ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status),
           open: r.live && ['ma-approved', 'sent-to-sci'].includes(r.status) ? () => {
-            this.setState({ activeWorkspaceId: r.id }, () => this.go('sci-review'));
+            this.setState({ activeWorkspaceId: r.id, pptStatus: r.status }, () => this.go('sci-review'));
           } : null,
         }));
       })(),
@@ -3697,7 +3704,7 @@ export default class MedFactory extends React.Component {
                                   <Box
                                     css="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;font:700 10px/1 Plus Jakarta Sans;color:var(--acc);border:1px solid rgba(44,82,204,0.25);border-radius:6px;cursor:pointer;background:rgba(44,82,204,0.06);flex-shrink:0"
                                     hover="background:rgba(44,82,204,0.12)"
-                                    onClick={() => { v.setWsActiveResearch(r.id); this.setState((s) => ({ wsResearches: s.wsResearches.map(x => x.id === r.id ? { ...x, status: 'in-progress' } : x) }), () => this.go('section-select')); }}
+                                    onClick={() => { v.setWsActiveResearch(r.id); this.setState((s) => ({ wsResearches: s.wsResearches.map(x => x.id === r.id ? { ...x, status: 'in-progress' } : x), pptStatus: 'draft', sciReviewSent: false, sciReviewConfirmOpen: false, acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {}, sciInlineComments: {}, maComments: {}, sciComments: {}, organizeArtifactAssignments: {}, organizeTrackAssignments: {}, createdWorkspaces: s.createdWorkspaces.map(w => w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'draft' } : w) }), () => this.go('section-select')); }}
                                   >
                                     <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><path d="M1 1l6 4-6 4V1z" fill="currentColor"/></svg>
                                     Run
