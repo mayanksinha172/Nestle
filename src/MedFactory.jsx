@@ -5688,7 +5688,8 @@ export default class MedFactory extends React.Component {
                         const trackPapers = acceptedList.filter((p) => {
                           if (!track.paperTracks.includes(p.track)) return false;
                           const assignments = v.getExcerptArtifacts(p._idx);
-                          return ALL_ARTIFACTS.some(a => v.organizeArtifactFilter[a] && assignments[a]);
+                          const paperArts = ALL_ARTIFACTS.filter(a => assignments[a]);
+                          return paperArts.length > 0 && paperArts.every(a => v.organizeArtifactFilter[a]);
                         });
                         const customHere = v.customExcerpts.filter((e) => e.tracks.includes(track.id) && e.artifacts && e.artifacts.some(a => v.organizeArtifactFilter[a]));
                         const figuresHere = v.confirmedFigures.filter((f) => f.tracks.includes(track.id));
@@ -5798,8 +5799,9 @@ export default class MedFactory extends React.Component {
                         if (!v.organizeArtifactFilter[art]) return null;
                         const artPapers = acceptedList.filter((p) => {
                           const assignments = v.getExcerptArtifacts(p._idx);
-                          const inArt = assignments[art];
-                          if (!inArt) return false;
+                          if (!assignments[art]) return false;
+                          const paperArts = ALL_ARTIFACTS.filter(a => assignments[a]);
+                          if (!paperArts.every(a => v.organizeArtifactFilter[a])) return false;
                           if (v.organizeArtifactTrackFilter !== 'All') {
                             const track = CONTENT_TRACKS.find(t => t.label === v.organizeArtifactTrackFilter);
                             if (!track || !track.paperTracks?.includes(p.track)) return false;
