@@ -1329,28 +1329,74 @@ export default class MedFactory extends React.Component {
     }));
   };
 
-  sendToMA = () => { this.setState({ pptStatus: 'sent-to-ma' }); };
-  resubmitToMA = () => { this.setState({ pptStatus: 'sent-to-ma' }); this.addNotification('Revised deck resubmitted to Medical Affairs', 'You'); };
+  /* Update both global pptStatus and the per-workspace pptStatus */
+  _syncWsPptStatus = (status) => {
+    const id = this.state.activeWorkspaceId;
+    if (!id) return {};
+    return {
+      createdWorkspaces: this.state.createdWorkspaces.map((w) =>
+        w.id === id ? { ...w, pptStatus: status } : w
+      ),
+    };
+  };
+
+  sendToMA = () => {
+    this.setState((s) => ({
+      pptStatus: 'sent-to-ma',
+      createdWorkspaces: s.createdWorkspaces.map((w) =>
+        w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'sent-to-ma', submittedAt: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) } : w
+      ),
+    }));
+  };
+  resubmitToMA = () => {
+    this.setState((s) => ({
+      pptStatus: 'sent-to-ma',
+      createdWorkspaces: s.createdWorkspaces.map((w) =>
+        w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'sent-to-ma' } : w
+      ),
+    }));
+    this.addNotification('Revised deck resubmitted to Medical Affairs', 'You');
+  };
 
   maApprove = () => {
-    this.setState({ pptStatus: 'ma-approved', screen: 'ma-dash' });
+    this.setState((s) => ({
+      pptStatus: 'ma-approved', screen: 'dash',
+      createdWorkspaces: s.createdWorkspaces.map((w) =>
+        w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'ma-approved' } : w
+      ),
+    }));
     this.addNotification('Medical Affairs approved — deck now awaiting Scientific Review', 'Dr. Priya Nair');
   };
 
   maSendBack = () => {
     const total = Object.values(this.state.maComments).reduce((a, arr) => a + arr.length, 0);
-    this.setState({ pptStatus: 'ma-rejected', screen: 'ma-dash', sendBackOpen: false, sendBackNote: '' });
+    this.setState((s) => ({
+      pptStatus: 'ma-rejected', screen: 'dash', sendBackOpen: false, sendBackNote: '',
+      createdWorkspaces: s.createdWorkspaces.map((w) =>
+        w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'ma-rejected' } : w
+      ),
+    }));
     this.addNotification(`Medical Affairs sent back with ${total} comment${total !== 1 ? 's' : ''} — revision required`, 'Dr. Priya Nair');
   };
 
   sciApprove = () => {
-    this.setState({ pptStatus: 'sci-approved', screen: 'sci-dash' });
+    this.setState((s) => ({
+      pptStatus: 'sci-approved', screen: 'sci-dash',
+      createdWorkspaces: s.createdWorkspaces.map((w) =>
+        w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'sci-approved' } : w
+      ),
+    }));
     this.addNotification('Scientific Review approved — deck is fully approved and ready to publish', 'Dr. Arjun Mehta');
   };
 
   sciSendBack = () => {
     const total = Object.values(this.state.sciComments).reduce((a, arr) => a + arr.length, 0);
-    this.setState({ pptStatus: 'sci-rejected', screen: 'sci-dash', sendBackOpen: false, sendBackNote: '' });
+    this.setState((s) => ({
+      pptStatus: 'sci-rejected', screen: 'sci-dash', sendBackOpen: false, sendBackNote: '',
+      createdWorkspaces: s.createdWorkspaces.map((w) =>
+        w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'sci-rejected' } : w
+      ),
+    }));
     this.addNotification(`Scientific Review sent back with ${total} comment${total !== 1 ? 's' : ''} — changes required`, 'Dr. Arjun Mehta');
   };
 
@@ -2144,8 +2190,8 @@ export default class MedFactory extends React.Component {
       sciReviewGroupExpanded: st.sciReviewGroupExpanded,
       toggleSciReviewGroup: (key) => this.setState((s) => ({ sciReviewGroupExpanded: { ...s.sciReviewGroupExpanded, [key]: !s.sciReviewGroupExpanded[key] } })),
       expandAllSciGroups: (keys) => this.setState({ sciReviewGroupExpanded: Object.fromEntries(keys.map(k => [k, true])) }),
-      doSciApproveResearch: () => this.setState({ pptStatus: 'sci-approved', screen: 'sci-dash' }),
-      doSciRejectResearch: () => this.setState({ pptStatus: 'sci-rejected', screen: 'sci-dash' }),
+      doSciApproveResearch: () => this.sciApprove(),
+      doSciRejectResearch: () => this.sciSendBack(),
       sciReviewTab: st.sciReviewTab,
       setSciReviewTab: (t) => this.setState({ sciReviewTab: t }),
       sciChatInput: st.sciChatInput,
@@ -2334,26 +2380,36 @@ export default class MedFactory extends React.Component {
       skipToHub: () => {
         const id = Date.now();
         const ws = {
-          id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
+          id, name: st.workspaceName.trim() || st.topic, topic: st.topic, heroProduct: st.heroProduct,
           status: 'Research in Progress', created: 'Today', to: 'workspace-hub', dotColor: '#6d28d9',
+          pptStatus: 'draft', submittedAt: null,
         };
         this.setState((s) => ({
           createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
           wsResearches: [], wsActiveResearch: null, sidebarExpandedWs: id,
           wsModal: null, wsResearchModalName: '',
+          pptStatus: 'draft', sciReviewSent: false, sciReviewConfirmOpen: false,
+          acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {},
+          sciInlineComments: {}, maComments: {}, sciComments: {},
+          organizeArtifactAssignments: {}, organizeTrackAssignments: {},
         }), () => this.go('workspace-hub'));
       },
       skipToHubWithModal: () => {
         const id = Date.now();
         const ws = {
-          id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
+          id, name: st.workspaceName.trim() || st.topic, topic: st.topic, heroProduct: st.heroProduct,
           status: 'Research in Progress', created: 'Today', to: 'workspace-hub', dotColor: '#6d28d9',
+          pptStatus: 'draft', submittedAt: null,
         };
         this.setState((s) => ({
           createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
           wsResearches: [], wsActiveResearch: null, sidebarExpandedWs: id,
           wsModal: 'create-research',
           wsResearchModalName: `research-${Date.now().toString(36).slice(-5)}`,
+          pptStatus: 'draft', sciReviewSent: false, sciReviewConfirmOpen: false,
+          acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {},
+          sciInlineComments: {}, maComments: {}, sciComments: {},
+          organizeArtifactAssignments: {}, organizeTrackAssignments: {},
         }), () => this.go('workspace-hub'));
       },
       wsResearches: st.wsResearches,
@@ -2552,13 +2608,18 @@ export default class MedFactory extends React.Component {
         }
         const id = Date.now();
         const ws = {
-          id, name: st.workspaceName.trim() || st.topic, topic: st.topic,
+          id, name: st.workspaceName.trim() || st.topic, topic: st.topic, heroProduct: st.heroProduct,
           status: 'Research in Progress', created: 'Today', to: 'research', dotColor: '#6d28d9',
+          pptStatus: 'draft', submittedAt: null,
         };
         const r1 = { id: 1, name: 'Research 1', status: 'in-progress', artifacts: [] };
         this.setState((s) => ({
           createdWorkspaces: [ws, ...s.createdWorkspaces], activeWorkspaceId: id,
           wsResearches: [r1], wsActiveResearch: 1, sidebarExpandedWs: id,
+          pptStatus: 'draft', sciReviewSent: false, sciReviewConfirmOpen: false,
+          acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {},
+          sciInlineComments: {}, maComments: {}, sciComments: {},
+          organizeArtifactAssignments: {}, organizeTrackAssignments: {},
         }), () => this.go('research'));
       },
 
@@ -2617,7 +2678,12 @@ export default class MedFactory extends React.Component {
       sciReviewConfirmOpen: st.sciReviewConfirmOpen,
       openSciReviewConfirm: () => this.setState({ sciReviewConfirmOpen: true }),
       closeSciReviewConfirm: () => this.setState({ sciReviewConfirmOpen: false }),
-      sendToSciReview: () => this.setState({ pptStatus: 'sent-to-sci', sciReviewSent: true, sciReviewConfirmOpen: false }),
+      sendToSciReview: () => this.setState((s) => ({
+        pptStatus: 'sent-to-sci', sciReviewSent: true, sciReviewConfirmOpen: false,
+        createdWorkspaces: s.createdWorkspaces.map((w) =>
+          w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'sent-to-sci' } : w
+        ),
+      })),
       sciReviewSent: st.sciReviewSent,
       doSciApprove: () => this.sciApprove(),
 
@@ -2679,36 +2745,49 @@ export default class MedFactory extends React.Component {
       switchToMyComments: () => this.setState({ tab: 'edit' }),
       switchToMAComments: () => this.setState({ tab: 'instr' }),
 
-      /* ---------- MA inbox ---------- */
+      /* ---------- MA inbox (dynamic from createdWorkspaces) ---------- */
       maInbox: (() => {
-        const live = { topic: st.topic, by: 'Mayank Gupta', date: '2 Sep · 09:41', status: st.pptStatus, live: true };
+        const statusLabel = (s) => ({ 'sent-to-ma': 'Pending Review', 'ma-rejected': 'Sent Back', 'ma-approved': 'Approved', 'sent-to-sci': 'Sci Review', 'sci-rejected': 'Sci Sent Back', 'sci-approved': 'Fully Approved', 'draft': 'Draft' }[s] || s);
+        const statusColor = (s) => s === 'sent-to-ma' ? 'var(--acc)' : s === 'ma-rejected' ? 'var(--warn)' : 'var(--ok)';
+        const liveItems = st.createdWorkspaces
+          .filter((w) => w.pptStatus && w.pptStatus !== 'draft')
+          .map((w) => ({
+            id: w.id, topic: w.topic, by: 'Mayank Gupta',
+            date: w.submittedAt ? `Today · ${w.submittedAt}` : 'Today',
+            status: w.pptStatus, live: true, heroProduct: w.heroProduct,
+          }));
         const hist = [
           { topic: 'NASH / MASH — emerging therapeutic options', by: 'Mayank Gupta', date: '1 Sep · 14:12', status: 'ma-approved', live: false },
           { topic: 'Obesity and cardiometabolic risk reduction', by: 'Mayank Gupta', date: '31 Aug · 11:05', status: 'ma-rejected', live: false },
         ];
-        const all = st.pptStatus !== 'draft' ? [live, ...hist] : hist;
-        const statusLabel = (s) => ({ 'sent-to-ma': 'Pending Review', 'ma-rejected': 'Sent Back', 'ma-approved': 'Approved', 'sent-to-sci': 'Approved', 'sci-rejected': 'Approved', 'sci-approved': 'Approved', 'draft': 'Draft' }[s] || s);
-        const statusColor = (s) => s === 'sent-to-ma' ? 'var(--acc)' : s === 'ma-rejected' ? 'var(--warn)' : 'var(--ok)';
-        return all.map((r) => ({
-          ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status), isLive: r.live,
-          open: r.live && r.status === 'sent-to-ma' ? () => this.go('ma-review') : null,
+        return [...liveItems, ...hist].map((r) => ({
+          ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status),
+          open: r.live && r.status === 'sent-to-ma' ? () => {
+            this.setState({ activeWorkspaceId: r.id }, () => this.go('ma-review'));
+          } : null,
         }));
       })(),
 
-      /* ---------- Sci inbox ---------- */
+      /* ---------- Sci inbox (dynamic from createdWorkspaces) ---------- */
       sciInbox: (() => {
-        const unlocked = ['ma-approved', 'sent-to-sci', 'sci-rejected', 'sci-approved'].includes(st.pptStatus);
-        const live = { topic: st.topic, by: 'Mayank Gupta', date: '2 Sep · MA approved 14:26', status: st.pptStatus, live: true };
+        const statusLabel = (s) => ({ 'ma-approved': 'Pending Review', 'sent-to-sci': 'Pending Review', 'sci-rejected': 'Sent Back', 'sci-approved': 'Approved' }[s] || 'Approved');
+        const statusColor = (s) => ['ma-approved', 'sent-to-sci'].includes(s) ? 'var(--acc)' : s === 'sci-rejected' ? 'var(--warn)' : 'var(--ok)';
+        const liveItems = st.createdWorkspaces
+          .filter((w) => ['ma-approved', 'sent-to-sci', 'sci-rejected', 'sci-approved'].includes(w.pptStatus))
+          .map((w) => ({
+            id: w.id, topic: w.topic, by: 'Mayank Gupta',
+            date: 'Today · MA approved',
+            status: w.pptStatus, live: true, heroProduct: w.heroProduct,
+          }));
         const hist = [
           { topic: 'Semaglutide CV outcomes — SELECT readout', by: 'Mayank Gupta', date: '26 Aug · 16:03', status: 'sci-approved', live: false },
           { topic: 'NASH / MASH — emerging therapeutic options', by: 'Mayank Gupta', date: '25 Aug · 09:44', status: 'sci-approved', live: false },
         ];
-        const all = unlocked ? [live, ...hist] : hist;
-        const statusLabel = (s) => ({ 'ma-approved': 'Pending Review', 'sci-rejected': 'Sent Back', 'sci-approved': 'Approved' }[s] || 'Approved');
-        const statusColor = (s) => s === 'ma-approved' ? 'var(--acc)' : s === 'sci-rejected' ? 'var(--warn)' : 'var(--ok)';
-        return all.map((r) => ({
-          ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status), isLive: r.live,
-          open: r.live && r.status === 'ma-approved' ? () => this.go('sci-review') : null,
+        return [...liveItems, ...hist].map((r) => ({
+          ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status),
+          open: r.live && ['ma-approved', 'sent-to-sci'].includes(r.status) ? () => {
+            this.setState({ activeWorkspaceId: r.id }, () => this.go('sci-review'));
+          } : null,
         }));
       })(),
 
@@ -3144,7 +3223,81 @@ export default class MedFactory extends React.Component {
         <main style={S('flex:1;min-width:0;overflow-y:auto;position:relative;background:var(--bg)')}>
 
           {/* ============ 1 · DASHBOARD ============ */}
-          {v.isDash && (
+          {v.isDash && v.isMA && (() => {
+            const pending = v.maInbox.filter((r) => r.live && r.status === 'sent-to-ma');
+            const all = v.maInbox;
+            const slabel = (s) => ({ 'sent-to-ma': 'Pending Review', 'ma-rejected': 'Sent Back', 'ma-approved': 'Approved', 'sent-to-sci': 'Sci Review', 'sci-rejected': 'Sci Sent Back', 'sci-approved': 'Fully Approved' }[s] || s);
+            const scolor = (s) => s === 'sent-to-ma' ? '#b45309' : s === 'ma-rejected' ? '#dc2626' : '#15803d';
+            const sbg = (s) => s === 'sent-to-ma' ? 'rgba(180,83,9,0.08)' : s === 'ma-rejected' ? 'rgba(220,38,38,0.08)' : 'rgba(21,128,61,0.08)';
+            return (
+              <div style={{ padding: '40px 48px', minHeight: '100%', animation: 'fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both' }}>
+                {/* Header */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 32 }}>
+                  <div>
+                    <div style={{ font: '700 9.5px/1 Plus Jakarta Sans', letterSpacing: '0.16em', color: 'var(--warn)', marginBottom: 10 }}>MEDICAL AFFAIRS INBOX</div>
+                    <h1 style={{ font: '800 28px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', margin: '0 0 8px' }}>Welcome, Dr. Priya Nair</h1>
+                    <div style={{ font: '400 13.5px/1 Plus Jakarta Sans', color: 'var(--dim)' }}>Lead Medical Affairs Reviewer</div>
+                  </div>
+                  {pending.length > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--warn)', animation: 'puls 1.4s infinite' }} />
+                      <span style={{ font: '600 10px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--warn)' }}>{pending.length} DECK{pending.length > 1 ? 'S' : ''} AWAITING REVIEW</span>
+                    </div>
+                  )}
+                </div>
+                {/* Stats */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', border: '1px solid var(--rule2)', marginBottom: 32 }}>
+                  {[
+                    { label: 'AWAITING REVIEW', value: String(pending.length), color: 'var(--warn)', delta: pending.length > 0 ? 'Submitted today' : 'All clear' },
+                    { label: 'APPROVED THIS MONTH', value: String(all.filter(r => r.status === 'ma-approved' || r.status === 'sci-approved').length), color: 'var(--ok)', delta: 'Running total' },
+                    { label: 'SENT BACK', value: String(all.filter(r => r.status === 'ma-rejected').length), color: 'var(--acc)', delta: 'Awaiting revision' },
+                  ].map((s2, i) => (
+                    <div key={i} style={{ padding: '22px 28px', borderRight: i < 2 ? '1px solid var(--rule2)' : 'none', background: 'var(--s1)' }}>
+                      <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: s2.color, marginBottom: 12 }}>{s2.label}</div>
+                      <div style={{ font: '800 36px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', marginBottom: 6 }}>{s2.value}</div>
+                      <div style={{ font: '400 11.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{s2.delta}</div>
+                    </div>
+                  ))}
+                </div>
+                {/* Inbox list */}
+                <div style={{ font: '700 11px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--faint)', marginBottom: 14 }}>ALL SUBMISSIONS</div>
+                {all.length === 0 && (
+                  <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--faint)', font: '600 13px/1.5 Plus Jakarta Sans' }}>
+                    No submissions yet. Waiting for Creator to send a workspace for review.
+                  </div>
+                )}
+                {all.map((r, ri) => (
+                  <div key={ri} style={{ border: `1px solid ${r.status === 'sent-to-ma' ? 'var(--warn)' : 'var(--rule2)'}`, borderLeft: `3px solid ${scolor(r.status)}`, background: 'var(--s1)', marginBottom: 12, animation: `cardIn 0.3s ease both`, animationDelay: `${ri * 0.06}s` }}>
+                    <div style={{ padding: '18px 24px', display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+                      <div style={{ flexShrink: 0, width: 44, height: 44, background: scolor(r.status), display: 'grid', placeItems: 'center', font: '700 16px/1 Plus Jakarta Sans', color: '#fff', borderRadius: 8 }}>D</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ font: '800 15px/1.3 Plus Jakarta Sans', letterSpacing: '-0.01em', marginBottom: 4 }}>{r.topic || 'Untitled Workspace'}</div>
+                        <div style={{ font: '500 12px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{r.by} · {r.date}</div>
+                      </div>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 10px', background: sbg(r.status), border: `1px solid ${scolor(r.status)}44`, borderRadius: 20, marginBottom: 8 }}>
+                          {r.status === 'sent-to-ma' && <div style={{ width: 6, height: 6, borderRadius: '50%', background: scolor(r.status), animation: 'puls 1.2s infinite' }} />}
+                          <span style={{ font: '700 10px/1 Plus Jakarta Sans', color: scolor(r.status) }}>{slabel(r.status)}</span>
+                        </div>
+                        {r.open && (
+                          <div>
+                            <button
+                              onClick={r.open}
+                              style={{ display: 'block', padding: '8px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,var(--warn),#d97706)', border: 'none', borderRadius: 8, cursor: 'pointer', boxShadow: '0 2px 8px rgba(180,83,9,0.25)', transition: 'opacity 0.15s' }}
+                              onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; }}
+                              onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+                            >Open for Review →</button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
+
+          {v.isDash && !v.isMA && (
             <div style={S('display:flex;min-height:100%')}>
               <div style={S('flex:1;min-width:0')}>
                 {/* rejection alert for creator */}
@@ -7461,17 +7614,11 @@ export default class MedFactory extends React.Component {
 
           {/* ============ SCI DASHBOARD ============ */}
           {v.isSciDash && (() => {
-            const deck = {
-              topic: 'Type 2 Diabetes — GLP-1 RA landscape',
-              product: 'Ozempic® (Semaglutide)',
-              submittedBy: 'Mayank Gupta (Medical Affairs)',
-              submittedAt: 'Today · 14:32',
-              papers: 12,
-              excerpts: 47,
-              artifacts: 5,
-              maQuality: 78,
-              status: 'Awaiting scientific review',
-            };
+            const pending = v.sciInbox.filter((r) => r.live && ['ma-approved', 'sent-to-sci'].includes(r.status));
+            const all = v.sciInbox;
+            const slabel = (s) => ({ 'ma-approved': 'Pending Review', 'sent-to-sci': 'Pending Review', 'sci-rejected': 'Sent Back', 'sci-approved': 'Approved' }[s] || s);
+            const scolor = (s) => ['ma-approved', 'sent-to-sci'].includes(s) ? '#15803d' : s === 'sci-rejected' ? '#dc2626' : '#15803d';
+            const sbg = (s) => ['ma-approved', 'sent-to-sci'].includes(s) ? 'rgba(21,128,61,0.08)' : s === 'sci-rejected' ? 'rgba(220,38,38,0.08)' : 'rgba(21,128,61,0.08)';
             return (
               <div style={S('padding:40px 48px;min-height:100%;animation:fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both')}>
                 {/* Header */}
@@ -7479,97 +7626,66 @@ export default class MedFactory extends React.Component {
                   <div>
                     <div style={S('font:700 9.5px/1 Plus Jakarta Sans;letter-spacing:0.16em;color:var(--ok);margin-bottom:10px')}>SCIENTIFIC REVIEW HUB</div>
                     <h1 style={S('font:800 28px/1 Plus Jakarta Sans;letter-spacing:-0.03em;margin:0 0 8px')}>Welcome, Dr. Arjun Mehta</h1>
-                    <div style={S('font:400 13.5px/1 Plus Jakarta Sans;color:var(--dim)')}>Scientific Adviser · September 2026</div>
+                    <div style={S('font:400 13.5px/1 Plus Jakarta Sans;color:var(--dim)')}>Scientific Adviser</div>
                   </div>
-                  <div style={S('display:flex;align-items:center;gap:10px')}>
-                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--ok)', animation: 'puls 1.4s infinite' }} />
-                    <span style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--ok)')}>1 DECK AWAITING REVIEW</span>
-                  </div>
+                  {pending.length > 0 && (
+                    <div style={S('display:flex;align-items:center;gap:10px')}>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--ok)', animation: 'puls 1.4s infinite' }} />
+                      <span style={S('font:600 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--ok)')}>{pending.length} DECK{pending.length > 1 ? 'S' : ''} AWAITING REVIEW</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Stats row */}
                 <div style={S('display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule2);margin-bottom:32px')}>
                   {[
-                    { label: 'AWAITING REVIEW', value: '1', color: 'var(--warn)', delta: 'Submitted today' },
-                    { label: 'APPROVED THIS MONTH', value: '3', color: 'var(--ok)', delta: '+1 vs August' },
-                    { label: 'SENT BACK', value: '1', color: 'var(--acc)', delta: 'Avg 1.2 days to resubmit' },
-                  ].map((s, i) => (
+                    { label: 'AWAITING REVIEW', value: String(pending.length), color: 'var(--warn)', delta: pending.length > 0 ? 'Submitted today' : 'All clear' },
+                    { label: 'APPROVED THIS MONTH', value: String(all.filter(r => r.status === 'sci-approved').length), color: 'var(--ok)', delta: 'Running total' },
+                    { label: 'SENT BACK', value: String(all.filter(r => r.status === 'sci-rejected').length), color: 'var(--acc)', delta: 'Awaiting revision' },
+                  ].map((s2, i) => (
                     <div key={i} style={{ padding: '22px 28px', borderRight: i < 2 ? '1px solid var(--rule2)' : 'none', background: 'var(--s1)' }}>
-                      <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: s.color, marginBottom: 12 }}>{s.label}</div>
-                      <div style={{ font: '800 36px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', marginBottom: 6 }}>{s.value}</div>
-                      <div style={S('font:400 11.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{s.delta}</div>
+                      <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: s2.color, marginBottom: 12 }}>{s2.label}</div>
+                      <div style={{ font: '800 36px/1 Plus Jakarta Sans', letterSpacing: '-0.03em', marginBottom: 6 }}>{s2.value}</div>
+                      <div style={S('font:400 11.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{s2.delta}</div>
                     </div>
                   ))}
                 </div>
 
-                {/* Pending deck card */}
-                <div style={S('font:700 11px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint);margin-bottom:14px')}>PENDING YOUR REVIEW</div>
-                <div style={S('border:1px solid var(--rule2);border-left:3px solid var(--ok);background:var(--s1);animation:cardIn 0.4s ease both;animation-delay:0.1s')}>
-                  {/* Deck header */}
-                  <div style={S('padding:18px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:16px')}>
-                    <div style={{ flexShrink: 0, width: 44, height: 44, background: 'var(--ok)', display: 'grid', placeItems: 'center', font: '700 16px/1 Plus Jakarta Sans', color: '#fff' }}>D</div>
-                    <div style={S('flex:1;min-width:0')}>
-                      <div style={S('font:800 16px/1.3 Plus Jakarta Sans;letter-spacing:-0.01em;margin-bottom:5px')}>{deck.topic}</div>
-                      <div style={S('font:500 12px/1 Plus Jakarta Sans;color:var(--faint)')}>{deck.product}</div>
+                {/* Inbox list */}
+                <div style={S('font:700 11px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--faint);margin-bottom:14px')}>ALL SUBMISSIONS</div>
+                {all.length === 0 && (
+                  <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--faint)', font: '600 13px/1.5 Plus Jakarta Sans' }}>
+                    No submissions yet. Awaiting MA approval before scientific review begins.
+                  </div>
+                )}
+                {all.map((r, ri) => (
+                  <div key={ri} style={{ border: `1px solid ${['ma-approved','sent-to-sci'].includes(r.status) ? 'rgba(21,128,61,0.35)' : 'var(--rule2)'}`, borderLeft: `3px solid ${scolor(r.status)}`, background: 'var(--s1)', marginBottom: 12, animation: `cardIn 0.3s ease both`, animationDelay: `${ri * 0.06}s` }}>
+                    <div style={{ padding: '18px 24px', display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+                      <div style={{ flexShrink: 0, width: 44, height: 44, background: scolor(r.status), display: 'grid', placeItems: 'center', font: '700 16px/1 Plus Jakarta Sans', color: '#fff', borderRadius: 8 }}>D</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ font: '800 15px/1.3 Plus Jakarta Sans', letterSpacing: '-0.01em', marginBottom: 4 }}>{r.topic || 'Untitled Workspace'}</div>
+                        <div style={{ font: '500 12px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{r.by} · {r.date}</div>
+                        {r.heroProduct && <div style={{ font: '500 11.5px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 3 }}>{r.heroProduct}</div>}
+                      </div>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 10px', background: sbg(r.status), border: `1px solid ${scolor(r.status)}44`, borderRadius: 20, marginBottom: 8 }}>
+                          {['ma-approved','sent-to-sci'].includes(r.status) && <div style={{ width: 6, height: 6, borderRadius: '50%', background: scolor(r.status), animation: 'puls 1.2s infinite' }} />}
+                          <span style={{ font: '700 10px/1 Plus Jakarta Sans', color: scolor(r.status) }}>{slabel(r.status)}</span>
+                        </div>
+                        {r.open && (
+                          <div>
+                            <button
+                              onClick={r.open}
+                              style={{ display: 'block', padding: '8px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#15803d,#16a34a)', border: 'none', borderRadius: 8, cursor: 'pointer', boxShadow: '0 2px 8px rgba(21,128,61,0.25)', transition: 'opacity 0.15s' }}
+                              onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; }}
+                              onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+                            >Open for Review →</button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div style={S('text-align:right;flex:none')}>
-                      <div style={S('display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-bottom:6px')}>
-                        <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--warn)', animation: 'puls 1.2s infinite' }} />
-                        <span style={S('font:700 10px/1 Plus Jakarta Sans;letter-spacing:0.1em;color:var(--warn)')}>AWAITING REVIEW</span>
-                      </div>
-                      <div style={S('font:500 10.5px/1 Plus Jakarta Sans;color:var(--faint)')}>{deck.submittedAt}</div>
-                    </div>
                   </div>
-
-                  {/* Metadata grid */}
-                  <div style={S('display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--rule)')}>
-                    {[
-                      { label: 'SUBMITTED BY', value: deck.submittedBy },
-                      { label: 'PAPERS', value: `${deck.papers} accepted` },
-                      { label: 'EXCERPTS', value: `${deck.excerpts} across 5 artifacts` },
-                      { label: 'MA QUALITY SCORE', value: `${deck.maQuality}/100`, color: 'var(--warn)' },
-                    ].map((m, i) => (
-                      <div key={i} style={{ padding: '12px 18px', borderRight: i < 3 ? '1px solid var(--rule)' : 'none' }}>
-                        <div style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-bottom:5px')}>{m.label}</div>
-                        <div style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: m.color || 'var(--ink)' }}>{m.value}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Artifact pills */}
-                  <div style={S('padding:12px 24px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px;flex-wrap:wrap')}>
-                    <span style={S('font:600 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint);margin-right:4px')}>ARTIFACTS</span>
-                    {[
-                      { name: 'HCP Deck', q: 89, color: '#1d4ed8' },
-                      { name: 'Blog', q: 100, color: '#ea580c' },
-                      { name: 'Protocol', q: 74, color: '#15803d' },
-                      { name: 'Blurb ×5', q: 33, color: '#dc2626' },
-                      { name: 'Fact Sheet', q: 100, color: '#6d28d9' },
-                    ].map((a) => (
-                      <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', border: `1px solid ${a.color}44`, background: `${a.color}0d` }}>
-                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: a.q >= 80 ? 'var(--ok)' : a.q >= 50 ? 'var(--warn)' : 'var(--acc)' }} />
-                        <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: a.color }}>{a.name}</span>
-                        <span style={S('font:500 10px/1 var(--mono);color:var(--faint)')}>{a.q}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* CTA */}
-                  <div style={S('padding:16px 24px;display:flex;align-items:center;gap:10px;border-top:1px solid var(--rule)')}>
-                    <Box
-                      css="display:inline-flex;align-items:center;gap:5px;padding:6px 10px;font:600 11px/1 Plus Jakarta Sans;color:var(--faint);cursor:pointer;border:1px solid var(--rule2);border-radius:6px;flex:none"
-                      hover="color:var(--ink);border-color:var(--ink)"
-                      onClick={v.goBack}
-                    >
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      Back to Organize
-                    </Box>
-                    <div style={S('flex:1;font:400 12px/1.5 Plus Jakarta Sans;color:var(--faint)')}>All excerpts are approved by default. You only need to act on what you reject.</div>
-                    <Box css="padding:12px 28px;background:var(--ok);color:#fff;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;white-space:nowrap" hover="opacity:0.85" onClick={() => this.go('sci-review')}>
-                      Open for Review →
-                    </Box>
-                  </div>
-                </div>
+                ))}
               </div>
             );
           })()}
