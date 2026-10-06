@@ -923,6 +923,7 @@ export default class MedFactory extends React.Component {
       activeThreadId: null,
       projectInput: '',
       pptStatus: 'draft',
+      dashFilter: 'all',
       maComments: {
         3: [
           { id: 1, text: 'Citation missing for the 3-year inertia claim — reviewer to supply a source or the sentence should be cut', x: 34, y: 58, author: 'Dr. Priya Nair', time: '10:14', resolved: false },
@@ -1748,6 +1749,8 @@ export default class MedFactory extends React.Component {
       goBack: () => { const b = ({ intake: ['dash','Dashboard'], 'section-select': ['intake','Setup'], research: ['section-select','Sections'], pipe: ['intake','Setup'], organize: ['research','Research'], 'med-review': ['organize','Organize'], 'sci-review': ['sci-dash','Inbox'] })[S_]; if (b) this.go(b[0]); },
       isLanding: !st.role,
       role: st.role, pptStatus: st.pptStatus,
+      dashFilter: st.dashFilter,
+      setDashFilter: (f) => this.setState({ dashFilter: f }),
       isCreator: st.role === 'creator', isMA: st.role === 'ma', isSci: st.role === 'sci',
       dirLabel: this.dirOf() === 'light' ? 'LIGHT' : 'DARK',
       toggleDir: () => this.setState({ dir: this.dirOf() === 'light' ? 'dark' : 'light' }),
@@ -3209,8 +3212,42 @@ export default class MedFactory extends React.Component {
                   <div style={{ font: '600 12px/1 Plus Jakarta Sans', color: 'var(--acc)', cursor: 'pointer' }}>View all →</div>
                 </div>
 
+                {/* ── Filter chips ── */}
+                <div style={{ padding: '0 40px 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {[
+                    { id: 'all',         label: 'All',                    count: v.decks.length },
+                    { id: 'sci-rejected', label: 'Sci Review Sent Back',  count: v.decks.filter(d => d.sciRejected).length, accent: '#dc2626' },
+                    { id: 'in-progress', label: 'In Progress',            count: v.decks.filter(d => !d.sciRejected && d.stagePct < 100 && d.stagePct > 0).length },
+                    { id: 'completed',   label: 'Completed',              count: v.decks.filter(d => d.status === 'Completed').length, accent: '#15803d' },
+                  ].map(({ id, label, count, accent }) => {
+                    const active = v.dashFilter === id;
+                    const col = accent || 'var(--acc)';
+                    return (
+                      <button
+                        key={id}
+                        onClick={() => v.setDashFilter(id)}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 700, borderRadius: 20, border: `1.5px solid ${active ? col : 'var(--rule2)'}`, background: active ? (accent ? accent : 'var(--acc)') : '#fff', color: active ? '#fff' : 'var(--faint)', cursor: 'pointer', transition: 'all 0.15s' }}
+                      >
+                        {id === 'sci-rejected' && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5L9 8.5H1L5 1.5z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M5 4.5v2M5 7.5v.3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>}
+                        {label}
+                        <span style={{ padding: '1px 6px', borderRadius: 10, background: active ? 'rgba(255,255,255,0.25)' : 'var(--s2)', color: active ? '#fff' : 'var(--faint)', fontSize: 10, fontWeight: 700 }}>{count}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
                 <div style={{ padding: '0 40px 40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                  {v.decks.map((d, i) => (
+                  {(() => {
+                    const filtered = v.dashFilter === 'sci-rejected' ? v.decks.filter(d => d.sciRejected)
+                      : v.dashFilter === 'in-progress' ? v.decks.filter(d => !d.sciRejected && d.stagePct < 100 && d.stagePct > 0)
+                      : v.dashFilter === 'completed' ? v.decks.filter(d => d.status === 'Completed')
+                      : v.decks;
+                    return filtered.length === 0 ? (
+                      <div style={{ gridColumn: '1/-1', padding: '48px 0', textAlign: 'center', color: 'var(--faint)', fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: 600 }}>
+                        No workspaces match this filter.
+                      </div>
+                    ) : filtered;
+                  })().map?.((d, i) => (
                     <Box
                       key={i}
                       css={`display:flex;flex-direction:column;background:#fff;border:1px solid ${d.sciRejected ? '#fca5a5' : 'var(--rule)'};cursor:pointer;border-radius:14px;overflow:hidden;animation:cardIn 0.32s ease both`}
