@@ -1,0 +1,1158 @@
+<title>Medical Affairs Presentation Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: navy banner with research-status badge -> ten-step stepper -> one stage per step; slides render as 16:9 containers */
+:root{
+  --paper:#f4f7fd; --panel:#ffffff; --ink:#0c1a3d; --ink-muted:#1a3070; --ink-faint:#3d5499;
+  --line:rgba(12,26,61,0.12); --line-soft:rgba(12,26,61,0.06);
+  --teal:#2c52cc; --teal-deep:#0d1f4e; --teal-tint:rgba(44,82,204,0.08); --on-teal:#ffffff;
+  --amber:#b45309; --amber-tint:rgba(180,83,9,0.07);
+  --ok:#15803d; --ok-tint:rgba(21,128,61,0.07);
+  --grade-a:#15803d; --grade-a-tint:rgba(21,128,61,0.09);
+  --grade-b:#2c52cc; --grade-b-tint:rgba(44,82,204,0.08);
+  --grade-c:#b45309; --grade-c-tint:rgba(180,83,9,0.07);
+  --grade-d:#9a3412; --grade-d-tint:rgba(154,52,18,0.07);
+  --grade-f:#b91c1c; --grade-f-tint:rgba(185,28,28,0.07);
+  --banner-ink:#e8eef8; --banner-muted:#8aaad4; --banner-faint:#4d6fa0;
+  --overlay:rgba(8,12,24,0.62);
+  --sans:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --serif:"Plus Jakarta Sans",Georgia,serif;
+  --radius:12px; --shadow:0 1px 4px rgba(15,31,74,0.06),0 4px 16px rgba(15,31,74,0.05);
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:13.5px; line-height:1.55; -webkit-font-smoothing:antialiased; font-weight:600;}
+button,input,textarea{font-family:inherit; font-size:inherit; font-weight:inherit;}
+button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-within{outline:2px solid var(--teal); outline-offset:2px;}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:24px;}
+@media (max-width:600px){ .wrap{padding-inline:16px;} }
+.narrow{max-width:980px;}
+
+/* Banner */
+.banner{background:linear-gradient(135deg,#0d1f4e 0%,#1e3370 100%); color:var(--banner-ink); padding-block:22px 24px;}
+.eyebrow{font-size:11px; color:var(--banner-faint); margin-bottom:6px; letter-spacing:0.08em; text-transform:uppercase; font-weight:700;}
+.banner h1{font-weight:800; font-size:clamp(20px,3vw,28px); margin:0 0 10px; letter-spacing:-0.03em; text-wrap:balance;}
+.badges{display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; font-size:12.5px; color:var(--banner-muted);}
+.badges b{color:var(--banner-ink); font-weight:700;}
+.art-type{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-top:12px; font-size:13px; color:var(--banner-muted); max-width:90ch;}
+.art-pill{border:1px solid rgba(255,255,255,.22); border-radius:100px; padding:3px 12px; color:var(--banner-ink); white-space:nowrap; font-weight:600;}
+.art-pill b{font-weight:800;}
+.status-badge{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:4px 12px 4px 8px; border-radius:100px; letter-spacing:0.02em;}
+.status-badge.approved{background:rgba(21,128,61,0.9); color:#fff;}
+.status-badge.unapproved{background:rgba(180,83,9,0.85); color:#fff;}
+.status-badge svg{width:14px; height:14px;}
+
+/* Stepper */
+.stepper{display:flex; align-items:flex-start; overflow-x:auto; padding-block:18px 8px; gap:0;}
+.st{display:flex; flex-direction:column; align-items:center; gap:6px; flex:1 1 0; min-width:74px; background:none; border:none; padding:0 4px; color:var(--ink-faint); cursor:pointer; text-align:center; font-weight:600;}
+.st:disabled{cursor:default; opacity:.45;}
+.st-dot{width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12.5px; border:2px solid var(--line); background:var(--panel); color:var(--ink-muted);}
+.st-lbl{font-size:11px; line-height:1.3; overflow-wrap:anywhere; font-weight:600;}
+.st.done .st-dot{border-color:var(--teal); background:var(--teal-tint); color:var(--teal);}
+.st.done .st-lbl{color:var(--ink-muted);}
+.st.active .st-dot{border-color:var(--amber); background:var(--amber-tint); color:var(--ink); font-weight:800;}
+.st.active .st-lbl{color:var(--ink); font-weight:700;}
+.st-line{flex:0 1 14px; min-width:6px; height:2px; background:var(--line); margin-top:14px;}
+.st-line.done{background:var(--teal);}
+
+/* Generic */
+.stage{padding-block:10px 40px;}
+.page-head{display:flex; flex-wrap:wrap; gap:16px 28px; justify-content:space-between; align-items:flex-start; margin-top:10px;}
+.page-head-text{flex:1 1 420px; min-width:0;}
+.page-head h2{margin:0 0 4px; font-size:22px; font-weight:800; text-wrap:balance; letter-spacing:-0.03em;}
+.page-head p{margin:0; color:var(--ink-muted); max-width:72ch; font-size:13px; font-weight:500;}
+.tally{display:flex; gap:8px; flex-wrap:wrap;}
+.tally-item{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px 16px; min-width:96px; box-shadow:var(--shadow);}
+.tally-num{font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.2; letter-spacing:-0.02em;}
+.tally-lbl{font-size:11px; color:var(--ink-faint); font-weight:600; letter-spacing:0.02em;}
+.tally-item.warn .tally-num{color:var(--grade-f);}
+.toolbar{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin-top:18px; padding-block:12px; border-top:1px solid var(--line);}
+.tool-left{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+.seg{display:inline-flex; border:1.5px solid var(--line); border-radius:100px; overflow:hidden; background:var(--panel);}
+.seg button{border:none; background:none; color:var(--ink-muted); padding:6px 16px; font-size:12px; cursor:pointer; font-weight:600;}
+.seg button[aria-pressed="true"]{background:var(--teal); color:#fff;}
+.pill-btn{border:1.5px solid var(--line); background:var(--panel); color:var(--ink-muted); font-size:12px; font-weight:600; padding:6px 14px; border-radius:100px; cursor:pointer;}
+.pill-btn:hover{border-color:var(--teal); color:var(--teal);}
+.note{font-size:12px; color:var(--ink-faint); display:flex; align-items:center; gap:6px; font-weight:500;}
+.btn{display:inline-flex; align-items:center; gap:9px; background:linear-gradient(135deg,#2c52cc,#4468e0); color:#fff; border:none; border-radius:12px; padding:11px 20px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 12px rgba(44,82,204,0.22); transition:opacity 0.15s,box-shadow 0.15s;}
+.btn:hover{opacity:0.88; box-shadow:0 4px 20px rgba(44,82,204,0.32); filter:none;}
+.btn:disabled{background:rgba(12,26,61,0.07); color:var(--ink-faint); cursor:not-allowed; filter:none; box-shadow:none;}
+.btn.secondary{background:var(--panel); color:var(--teal); border:1.5px solid var(--teal); box-shadow:none;}
+.btn.secondary:hover{background:var(--teal-tint); filter:none; box-shadow:none; opacity:1;}
+.btn svg{width:16px; height:16px;}
+.next-bar{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:center; justify-content:space-between; border-top:1px solid var(--line); padding-block:22px 10px; margin-top:10px;}
+.next-summary{margin:0; font-size:13px; color:var(--ink-muted); flex:1 1 300px; min-width:0; font-weight:500;}
+.next-summary b{color:var(--ink); font-weight:700;}
+.next-summary .warn{color:var(--grade-f); font-weight:700;}
+.chip{font-size:10.5px; padding:2px 9px; border-radius:100px; background:var(--line-soft); color:var(--ink-muted); white-space:nowrap; font-weight:700;}
+.chip.warm{background:var(--amber-tint); color:var(--amber);}
+.chip.ok{background:var(--ok-tint); color:var(--ok); font-weight:700;}
+.chip.bad{background:var(--grade-f-tint); color:var(--grade-f); font-weight:700;}
+.chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; align-items:center;}
+
+/* Sections */
+.section{padding-bottom:22px; margin-bottom:22px; border-bottom:1px solid var(--line);}
+.section:last-child{border-bottom:none;}
+.section.collapsed{padding-bottom:12px; margin-bottom:12px;}
+.section h3{margin:0;}
+.sec-head{width:100%; display:flex; align-items:center; gap:10px; background:none; border:none; padding:4px 0; cursor:pointer; color:var(--ink); text-align:left; flex-wrap:wrap;}
+.sec-head:hover .sec-title{color:var(--teal);}
+.sec-chev{width:18px; height:18px; flex-shrink:0; color:var(--ink-faint); transition:transform .18s ease;}
+.sec-head[aria-expanded="false"] .sec-chev{transform:rotate(-90deg);}
+.sec-title{font-size:16px; font-weight:700; flex:1 1 auto; min-width:0; text-wrap:balance;}
+.sec-count{font-size:12px; color:var(--ink-faint); font-variant-numeric:tabular-nums; font-weight:500;}
+.sec-body{padding-top:12px;}
+.gap-note{border:1.5px dashed var(--grade-f); background:var(--grade-f-tint); border-radius:12px; padding:12px 16px; font-size:13px; font-weight:500;}
+.gap-note b{color:var(--grade-f);}
+.cards{display:flex; flex-direction:column; gap:10px;}
+.hidden-note{font-size:12.5px; color:var(--ink-faint); padding:6px 2px; font-weight:500;}
+
+/* Evidence card */
+.card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; display:grid; grid-template-columns:34px minmax(0,1fr); gap:4px 14px; box-shadow:var(--shadow);}
+.grade{width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;}
+.grade-A{background:var(--grade-a-tint); color:var(--grade-a);} .grade-B{background:var(--grade-b-tint); color:var(--grade-b);}
+.grade-C{background:var(--grade-c-tint); color:var(--grade-c);} .grade-D{background:var(--grade-d-tint); color:var(--grade-d);}
+.grade-F{background:var(--grade-f-tint); color:var(--grade-f);}
+.card-body{min-width:0;}
+.quote{margin:0; font-style:italic; font-size:13.5px; line-height:1.65; border-left:3px solid var(--teal); padding:2px 0 2px 12px; max-width:78ch; font-weight:500;}
+.figure{display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start;}
+.figure img{width:240px; max-width:100%; border-radius:8px; border:1px solid var(--line); background:#fff;}
+.figure-cap{flex:1 1 200px; min-width:0; font-size:13px; font-weight:600;}
+.source{margin-top:10px; font-size:12px; color:var(--ink-muted); font-weight:500;}
+.source .t{color:var(--ink); font-weight:700;}
+.card-foot{grid-column:2; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px;}
+.aside-btn{border:1.5px solid var(--line); background:var(--panel); color:var(--ink-muted); font-size:12px; font-weight:700; padding:5px 14px; border-radius:100px; cursor:pointer;}
+.aside-btn:hover{border-color:var(--grade-f); color:var(--grade-f);}
+.aside-label{font-size:12px; font-weight:700; color:var(--grade-f); visibility:hidden;}
+.card.is-aside{background:var(--paper); border-style:dashed;}
+.card.is-aside .card-body,.card.is-aside .grade{opacity:.5;}
+.card.is-aside .quote{text-decoration:line-through; text-decoration-thickness:1px; border-left-color:var(--line);}
+.card.is-aside .aside-label{visibility:visible;}
+.card.is-aside .aside-btn{border-color:var(--teal); color:var(--teal);}
+
+/* Figure generation */
+.gen{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:16px; box-shadow:var(--shadow);}
+.gen.inline{grid-column:1 / -1; margin:12px 0 0; padding:14px; background:var(--paper); box-shadow:none;}
+.gen-head{display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; justify-content:space-between;}
+.gen-orig{display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; flex:1 1 420px; min-width:0;}
+.gen-orig img{width:180px; max-width:100%; border:1px solid var(--line); border-radius:8px; background:#fff;}
+.gen-orig .lbl{font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; margin-bottom:2px; font-weight:700;}
+.gen-title{font-weight:700; font-size:15px;}
+.batch{margin-top:16px;}
+.batch-lbl{font-size:12px; color:var(--ink-muted); margin-bottom:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-weight:600;}
+.batch-lbl b{color:var(--ink); font-weight:700;}
+.opts{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px;}
+@media (max-width:900px){ .opts{grid-template-columns:repeat(3,minmax(0,1fr));} }
+@media (max-width:520px){ .opts{grid-template-columns:repeat(2,minmax(0,1fr));} }
+.opt{position:relative; border:2px solid var(--line); border-radius:10px; background:var(--panel); padding:0; cursor:pointer; overflow:hidden; text-align:left; color:var(--ink);}
+.opt img{display:block; width:100%; aspect-ratio:8/5; object-fit:contain; background:#fff;}
+.opt span{display:block; font-size:11px; padding:5px 8px; color:var(--ink-muted); font-weight:600;}
+.opt:hover{border-color:var(--teal);}
+.opt[aria-pressed="true"]{border-color:var(--teal); box-shadow:0 0 0 2px var(--teal-tint);}
+.opt[aria-pressed="true"] span{color:var(--teal); font-weight:700;}
+.opt .check{position:absolute; top:6px; right:6px; width:22px; height:22px; border-radius:50%; background:var(--teal); color:#fff; display:none; align-items:center; justify-content:center; padding:0;}
+.opt[aria-pressed="true"] .check{display:flex;}
+.opt .check svg{width:13px; height:13px;}
+.loading-row{display:flex; align-items:center; gap:10px; color:var(--ink-muted); font-size:13px; padding:14px 0 4px; font-weight:500;}
+.spinner{width:14px; height:14px; border-radius:50%; border:2px solid var(--line); border-top-color:var(--teal); animation:spin .7s linear infinite; flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.gen-controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);}
+.gen-controls input[type=text]{flex:1 1 260px; min-width:0; border:1.5px solid var(--line); background:var(--panel); color:var(--ink); border-radius:100px; padding:8px 14px; font-size:13px; font-weight:500;}
+.upload-lbl{display:inline-flex; align-items:center; gap:7px; border:1.5px dashed var(--ink-faint); color:var(--ink-muted); font-size:12px; font-weight:700; padding:6px 14px; border-radius:100px; cursor:pointer;}
+.upload-lbl:hover{border-color:var(--teal); color:var(--teal);}
+.upload-lbl input{position:absolute; width:1px; height:1px; opacity:0;}
+.upload-lbl svg{width:14px; height:14px;}
+.pick-state{flex-shrink:0;}
+.want-btn{display:inline-flex; align-items:center; gap:7px; border:1.5px solid var(--teal); background:var(--panel); color:var(--teal); font-size:12px; font-weight:700; padding:6px 14px; border-radius:100px; cursor:pointer;}
+.want-btn[aria-pressed="true"]{background:var(--teal); color:#fff;}
+.want-btn svg{width:14px; height:14px;}
+.asis-row{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:18px;}
+.asis{display:flex; gap:12px; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px 12px; flex:1 1 320px; min-width:0; box-shadow:var(--shadow);}
+.asis img{width:90px; border-radius:6px; border:1px solid var(--line); background:#fff;}
+.asis div{min-width:0; font-size:13px; font-weight:600;}
+.sim-note{font-size:12px; color:var(--ink-faint); margin:12px 0 0; font-weight:500;}
+
+/* Final review */
+.final-fig{display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line);}
+.final-fig img{width:220px; max-width:100%; border-radius:8px; border:1px solid var(--line); background:#fff;}
+.final-fig .figure-cap{font-size:12.5px;}
+.left-out{background:var(--grade-f-tint); border-radius:12px; padding:10px 16px; font-size:13px; margin-top:16px; font-weight:500;}
+.left-out b{color:var(--grade-f);}
+.guidance{display:flex; flex-direction:column; gap:8px; flex:1 1 420px; min-width:0;}
+.guidance label{font-size:13px; font-weight:700;}
+.guidance span{font-size:12px; color:var(--ink-faint); font-weight:500;}
+textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--line); border-radius:10px; background:var(--panel); color:var(--ink); padding:10px 12px; font-size:13px; line-height:1.5; font-weight:500;}
+
+/* Slides */
+.slide{container-type:inline-size; position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:6px; box-shadow:0 1px 4px rgba(15,31,74,0.10),0 4px 20px rgba(15,31,74,0.08); font-family:var(--sans);}
+.sl-inner{position:absolute; inset:0; padding:5.5cqw 6cqw 7cqw; display:flex; flex-direction:column;}
+.sl-title{font-size:3.6cqw; font-weight:700; line-height:1.2; margin:0 0 2.4cqw; text-wrap:balance;}
+.sl-body{display:flex; gap:3.5cqw; flex:1; min-height:0;}
+.sl-bullets{flex:1 1 55%; min-width:0; margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:1.8cqw;}
+.sl-bullets li{font-size:1.85cqw; line-height:1.45; padding-left:2.4cqw; position:relative;}
+.sl-bullets li::before{content:""; position:absolute; left:0; top:.75cqw; width:.9cqw; height:.9cqw; border-radius:50%; background:var(--sl-accent);}
+.sl-bullets sup{font-size:1.2cqw; opacity:.7;}
+.sl-grade{display:inline-block; font-size:1.2cqw; font-weight:700; padding:0 .8cqw; border-radius:2cqw; margin-right:.8cqw; vertical-align:.15cqw; background:var(--sl-soft); color:var(--sl-accent);}
+.sl-fig{flex:0 0 42%; display:flex; flex-direction:column; gap:.8cqw; min-width:0;}
+.sl-fig img{width:100%; background:#fff; border-radius:.6cqw; object-fit:contain; max-height:28cqw;}
+.sl-fig figcaption{font-size:1.2cqw; opacity:.75;}
+.sl-foot{position:absolute; left:6cqw; right:6cqw; bottom:2.4cqw; display:flex; justify-content:space-between; font-size:1.1cqw; opacity:.65; gap:2cqw;}
+.sl-draft{color:#b91c1c; font-weight:700; opacity:1;}
+.sl-cover .sl-inner{justify-content:center;}
+.sl-cover h2{font-size:6cqw; line-height:1.1; margin:0 0 1.6cqw; font-weight:800; text-wrap:balance;}
+.sl-cover p{font-size:2.2cqw; margin:0; opacity:.85;}
+.sl-cover .meta{font-size:1.5cqw; margin-top:3cqw; opacity:.7;}
+.sl-list{margin:0; padding:0; list-style:none; columns:2; column-gap:4cqw;}
+.sl-list li{font-size:1.9cqw; padding:.8cqw 0; break-inside:avoid; border-bottom:.1cqw solid var(--sl-line);}
+.sl-refs li{font-size:1.25cqw; line-height:1.35; padding:.5cqw 0;}
+.sl-figslide .sl-fig{flex:1; align-items:center;}
+.sl-figslide .sl-fig img{max-height:30cqw; width:auto; max-width:100%;}
+.sl-sum{display:grid; grid-template-columns:1fr 1fr; gap:1.6cqw 3cqw;}
+.sl-sum div{font-size:1.5cqw; line-height:1.4;}
+.sl-sum b{display:block; font-size:1.7cqw; color:var(--sl-accent);}
+.sl-bar{position:absolute; left:0; right:0; top:0; height:1.2cqw; background:var(--sl-accent);}
+.sl-side{position:absolute; left:0; top:0; bottom:0; width:1.6cqw; background:var(--sl-accent);}
+
+/* Viewer */
+.viewer{display:flex; flex-direction:column; gap:12px; min-width:0;}
+.viewer-main{position:relative;}
+.viewer-nav{display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:12.5px; color:var(--ink-muted); font-weight:600;}
+.icon-btn{width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line); background:var(--panel); color:var(--ink); display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0; transition:border-color 0.15s,color 0.15s;}
+.icon-btn:hover{border-color:var(--teal); color:var(--teal);}
+.icon-btn:disabled{opacity:.35; cursor:default;}
+.icon-btn svg{width:16px; height:16px;}
+.thumbs{display:flex; gap:8px; overflow-x:auto; padding-bottom:6px;}
+.thumb{flex:0 0 120px; border:2px solid transparent; border-radius:8px; padding:0; background:none; cursor:pointer; position:relative;}
+.thumb[aria-current="true"]{border-color:var(--teal);}
+.thumb .slide{box-shadow:none; border-radius:3px;}
+.thumb i{position:absolute; left:4px; bottom:4px; font-style:normal; font-size:10px; background:rgba(0,0,0,.55); color:#fff; border-radius:4px; padding:0 4px; font-weight:700;}
+.notes{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:13px; color:var(--ink-muted); box-shadow:var(--shadow);}
+.notes b{color:var(--ink); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:2px; font-weight:800;}
+
+/* Deck choice */
+.decks{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; margin-top:18px;}
+.deck-card{background:var(--panel); border:1.5px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; box-shadow:var(--shadow);}
+.deck-card.selected{border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-tint),var(--shadow);}
+.deck-card h3{margin:0; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+.deck-card p{margin:0; font-size:12.5px; color:var(--ink-muted); font-weight:500;}
+.deck-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:6px;}
+.deck-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:auto;}
+.deck-actions .btn{padding:8px 16px; font-size:12.5px;}
+.more-deck{display:flex; flex-wrap:wrap; gap:12px 16px; align-items:flex-end; margin-top:18px; background:var(--panel); border:1.5px dashed var(--teal); border-radius:14px; padding:16px; box-shadow:var(--shadow);}
+.more-deck input{width:100%; border:1.5px solid var(--line); border-radius:10px; background:var(--paper); color:var(--ink); padding:10px 12px; font-size:13px; font-weight:500;}
+.reviewed{font-size:11px; color:var(--ok); font-weight:700;}
+.gen-wait{display:flex; flex-direction:column; align-items:center; gap:14px; padding:70px 20px; color:var(--ink-muted); text-align:center; font-weight:600;}
+.gen-wait .spinner{width:28px; height:28px; border-width:3px;}
+.overlay{position:fixed; inset:0; background:var(--overlay); z-index:20; display:flex; align-items:flex-start; justify-content:center; padding:calc(env(safe-area-inset-top,0px) + 24px) 16px 24px; overflow-y:auto;}
+.overlay-panel{background:var(--paper); border-radius:14px; width:100%; max-width:1040px; padding:20px; display:flex; flex-direction:column; gap:14px; box-shadow:0 8px 40px rgba(12,26,61,0.22);}
+.overlay-head{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+.overlay-head h3{margin:0; font-size:17px; font-weight:800;}
+
+/* Refine */
+.refine{display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:22px; margin-top:16px; align-items:start;}
+@media (max-width:980px){ .refine{grid-template-columns:minmax(0,1fr);} }
+.chat{background:var(--panel); border:1px solid var(--line); border-radius:14px; display:flex; flex-direction:column; height:640px; max-height:80vh; position:sticky; top:calc(env(safe-area-inset-top,0px) + 12px); box-shadow:var(--shadow);}
+@media (max-width:980px){ .chat{position:static; height:520px;} }
+.chat-head{padding:12px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:8px;}
+.chat-head b{font-size:13.5px; font-weight:800;}
+.chat-log{flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:10px;}
+.msg{max-width:88%; padding:9px 13px; border-radius:12px; font-size:13px; line-height:1.5; white-space:pre-wrap; font-weight:500;}
+.msg.ai{background:var(--paper); border:1px solid var(--line); align-self:flex-start; border-bottom-left-radius:4px;}
+.msg.me{background:linear-gradient(135deg,#2c52cc,#4468e0); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; font-weight:600;}
+.msg.typing{color:var(--ink-faint); font-style:italic;}
+.sugg{display:flex; gap:6px; flex-wrap:wrap; padding:0 16px 10px;}
+.sugg button{border:1.5px dashed var(--teal); background:var(--teal-tint); color:var(--teal); font-size:11px; font-weight:700; padding:4px 10px; border-radius:100px; cursor:pointer;}
+.chat-form{display:flex; gap:8px; padding:12px; border-top:1px solid var(--line);}
+.chat-form input{flex:1; min-width:0; border:1.5px solid var(--line); border-radius:100px; padding:9px 14px; background:var(--paper); color:var(--ink); font-size:13px; font-weight:500;}
+.chat-form button{border:none; background:linear-gradient(135deg,#2c52cc,#4468e0); color:#fff; border-radius:100px; padding:0 18px; font-weight:700; cursor:pointer; font-size:13px;}
+.ver{font-size:11px; color:var(--ink-faint); font-weight:600;}
+
+/* Publish */
+.pub{display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:22px; margin-top:16px; align-items:start;}
+@media (max-width:980px){ .pub{grid-template-columns:minmax(0,1fr);} }
+.pub-panel{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);}
+.pub-panel h3{margin:0; font-size:15px; font-weight:800;}
+.pub-panel p{margin:0; font-size:13px; color:var(--ink-muted); font-weight:500;}
+.pub-panel .btn{justify-content:center;}
+.blocked{background:var(--amber-tint); border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:500;}
+.sent{background:var(--ok-tint); color:var(--ok); border-radius:10px; padding:10px 14px; font-size:13px; font-weight:700;}
+.pub-err{font-size:12.5px; color:var(--grade-f); font-weight:600;}
+
+/* Demo bar */
+.demo{border-top:1px dashed var(--line); padding-block:14px 30px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; font-size:12px; color:var(--ink-faint); font-weight:600;}
+.demo .seg button{font-size:11.5px; padding:4px 11px;}
+.demo-status{display:inline-flex; align-items:center; gap:10px;}
+.link-btn{background:none; border:none; color:var(--teal); text-decoration:underline; cursor:pointer; font-size:12px; padding:0; font-weight:700;}
+
+.btn.danger{background:linear-gradient(135deg,#b91c1c,#dc2626); color:#fff; box-shadow:0 2px 12px rgba(185,28,28,0.22);}
+.btn.ok{background:linear-gradient(135deg,#15803d,#16a34a); color:#fff; box-shadow:0 2px 12px rgba(21,128,61,0.22);}
+:root[data-theme="dark"] .btn.danger,:root[data-theme="dark"] .btn.ok{color:#fff;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn.danger,:root:not([data-theme="light"]) .btn.ok{color:#fff;} }
+.btn.ok:disabled,.btn.danger:disabled{background:rgba(12,26,61,0.07); color:var(--ink-faint); cursor:not-allowed; box-shadow:none;}
+.btn .spinner{border-color:rgba(255,255,255,.4); border-top-color:#fff;}
+.refine-side{display:flex; flex-direction:column; gap:14px; min-width:0;}
+.chat.unstick{position:static;}
+.pa-panel{background:var(--amber-tint); border:1.5px solid var(--amber); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;}
+.pa-panel > b{font-size:13px; color:var(--amber); font-weight:800;} .pa-panel > p{margin:-6px 0 0; font-size:12px; color:var(--ink-muted); font-weight:500;}
+.msg-rev{display:block; margin-top:8px; border:1.5px solid var(--teal); background:var(--panel); color:var(--teal); font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:100px; cursor:pointer; white-space:nowrap;}
+.msg-rev:hover{background:var(--teal-tint);}
+.pa-jump{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:12px; color:var(--ink-muted); font-weight:600;}
+.pa-chip{min-width:28px; height:28px; border-radius:100px; border:1.5px solid var(--amber); background:var(--panel); color:var(--amber); font-weight:700; font-size:12px; cursor:pointer; padding:0 8px;}
+.pa-chip.rej{border-color:var(--grade-f); color:var(--grade-f);}
+.pa-chip.on{background:var(--amber); color:#fff;} .pa-chip.rej.on{background:var(--grade-f);}
+.pa-none{margin:0; font-size:13px; color:var(--ink-muted); background:var(--panel); border-radius:10px; padding:10px 12px; font-weight:500;}
+.pa-rej,.pa-act{display:flex; flex-direction:column; gap:6px; background:var(--panel); border-radius:10px; padding:10px; border-left:4px solid var(--amber);}
+.pa-rej{border-left-color:var(--grade-f);} .pa-rej > b{color:var(--grade-f); font-size:12px; font-weight:800;} .pa-act > b{color:var(--amber); font-size:12px; font-weight:800;}
+.pa-rej textarea,.pa-act textarea{min-height:48px; background:var(--paper); color:var(--ink-muted); cursor:default;}
+.pa-hint{font-size:11.5px; color:var(--ink-faint); font-weight:500;}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);}
+.pa-item{display:flex; flex-direction:column; gap:6px; background:var(--panel); border-radius:10px; padding:10px;}
+.pa-item label{font-size:12px; font-weight:700;}
+.pa-item textarea{min-height:52px; background:var(--paper); color:var(--ink-muted); cursor:default;}
+.pa-actions{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:center;}
+.pa-actions .btn{padding:8px 14px; font-size:13px;}
+.rv-panel{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; position:sticky; top:calc(env(safe-area-inset-top,0px) + 12px); box-shadow:var(--shadow);}
+@media (max-width:980px){ .rv-panel{position:static;} }
+.rv-panel .btn{justify-content:center;}
+.rv-kicker{font-size:11px; color:var(--ink-faint); font-weight:700; text-transform:uppercase; letter-spacing:0.06em;}
+.rv-box{border-radius:10px; padding:12px 14px; font-size:13px; line-height:1.5;}
+.rv-box b{display:block; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; font-weight:800;}
+.rv-box p{margin:0; font-weight:500;} .rv-box ul{margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px;}
+.rv-box.ma{background:var(--teal-tint);} .rv-box.ma b{color:var(--teal);}
+.rv-box.sci{background:var(--amber-tint);} .rv-box.sci b{color:var(--amber);}
+.rv-hint{font-size:12px; color:var(--ink-faint); margin:0; font-weight:500;}
+.rv-action{display:flex; flex-direction:column; gap:6px; padding-top:10px; border-top:1px dashed var(--line);}
+.rv-action label,.rv-notes label{font-size:13px; font-weight:700;} .rv-action label span,.rv-notes label span{font-weight:500; color:var(--ink-faint); font-size:12px;}
+.rv-action textarea{min-height:64px;}
+.rv-done{font-size:12.5px; background:var(--ok-tint); border-radius:10px; padding:10px 12px; display:flex; flex-direction:column; gap:6px;}
+.rv-done b{color:var(--ok); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; font-weight:800;}
+.rv-done span{display:block; color:var(--ink-muted); font-weight:500;}
+.rv-nav{display:flex; justify-content:space-between; gap:8px;}
+.rv-notes{display:flex; flex-direction:column; gap:6px; margin-top:22px;}
+.viewer-main,.thumb{position:relative;}
+.ov-note{position:absolute; top:10px; right:10px; max-width:46%; background:#fffbe6; color:#3A2A00; border-radius:8px; padding:8px 10px; font-size:12.5px; line-height:1.4; box-shadow:0 2px 8px rgba(0,0,0,.18); font-weight:600;}
+.ov-note b{display:block; font-size:10px; text-transform:uppercase; letter-spacing:.06em; font-weight:800;}
+.ov-reject{position:absolute; left:0; right:0; bottom:0; background:rgba(185,28,28,.92); color:#fff; padding:8px 12px; font-size:12.5px; border-radius:0 0 4px 4px; font-weight:700;}
+.ov-veil{position:absolute; inset:0; background:rgba(80,80,90,.55); display:flex; align-items:center; justify-content:center; border-radius:4px;}
+.ov-veil span{background:#fff; color:#222; font-weight:700; font-size:13px; padding:6px 14px; border-radius:100px;}
+.ov-dot{position:absolute; top:5px; right:5px; width:12px; height:12px; border-radius:50%; border:2px solid #fff;}
+.ov-dot.amber{background:#b45309;} .ov-dot.red{background:#b91c1c;} .ov-dot.grey{background:#666;}
+.tip-wrap{position:relative; display:inline-flex;}
+.tip-wrap:focus{outline:2px solid var(--teal); outline-offset:2px; border-radius:var(--radius);}
+.tip{position:absolute; bottom:calc(100% + 8px); right:0; width:260px; background:var(--ink); color:var(--paper); font-size:12px; line-height:1.45; padding:8px 10px; border-radius:8px; opacity:0; pointer-events:none; transition:opacity .12s; z-index:5; font-weight:500;}
+.tip-wrap:hover .tip,.tip-wrap:focus .tip{opacity:1;}
+.toast{position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom,0px) + 20px); transform:translate(-50%,20px); background:var(--ink); color:var(--paper); font-size:13px; padding:9px 18px; border-radius:100px; opacity:0; transition:opacity .18s, transform .18s; pointer-events:none; z-index:30; max-width:calc(100% - 32px); text-align:center; font-weight:700; box-shadow:0 4px 20px rgba(12,26,61,0.25);}
+.toast.show{opacity:1; transform:translate(-50%,0);}
+@media (prefers-reduced-motion: reduce){ .toast,.sec-chev{transition:none;} .spinner{animation:none;} }
+
+/* ===== ES-HOOK (Evidence Studio): role gating. The host sets data-es-mode on <html>; standalone use is unaffected. ===== */
+html[data-es-mode="review-readonly"] #deckReject, html[data-es-mode="review-readonly"] #approveWrap,
+html[data-es-mode="review-readonly"] #sciReject, html[data-es-mode="review-readonly"] #sciRevert,
+html[data-es-mode="review-readonly"] #startOver, html[data-es-mode="review-readonly"] #demoStatus,
+html[data-es-mode="sa-review"] #startOver, html[data-es-mode="sa-review"] #demoStatus{display:none !important;}
+/* ===== end ES-HOOK ===== */
+</style>
+<header class="banner">
+  <div class="wrap">
+    <h1>Medical Affairs Presentation Agent</h1>
+    <div class="badges" id="badges"></div>
+    <div class="art-type"><span class="art-pill">Artifact type: <b>Deck</b></span><span>A 45-minute educational deck for healthcare professionals, ready for a webinar. It covers the condition through to safety and clinical application, uses only the approved research, and carries no product or marketing content.</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="stepper" id="stepper" aria-label="Progress"></nav>
+  <main class="stage" id="stage"></main>
+  <div class="demo">
+    <span>Prototype demo controls</span>
+    <!-- ES: research-status demo toggle removed; approval comes from the research selected in Evidence Studio -->
+    <button type="button" class="link-btn" id="startOver">Start over</button>
+  </div>
+</div>
+<div id="overlayRoot"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = {"approved":true,"topic":"Histamine Intolerance","received":"Sep 25, 2026","sections":["Condition/topic overview","Root cause & contributing factors","Mechanisms of action","Lifestyle & foundation support","Nutritional & supplemental interventions","Clinical evidence","Targeted support / advanced interventions","Safety & contraindications","Clinical application"],"papers":[{"id":"P1","title":"Prevalence and Clinical Phenotypes of Histamine Intolerance in Adult Outpatients: A Cross-Sectional Survey","journal":"Nutrients","year":2021,"grade":"C","score":66,"citations":58,"funding":"independent","design":"Cross-sectional study","certainty":"Moderate certainty"},{"id":"P2","title":"Diamine Oxidase Deficiency and the Pathophysiology of Histamine Intolerance: A Narrative Review","journal":"International Journal of Molecular Sciences","year":2020,"grade":"F","score":51.4,"citations":140,"funding":"independent","design":"Narrative review","certainty":"Not gradable (mechanistic)"},{"id":"P3","title":"Genetic Polymorphisms in AOC1 (Diamine Oxidase Gene) and Susceptibility to Histamine Intolerance","journal":"Clinical and Translational Allergy","year":2019,"grade":"D","score":58.5,"citations":33,"funding":"independent","design":"Case-control (genetic)","certainty":"Low certainty"},{"id":"P4","title":"Global Burden and Under-Recognition of Histamine Intolerance in Gastroenterology Practice","journal":"World Journal of Gastroenterology","year":2022,"grade":"F","score":32.8,"citations":12,"funding":"independent","design":"Expert opinion / commentary","certainty":"Very low certainty"},{"id":"P5","title":"Efficacy of a Low-Histamine Diet in Histamine Intolerance: A Randomized Controlled Trial","journal":"European Journal of Clinical Nutrition","year":2022,"grade":"B","score":73.4,"citations":45,"funding":"independent","design":"RCT, single-blind","certainty":"Moderate certainty"},{"id":"P6","title":"Second-Generation H1-Antihistamines versus Placebo for Histamine Intolerance Symptom Control: A Meta-Analysis","journal":"Clinical and Experimental Allergy","year":2023,"grade":"A","score":84.5,"citations":28,"funding":"independent","design":"Meta-analysis of 6 RCTs","certainty":"High certainty"},{"id":"P7","title":"Oral Enzyme Supplementation as an Adjunct Therapy for Histamine-Related Food Intolerance: Systematic Review","journal":"Nutrients","year":2021,"grade":"C","score":62.9,"citations":40,"funding":"mixed","design":"Systematic review (non-pooled)","certainty":"Low certainty"},{"id":"P8","title":"Comparative Effectiveness of Dietary Modification vs Pharmacologic Management in Chronic Histamine Intolerance","journal":"Journal of Physiology and Pharmacology","year":2020,"grade":"C","score":65.1,"citations":38,"funding":"independent","design":"Prospective cohort","certainty":"Moderate certainty"},{"id":"P9","title":"Exogenous Diamine Oxidase Supplementation Reduces Postprandial Plasma Histamine After an Oral Histamine Challenge: A Double-Blind, Placebo-Controlled Crossover Trial","journal":"Nutrients","year":2019,"grade":"B","score":79,"citations":95,"funding":"industry","design":"RCT, double-blind, crossover","certainty":"High certainty"},{"id":"P10","title":"Effect of Oral DAO Supplementation on Symptom Severity in Patients with Reduced Serum Diamine Oxidase Activity: A Randomized, Double-Blind, Placebo-Controlled Trial","journal":"International Archives of Allergy and Immunology","year":2021,"grade":"C","score":68.2,"citations":30,"funding":"industry","design":"RCT, double-blind, parallel","certainty":"Moderate certainty"},{"id":"P11","title":"Serum Diamine Oxidase Activity as a Biomarker for Predicting Response to Enzyme Supplementation in Histamine Intolerance","journal":"Allergy, Asthma & Clinical Immunology","year":2022,"grade":"D","score":55.9,"citations":18,"funding":"mixed","design":"Prospective cohort (biomarker)","certainty":"Low certainty"},{"id":"P12","title":"Diamine Oxidase Supplementation for Histamine Intolerance: A Case Series and Narrative Summary of Real-World Use","journal":"Clinical Nutrition Open Science","year":2023,"grade":"F","score":22.4,"citations":4,"funding":"industry","design":"Case series","certainty":"Very low certainty"}],"items":[{"id":"P1-x1","kind":"excerpt","paperId":"P1","text":"In our cohort, 24% of respondents reporting chronic gastrointestinal or dermatologic symptoms met the proposed histamine-intolerance symptom-cluster criteria, though only a minority had confirmed reduced serum DAO activity.","ref":"Results, p.3","sections":["Condition/topic overview"]},{"id":"P2-x1","kind":"excerpt","paperId":"P2","text":"Reduced diamine oxidase activity impairs enzymatic degradation of dietary histamine in the gut mucosa, allowing unmetabolised histamine to enter systemic circulation and provoke receptor-mediated symptoms. Under normal physiological conditions, DAO expressed in intestinal epithelial cells rapidly oxidises histamine absorbed from the diet before it reaches the portal circulation; when this first-pass metabolic capacity is exceeded or constitutively reduced, circulating histamine levels can rise even in individuals without a diagnosed allergic condition. Downstream effects are mediated primarily through H1 and H2 receptor activation in vascular, gastrointestinal, and neurological tissue, which accounts for the broad and often nonspecific symptom presentation associated with the condition, ranging from headache and flushing to gastrointestinal discomfort.","ref":"Mechanism overview, p.2","sections":["Root cause & contributing factors","Mechanisms of action"]},{"id":"P3-x1","kind":"excerpt","paperId":"P3","text":"Carriers of the AOC1 rs10156191 variant showed lower baseline DAO activity, though the association did not reach significance after correction for multiple comparisons in the replication cohort.","ref":"Results, p.5","sections":["Root cause & contributing factors"]},{"id":"P4-x1","kind":"excerpt","paperId":"P4","text":"Histamine intolerance remains under-recognised in routine gastroenterology practice, frequently misattributed to irritable bowel syndrome before a structured elimination work-up is considered.","ref":"Discussion, p.1","sections":["Condition/topic overview"]},{"id":"P5-x1","kind":"excerpt","paperId":"P5","text":"Participants following the structured low-histamine diet for 4 weeks reported a mean 38% reduction in composite symptom score versus 9% in the habitual-diet control group (p=0.01).","ref":"Results, p.6","sections":["Lifestyle & foundation support"]},{"id":"P6-x1","kind":"excerpt","paperId":"P6","text":"Pooled analysis of six trials found second-generation H1-antihistamines reduced global symptom scores versus placebo (SMD -0.52, 95% CI -0.71 to -0.33), with low risk of publication bias. Effects were most consistent for cutaneous and gastrointestinal symptom domains, while respiratory symptom improvement was more variable across trials and did not reach statistical significance in three of the six included studies. Sensitivity analysis excluding the two industry-funded trials in the pool did not materially change the pooled effect size, suggesting the result is unlikely to be driven primarily by sponsorship. Moderate heterogeneity (I2=48%) was attributed in part to differing baseline symptom severity across trial populations.","ref":"Results, p.4","sections":["Nutritional & supplemental interventions","Clinical evidence"]},{"id":"P7-x1","kind":"excerpt","paperId":"P7","text":"Across the seven included studies, oral enzyme supplementation was associated with symptom improvement in five, though heterogeneous dosing and outcome measures precluded pooled quantitative synthesis.","ref":"Synthesis, p.7","sections":["Nutritional & supplemental interventions","Clinical evidence"]},{"id":"P9-x1","kind":"excerpt","paperId":"P9","text":"Oral DAO supplementation prior to an oral histamine challenge significantly attenuated postprandial plasma histamine AUC compared with placebo (p<0.01), supporting a direct enzymatic mechanism of action. Peak plasma histamine concentration was reduced by approximately 34% relative to the placebo arm, with the effect most pronounced in the 30- to 90-minute post-challenge window. Symptom severity ratings for flushing and headache tracked closely with the biochemical response, though the crossover design and single-centre setting limit generalisability to broader, more heterogeneous patient populations. No serious adverse events were reported, and the enzyme was well tolerated across both challenge visits.","ref":"Results, p.5","sections":["Targeted support / advanced interventions"]},{"id":"img-P1-1","kind":"figure","paperId":"P1","caption":"Figure 2: DAO enzyme activity by symptom-severity group","img":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgMjIwIj48cmVjdCB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIyMCIgZmlsbD0iI2ZmZmZmZiIvPjx0ZXh0IHg9IjE2MCIgeT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMyIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMwQjFGNUMiPkRBTyBFbnp5bWUgQWN0aXZpdHkgYnkgR3JvdXA8L3RleHQ+PGxpbmUgeDE9IjQwIiB5MT0iMTgwIiB4Mj0iMjkwIiB5Mj0iMTgwIiBzdHJva2U9IiM2NjYiIHN0cm9rZS13aWR0aD0iMS41Ii8+PGxpbmUgeDE9IjQwIiB5MT0iNDAiIHgyPSI0MCIgeTI9IjE4MCIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjEuNSIvPjxyZWN0IHg9IjYwIiB5PSI3MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjExMCIgZmlsbD0iIzYzQjNBNiIvPjxyZWN0IHg9IjEyMCIgeT0iMTAwIiB3aWR0aD0iNDAiIGhlaWdodD0iODAiIGZpbGw9IiM2M0IzQTYiLz48cmVjdCB4PSIxODAiIHk9IjEzMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjQzA3NjAwIi8+PHJlY3QgeD0iMjQwIiB5PSIxNTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSIzMCIgZmlsbD0iI0MwNzYwMCIvPjx0ZXh0IHg9IjgwIiB5PSIxOTYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzMzMyI+Q29udHJvbDwvdGV4dD48dGV4dCB4PSIxNDAiIHk9IjE5NiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMzMzIj5Mb3ctZG9zZTwvdGV4dD48dGV4dCB4PSIyMDAiIHk9IjE5NiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMzMzIj5IaWdoLWRvc2U8L3RleHQ+PHRleHQgeD0iMjYwIiB5PSIxOTYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzMzMyI+U3ltcHRvbWF0aWM8L3RleHQ+PHRleHQgeD0iMjAiIHk9IjQ1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzY2NiI+VS9tTDwvdGV4dD48L3N2Zz4=","sections":["Condition/topic overview"],"asIs":false},{"id":"img-P4-1","kind":"figure","paperId":"P4","caption":"Figure 1: Symptom score trend over the study period","img":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgMjIwIj48cmVjdCB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIyMCIgZmlsbD0iI2ZmZmZmZiIvPjx0ZXh0IHg9IjE2MCIgeT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMyIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMwQjFGNUMiPlN5bXB0b20gU2NvcmUgT3ZlciA4IFdlZWtzPC90ZXh0PjxsaW5lIHgxPSI0MCIgeTE9IjE4MCIgeDI9IjI5MCIgeTI9IjE4MCIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjEuNSIvPjxsaW5lIHgxPSI0MCIgeTE9IjQwIiB4Mj0iNDAiIHkyPSIxODAiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cG9seWxpbmUgcG9pbnRzPSI0MCw2MCA5MCw4MCAxNDAsMTEwIDE5MCwxMzAgMjQwLDE1MCAyOTAsMTY1IiBmaWxsPSJub25lIiBzdHJva2U9IiMxQTQyQjkiIHN0cm9rZS13aWR0aD0iMi41Ii8+PGNpcmNsZSBjeD0iNDAiIGN5PSI2MCIgcj0iMy41IiBmaWxsPSIjMUE0MkI5Ii8+PGNpcmNsZSBjeD0iOTAiIGN5PSI4MCIgcj0iMy41IiBmaWxsPSIjMUE0MkI5Ii8+PGNpcmNsZSBjeD0iMTQwIiBjeT0iMTEwIiByPSIzLjUiIGZpbGw9IiMxQTQyQjkiLz48Y2lyY2xlIGN4PSIxOTAiIGN5PSIxMzAiIHI9IjMuNSIgZmlsbD0iIzFBNDJCOSIvPjxjaXJjbGUgY3g9IjI0MCIgY3k9IjE1MCIgcj0iMy41IiBmaWxsPSIjMUE0MkI5Ii8+PGNpcmNsZSBjeD0iMjkwIiBjeT0iMTY1IiByPSIzLjUiIGZpbGw9IiMxQTQyQjkiLz48dGV4dCB4PSI0MCIgeT0iMTk2IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzMzMyI+V2sgMDwvdGV4dD48dGV4dCB4PSIyOTAiIHk9IjE5NiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzMzMiPldrIDg8L3RleHQ+PHRleHQgeD0iMjAiIHk9IjQ1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzY2NiI+U2NvcmU8L3RleHQ+PC9zdmc+","sections":["Condition/topic overview"],"asIs":true},{"id":"img-P9-1","kind":"figure","paperId":"P9","caption":"Figure 1: Histamine metabolism pathway and DAO mechanism of action","img":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgMjIwIj48cmVjdCB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIyMCIgZmlsbD0iI2ZmZmZmZiIvPjx0ZXh0IHg9IjE2MCIgeT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMyIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMwQjFGNUMiPkhpc3RhbWluZSBNZXRhYm9saXNtIFBhdGh3YXk8L3RleHQ+PHJlY3QgeD0iMTUiIHk9IjgwIiB3aWR0aD0iODAiIGhlaWdodD0iNTAiIHJ4PSI4IiBmaWxsPSIjRTdFQkY3IiBzdHJva2U9IiMxNDMyOEMiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHRleHQgeD0iNTUiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjkuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzE0MzI4QyI+RGlldGFyeTwvdGV4dD48dGV4dCB4PSI1NSIgeT0iMTEzIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMTQzMjhDIj5IaXN0YW1pbmU8L3RleHQ+PHJlY3QgeD0iMTIwIiB5PSI4MCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGRjNFMCIgc3Ryb2tlPSIjQzA3NjAwIiBzdHJva2Utd2lkdGg9IjEuNSIvPjx0ZXh0IHg9IjE2MCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjQzA3NjAwIj5EQU8gRW56eW1lPC90ZXh0Pjx0ZXh0IHg9IjE2MCIgeT0iMTEzIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjQzA3NjAwIj5CcmVha2Rvd248L3RleHQ+PHJlY3QgeD0iMjI1IiB5PSI4MCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0U4RjVFOSIgc3Ryb2tlPSIjMkU3RDMyIiBzdHJva2Utd2lkdGg9IjEuNSIvPjx0ZXh0IHg9IjI2NSIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMkU3RDMyIj5JbmFjdGl2ZTwvdGV4dD48dGV4dCB4PSIyNjUiIHk9IjExMyIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjkuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzJFN0QzMiI+TWV0YWJvbGl0ZXM8L3RleHQ+PHBhdGggZD0iTTk1IDEwNSBMMTE4IDEwNSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjEuOCIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cGF0aCBkPSJNMjAwIDEwNSBMMjIzIDEwNSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjEuOCIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48ZGVmcz48bWFya2VyIGlkPSJhcnJvdyIgbWFya2VyV2lkdGg9IjgiIG1hcmtlckhlaWdodD0iOCIgcmVmWD0iNiIgcmVmWT0iMyIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw2LDMgTDAsNiBaIiBmaWxsPSIjMzMzIi8+PC9tYXJrZXI+PC9kZWZzPjx0ZXh0IHg9IjE2MCIgeT0iMTcwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzY2NiI+UmVkdWNlZCBEQU8gYWN0aXZpdHkgYWxsb3dzIGhpc3RhbWluZSBhY2N1bXVsYXRpb248L3RleHQ+PC9zdmc+","sections":["Mechanisms of action"],"asIs":false}]};
+const STEPS = ['Research review','Figure refinement','Figures from excerpts','Final review','Choose a deck','Refine with AI','Publish','Medical Affairs review','Scientific review','Approved'];
+const paperById = Object.fromEntries(DATA.papers.map(p=>[p.id,p]));
+const itemById = Object.fromEntries(DATA.items.map(i=>[i.id,i]));
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ICON = {
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>',
+  prev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>',
+  next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>',
+  chev:'<svg class="sec-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+  upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>',
+  warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg>',
+  lock:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'
+};
+
+/* ---------------- State ---------------- */
+const STORE = 'hcp-deck-agent-v1';
+/* ===== ES-HOOK (Evidence Studio): report workflow events to the host app; no effect when run standalone ===== */
+function esHook(evt, data){ try{ if(window.parent!==window && window.parent.ESHost) window.parent.ESHost.event(window, evt, data||{}); }catch(e){} }
+function esRO(){ return document.documentElement.getAttribute('data-es-mode')==='review-readonly'; }
+/* ===== end ES-HOOK ===== */
+function freshState(){
+  return {step:1, maxStep:1, approved:DATA.approved, excluded:{}, filter:'all', collapsed:{1:[],3:[],4:[]},
+    picks:{}, exfig:{}, guidance:'', decks:null, reviewed:{}, chosen:null, work:null, hist:[], chat:[], cur:0, review:null, pending:null};
+}
+let S = freshState();
+try{ const raw = localStorage.getItem(STORE); if(raw){ S = Object.assign(freshState(), JSON.parse(raw)); } }catch(e){}
+const loading = {}; // transient: generation in progress, keyed by item id or 'decks'/'chat'
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
+
+/* ---------------- Research helpers ---------------- */
+const isEx = id => !!S.excluded[id];
+const using = () => DATA.items.filter(i=>!isEx(i.id));
+const secItems = (sec, list=DATA.items) => list.filter(i=>i.sections.includes(sec));
+const redesignFigs = () => using().filter(i=>i.kind==='figure' && !i.asIs);
+const asIsFigs = () => using().filter(i=>i.kind==='figure' && i.asIs);
+const usedExcerpts = () => using().filter(i=>i.kind==='excerpt');
+const wantedEx = () => usedExcerpts().filter(i=>S.exfig[i.id] && S.exfig[i.id].wanted);
+const includedSections = () => DATA.sections.filter(s=>secItems(s, using()).length);
+const leftOutSections = () => DATA.sections.filter(s=>!secItems(s, using()).length);
+function chosenUrl(rec){
+  if(!rec || !rec.sel) return null;
+  if(rec.sel==='upload') return rec.upload || null;
+  for(const b of rec.batches||[]) for(const o of b.options) if(o.id===rec.sel) return o.url;
+  return null;
+}
+function figureUrl(it){ return it.asIs ? it.img : chosenUrl(S.picks[it.id]); }
+function excerptFigUrl(it){ const r=S.exfig[it.id]; return r && r.wanted ? chosenUrl(r) : null; }
+
+/* Changing earlier choices makes generated decks stale */
+function invalidateAfter(step){
+  if(S.maxStep > step){ S.maxStep = step; }
+  if(S.decks || S.work){ S.decks=null; S.chosen=null; S.work=null; S.hist=[]; S.chat=[]; S.reviewed={}; S.review=null; S.pending=null; S.downloaded=null; toast('Earlier choices changed. Decks will be generated again.'); }
+}
+
+/* ---------------- Figure generator (simulated AI) ---------------- */
+const PALS = {
+  navy:{p:'#14328C', s:'#C07600', l:'#E7EBF7', ink:'#0B1F5C'},
+  teal:{p:'#0F766E', s:'#D97706', l:'#E3F2EF', ink:'#0B3B36'},
+  plum:{p:'#6A3FA0', s:'#C2417A', l:'#EFE7F7', ink:'#2E1A47'},
+  slate:{p:'#334155', s:'#0284C7', l:'#EEF2F6', ink:'#0F172A'},
+  forest:{p:'#2E7D32', s:'#1A42B9', l:'#E8F2E8', ink:'#1B3A1D'},
+  warm:{p:'#C2410C', s:'#0F766E', l:'#FCEBDD', ink:'#431407'},
+  mono:{p:'#2B2B2B', s:'#8A8A8A', l:'#EFEFEF', ink:'#111111'}
+};
+const PAL_ORDER = ['navy','teal','plum','slate','forest','warm','mono'];
+const STYLES = ['clean','bold','soft','minimal','dark'];
+const LAYOUTS = {bars:['vbar','hbar','lollipop','dots','vhigh'], flow:['row','column','chevron','circles','cards'],
+  stat:['big','ring','split','banner','minimal'], parts:['icons','donut','bar100','big','grid']};
+const FIG_SPECS = {
+  'img-P1-1':{kind:'bars', title:'DAO enzyme activity by group', unit:'Relative DAO activity (U/mL)', items:[{label:'Control',v:1},{label:'Low-dose',v:.73},{label:'High-dose',v:.45},{label:'Symptomatic',v:.27}], hi:3},
+  'img-P9-1':{kind:'flow', title:'Histamine metabolism pathway', steps:['Dietary histamine','DAO enzyme breakdown','Inactive metabolites']},
+  'P1-x1':{kind:'parts', title:'How common is histamine intolerance?', n:24, of:100, big:'24%', label:'of adults with chronic GI or skin symptoms met the symptom-cluster criteria'},
+  'P2-x1':{kind:'flow', title:'When DAO activity is low', steps:['Dietary histamine','Low DAO in gut mucosa','Histamine enters circulation','Receptor-mediated symptoms']},
+  'P3-x1':{kind:'stat', title:'Genetic contribution', big:'AOC1', label:'rs10156191 carriers showed lower baseline DAO activity', note:'Not significant after multiple-comparison correction'},
+  'P4-x1':{kind:'flow', title:'A common diagnostic path', steps:['Chronic GI symptoms','Attributed to IBS','Elimination work-up comes late']},
+  'P5-x1':{kind:'bars', title:'Low-histamine diet at 4 weeks', unit:'Mean reduction in composite symptom score', items:[{label:'Low-histamine diet',v:38,t:'38%'},{label:'Habitual diet',v:9,t:'9%'}], hi:0, note:'p = 0.01'},
+  'P6-x1':{kind:'stat', title:'H1-antihistamines vs placebo', big:'SMD −0.52', label:'global symptom score, pooled across six RCTs', note:'95% CI −0.71 to −0.33'},
+  'P7-x1':{kind:'parts', title:'Oral enzyme supplementation', n:5, of:7, big:'5 of 7', label:'studies reported symptom improvement'},
+  'P9-x1':{kind:'stat', title:'Oral DAO before histamine challenge', big:'−34%', label:'peak plasma histamine vs placebo', note:'Postprandial AUC reduced, p < 0.01'}
+};
+function specFor(it){
+  if(FIG_SPECS[it.id]) return FIG_SPECS[it.id];
+  const first = (it.text||'').split(/(?<=\.)\s/)[0];
+  return {kind:'stat', title:'Key finding', big:'Key finding', label:first.slice(0,110)};
+}
+function wrap(str, max){
+  const words = String(str).split(/\s+/); const lines=[]; let cur='';
+  words.forEach(w=>{ if((cur+' '+w).trim().length>max && cur){ lines.push(cur); cur=w; } else cur=(cur+' '+w).trim(); });
+  if(cur) lines.push(cur); return lines;
+}
+function T(x,y,str,size,fill,opts={}){
+  const w = opts.weight||400, a = opts.anchor||'start';
+  return `<text x="${x}" y="${y}" font-family="Helvetica, Arial, sans-serif" font-size="${size}" font-weight="${w}" fill="${fill}" text-anchor="${a}">${esc(str)}</text>`;
+}
+function TL(x,y,lines,size,fill,opts={}){ return lines.map((l,i)=>T(x,y+i*size*1.25,l,size,fill,opts)).join(''); }
+function renderFigure(spec, layout, palKey, style, scale){
+  const P = PALS[palKey]; const dark = style==='dark';
+  const bg = dark ? P.ink : style==='soft' ? P.l : '#FFFFFF';
+  const fg = dark ? '#FFFFFF' : P.ink, mut = dark ? '#C9CFDD' : '#5B6470';
+  const acc = dark ? '#FFFFFF' : P.p, acc2 = P.s, soft = dark ? 'rgba(255,255,255,0.18)' : (style==='soft' ? '#FFFFFF' : P.l);
+  const k = scale||1; let out = `<rect width="480" height="300" fill="${bg}"/>`; let top = 58;
+  if(style==='bold'){ out += `<rect width="480" height="46" fill="${P.p}"/>` + T(22,30,spec.title,17*k,'#FFFFFF',{weight:700}); top=66; }
+  else if(style==='minimal'){ out += T(22,32,spec.title,16*k,fg,{weight:600}) + `<line x1="22" y1="42" x2="120" y2="42" stroke="${acc2}" stroke-width="3"/>`; }
+  else { out += T(22,34,spec.title,17*k,fg,{weight:700}); }
+  const H = 300-top-18;
+  if(spec.kind==='bars'){
+    const items=spec.items, max=Math.max(...items.map(i=>i.v)), n=items.length;
+    const col = i => (spec.hi===i && layout!=='vbar') || (layout==='vbar' && spec.hi===i && n<3) ? acc2 : acc;
+    if(layout==='hbar' || layout==='dots'){
+      const rowH=Math.min(40,(H-26)/n), x0=150, w=290;
+      items.forEach((it,i)=>{ const y=top+10+i*rowH, len=w*it.v/max;
+        out += T(x0-10,y+rowH/2+4,it.label,12*k,fg,{anchor:'end'});
+        if(layout==='hbar') out += `<rect x="${x0}" y="${y+rowH*0.18}" width="${len}" height="${rowH*0.64}" rx="${style==='soft'?6:2}" fill="${col(i)}"/>`;
+        else out += `<line x1="${x0}" y1="${y+rowH/2}" x2="${x0+w}" y2="${y+rowH/2}" stroke="${soft}" stroke-width="2"/><circle cx="${x0+len}" cy="${y+rowH/2}" r="8" fill="${col(i)}"/>`;
+        if(it.t) out += T(x0+len+(layout==='dots'?14:8),y+rowH/2+4,it.t,12*k,fg,{weight:700});
+      });
+    } else {
+      const base=top+H-34, bw=Math.min(70,300/n), gap=(420-bw*n)/(n+1), hMax=H-60;
+      out += `<line x1="30" y1="${base}" x2="450" y2="${base}" stroke="${mut}" stroke-width="1"/>`;
+      items.forEach((it,i)=>{ const x=30+gap+i*(bw+gap), h=hMax*it.v/max; const c = layout==='vhigh' ? (spec.hi===i?acc2:soft) : col(i);
+        if(layout==='lollipop') out += `<line x1="${x+bw/2}" y1="${base}" x2="${x+bw/2}" y2="${base-h}" stroke="${acc}" stroke-width="3"/><circle cx="${x+bw/2}" cy="${base-h}" r="10" fill="${spec.hi===i?acc2:acc}"/>`;
+        else out += `<rect x="${x}" y="${base-h}" width="${bw}" height="${h}" rx="${style==='soft'?8:2}" fill="${c}" ${layout==='vhigh'&&spec.hi!==i&&!dark?`stroke="${acc}" stroke-width="1"`:''}/>`;
+        out += TL(x+bw/2,base+15,wrap(it.label,12),11*k,fg,{anchor:'middle'});
+        if(it.t) out += T(x+bw/2,base-h-(layout==='lollipop'?16:7),it.t,13*k,fg,{anchor:'middle',weight:700});
+      });
+    }
+    out += T(22,292,spec.unit + (spec.note?'  ·  '+spec.note:''),10.5*k,mut);
+  }
+  if(spec.kind==='flow'){
+    const st=spec.steps, n=st.length;
+    if(layout==='row' || layout==='chevron'){
+      const g=layout==='chevron'?4:22, w=(436-(n-1)*g)/n, y=top+H/2-38;
+      st.forEach((s,i)=>{ const x=22+i*(w+g); const last=i===n-1;
+        if(layout==='chevron'){ const d=16; out += `<path d="M${x} ${y} L${x+w-(last?0:d)} ${y} L${x+w+(last?0:d)-d} ${y+38} L${x+w-(last?0:d)} ${y+76} L${x} ${y+76} ${i?`L${x+d} ${y+38}`:''} Z" fill="${i===n-1?acc2:acc}" opacity="${1-i*0.12}"/>`;
+          out += TL(x+w/2+(i?6:0),y+34-(wrap(s,12).length-1)*7,wrap(s,12),11.5*k,'#FFFFFF',{anchor:'middle',weight:600}); }
+        else { out += `<rect x="${x}" y="${y}" width="${w}" height="76" rx="${style==='soft'?14:6}" fill="${soft}" stroke="${i===n-1?acc2:acc}" stroke-width="2"/>`;
+          out += TL(x+w/2,y+34-(wrap(s,12).length-1)*7,wrap(s,12),11.5*k,fg,{anchor:'middle',weight:600});
+          if(!last) out += `<path d="M${x+w+3} ${y+38} L${x+w+g-4} ${y+38}" stroke="${mut}" stroke-width="2"/><path d="M${x+w+g-9} ${y+33} L${x+w+g-3} ${y+38} L${x+w+g-9} ${y+43}" fill="none" stroke="${mut}" stroke-width="2"/>`; }
+      });
+    } else if(layout==='circles'){
+      const gapx=436/n, cy=top+H/2-18;
+      out += `<line x1="${22+gapx/2}" y1="${cy}" x2="${22+gapx*(n-0.5)}" y2="${cy}" stroke="${soft}" stroke-width="4"/>`;
+      st.forEach((s,i)=>{ const cx=22+gapx*(i+0.5); out += `<circle cx="${cx}" cy="${cy}" r="20" fill="${i===n-1?acc2:acc}"/>` + T(cx,cy+5,String(i+1),14,'#FFFFFF',{anchor:'middle',weight:700}) + TL(cx,cy+42,wrap(s,14),11.5*k,fg,{anchor:'middle'}); });
+    } else {
+      const h=Math.min(44,(H-10-(n-1)*10)/n);
+      st.forEach((s,i)=>{ const y=top+4+i*(h+10);
+        if(layout==='cards'){ out += `<rect x="22" y="${y}" width="436" height="${h}" rx="8" fill="${soft}"/><rect x="22" y="${y}" width="6" height="${h}" rx="3" fill="${i===n-1?acc2:acc}"/>` + T(42,y+h/2+5,`${i+1}. ${s}`,13*k,fg,{weight:600}); }
+        else { const w=300, x=(480-w)/2; out += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${style==='soft'?12:6}" fill="${i===n-1?acc2:acc}"/>` + T(240,y+h/2+5,s,13*k,'#FFFFFF',{anchor:'middle',weight:600});
+          if(i<n-1) out += `<path d="M240 ${y+h+1} L240 ${y+h+8}" stroke="${mut}" stroke-width="2"/>`; }
+      });
+    }
+  }
+  if(spec.kind==='stat' || spec.kind==='parts'){
+    const frac = spec.kind==='parts' ? spec.n/spec.of : null;
+    const lab = wrap(spec.label, layout==='ring'||layout==='split'||layout==='donut'?26:44);
+    const note = spec.note ? T(22,290,spec.note,10.5*k,mut) : '';
+    if(layout==='icons' && frac!==null){
+      const total = spec.of<=20 ? spec.of : 20, filled = Math.round(frac*total), per=10, size=22;
+      for(let i=0;i<total;i++){ const cx=40+(i%per)*28, cy=top+14+Math.floor(i/per)*40; const c=i<filled?acc:soft;
+        out += `<circle cx="${cx}" cy="${cy}" r="6" fill="${c}"/><rect x="${cx-8}" y="${cy+8}" width="16" height="${size-6}" rx="7" fill="${c}"/>`; }
+      out += T(22,top+H-40,spec.big,26*k,acc2,{weight:700}) + TL(22+spec.big.length*15+12,top+H-48,wrap(spec.label,34),12*k,fg);
+      if(spec.of>20) out += T(22,292,'Each figure represents 5%',10.5*k,mut);
+    } else if(layout==='donut' || layout==='ring'){
+      const r=62, C=2*Math.PI*r, cx=110, cy=top+H/2; const f = frac!==null ? frac : 0.75;
+      out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${soft}" stroke-width="18"/>`;
+      if(frac!==null || layout==='donut') out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${acc}" stroke-width="18" stroke-dasharray="${C*f} ${C}" transform="rotate(-90 ${cx} ${cy})"/>`;
+      else out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${acc}" stroke-width="4"/>`;
+      out += T(cx,cy+7,spec.big,(spec.big.length>7?15:22)*k,fg,{anchor:'middle',weight:700}) + TL(210,cy-12,lab,14*k,fg);
+    } else if(layout==='bar100' && frac!==null){
+      const y=top+30; out += `<rect x="22" y="${y}" width="436" height="34" rx="6" fill="${soft}"/><rect x="22" y="${y}" width="${436*frac}" height="34" rx="6" fill="${acc}"/>`;
+      out += T(30+436*frac,y+58,spec.big,24*k,acc2,{weight:700,anchor:frac>0.6?'end':'start'}) + TL(22,y+100,lab,13*k,fg);
+    } else if(layout==='grid' && frac!==null){
+      const pct=Math.round(frac*100);
+      for(let i=0;i<100;i++){ const x=24+(i%10)*17, y=top+2+Math.floor(i/10)*17; out += `<rect x="${x}" y="${y}" width="13" height="13" rx="2" fill="${i<pct?acc:soft}"/>`; }
+      out += T(220,top+50,spec.big,34*k,acc2,{weight:700}) + TL(220,top+84,wrap(spec.label,26),13*k,fg);
+    } else if(layout==='split'){
+      out += `<rect x="22" y="${top}" width="180" height="${H-24}" rx="${style==='soft'?14:6}" fill="${acc}"/>` + T(112,top+(H-24)/2+10,spec.big,(spec.big.length>7?20:34)*k,dark?P.ink:'#FFFFFF',{anchor:'middle',weight:700}) + TL(222,top+36,lab,14*k,fg);
+    } else if(layout==='banner'){
+      out += `<rect x="22" y="${top+6}" width="${Math.max(120,spec.big.length*20+30)}" height="52" rx="26" fill="${acc2}"/>` + T(40,top+41,spec.big,26*k,'#FFFFFF',{weight:700}) + TL(22,top+94,lab,15*k,fg);
+    } else if(layout==='minimal'){
+      out += T(22,top+60,spec.big,(spec.big.length>7?34:52)*k,acc,{weight:300}) + `<line x1="22" y1="${top+80}" x2="200" y2="${top+80}" stroke="${acc2}" stroke-width="2"/>` + TL(22,top+106,lab,14*k,fg);
+    } else {
+      out += T(240,top+76,spec.big,(spec.big.length>7?38:60)*k,acc,{weight:700,anchor:'middle'}) + TL(240,top+112,lab,14*k,fg,{anchor:'middle'});
+    }
+    out += note;
+  }
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="960" height="600">${out}</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+function readGuidance(g){
+  const t=(g||'').toLowerCase(); const r={};
+  const palMap=[['navy','navy'],['blue','navy'],['teal','teal'],['purple','plum'],['plum','plum'],['green','forest'],['orange','warm'],['warm','warm'],['amber','warm'],['grey','mono'],['gray','mono'],['black','mono'],['mono','mono'],['slate','slate']];
+  for(const [w,p] of palMap) if(t.includes(w)){ r.pal=p; break; }
+  if(/dark/.test(t)) r.style='dark'; else if(/minimal|simple|clean|fewer|less/.test(t)) r.style='minimal'; else if(/bold|strong/.test(t)) r.style='bold'; else if(/soft|round|friendly/.test(t)) r.style='soft';
+  if(/large|bigger|larger|readable/.test(t)) r.scale=1.15;
+  if(/horizontal/.test(t)) r.layout={bars:'hbar',flow:'row'}; else if(/vertical/.test(t)) r.layout={bars:'vbar',flow:'column'};
+  if(/donut|pie|circle/.test(t)) r.layout={parts:'donut',stat:'ring'}; if(/icon|people/.test(t)) r.layout={parts:'icons'};
+  r.understood = Object.keys(r).length>0; return r;
+}
+function makeBatch(spec, b, guidance){
+  const g=readGuidance(guidance); const opts=[];
+  for(let i=0;i<5;i++){
+    const layouts=LAYOUTS[spec.kind];
+    const layout=(g.layout && g.layout[spec.kind]) || layouts[(i+b)%5];
+    const pal=g.pal || PAL_ORDER[(i*2+b*3)%PAL_ORDER.length];
+    const style=g.style || STYLES[(i+b*2)%STYLES.length];
+    opts.push({id:`b${b}o${i}`, url:renderFigure(spec,layout,pal,style,g.scale), n:b*5+i+1});
+  }
+  return {guidance:(guidance||'').trim(), understood:g.understood, options:opts};
+}
+function generate(store, id, guidance){
+  const it=itemById[id]; const rec=store[id] || (store[id]={batches:[], sel:null});
+  loading[id]=true; render();
+  setTimeout(()=>{ rec.batches.push(makeBatch(specFor(it), rec.batches.length, guidance)); delete loading[id]; save(); render(); }, 900);
+}
+
+/* ---------------- Rendering: shell ---------------- */
+function renderBadges(){
+  const paperIds = new Set(DATA.items.map(i=>i.paperId));
+  document.getElementById('badges').innerHTML =
+    (S.approved ? `<span class="status-badge approved">${ICON.shield}Approved research</span>` : `<span class="status-badge unapproved">${ICON.warn}Research not approved</span>`) +
+    `<span>Topic of the month <b>${esc(DATA.topic)}</b></span><span>Hero product of the month <b>DAO Enzyme</b></span><span>Papers <b>${paperIds.size}</b></span>${S.approved?`<span>Date approved <b>${window.ES_APPROVED_ON||DATA.received}</b></span>`:`<span>Date approved <b>Not yet approved</b></span>`}`;
+  /* ES: research-status demo toggle removed */
+}
+function renderStepper(){
+  let h='';
+  STEPS.forEach((l,i)=>{ const n=i+1; const cls = n===S.step?'active':(n<=S.maxStep?'done':'');
+    if(i) h += `<div class="st-line${n<=S.maxStep?' done':''}"></div>`;
+    const locked = (S.review && S.review.status==='approved' && n<10) || (S.step===9 && n<9);
+    h += `<button type="button" class="st ${cls}" data-go="${n}" ${n>S.maxStep||locked?'disabled':''} ${n===S.step?'aria-current="step"':''}><span class="st-dot">${n<S.step||(n<=S.maxStep&&n!==S.step)?'✓':n}</span><span class="st-lbl">${l}</span></button>`; });
+  const bar=document.getElementById('stepper'); bar.innerHTML=h;
+  const act=bar.querySelector('.st.active'); if(act && bar.scrollWidth>bar.clientWidth){ bar.scrollLeft = act.offsetLeft - bar.offsetLeft - (bar.clientWidth-act.offsetWidth)/2; }
+}
+function render(){
+  renderBadges(); renderStepper();
+  const st=document.getElementById('stage');
+  st.className = 'stage' + (S.step<=4 ? ' narrow' : '');
+  ensureIds(S.work);
+  st.innerHTML = [null,step1,step2,step3,step4,step5,step6,step7,step8,step9,step10][S.step]();
+  if(S.step===6){ const log=document.getElementById('chatLog'); if(log) log.scrollTop=log.scrollHeight; }
+}
+function go(n){ S.step=n; S.maxStep=Math.max(S.maxStep,n); save(); render(); window.scrollTo(0,0); onEnter(n); }
+function onEnter(n){
+  if(n===2) redesignFigs().forEach(it=>{ const r=S.picks[it.id]; if((!r||!r.batches.length) && !loading[it.id]) generate(S.picks,it.id,''); });
+  if(n===5 && !S.decks && !loading.decks){ loading.decks=true; render(); setTimeout(()=>{ S.decks=buildDecks(); delete loading.decks; save(); render(); },1600); }
+  if(n===6 && !S.work && S.chosen!==null){ S.work=JSON.parse(JSON.stringify(S.decks[S.chosen])); S.work.version=1; S.cur=0;
+    S.chat=[{r:'ai', t:`I've opened "${S.work.name}". Tell me what to change. I can:\n• remove, move or retitle slides\n• shorten bullets, or enlarge or shrink text\n• switch the visual style\n• add an agenda, a summary slide or speaker notes\n• add a slide about a topic, if the approved research covers it\n• undo my last change\n\nI only use the approved research, so I won't add claims from outside it.`}]; save(); render(); }
+}
+function sectionShell(step, sec, i, countHtml, inner){
+  const collapsed = S.collapsed[step].includes(sec), id=`s${step}-${i}`;
+  return `<section class="section${collapsed?' collapsed':''}"><h3><button type="button" class="sec-head" data-fold="${step}" data-sec="${esc(sec)}" aria-expanded="${!collapsed}" aria-controls="${id}">${ICON.chev}<span class="sec-title">${esc(sec)}</span>${countHtml}</button></h3><div class="sec-body" id="${id}"${collapsed?' hidden':''}>${inner}</div></section>`;
+}
+function foldButtons(step){ return `<div class="seg" role="group" aria-label="Expand or collapse sections"><button type="button" data-foldall="${step}" data-open="1">Expand all</button><button type="button" data-foldall="${step}" data-open="0">Collapse all</button></div>`; }
+function sourceHtml(it){ const p=paperById[it.paperId]; return `<div class="source"><span class="t">${esc(p.title)}</span> · ${esc(p.journal)}, ${p.year}${it.kind==='excerpt'?' · '+esc(it.ref):''}</div>`; }
+function chipsHtml(it){ const p=paperById[it.paperId];
+  return `<div class="chips"><span class="chip">${esc(p.design)}</span><span class="chip">${esc(p.certainty)}</span><span class="chip">${p.citations} citations</span>${p.funding==='industry'?'<span class="chip warm">Industry-funded</span>':p.funding==='mixed'?'<span class="chip warm">Part industry-funded</span>':''}</div>`; }
+function gradeHtml(it){ const p=paperById[it.paperId]; return `<div class="grade grade-${p.grade}" title="Evidence grade ${p.grade}">${p.grade}</div>`; }
+
+/* ---------------- Step 1: Research review ---------------- */
+function step1(){
+  const u=using(); const left=leftOutSections().length;
+  let secs='';
+  DATA.sections.forEach((sec,i)=>{
+    const all=secItems(sec).sort((a,b)=>(a.kind===b.kind?0:a.kind==='figure'?1:-1)||paperById[a.paperId].grade.localeCompare(paperById[b.paperId].grade));
+    const inUse=all.filter(it=>!isEx(it.id));
+    const shown=all.filter(it=>S.filter==='all'||(S.filter==='use')===!isEx(it.id));
+    let inner;
+    if(!all.length) inner=`<div class="gap-note"><b>No approved research, so this section will be left out of the deck.</b> To include it, Medical Affairs needs to add research for it in the Evidence Agent.</div>`;
+    else if(!shown.length) inner=`<div class="hidden-note">${S.filter==='use'?'Everything here is excluded.':'Nothing excluded here.'}</div>`;
+    else inner=`<div class="cards">${shown.map(it=>{
+      const off=isEx(it.id);
+      const body = it.kind==='figure' ? `<div class="figure"><img src="${it.img}" alt="${esc(it.caption)}"><div class="figure-cap">${esc(it.caption)}<div class="chips">${it.asIs?'<span class="chip ok">Use as is</span>':'<span class="chip warm">Needs redesign</span>'}</div></div></div>` : `<blockquote class="quote">${esc(it.text)}</blockquote>`;
+      return `<article class="card${off?' is-aside':''}">${gradeHtml(it)}<div class="card-body">${body}${sourceHtml(it)}${chipsHtml(it)}</div><div class="card-foot"><span class="aside-label">Excluded. The agent won't use this.</span><button type="button" class="aside-btn" data-exclude="${it.id}">${off?'Include again':'Exclude'}</button></div></article>`; }).join('')}</div>`;
+    if(all.length && !inUse.length && S.filter!=='aside') inner=`<div class="gap-note" style="margin-bottom:10px"><b>All research here is excluded, so this section will be left out of the deck.</b> Include an item again to keep the section.</div>`+inner;
+    const count = inUse.length ? `<span class="sec-count">${inUse.length} of ${all.length} in use</span>` : `<span class="chip bad">Left out of deck</span>`;
+    secs += sectionShell(1,sec,i,count,inner);
+  });
+  const ex=u.filter(i=>i.kind==='excerpt').length, fg=u.filter(i=>i.kind==='figure').length;
+  return `<div class="page-head"><div class="page-head-text"><h2>Review the research</h2><p>The agent builds the HCP deck from this research only, section by section. It adds nothing from general knowledge, so a section with no research is left out. The deck carries no product content. Exclude anything you don't want on a slide.</p></div>
+    <div class="tally"><div class="tally-item"><div class="tally-num">${u.length}</div><div class="tally-lbl">Agent will use</div></div><div class="tally-item"><div class="tally-num">${DATA.items.length-u.length}</div><div class="tally-lbl">Excluded</div></div><div class="tally-item${left?' warn':''}"><div class="tally-num">${left}</div><div class="tally-lbl">Sections left out</div></div></div></div>
+  <div class="toolbar"><div class="tool-left"><div class="seg" role="group" aria-label="Filter evidence">
+    <button type="button" data-filter="all" aria-pressed="${S.filter==='all'}">All</button><button type="button" data-filter="use" aria-pressed="${S.filter==='use'}">Using</button><button type="button" data-filter="aside" aria-pressed="${S.filter==='aside'}">Excluded</button></div>${foldButtons(1)}</div>
+    <span class="note">${ICON.lock} Read-only research. Excluding only removes it from this deck.</span></div>
+  ${secs}
+  <div class="next-bar"><p class="next-summary">The agent will build the deck from <b>${ex} excerpt${ex===1?'':'s'}</b> and <b>${fg} figure${fg===1?'':'s'}</b>.${left?` <b>${left} section${left===1?'':'s'}</b> will be left out.`:''}</p>
+    <button type="button" class="btn" data-go="2">Figure refinement ${ICON.arrow}</button></div>`;
+}
+
+/* ---------------- Shared: figure picker ---------------- */
+function pickerHtml(store, it, inline){
+  const rec=store[it.id]||{batches:[],sel:null}; const busy=loading[it.id];
+  let h='';
+  rec.batches.forEach((b,bi)=>{
+    h += `<div class="batch"><div class="batch-lbl"><b>Options ${bi*5+1}–${bi*5+5}</b>${b.guidance?`<span class="chip">Guidance: “${esc(b.guidance)}”</span>${b.understood?'':'<span class="chip warm">Guidance noted, varied styles instead</span>'}`:''}</div><div class="opts">${
+      b.options.map(o=>`<button type="button" class="opt" data-pick="${it.id}" data-store="${inline?'ex':'fig'}" data-opt="${o.id}" aria-pressed="${rec.sel===o.id}"><img src="${o.url}" alt="Redesign option ${o.n}"><span>Option ${o.n}</span><i class="check">${ICON.check}</i></button>`).join('')}</div></div>`;
+  });
+  if(rec.upload) h += `<div class="batch"><div class="batch-lbl"><b>Your upload</b></div><div class="opts"><button type="button" class="opt" data-pick="${it.id}" data-store="${inline?'ex':'fig'}" data-opt="upload" aria-pressed="${rec.sel==='upload'}"><img src="${rec.upload}" alt="Uploaded figure"><span>Uploaded file</span><i class="check">${ICON.check}</i></button></div></div>`;
+  if(busy) h += `<div class="loading-row"><span class="spinner"></span>Generating 5 ${rec.batches.length?'more ':''}designs…</div>`;
+  h += `<div class="gen-controls"><input type="text" id="g-${it.id}" placeholder="Optional guidance, e.g. horizontal, fewer labels, green palette" aria-label="Guidance for the next designs" ${busy?'disabled':''}>
+    <button type="button" class="pill-btn" data-more="${it.id}" data-store="${inline?'ex':'fig'}" ${busy?'disabled':''}>Show 5 more</button>
+    <label class="upload-lbl">${ICON.upload}Upload your own<input type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" data-upload="${it.id}" data-store="${inline?'ex':'fig'}"></label></div>`;
+  return h;
+}
+function pickState(rec){ if(rec && rec.sel){ return `<span class="chip ok pick-state">${rec.sel==='upload'?'Your upload selected':'Option '+(()=>{for(const b of rec.batches)for(const o of b.options)if(o.id===rec.sel)return o.n;})()+' selected'}</span>`; } return `<span class="chip warm pick-state">Choose a design</span>`; }
+
+/* ---------------- Step 2: Figure refinement ---------------- */
+function step2(){
+  const figs=redesignFigs(), asis=asIsFigs();
+  const missing=figs.filter(f=>!chosenUrl(S.picks[f.id])).length;
+  let h=`<div class="page-head"><div class="page-head-text"><h2>Figure refinement</h2><p>Figures taken from papers need a redesign before they go on a slide. Pick one of the AI's designs for each figure, ask for 5 more with optional guidance, or upload your own file.</p></div>
+    <div class="tally"><div class="tally-item"><div class="tally-num">${figs.length}</div><div class="tally-lbl">Need a redesign</div></div><div class="tally-item"><div class="tally-num">${asis.length}</div><div class="tally-lbl">Used as is</div></div></div></div>`;
+  if(asis.length) h+=`<h3 style="font-size:14px;margin:22px 0 10px">Used as is</h3><div class="asis-row">${asis.map(f=>`<div class="asis"><img src="${f.img}" alt="${esc(f.caption)}"><div><b>${esc(f.caption)}</b><br><span class="chip ok">Use as is · no redesign needed</span></div></div>`).join('')}</div>`;
+  h+=`<h3 style="font-size:14px;margin:22px 0 10px">Needs a redesign</h3>`;
+  if(!figs.length) h+=`<div class="hidden-note">No figures need a redesign.</div>`;
+  figs.forEach(f=>{ const p=paperById[f.paperId];
+    h+=`<div class="gen"><div class="gen-head"><div class="gen-orig"><img src="${f.img}" alt="Original: ${esc(f.caption)}"><div style="min-width:0;flex:1"><div class="lbl">Original figure</div><div class="gen-title">${esc(f.caption)}</div><div class="source">${esc(p.title)} · ${esc(p.journal)}, ${p.year}</div><div class="chips"><span class="chip">Used in: ${f.sections.map(esc).join(', ')}</span></div></div></div>${pickState(S.picks[f.id])}</div>${pickerHtml(S.picks,f,false)}</div>`; });
+  h+=`<p class="sim-note">Prototype: the AI designs are simulated placeholders.</p>
+  <div class="next-bar"><button type="button" class="btn secondary" data-go="1">${ICON.back} Research review</button><p class="next-summary">${missing?`<span class="warn">Choose a design for ${missing} more figure${missing===1?'':'s'} to continue.</span>`:'Every figure has a design.'}</p>
+    <button type="button" class="btn" data-go="3" ${missing?'disabled':''}>Figures from excerpts ${ICON.arrow}</button></div>`;
+  return h;
+}
+
+/* ---------------- Step 3: Figures from excerpts ---------------- */
+function step3(){
+  const wanted=wantedEx(); const missing=wanted.filter(i=>!chosenUrl(S.exfig[i.id])).length;
+  let secs='';
+  includedSections().forEach((sec,i)=>{
+    const ex=secItems(sec,usedExcerpts());
+    const w=ex.filter(e=>S.exfig[e.id]&&S.exfig[e.id].wanted).length;
+    const inner = ex.length ? `<div class="cards">${ex.map(it=>{ const rec=S.exfig[it.id]; const on=!!(rec&&rec.wanted);
+      const other = it.sections.length>1 && it.sections[0]!==sec;
+      return `<article class="card">${gradeHtml(it)}<div class="card-body"><blockquote class="quote">${esc(it.text)}</blockquote>${sourceHtml(it)}</div>
+      <div class="card-foot"><span>${on?pickState(rec):''}</span>${other?`<span class="chip">Figure choice is shared with “${esc(it.sections[0])}”</span>`:`<button type="button" class="want-btn" data-want="${it.id}" aria-pressed="${on}">${ICON.spark}${on?'Figure requested':'Create a figure from this excerpt'}</button>`}</div>
+      ${on&&!other?`<div class="gen inline">${pickerHtml(S.exfig,it,true)}</div>`:''}</article>`; }).join('')}</div>` : `<div class="hidden-note">This section only has figures, which were handled in the previous step.</div>`;
+    secs += sectionShell(3,sec,i,`<span class="sec-count">${ex.length} excerpt${ex.length===1?'':'s'}${w?` · ${w} figure${w===1?'':'s'} requested`:''}</span>`,inner);
+  });
+  return `<div class="page-head"><div class="page-head-text"><h2>Figures from excerpts</h2><p>Optional. Choose any excerpt you'd like turned into a figure. The AI offers 5 designs based on that excerpt only. Pick one, ask for 5 more with guidance, or upload your own.</p></div>
+    <div class="tally"><div class="tally-item"><div class="tally-num">${wanted.length}</div><div class="tally-lbl">Figures requested</div></div></div></div>
+  <div class="toolbar"><div class="tool-left">${foldButtons(3)}</div><span class="note">Skip this step by continuing without choosing any.</span></div>
+  ${secs}
+  <p class="sim-note">Prototype: the AI designs are simulated placeholders.</p>
+  <div class="next-bar"><button type="button" class="btn secondary" data-go="2">${ICON.back} Figure refinement</button><p class="next-summary">${missing?`<span class="warn">Choose a design for ${missing} requested figure${missing===1?'':'s'}, or cancel the request.</span>`:wanted.length?`<b>${wanted.length}</b> new figure${wanted.length===1?'':'s'} will be added.`:'No new figures requested.'}</p>
+    <button type="button" class="btn" data-go="4" ${missing?'disabled':''}>Final review ${ICON.arrow}</button></div>`;
+}
+
+/* ---------------- Step 4: Final review ---------------- */
+function step4(){
+  let secs='';
+  includedSections().forEach((sec,i)=>{
+    const its=secItems(sec,using());
+    const inner=`<div class="cards">${its.map(it=>{
+      if(it.kind==='figure'){ const url=figureUrl(it);
+        return `<article class="card">${gradeHtml(it)}<div class="card-body"><div class="figure"><img src="${url}" alt="${esc(it.caption)}"><div class="figure-cap">${esc(it.caption)}<div class="chips">${it.asIs?'<span class="chip ok">Used as is</span>':S.picks[it.id].sel==='upload'?'<span class="chip ok">Your upload</span>':'<span class="chip ok">Redesigned</span>'}</div></div></div>${sourceHtml(it)}</div></article>`; }
+      const fu = it.sections[0]===sec ? excerptFigUrl(it) : null;
+      return `<article class="card">${gradeHtml(it)}<div class="card-body"><blockquote class="quote">${esc(it.text)}</blockquote>${sourceHtml(it)}${chipsHtml(it)}${fu?`<div class="final-fig"><img src="${fu}" alt="Figure generated from this excerpt"><div class="figure-cap">Figure generated from this excerpt<div class="chips"><span class="chip ok">${S.exfig[it.id].sel==='upload'?'Your upload':'AI design'}</span></div></div></div>`:''}</div></article>`;
+    }).join('')}</div>`;
+    const figs=its.filter(x=>x.kind==='figure').length + its.filter(x=>x.kind==='excerpt'&&x.sections[0]===sec&&excerptFigUrl(x)).length;
+    secs += sectionShell(4,sec,i,`<span class="sec-count">${its.filter(x=>x.kind==='excerpt').length} excerpts · ${figs} figure${figs===1?'':'s'}</span>`,inner);
+  });
+  const lo=leftOutSections();
+  return `<div class="page-head"><div class="page-head-text"><h2>Final review</h2><p>This is everything the agent will use to build the deck, with your figures in place. Check it over, add optional guidance, then generate the deck.</p></div></div>
+  ${lo.length?`<div class="left-out"><b>Left out of the deck (no research):</b> ${lo.map(esc).join(', ')}</div>`:''}
+  <div class="toolbar"><div class="tool-left">${foldButtons(4)}</div><span class="note">${ICON.lock} To change anything, go back a step.</span></div>
+  ${secs}
+  <div class="next-bar" style="align-items:flex-end"><div class="guidance"><label for="genGuidance">Guidance for the deck <span>(optional)</span></label><textarea id="genGuidance" placeholder="e.g. keep it to about 12 slides, lead with the clinical evidence, one key message per slide">${esc(S.guidance)}</textarea></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn secondary" data-go="3">${ICON.back} Back</button><button type="button" class="btn" id="genDeck">Generate deck ${ICON.spark}</button></div></div>`;
+}
+
+/* ---------------- Deck building ---------------- */
+const THEMES = [
+  {name:'Clinical Navy', desc:'Navy title bars, bullets beside figures. One section per slide.', bg:'#FFFFFF', fg:'#1A1F2B', acc:'#14328C', soft:'#E7EBF7', line:'#E3E6EE', font:'sans', deco:'bar', split:3, agenda:true},
+  {name:'Clean Minimal', desc:'White space, large titles and a thin accent. Figures get their own slides.', bg:'#FFFFFF', fg:'#111111', acc:'#0F766E', soft:'#E3F2EF', line:'#EAEAEA', font:'sans', deco:'none', split:2, figSlides:true},
+  {name:'Evidence First', desc:'One finding per slide, with the evidence grade shown on every point.', bg:'#F7F7F5', fg:'#1B1530', acc:'#6A3FA0', soft:'#EFE7F7', line:'#E3DEEA', font:'sans', deco:'side', split:1, grades:true, summary:true},
+  {name:'Warm Editorial', desc:'Serif headings on a warm ground. Reads like a journal review.', bg:'#FBF7F0', fg:'#2B2118', acc:'#B45309', soft:'#F6E7D3', line:'#EADFCF', font:'serif', deco:'none', split:3, agenda:true, summary:true},
+  {name:'Dark Keynote', desc:'Dark stage for webinars, with high-contrast type and bold figures.', bg:'#0F1629', fg:'#E8ECF5', acc:'#8FA4EC', soft:'#1E2640', line:'#27304A', font:'sans', deco:'none', split:2, dark:true},
+  {name:'Ocean Teal', desc:'Calm teal palette with a top bar and an agenda. Two points per slide.', bg:'#F4FAF9', fg:'#0B3B36', acc:'#0F766E', soft:'#D5EEEA', line:'#CFE5E1', font:'sans', deco:'bar', split:2, agenda:true},
+  {name:'Slate Modern', desc:'Crisp slate and sky blue, side accent, figures on their own slides.', bg:'#FFFFFF', fg:'#0F172A', acc:'#0284C7', soft:'#E0F2FE', line:'#E2E8F0', font:'sans', deco:'side', split:3, figSlides:true},
+  {name:'Forest Clinical', desc:'Green clinical palette that closes on a key takeaways slide.', bg:'#FFFFFF', fg:'#1B3A1D', acc:'#2E7D32', soft:'#E8F2E8', line:'#DDE9DD', font:'sans', deco:'bar', split:2, summary:true},
+  {name:'Plum Contrast', desc:'Deep plum stage with lavender highlights. Built for large screens.', bg:'#1E1330', fg:'#F3ECFA', acc:'#C9A7F5', soft:'#34214F', line:'#3A2A55', font:'sans', deco:'none', split:2, dark:true}
+];
+const THEME_WORDS=[[/teal|ocean|aqua/,5],[/sky|slate|modern|light blue/,6],[/green|forest/,7],[/purple|plum|lavender|violet/,8],[/navy|clinical|dark blue/,0],[/minimal|clean|white space|simple/,1],[/grade|evidence first/,2],[/warm|serif|editorial|orange|amber|journal/,3],[/dark|keynote|black|webinar/,4]];
+function shortText(t, n){ const s=(t.split(/(?<=\.)\s/)[0]); if(s.length<=n) return s; const cut=s.slice(0,n); return cut.slice(0,cut.lastIndexOf(' '))+'…'; }
+function buildDeck(ti, guidance, extra={}){
+  const th=THEMES[ti]; const g=(guidance||'').toLowerCase(); const slides=[]; const refs=[];
+  const cite = pid => { let k=refs.indexOf(pid); if(k<0){ refs.push(pid); k=refs.length-1; } return k+1; };
+  const split = /one (key )?(message|point|finding) per slide/.test(g) ? 1 : (extra.split || th.split);
+  slides.push({type:'cover', title:DATA.topic, sub:'An evidence review for healthcare professionals'});
+  const secs=includedSections();
+  const order = /lead with (the )?(clinical )?evidence/.test(g) ? [...secs].sort((a,b)=>(b==='Clinical evidence')-(a==='Clinical evidence')) : secs;
+  if(th.agenda) slides.push({type:'agenda', title:'Agenda', items:order.slice()});
+  order.forEach(sec=>{
+    const ex=secItems(sec,usedExcerpts()); const figs=[];
+    secItems(sec,using()).filter(i=>i.kind==='figure').forEach(f=>figs.push({kind:'fig', id:f.id, cap:f.caption, pid:f.paperId}));
+    ex.filter(e=>e.sections[0]===sec && excerptFigUrl(e)).forEach(e=>figs.push({kind:'ex', id:e.id, cap:'From: '+paperById[e.paperId].title, pid:e.paperId}));
+    const chunks=[]; for(let i=0;i<ex.length;i+=split) chunks.push(ex.slice(i,i+split)); if(!chunks.length) chunks.push([]);
+    chunks.forEach((c,ci)=>{
+      const fig = th.figSlides ? null : figs.shift() || null;
+      slides.push({type:'content', section:sec, title: sec + (chunks.length>1?` (${ci+1}/${chunks.length})`:''),
+        bullets:c.map(e=>({text:shortText(e.text, split===1?220:170), full:e.text, n:cite(e.paperId), grade:paperById[e.paperId].grade})), fig: fig && {...fig, n:cite(fig.pid)}});
+    });
+    figs.forEach(f=>slides.push({type:'figure', section:sec, title:sec, fig:{...f, n:cite(f.pid)}}));
+  });
+  if(th.summary || /summary|takeaway/.test(g)) slides.push(summarySlide(slides));
+  slides.push({type:'refs', title:'References', refs});
+  return {theme:ti, name:extra.name||th.name, desc:th.desc, slides, scale:1, notes:false, guidance:(guidance||'').trim()};
+}
+function summarySlide(slides){
+  const seen={}; slides.filter(s=>s.type==='content'&&s.bullets.length).forEach(s=>{ if(!seen[s.section]) seen[s.section]=shortText(s.bullets[0].full,95); });
+  return {type:'summary', title:'Key takeaways', rows:Object.entries(seen).slice(0,6)};
+}
+function buildDecks(){ return [0,1,2,3,4].map(i=>buildDeck(i,S.guidance)); }
+function buildExtraDeck(g){
+  const t=(g||'').toLowerCase(); const used=S.decks.map(d=>d.theme);
+  let ti=null;
+  for(const [re,i] of THEME_WORDS) if(re.test(t)){ ti=i; if(/dark|black/.test(t) && used.includes(4) && !used.includes(8)) ti=8; break; }
+  if(ti===null){ ti=THEMES.findIndex((x,i)=>!used.includes(i)); if(ti<0) ti=S.decks.length % THEMES.length; }
+  const same=used.filter(x=>x===ti).length;
+  const extra={}; if(same){ extra.name=`${THEMES[ti].name} · variation ${same+1}`; extra.split = THEMES[ti].split===1 ? 2 : THEMES[ti].split===3 ? 2 : 3; }
+  const combined=[S.guidance,g].filter(Boolean).join('. ');
+  const d=buildDeck(ti, combined, extra); d.extraGuidance=(g||'').trim(); d.extra=true; return d;
+}
+function figSrc(f){ if(!f) return null; const it=itemById[f.id]; return f.kind==='ex' ? excerptFigUrl(it) : figureUrl(it); }
+
+function slideHtml(deck, i){
+  const s=deck.slides[i], th=THEMES[deck.theme]; const total=deck.slides.length;
+  const vars=`--sl-accent:${th.acc};--sl-soft:${th.soft};--sl-line:${th.line};background:${th.bg};color:${th.fg};font-size:${deck.scale}em;${th.font==='serif'?'':''}`;
+  const tf = th.font==='serif' ? 'font-family:var(--serif);' : '';
+  const k=deck.scale; const deco = th.deco==='bar'?'<div class="sl-bar"></div>':th.deco==='side'?'<div class="sl-side"></div>':'';
+  const foot = `<div class="sl-foot"><span>HCP education · ${esc(DATA.topic)}</span>${S.approved?'':'<span class="sl-draft">Draft · research not approved</span>'}<span>${i+1} / ${total}</span></div>`;
+  const z = v => `calc(${v}cqw * ${k})`;
+  let inner='';
+  if(s.type==='cover') return `<div class="slide sl-cover" style="${vars}">${deco}<div class="sl-inner"><h2 style="${tf}color:${th.acc};font-size:${z(6)}">${esc(s.title)}</h2><p style="font-size:${z(2.2)}">${esc(s.sub)}</p><div class="meta">Built from ${new Set(DATA.items.filter(x=>!isEx(x.id)).map(x=>x.paperId)).size} papers · ${esc(DATA.received)}</div></div>${foot}</div>`;
+  const title = `<h4 class="sl-title" style="${tf}font-size:${z(3.4)};color:${th.dark?th.fg:th.acc}">${esc(s.title)}</h4>`;
+  if(s.type==='agenda') inner = `<ol class="sl-list">${s.items.map((x,j)=>`<li style="font-size:${z(1.9)}"><b style="color:${th.acc}">${j+1}</b>&nbsp; ${esc(x)}</li>`).join('')}</ol>`;
+  if(s.type==='content'){
+    const src=figSrc(s.fig);
+    inner = `<div class="sl-body"><ul class="sl-bullets">${s.bullets.map(b=>`<li style="font-size:${z(s.bullets.length===1?2.3:1.85)}">${th.grades?`<span class="sl-grade">Grade ${b.grade}</span>`:''}${esc(b.text)} <sup>[${b.n}]</sup>${b.fund?' <span style="opacity:.7;font-size:.75em">(industry-funded)</span>':''}</li>`).join('')}</ul>${src?`<figure class="sl-fig" style="margin:0"><img src="${src}" alt=""><figcaption>${esc(s.fig.cap)} [${s.fig.n}]</figcaption></figure>`:''}</div>`;
+  }
+  if(s.type==='figure'){ const src=figSrc(s.fig); inner=`<div class="sl-body sl-figslide"><figure class="sl-fig" style="margin:0">${src?`<img src="${src}" alt="">`:''}<figcaption>${esc(s.fig.cap)} [${s.fig.n}]</figcaption></figure></div>`; }
+  if(s.type==='summary') inner = `<div class="sl-sum">${s.rows.map(([sec,t])=>`<div style="font-size:${z(1.5)}"><b style="font-size:${z(1.7)}">${esc(sec)}</b>${esc(t)}</div>`).join('')}</div>${s.caveat?`<p style="font-size:${z(1.3)};opacity:.75;margin:2cqw 0 0">These takeaways summarise the approved research in this deck and add no further claims.</p>`:''}`;
+  if(s.type==='refs') inner = `<ol class="sl-list sl-refs">${s.refs.map((pid,j)=>{const p=paperById[pid]; return `<li style="font-size:${z(1.25)}">[${j+1}] ${esc(p.title)}. <i>${esc(p.journal)}</i>, ${p.year}.</li>`;}).join('')}</ol>`;
+  return `<div class="slide" style="${vars}">${deco}<div class="sl-inner">${title}${inner}</div>${foot}</div>`;
+}
+function notesFor(s){
+  if(s.type==='cover') return 'Introduce the session: what histamine intolerance is, and that every point in this deck comes from the approved research.';
+  if(s.type==='content') return s.bullets.map(b=>`[${b.n}] ${b.full}`).join('\n\n') || 'Present the figure and its source.';
+  if(s.type==='figure') return `Walk through the figure. Source [${s.fig.n}].`;
+  if(s.type==='refs') return 'Offer the reference list for follow-up reading.';
+  return '';
+}
+function viewerHtml(deck, cur, idp, ov){
+  const n=deck.slides.length; cur=Math.min(cur,n-1);
+  if(!ov && S.pending && deck===S.work) ov=reviewOverlay('pending');
+  return `<div class="viewer"><div class="viewer-main">${slideHtml(deck,cur)}${ov?ov(deck.slides[cur],true):''}</div>
+    <div class="viewer-nav"><button type="button" class="icon-btn" data-slide="${cur-1}" data-v="${idp}" aria-label="Previous slide" ${cur<=0?'disabled':''}>${ICON.prev}</button><span>Slide ${cur+1} of ${n}</span><button type="button" class="icon-btn" data-slide="${cur+1}" data-v="${idp}" aria-label="Next slide" ${cur>=n-1?'disabled':''}>${ICON.next}</button></div>
+    ${deck.notes && notesFor(deck.slides[cur]) ? `<div class="notes"><b>Speaker notes</b>${esc(notesFor(deck.slides[cur])).replace(/\n/g,'<br>')}</div>`:''}
+    <div class="thumbs">${deck.slides.map((s,j)=>`<button type="button" class="thumb" data-slide="${j}" data-v="${idp}" aria-label="Slide ${j+1}" aria-current="${j===cur}">${slideHtml(deck,j)}<i>${j+1}</i>${ov?ov(s,false):''}</button>`).join('')}</div></div>`;
+}
+
+/* ---------------- Step 5: Choose a deck ---------------- */
+let reviewIdx=null, reviewCur=0;
+function step5(){
+  if(loading.decks || !S.decks) return `<div class="gen-wait"><span class="spinner"></span><b>Generating 5 decks from the approved research…</b><span>${S.guidance?`Following your guidance: “${esc(S.guidance)}”`:'Each deck takes a different approach to layout and style.'}</span></div>`;
+  const cards=S.decks.map((d,i)=>`<div class="deck-card${S.chosen===i?' selected':''}"><h3>${esc(d.name)} ${S.chosen===i?'<span class="chip ok">Selected</span>':S.reviewed[i]?'<span class="reviewed">Reviewed</span>':''}</h3><p>${esc(d.desc)} ${d.slides.length} slides.</p>${d.extra?`<div class="chips" style="margin-top:0"><span class="chip">Extra design${d.extraGuidance?` · “${esc(d.extraGuidance)}”`:''}</span></div>`:''}
+    <div class="slide-cover-prev">${slideHtml(d,0)}</div><div class="deck-strip">${[1,2,3].map(j=>d.slides[j]?slideHtml(d,j):'').join('')}</div>
+    <div class="deck-actions"><button type="button" class="btn secondary" data-review="${i}">Review all slides</button><button type="button" class="btn" data-choose="${i}">${S.chosen===i?'Selected':'Select this deck'}</button></div></div>`).join('');
+  return `<div class="page-head"><div class="page-head-text"><h2>Choose a deck</h2><p>The agent built ${S.decks.length} PowerPoint decks from the same approved research. Review each one, then select the deck you want to refine.${S.guidance?` Your guidance: “${esc(S.guidance)}”.`:''}</p></div></div>
+    <div class="decks">${cards}${loading.extraDeck?`<div class="deck-card"><div class="gen-wait" style="padding:60px 10px"><span class="spinner"></span>Generating 1 more design…</div></div>`:''}</div>
+    <div class="more-deck"><div class="guidance"><label for="deckGuidance">Want another option? <span>Guidance is optional, e.g. “green palette”, “one point per slide”, “dark background for a webinar”.</span></label>
+      <input type="text" id="deckGuidance" placeholder="Optional guidance for the next design" ${loading.extraDeck?'disabled':''}></div>
+      <button type="button" class="btn secondary" id="moreDeck" ${loading.extraDeck?'disabled':''}>${ICON.spark} Generate 1 more design</button></div>
+    <p class="sim-note">Prototype: the decks are simulated with sample layouts built from the real research.</p>
+    <div class="next-bar"><button type="button" class="btn secondary" data-go="4">${ICON.back} Final review</button><p class="next-summary">${S.chosen===null?'Select a deck to continue.':`<b>${esc(S.decks[S.chosen].name)}</b> selected.`}</p>
+      <button type="button" class="btn" data-go="6" ${S.chosen===null?'disabled':''}>Refine with AI ${ICON.arrow}</button></div>`;
+}
+function openReview(i){ reviewIdx=i; reviewCur=0; S.reviewed[i]=true; save(); renderOverlay(); }
+function renderOverlay(){
+  const root=document.getElementById('overlayRoot');
+  if(reviewIdx===null){ root.innerHTML=''; return; }
+  const d=S.decks[reviewIdx];
+  root.innerHTML=`<div class="overlay" id="ovl" role="dialog" aria-modal="true" aria-label="${esc(d.name)} deck"><div class="overlay-panel"><div class="overlay-head"><h3>${esc(d.name)} · ${d.slides.length} slides</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-choose="${reviewIdx}" data-close="1">${S.chosen===reviewIdx?'Selected':'Select this deck'}</button><button type="button" class="btn secondary" data-close="1">Close</button></div></div>${viewerHtml(d,reviewCur,'ovl')}</div></div>`;
+}
+
+/* ---------------- Step 6: Refine with AI ---------------- */
+function step6(){
+  if(!S.work) return `<div class="gen-wait"><span class="spinner"></span>Opening the deck…</div>`;
+  const w=S.work;
+  const sugg=['Shorten the bullets on this slide','Add speaker notes','Add a key takeaways slide','Switch to the Dark Keynote style','Make the text larger','Add a slide about diet','Undo'];
+  return `<div class="page-head"><div class="page-head-text"><h2>Refine with AI</h2><p>Ask for changes in the chat. The AI edits the deck, you review it, and you repeat until you're happy. It only uses the approved research.</p></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn secondary" data-go="5">${ICON.back} Choose a deck</button><button type="button" class="btn" id="doneBtn">I'm done · publish ${ICON.arrow}</button></div></div>
+  <div class="refine"><div>${viewerHtml(w,S.cur,'work')}</div>
+    <div class="refine-side">${pendingPanel()}
+    <aside class="chat${S.pending?' unstick':''}" aria-label="Chat with the Presentation Agent"><div class="chat-head"><b>Presentation Agent</b><span class="ver">${esc(w.name)} · version ${w.version}</span></div>
+      <div class="chat-log" id="chatLog">${(()=>{ let last=-1; S.chat.forEach((m,i)=>{ if(m.rev && m.rev===S.hist.length) last=i; }); return S.chat.map((m,i)=>`<div class="msg ${m.r==='ai'?'ai':'me'}">${esc(m.t)}${i===last?`<button type="button" class="msg-rev" data-chatrev="${i}">Revert this change</button>`:''}</div>`).join(''); })()}${loading.chat?'<div class="msg ai typing">Working on it…</div>':''}</div>
+      <div class="sugg">${sugg.map(x=>`<button type="button" data-say="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+      <form class="chat-form" id="chatForm"><input id="chatIn" autocomplete="off" placeholder="e.g. Move slide 5 to position 3" aria-label="Message the Presentation Agent" ${loading.chat?'disabled':''}><button type="submit" ${loading.chat?'disabled':''}>Send</button></form></aside></div></div>`;
+}
+function pendingPanel(){
+  if(!S.pending) return '';
+  const w=S.work; const s=w.slides[S.cur]; const f=S.pending[s.id];
+  const others=w.slides.map((x,i)=>[x,i]).filter(([x])=>S.pending[x.id]);
+  const jump = others.length ? `<div class="pa-jump"><span>Slides with feedback:</span>${others.map(([x,i])=>`<button type="button" class="pa-chip${i===S.cur?' on':''}${S.pending[x.id].reason?' rej':''}" data-slide="${i}" data-v="work" aria-label="Slide ${i+1}${S.pending[x.id].reason?', rejected':''}">${i+1}</button>`).join('')}</div>` : '';
+  let body;
+  if(!f) body=`<p class="pa-none">No reviewer feedback on slide ${S.cur+1}.</p>`;
+  else { const busy=loading['pa-'+s.id];
+    body = (f.reason?`<div class="pa-rej"><b>Slide rejected</b><label for="par-${s.id}" class="sr">Rejection reason</label><textarea id="par-${s.id}" readonly>${esc(f.reason)}</textarea>
+        <div class="pa-actions"><span class="pa-hint">Fix the slide in chat or remove it.</span><button type="button" class="pill-btn" data-rmrej="${s.id}">Remove slide</button></div></div>`:'')
+      + (f.action?`<div class="pa-act"><b>Action item</b><label for="paa-${s.id}" class="sr">Action item</label><textarea id="paa-${s.id}" readonly>${esc(f.action)}</textarea>
+        <div class="pa-actions"><span></span><button type="button" class="btn" data-implpend="${s.id}" ${busy?'disabled':''}>${busy?'<span class="spinner"></span> Implementing…':ICON.spark+' Implement with AI'}</button></div></div>`:'')
+      + (f.done?`<div class="rv-done"><b>Done on this slide</b><div>✓ ${esc(f.done)}</div>${f.orig?`<div class="pa-actions"><span></span><button type="button" class="pill-btn" data-revpend="${s.id}">${ICON.back.replace('<svg','<svg width="13" height="13"')} Revert to original slide</button></div>`:''}</div>`:''); }
+  return `<section class="pa-panel" aria-label="Reviewer feedback"><b>Reviewer feedback · slide ${S.cur+1}</b><p>From scientific review round ${S.review?S.review.round:''}. Read-only.</p>${jump}${body}</section>`;
+}
+function restoreSlide(id, json){ const i=S.work.slides.findIndex(x=>x.id===id); if(i>=0) S.work.slides[i]=JSON.parse(json); }
+function pendingLeft(){ if(!S.pending) return; for(const [k,v] of Object.entries(S.pending)){ if(!v.reason && !v.action && !v.done) delete S.pending[k]; } if(!Object.keys(S.pending).length) S.pending=null; }
+function snapshot(){ S.hist.push(JSON.stringify({w:S.work,c:S.cur})); if(S.hist.length>30) S.hist.shift(); }
+function commit(msg, cur){ S.work.version++; S.downloaded=null; if(cur!==undefined) S.cur=Math.max(0,Math.min(cur,S.work.slides.length-1)); return msg+`\n(Now on version ${S.work.version}.)`; }
+function aiReply(text){
+  const t=text.toLowerCase().trim(); const w=S.work; const n=w.slides.length; let m;
+  if(/implement|apply|fix/.test(t) && /action item|reviewer|feedback/.test(t)){ const list=S.pending?Object.entries(S.pending).filter(([,v])=>v.action):[]; if(!list.length) return 'There are no open reviewer action items.'; snapshot(); const done=[];
+    list.forEach(([id,v])=>{ const s=w.slides.find(x=>x.id===id); if(s){ const d=implementAction(s,v.action); done.push(`• “${s.title}”: ${d}`); v.done=v.action; v.action=null; } }); return commit(`Implemented the reviewer's action items:\n${done.join('\n')}`); }
+  if(/^undo\b|undo (that|last)/.test(t)){ if(!S.hist.length) return 'There is nothing to undo yet.'; const h=JSON.parse(S.hist.pop()); S.work=h.w; S.cur=h.c; return `Undone. Back to version ${S.work.version}.`; }
+  if(/product|brand|dao enzyme supplement|buy/.test(t) && /add|include|mention|slide/.test(t)) return "I can't add product content. The HCP deck is educational and carries no product mentions.";
+  if((m=t.match(/(?:remove|delete|drop) slide (\d+)/))){ const k=+m[1]; if(k<1||k>n) return `There's no slide ${k}. The deck has ${n} slides.`; if(w.slides[k-1].type==='cover') return "I'll keep the cover slide. Every deck needs one."; snapshot(); const rm=w.slides.splice(k-1,1)[0]; return commit(`Removed slide ${k} (“${rm.title}”).`, k-1); }
+  if((m=t.match(/move slide (\d+) (?:to|before|after)(?: position| slide)? (\d+)/))){ let a=+m[1], b=+m[2]; if(a<1||a>n||b<1||b>n) return `The deck has ${n} slides. Use numbers from 1 to ${n}.`; if(/after/.test(t)&&b<n) b = b+(a>b?1:0); snapshot(); const s=w.slides.splice(a-1,1)[0]; w.slides.splice(b-1,0,s); return commit(`Moved “${s.title}” from slide ${a} to slide ${b}.`, b-1); }
+  if((m=text.match(/(?:rename|retitle|change the title of|title) slide (\d+) (?:to|as)\s*[“"']?(.+?)[”"']?\s*$/i))){ const k=+m[1]; if(k<1||k>n) return `There's no slide ${k}.`; snapshot(); w.slides[k-1].title=m[2]; return commit(`Retitled slide ${k} to “${m[2]}”.`, k-1); }
+  if(/shorten|shorter|concise|trim|tighten/.test(t)){ const all=/all|every|whole|deck/.test(t); snapshot(); let c=0;
+    w.slides.forEach((s,j)=>{ if((all||j===S.cur) && s.type==='content') s.bullets.forEach(b=>{ const nb=shortText(b.text.split(/,| though| while| with /)[0].replace(/…$/,'')+'.',95); if(nb.length<b.text.length){ b.text=nb; c++; } }); });
+    if(!c){ S.hist.pop(); return all?'The bullets are already as short as I can make them without losing the finding.':"This slide has no bullets I can shorten. Pick a content slide, or say “shorten all bullets”."; }
+    return commit(`Shortened ${c} bullet${c===1?'':'s'}${all?' across the deck':' on this slide'}. I cut the wording back to the core finding without changing it. The full excerpt stays in the speaker notes.`); }
+  if(/speaker notes|presenter notes/.test(t)){ if(/remove|hide|no /.test(t)){ snapshot(); w.notes=false; return commit('Speaker notes hidden.'); } snapshot(); w.notes=true; return commit('Added speaker notes to every slide. They quote the full excerpt behind each point, with its reference. They show under the slide.'); }
+  if(/takeaway|summary slide|summary/.test(t)){ if(w.slides.some(s=>s.type==='summary')) return 'The deck already has a key takeaways slide.'; snapshot(); const at=w.slides.findIndex(s=>s.type==='refs'); w.slides.splice(at,0,summarySlide(w.slides)); return commit('Added a key takeaways slide before the references. It has one line per section, taken from that section\'s research.', at); }
+  if(/agenda/.test(t)){ if(w.slides.some(s=>s.type==='agenda')) return 'The deck already has an agenda.'; snapshot(); const secs=[...new Set(w.slides.filter(s=>s.section).map(s=>s.section))]; w.slides.splice(1,0,{type:'agenda',title:'Agenda',items:secs}); return commit('Added an agenda as slide 2.',1); }
+  if(/larger|bigger|increase/.test(t)&&/text|font|type/.test(t)){ snapshot(); w.scale=Math.min(1.3,+(w.scale+0.1).toFixed(2)); return commit(`Text enlarged to ${Math.round(w.scale*100)}%.`); }
+  if(/smaller|decrease|reduce/.test(t)&&/text|font|type/.test(t)){ snapshot(); w.scale=Math.max(0.8,+(w.scale-0.1).toFixed(2)); return commit(`Text reduced to ${Math.round(w.scale*100)}%.`); }
+  const themeKey=[[/ocean|teal/,5],[/slate|modern/,6],[/forest|green/,7],[/plum|purple/,8],[/navy|clinical/,0],[/minimal|clean/,1],[/evidence first|grade/,2],[/warm|editorial|serif/,3],[/dark|keynote/,4]];
+  if(/style|theme|look|switch|design|colou?r/.test(t)){ for(const [re,i] of themeKey) if(re.test(t)){ snapshot(); w.theme=i; w.name=THEMES[i].name; return commit(`Switched the look to ${THEMES[i].name}. The content is unchanged.`); } return `I can switch to one of these styles: ${THEMES.map(x=>x.name).join(', ')}. Which one?`; }
+  if((m=t.match(/add (?:a )?slide (?:about|on|covering|for) (.+)/))){
+    const words=m[1].replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(x=>x.length>3);
+    const hits=usedExcerpts().filter(e=>words.some(x=>e.text.toLowerCase().includes(x.replace(/s$/,''))));
+    if(!hits.length) return `There's no approved research on “${m[1]}”, so I can't add that slide. I only build slides from the research Medical Affairs approved.`;
+    snapshot(); const refsSlide=w.slides.find(s=>s.type==='refs');
+    const cite=pid=>{ let k=refsSlide.refs.indexOf(pid); if(k<0){ refsSlide.refs.push(pid); k=refsSlide.refs.length-1; } return k+1; };
+    const title=m[1].charAt(0).toUpperCase()+m[1].slice(1);
+    const at=w.slides.indexOf(refsSlide) - (w.slides.some(s=>s.type==='summary')?1:0);
+    w.slides.splice(at,0,{type:'content',section:hits[0].sections[0],title,bullets:hits.slice(0,3).map(e=>({text:shortText(e.text,170),full:e.text,n:cite(e.paperId),grade:paperById[e.paperId].grade}))});
+    return commit(`Added a slide on “${m[1]}” using ${Math.min(3,hits.length)} excerpt${hits.length===1?'':'s'} from the approved research.`, at); }
+  if(/^(done|finished|publish|looks good|that's it)/.test(t)) return 'Great. Press “I\'m done · publish” when you\'re ready.';
+  return "I couldn't match that to a change I can make in this prototype. Try:\n• “Remove slide 4”\n• “Move slide 6 to position 3”\n• “Rename slide 2 to Why DAO matters”\n• “Shorten all bullets”\n• “Add speaker notes”\n• “Switch to the Warm Editorial style”\n• “Add a slide about diet”";
+}
+function sendChat(text){
+  if(!text.trim()||loading.chat) return;
+  S.chat.push({r:'me',t:text.trim()}); loading.chat=true; render();
+  setTimeout(()=>{ const before=S.work.version, hl=S.hist.length; const r=aiReply(text); const changed=S.work.version>before && S.hist.length>hl; S.chat.push({r:'ai',t:r, rev: changed?S.hist.length:null}); delete loading.chat; save(); render(); const i=document.getElementById('chatIn'); if(i) i.focus(); }, 750);
+}
+
+/* ---------------- Step 7: Publish ---------------- */
+let pubBusy=false;
+function step7(){
+  const w=S.work; if(!w) return '';
+  let ma;
+  if(!S.approved) ma=`<div class="blocked"><b>Can't send for review.</b> This deck was built from research that isn't approved. You can view and download it, but it can't go to Medical Affairs until the research is approved in the Evidence Agent.</div><button type="button" class="btn" disabled>Send to Medical Affairs</button>`;
+  else ma=`<p>The deck was built from approved research, so it can go to Medical Affairs for review.</p><button type="button" class="btn" id="sendMA">Send to Medical Affairs ${ICON.arrow}</button>${S.review&&S.review.status==='rejected'?`<p class="rv-hint">The last review (round ${S.review.round}) rejected the deck. Sending again starts round ${S.review.round+1}.</p>`:''}`;
+  return `<div class="page-head"><div class="page-head-text"><h2>Your deck is ready</h2><p>${esc(w.name)} · ${w.slides.length} slides · version ${w.version}. View it below, download the PowerPoint${S.approved?', and send it to Medical Affairs for review':''}.</p></div></div>
+  <div class="pub"><div>${viewerHtml(w,S.cur,'work')}</div>
+    <aside class="pub-panel"><h3>Download</h3><p>A PowerPoint file with every slide, figure and reference${w.notes?', including speaker notes':''}.</p>
+      <button type="button" class="btn" id="dlPptx" ${pubBusy?'disabled':''}>${pubBusy?'Preparing file…':'Download .pptx'}</button>${S.downloaded?`<div class="sent">✓ ${PPTX_NAME} downloaded · ${esc(S.downloaded)}</div>`:''}
+      <h3 style="margin-top:8px">Medical Affairs review</h3>${ma}
+      <button type="button" class="btn secondary" data-go="6">${ICON.back} Keep refining</button></aside></div>`;
+}
+const PPTX_NAME='histamine-intolerance-hcp-deck.pptx';
+function downloadPptx(){
+  pubBusy=true; render();
+  setTimeout(()=>{ pubBusy=false; S.downloaded=new Date().toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}); save(); render(); toast(PPTX_NAME+' downloaded'); },700);
+}
+
+/* ---------------- Review: shared helpers ---------------- */
+let uidN=0; const uid=()=>'s'+Date.now().toString(36)+(uidN++);
+function ensureIds(deck){ if(deck) deck.slides.forEach(s=>{ if(!s.id) s.id=uid(); }); }
+const LOW = g => g==='D'||g==='F';
+function maGuidance(s){
+  if(s.type==='cover') return s.sub.includes('healthcare professionals only') ? null : {k:'aud', text:'State the intended audience on the cover: for healthcare professionals only. This keeps the deck clearly educational.'};
+  if(s.type==='figure') return s.fig && !/^Source:/.test(s.fig.cap) ? {k:'src', text:'Label the figure source directly under the image so it travels with the slide if it is reused.'} : null;
+  if(s.type==='summary') return s.caveat ? null : {k:'cav', text:'Takeaways must not add claims beyond the slides. Add a line stating that they summarise the approved research only.'};
+  if(s.type!=='content' || !s.bullets.length) return null;
+  const low=s.bullets.filter(b=>LOW(b.grade) && !/^Preliminary evidence/.test(b.text));
+  if(low.length) return {k:'pre', text:`${low.length===1?'One point rests':'These points rest'} on Grade ${[...new Set(low.map(b=>b.grade))].join('/')} evidence. Frame ${low.length===1?'it':'them'} as preliminary so HCPs don't over-weight ${low.length===1?'it':'them'}.`};
+  if(s.bullets.some(b=>/significantly/i.test(b.text))) return {k:'sig', text:'Avoid "significantly" without the statistic beside it. It reads as promotional to an HCP audience.'};
+  if(s.bullets.some(b=>['industry','mixed'].includes(paperForN(s,b).funding) && !b.fund)) return {k:'fund', text:'Flag industry funding next to the citation so the audience can weigh the source.'};
+  if(s.bullets.some(b=>b.text.length>150)) return {k:'short', text:'Tighten each point to one message. Long sentences are hard to follow on a webinar slide.'};
+  return null;
+}
+function paperForN(s,b){ const refs=(S.work.slides.find(x=>x.type==='refs')||{refs:[]}).refs; return paperById[refs[b.n-1]] || {}; }
+function applyMA(s, g){
+  if(g.k==='aud') s.sub='For healthcare professionals only · an evidence review';
+  if(g.k==='src') s.fig.cap='Source: '+s.fig.cap.replace(/^From: /,'');
+  if(g.k==='cav') s.caveat=true;
+  if(g.k==='pre') s.bullets.forEach(b=>{ if(LOW(b.grade) && !/^Preliminary evidence/.test(b.text)) b.text='Preliminary evidence: '+b.text.charAt(0).toLowerCase()+b.text.slice(1); });
+  if(g.k==='sig') s.bullets.forEach(b=>{ b.text=b.text.replace(/significantly /gi,''); });
+  if(g.k==='fund') s.bullets.forEach(b=>{ if(['industry','mixed'].includes(paperForN(s,b).funding)) b.fund=true; });
+  if(g.k==='short') s.bullets.forEach(b=>{ b.text=shortText(b.text.split(/,| though| while/)[0].replace(/…$/,'')+'.',95); });
+}
+function sciGuidance(s){
+  const out=[];
+  if(s.type==='content') s.bullets.forEach(b=>{
+    const p=paperForN(s,b);
+    if(b.grade==='F') out.push(`Point [${b.n}] relies on Grade F evidence (${(p.design||'').toLowerCase()}). This design can't carry a clinical claim. Reject the slide or ask for the claim to be qualified.`);
+    else if(b.grade==='D') out.push(`Point [${b.n}] is Grade D (${(p.certainty||'').toLowerCase()}). State the limitation on the slide.`);
+    if(/did not reach|crossed zero|not reach significance|no comparator|precluded pooled/i.test(b.full)) out.push(`The source for [${b.n}] reports a non-significant or uncontrolled result. Make sure the slide doesn't imply more.`);
+    if(p.funding==='industry') out.push(`[${b.n}] is industry-funded. Check the slide presents it in balance with independent evidence.`);
+  });
+  if((s.type==='figure'||s.type==='content') && s.fig){ const it=itemById[s.fig.id];
+    if(s.fig.kind==='ex') out.push('This figure was generated from an excerpt. Confirm its numbers match the source paper.');
+    else if(it && !it.asIs) out.push("This is a redesigned figure. Check it against the source paper's data before approval."); }
+  return [...new Set(out)];
+}
+function implementAction(s, text){
+  const t=text.toLowerCase(); let did='';
+  if(s.type==='content' && /shorten|concise|trim|tighten/.test(t)){ s.bullets.forEach(b=>{ b.text=shortText(b.text.split(/,| though| while/)[0].replace(/…$/,'')+'.',95); }); did='Shortened the bullets.'; }
+  else if(s.type==='content' && /limitation|caveat|qualif|preliminary|certainty|weak|low.grade/.test(t)){ s.bullets.forEach(b=>{ if(!/low-certainty evidence\)$/.test(b.text)) b.text=b.text.replace(/\.?$/,' (low-certainty evidence)'); }); did='Qualified each point as low-certainty evidence.'; }
+  else if(/remove (the )?(figure|image|chart)/.test(t) && s.fig){ s.fig=null; did='Removed the figure.'; }
+  else if(/industry|funding/.test(t) && s.type==='content'){ s.bullets.forEach(b=>{ if(['industry','mixed'].includes(paperForN(s,b).funding)) b.fund=true; }); did='Flagged industry funding on the citations.'; }
+  else { const m=text.match(/(?:title|rename)[^"“]*["“](.+?)["”]/i); if(m){ s.title=m[1]; did=`Retitled the slide to “${m[1]}”.`; } }
+  if(!did) did='Revised the slide to address this (simulated).';
+  (s.revisions=s.revisions||[]).push({text, did}); return did;
+}
+function initReview(){ ensureIds(S.work); const round=(S.review&&S.review.round||0)+1; S.review={round, status:'ma', applied:{}, excludedSl:{}, rejected:{}, actions:{}, notes:'', started:new Date().toISOString()}; S.pending=null; S.cur=0; }
+function actionCount(){ return Object.values(S.review.actions).filter(x=>x&&x.trim()).length; }
+function rejectCount(){ return Object.keys(S.review.rejected).length; }
+function blockReason(){ const a=actionCount(), r=rejectCount(); const parts=[]; if(a) parts.push(`${a} open action item${a===1?'':'s'}`); if(r) parts.push(`${r} rejected slide${r===1?'':'s'}`); return parts.length?`Approval is blocked by ${parts.join(' and ')}. ${r?'A deck with a rejected slide can only be rejected.':'Clear the action items to approve, or reject the deck so they can be implemented.'}`:''; }
+function reviewOverlay(mode){ return (s, big)=>{
+  let h='';
+  if(mode==='ma' && S.review.excludedSl[s.id]) h+= big?`<div class="ov-veil"><span>Excluded from the deck</span></div>`:`<span class="ov-dot grey" title="Excluded"></span>`;
+  if(mode==='sci'){ const r=S.review.rejected[s.id]; if(r) h+= big?`<div class="ov-reject"><b>Rejected</b> ${esc(r)}</div>`:`<span class="ov-dot red" title="Rejected"></span>`;
+    const a=(S.review.actions[s.id]||'').trim(); if(a) h+= big?`<div class="ov-note"><b>Action item</b>${esc(a)}</div>`:`<span class="ov-dot amber" title="Action item" style="${r?'right:20px':''}"></span>`; }
+  if(mode==='pending'){ const f=S.pending&&S.pending[s.id]; if(f){
+    if(f.reason) h+= big?`<div class="ov-reject"><b>Rejected</b> ${esc(f.reason)}</div>`:`<span class="ov-dot red" title="Rejected"></span>`;
+    if(f.action) h+= big?`<div class="ov-note"><b>Reviewer action item</b>${esc(f.action)}</div>`:`<span class="ov-dot amber" title="Reviewer action item" style="${f.reason?'right:20px':''}"></span>`; } }
+  return h; }; }
+
+/* ---------------- Step 8: Medical Affairs review ---------------- */
+function step8(){
+  const w=S.work, R=S.review; const s=w.slides[S.cur]; const g=maGuidance(s); const ex=!!R.excludedSl[s.id]; const done=R.applied[s.id];
+  const exN=Object.keys(R.excludedSl).length, apN=Object.keys(R.applied).length, openN=w.slides.filter(x=>!R.excludedSl[x.id]&&maGuidance(x)).length;
+  return `<div class="page-head"><div class="page-head-text"><h2>Medical Affairs review</h2><p>Reviewer's view · round ${R.round}. For each slide the AI gives guidance from a Medical Affairs point of view. Apply it with AI, exclude the slide, or leave it as is. Then submit the deck for scientific review.</p></div>
+    <div class="tally"><div class="tally-item"><div class="tally-num">${apN}</div><div class="tally-lbl">Suggestions applied</div></div><div class="tally-item"><div class="tally-num">${exN}</div><div class="tally-lbl">Slides excluded</div></div></div></div>
+  <div class="refine"><div>${viewerHtml(w,S.cur,'work',reviewOverlay('ma'))}</div>
+    <aside class="rv-panel"><div class="rv-kicker">Slide ${S.cur+1} · ${esc(s.title)}</div>
+      <div class="rv-box ma"><b>Medical Affairs guidance</b>${done?`<p>✓ Applied: ${esc(done)}</p>`:g?`<p>${esc(g.text)}</p>`:'<p>No Medical Affairs concerns for this slide.</p>'}</div>
+      ${!done&&g?`<button type="button" class="btn" id="maApply" ${ex?'disabled':''}>${ICON.spark} Apply suggestion with AI</button>`:''}
+      ${done&&R.orig&&R.orig[s.id]?`<button type="button" class="btn secondary" id="maRevert">${ICON.back} Revert to original slide</button>`:''}
+      ${s.type==='cover'?'<p class="rv-hint">The cover slide can\'t be excluded.</p>':`<button type="button" class="btn secondary" id="maExclude">${ex?'Include slide again':'Exclude slide'}</button>`}
+      <div class="rv-nav"><button type="button" class="pill-btn" data-slide="${S.cur-1}" data-v="work" ${S.cur<=0?'disabled':''}>Previous slide</button><button type="button" class="pill-btn" data-slide="${S.cur+1}" data-v="work" ${S.cur>=w.slides.length-1?'disabled':''}>Next slide</button></div></aside></div>
+  <div class="next-bar"><button type="button" class="btn secondary" data-go="7">${ICON.back} Publish</button><p class="next-summary">${openN?`<b>${openN}</b> slide${openN===1?' has':'s have'} guidance not applied. You can still submit.`:'All guidance addressed.'}${exN?` <b>${exN}</b> excluded slide${exN===1?'':'s'} will be removed.`:''}</p>
+    <button type="button" class="btn" id="toSci">Submit for scientific review ${ICON.arrow}</button></div>`;
+}
+
+/* ---------------- Step 9: Scientific review ---------------- */
+function step9(){
+  const w=S.work, R=S.review; const s=w.slides[S.cur]; const sug=sciGuidance(s); const rej=R.rejected[s.id]; const act=R.actions[s.id]||'';
+  const block=blockReason();
+  return `<div class="page-head"><div class="page-head-text"><h2>Scientific review</h2><p>Reviewer's view · round ${R.round}. Check each slide's scientific suggestions. Reject a slide with a reason and add action items where changes are needed. Approve only when nothing is open. Rejecting the deck sends it back with your feedback.</p></div>
+    <div class="tally"><div class="tally-item${actionCount()?' warn':''}"><div class="tally-num">${actionCount()}</div><div class="tally-lbl">Open action items</div></div><div class="tally-item${rejectCount()?' warn':''}"><div class="tally-num">${rejectCount()}</div><div class="tally-lbl">Rejected slides</div></div></div></div>
+  <div class="refine"><div>${viewerHtml(w,S.cur,'work',reviewOverlay('sci'))}</div>
+    <aside class="rv-panel"><div class="rv-kicker">Slide ${S.cur+1} · ${esc(s.title)}</div>
+      <div class="rv-box sci"><b>Scientific review</b>${sug.length?`<ul>${sug.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p>No scientific concerns for this slide.</p>'}</div>
+      ${s.type==='cover'?'<p class="rv-hint">The cover slide can\'t be rejected.</p>':rej?`<button type="button" class="btn secondary" id="sciRevert">Revert · include slide again</button>`:`<button type="button" class="btn danger" id="sciReject">Reject slide</button>`}
+      <div class="rv-action"><label for="act-${s.id}">Action item <span>(optional)</span></label><textarea id="act-${s.id}" data-act="${s.id}" placeholder="e.g. Qualify the claim as low-certainty evidence"${esRO()?' readonly':''}>${esc(act)}</textarea></div>
+      <div class="rv-nav"><button type="button" class="pill-btn" data-slide="${S.cur-1}" data-v="work" ${S.cur<=0?'disabled':''}>Previous slide</button><button type="button" class="pill-btn" data-slide="${S.cur+1}" data-v="work" ${S.cur>=w.slides.length-1?'disabled':''}>Next slide</button></div></aside></div>
+  <div class="rv-notes"><label for="rvNotes">Reviewer notes <span>(optional)</span></label><textarea id="rvNotes" placeholder="Overall comments on the deck"${esRO()?' readonly':''}>${esc(R.notes)}</textarea></div>
+  <div class="next-bar">
+    <p class="next-summary" id="blockMsg">${block?`<span class="warn">${esc(block)}</span>`:'Nothing open. The deck can be approved.'}</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn danger" id="deckReject">Rejected</button>
+    <span class="tip-wrap" id="approveWrap" tabindex="${block?0:-1}" aria-describedby="approveTip"><button type="button" class="btn ok" id="deckApprove" ${block?'disabled':''}>Approved</button><span class="tip" role="tooltip" id="approveTip" ${block?'':'hidden'}>${esc(block)}</span></span></div></div>`;
+}
+function refreshApprove(){
+  const b=blockReason(); const btn=document.getElementById('deckApprove'); if(!btn) return;
+  btn.disabled=!!b; const tip=document.getElementById('approveTip'); tip.textContent=b; tip.hidden=!b; document.getElementById('approveWrap').tabIndex=b?0:-1;
+  document.getElementById('blockMsg').innerHTML = b?`<span class="warn">${esc(b)}</span>`:'Nothing open. The deck can be approved.';
+}
+let rejectOpen=null;
+function renderRejectModal(){
+  const root=document.getElementById('overlayRoot');
+  if(!rejectOpen){ if(reviewIdx===null) root.innerHTML=''; return; }
+  const s=S.work.slides.find(x=>x.id===rejectOpen);
+  root.innerHTML=`<div class="overlay" role="dialog" aria-modal="true" aria-labelledby="rjTitle"><div class="overlay-panel" style="max-width:520px"><h3 id="rjTitle" style="margin:0">Reject “${esc(s.title)}”</h3>
+    <p style="margin:0;color:var(--ink-muted);font-size:13.5px">A reason is required. It is shown on the slide and sent back with the deck.</p>
+    <label for="rjReason" style="font-size:13px;font-weight:600">Reason for rejection</label><textarea id="rjReason" placeholder="e.g. Grade F source can't support this clinical claim"></textarea>
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap"><button type="button" class="btn secondary" id="rjCancel">Cancel</button><button type="button" class="btn danger" id="rjConfirm" disabled>Reject slide</button></div></div></div>`;
+  setTimeout(()=>{ const t=document.getElementById('rjReason'); if(t) t.focus(); },0);
+}
+
+/* ---------------- Step 10: Approved ---------------- */
+function step10(){
+  const w=S.work, R=S.review;
+  return `<div class="page-head"><div class="page-head-text"><h2>Approved deck</h2><p>${esc(w.name)} · ${w.slides.length} slides · approved in scientific review round ${R.round}. The deck is locked. Use Start over to build a new one.</p></div></div>
+  <div class="pub"><div>${viewerHtml(w,S.cur,'work')}</div>
+    <aside class="pub-panel"><div class="sent">✓ Approved · ${esc(new Date(R.approvedAt).toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}))}</div>
+      ${R.notes?`<h3>Reviewer notes</h3><p style="white-space:pre-wrap">${esc(R.notes)}</p>`:''}
+      <h3>Download</h3><p>A PowerPoint file with every approved slide${w.notes?', including speaker notes':''}.</p>
+      <button type="button" class="btn" id="dlPptx" ${pubBusy?'disabled':''}>${pubBusy?'Preparing file…':'Download .pptx'}</button>${S.downloaded?`<div class="sent">✓ ${PPTX_NAME} downloaded · ${esc(S.downloaded)}</div>`:''}</aside></div>`;
+}
+
+/* ---------------- Events ---------------- */
+let toastT; function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2200); }
+function readFile(input, store, id){
+  const f=input.files && input.files[0]; if(!f) return;
+  if(!/^image\/(png|jpeg|svg\+xml|webp)$/.test(f.type)){ toast('Upload a PNG, JPG, SVG or WebP image.'); return; }
+  const r=new FileReader(); r.onload=()=>{ const rec=store[id]||(store[id]={batches:[],sel:null,wanted:true}); rec.upload=r.result; rec.sel='upload'; invalidateAfter(S.step); save(); render(); toast('Upload added and selected'); }; r.readAsDataURL(f);
+}
+document.addEventListener('click', e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  const d=t.dataset;
+  if(d.go){ const n=+d.go; if(S.step===9 && n<9) return; if(n<=S.maxStep || n===S.step+1) go(n); return; }
+  if(d.filter){ S.filter=d.filter; save(); render(); return; }
+  if(d.fold){ const arr=S.collapsed[d.fold]; const i=arr.indexOf(d.sec); i<0?arr.push(d.sec):arr.splice(i,1); save(); render(); return; }
+  if(d.foldall){ S.collapsed[d.foldall] = d.open==='1' ? [] : DATA.sections.slice(); save(); render(); return; }
+  if(d.exclude){ S.excluded[d.exclude]?delete S.excluded[d.exclude]:S.excluded[d.exclude]=true; invalidateAfter(1); save(); render(); toast(S.excluded[d.exclude]?'Excluded from the deck':'Included again'); return; }
+  if(d.pick){ const store=d.store==='ex'?S.exfig:S.picks; store[d.pick].sel=d.opt; invalidateAfter(S.step); save(); render(); return; }
+  if(d.more){ const store=d.store==='ex'?S.exfig:S.picks; const g=document.getElementById('g-'+d.more); generate(store,d.more,g?g.value:''); return; }
+  if(d.want){ const rec=S.exfig[d.want]||(S.exfig[d.want]={batches:[],sel:null,wanted:false}); rec.wanted=!rec.wanted; invalidateAfter(3); save(); if(rec.wanted && !rec.batches.length) generate(S.exfig,d.want,''); else render(); return; }
+  if(d.review){ openReview(+d.review); render(); return; }
+  if(d.choose){ const i=+d.choose; if(S.chosen!==i){ S.chosen=i; S.work=null; S.hist=[]; S.chat=[]; S.sent=null; S.maxStep=Math.min(S.maxStep,5); } S.reviewed[i]=true; save(); if(d.close){ reviewIdx=null; renderOverlay(); } render(); toast(`${S.decks[i].name} selected`); return; }
+  if(d.close){ reviewIdx=null; renderOverlay(); return; }
+  if(d.slide!==undefined){ const i=+d.slide; if(d.v==='ovl'){ reviewCur=i; renderOverlay(); } else { S.cur=i; save(); render(); } return; }
+  if(d.say){ sendChat(d.say); return; }
+  if(t.id==='genDeck'){ const g=document.getElementById('genGuidance'); S.guidance=g?g.value:''; S.decks=null; S.chosen=null; S.work=null; S.reviewed={}; S.maxStep=4; go(5); return; }
+  if(t.id==='moreDeck'){ const gi=document.getElementById('deckGuidance'); const g=gi?gi.value:''; loading.extraDeck=true; render(); setTimeout(()=>{ S.decks.push(buildExtraDeck(g)); delete loading.extraDeck; save(); render(); toast('1 more design added'); },1300); return; }
+  if(t.id==='doneBtn'){ go(7); return; }
+  if(t.id==='sendMA'){ esHook('sent-ma'); /* ES-HOOK */ initReview(); S.maxStep=7; go(8); toast('Sent to Medical Affairs'); return; }
+  if(t.id==='maRevert'){ const s=S.work.slides[S.cur]; const o=S.review.orig&&S.review.orig[s.id]; if(!o) return; restoreSlide(s.id,o); delete S.review.orig[s.id]; delete S.review.applied[s.id]; S.work.version++; save(); render(); toast('Reverted to the original slide'); return; }
+  if(t.id==='maApply'){ const s=S.work.slides[S.cur]; const g=maGuidance(s); if(!g) return; t.disabled=true; t.innerHTML='<span class="spinner"></span> Applying…'; setTimeout(()=>{ (S.review.orig=S.review.orig||{})[s.id]=JSON.stringify(s); applyMA(s,g); S.work.version++; S.review.applied[s.id]=g.text; save(); render(); toast('Suggestion applied'); },700); return; }
+  if(t.id==='maExclude'){ const id=S.work.slides[S.cur].id; S.review.excludedSl[id]?delete S.review.excludedSl[id]:S.review.excludedSl[id]=true; save(); render(); return; }
+  if(t.id==='toSci'){ esHook('submitted'); /* ES-HOOK */ const R=S.review; if(Object.keys(R.excludedSl).length){ S.work.slides=S.work.slides.filter(x=>!R.excludedSl[x.id]); S.work.version++; } R.excludedSl={}; R.status='sci'; S.cur=0; S.maxStep=8; go(9); toast('Submitted for scientific review'); return; }
+  if(t.id==='sciReject'){ rejectOpen=S.work.slides[S.cur].id; renderRejectModal(); return; }
+  if(t.id==='sciRevert'){ delete S.review.rejected[S.work.slides[S.cur].id]; save(); render(); toast('Slide included again'); return; }
+  if(t.id==='rjCancel'){ rejectOpen=null; renderRejectModal(); return; }
+  if(t.id==='rjConfirm'){ const v=document.getElementById('rjReason').value.trim(); if(!v) return; S.review.rejected[rejectOpen]=v; rejectOpen=null; renderRejectModal(); save(); render(); toast('Slide rejected'); return; }
+  if(d.chatrev!==undefined){ const m=S.chat[+d.chatrev]; if(!m||m.rev!==S.hist.length) return; const h=JSON.parse(S.hist.pop()); S.work=h.w; S.cur=h.c; m.rev=null;
+    S.chat.push({r:'ai', t:`Reverted that change. Back to version ${S.work.version}.`}); save(); render(); toast('Change reverted'); return; }
+  if(d.revpend){ const f=S.pending&&S.pending[d.revpend]; if(!f||!f.orig) return; restoreSlide(d.revpend,f.orig); S.work.version++; f.action=f.done; f.done=null; f.orig=null;
+    S.chat.push({r:'ai', t:`Reverted “${S.work.slides.find(x=>x.id===d.revpend).title}” to its original version. The action item is open again. (Now on version ${S.work.version}.)`}); save(); render(); toast('Reverted to the original slide'); return; }
+  if(d.implpend){ const id=d.implpend; const f=S.pending&&S.pending[id]; if(!f||!f.action) return; loading['pa-'+id]=true; render();
+    setTimeout(()=>{ delete loading['pa-'+id]; const sl=S.work.slides.find(x=>x.id===id); if(sl){ snapshot(); f.orig=JSON.stringify(sl); const did=implementAction(sl,f.action); S.work.version++; S.cur=S.work.slides.indexOf(sl);
+      S.chat.push({r:'ai', t:`Implemented the action item on “${sl.title}”: ${did} (Now on version ${S.work.version}.)`}); f.done=f.action; }
+      f.action=null; pendingLeft(); save(); render(); toast('Action item implemented'); },800); return; }
+  if(d.rmrej){ const i=S.work.slides.findIndex(x=>x.id===d.rmrej); if(i<0) return; snapshot(); const sl=S.work.slides.splice(i,1)[0]; delete S.pending[d.rmrej]; pendingLeft(); S.work.version++; S.cur=Math.min(i,S.work.slides.length-1);
+    S.chat.push({r:'ai', t:`Removed the rejected slide “${sl.title}”. Say “undo” to bring it back. (Now on version ${S.work.version}.)`}); save(); render(); toast('Slide removed'); return; }
+  if(t.id==='deckApprove'){ if(blockReason()) return; esHook('decision',{outcome:'approved',snapshot:JSON.stringify(S)}); /* ES-HOOK */ S.review.status='approved'; S.review.approvedAt=new Date().toISOString(); S.cur=0; S.maxStep=9; go(10); toast('Deck approved'); return; }
+  if(t.id==='deckReject'){ esHook('decision',{outcome:'rejected',snapshot:JSON.stringify(S)}); /* ES-HOOK */ const R=S.review; const w=S.work;
+    const lines=[]; const pend={};
+    w.slides.forEach((sl,i)=>{ const r=R.rejected[sl.id]; const a=(R.actions[sl.id]||'').trim();
+      if(r||a){ pend[sl.id]={reason:r||null, action:a||null}; lines.push(`• Slide ${i+1} “${sl.title}”${r?` rejected: ${r}`:''}${r&&a?';':''}${a?` action item: ${a}`:''}`); } });
+    S.pending=Object.keys(pend).length?pend:null; R.status='rejected';
+    S.chat.push({r:'ai', t:`The scientific reviewer rejected the deck (round ${R.round}).\n\n${lines.length?lines.join('\n'):'No slide-level feedback.'}${R.notes.trim()?`\n\nReviewer notes: ${R.notes.trim()}`:''}${S.pending?'\n\nEach slide\'s feedback shows above this chat when you open that slide. Rejected slides are marked in red.':''}\n\nWhen you're done, publish and send the deck for review again.`});
+    const first=w.slides.findIndex(x=>pend[x.id]); S.cur=first<0?0:first; S.maxStep=6; go(6); toast('Deck rejected. Back to Refine with AI'); return; }
+  if(t.id==='dlPptx'){ downloadPptx(); return; }
+  if(t.id==='startOver'){ S=freshState(); reviewIdx=null; renderOverlay(); save(); render(); window.scrollTo(0,0); toast('Started over'); return; }
+});
+document.addEventListener('change', e=>{ const i=e.target; if(i.dataset && i.dataset.upload){ readFile(i, i.dataset.store==='ex'?S.exfig:S.picks, i.dataset.upload); } });
+document.addEventListener('submit', e=>{ if(e.target.id==='chatForm'){ e.preventDefault(); const i=document.getElementById('chatIn'); const v=i.value; i.value=''; sendChat(v); } });
+document.addEventListener('input', e=>{ const el=e.target;
+  if(el.id==='genGuidance'){ S.guidance=el.value; save(); }
+  if(el.dataset && el.dataset.act){ S.review.actions[el.dataset.act]=el.value; save(); refreshApprove(); liveNote(el.value); }
+  if(el.id==='rvNotes'){ S.review.notes=el.value; save(); }
+  if(el.id==='rjReason'){ document.getElementById('rjConfirm').disabled=!el.value.trim(); }
+});
+function liveNote(text){
+  const main=document.querySelector('.viewer-main'); if(!main) return; let n=main.querySelector('.ov-note');
+  if(!text.trim()){ if(n) n.remove(); return; }
+  if(!n){ n=document.createElement('div'); n.className='ov-note'; main.appendChild(n); }
+  n.innerHTML='<b>Action item</b>'+esc(text);
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(rejectOpen){ rejectOpen=null; renderRejectModal(); } else if(reviewIdx!==null){ reviewIdx=null; renderOverlay(); } } });
+document.getElementById('overlayRoot').addEventListener('click', e=>{ if(e.target.id==='ovl'){ reviewIdx=null; renderOverlay(); } });
+
+render(); onEnter(S.step);
+</script>
