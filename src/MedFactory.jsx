@@ -5291,7 +5291,6 @@ export default class MedFactory extends React.Component {
                               {[
                                 { key: 'grade-ab', label: 'Grade A & B' },
                                 { key: 'relevance80', label: 'Relevance ≥ 80' },
-                                { key: 'journal', label: 'Strong journal credibility' },
                               ].map(({ key, label }) => (
                                 <Box
                                   key={key}
