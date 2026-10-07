@@ -288,6 +288,18 @@ const EXTRA_PAPERS = [
   { db: 'EMBASE', type: 'Meta-Analysis', title: 'Lipid-lowering effects of GLP-1 receptor agonists — meta-analysis of 31 trials', journal: 'Eur Heart J · MEDLINE-indexed, high impact', year: 2023, score: 0.76, artifacts: ['Deck', 'Facts'], track: 'Cardiovascular outcomes evidence', designTier: 'Meta-analysis · 31 RCTs, lipid endpoints', appraisal: 'AMSTAR-2: 13/16 (high confidence)', grade: 'Moderate certainty', citations: '63 citations · 21/yr', funding: 'Independent · academic consortium', statRigor: 'Pooled N=42,600, I²=24%', relevance: 74, flag: null, excerpt: '"GLP-1 receptor agonists significantly reduced LDL-C (WMD −0.12 mmol/L; 95% CI −0.17 to −0.07), triglycerides (WMD −0.25 mmol/L; 95% CI −0.31 to −0.19), and total cholesterol across 31 trials, with modest but consistent HDL-C increases independent of weight loss magnitude."', excerptSrc: '— Lipid outcomes meta-analysis, p.9' },
 ];
 
+/* ---------- Second expanded evidence batch ---------- */
+const EXTRA_PAPERS_2 = [
+  { db: 'PubMed', type: 'RCT', title: 'SCALE Diabetes: Liraglutide 3.0 mg in adults with type 2 diabetes — 56-week RCT', journal: 'Diabetes Care · MEDLINE-indexed, high impact', year: 2015, score: 0.83, artifacts: ['Deck', 'Blog', 'Protocol'], track: 'General interventional evidence', designTier: 'RCT · double-blind, placebo-controlled', appraisal: 'CONSORT: 22/25 (excellent)', grade: 'High certainty', citations: '980 citations · 81.7/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=846 · ITT · 56 wks', relevance: 84, flag: null, excerpt: '"Liraglutide 3.0 mg produced significantly greater weight loss (–6.0% vs –2.0%; P<0.001) and greater improvements in glycaemic control (HbA1c –1.3% vs –0.4%; P<0.001) compared with placebo after 56 weeks in adults with type 2 diabetes and obesity."', excerptSrc: '— Primary outcome, p.8' },
+  { db: 'Cochrane', type: 'Systematic Review', title: 'GLP-1 receptor agonists for non-alcoholic fatty liver disease — Cochrane review', journal: 'Cochrane Database Syst Rev · MEDLINE-indexed', year: 2023, score: 0.77, artifacts: ['Deck', 'Facts'], track: 'Metabolic & liver evidence', designTier: 'Systematic review · Cochrane methodology', appraisal: 'PRISMA: 25/27 (high quality)', grade: 'Moderate certainty', citations: '47 citations · 15.7/yr', funding: 'Independent · Cochrane collaboration', statRigor: 'Pooled N=3,240 · 8 RCTs', relevance: 76, flag: null, excerpt: '"GLP-1 receptor agonists significantly reduced hepatic steatosis (SMD –0.58; 95% CI –0.82 to –0.34) and liver enzymes (ALT WMD –11.4 U/L; 95% CI –15.2 to –7.6) compared with placebo, with emerging evidence of benefit on fibrosis stage in longer-duration trials."', excerptSrc: '— Hepatic outcomes, p.14' },
+  { db: 'EMBASE', type: 'RCT', title: 'LEADER trial extension: 10-year cardiovascular outcomes with liraglutide', journal: 'Circulation · MEDLINE-indexed, high impact', year: 2024, score: 0.86, artifacts: ['Deck', 'Blog'], track: 'Cardiovascular outcomes evidence', designTier: 'RCT extension · open-label follow-up', appraisal: 'CONSORT: 23/25 (excellent)', grade: 'High certainty', citations: '124 citations · 124/yr', funding: 'Independent · post-trial follow-up', statRigor: 'N=9,340 · 10-yr follow-up', relevance: 86, flag: null, excerpt: '"Extended follow-up of LEADER demonstrated a durable 14% relative risk reduction in MACE (HR 0.86; 95% CI 0.80–0.93) over 10 years with liraglutide, with cardiovascular benefit sustained after treatment discontinuation in a subset analysis."', excerptSrc: '— Long-term cardiovascular outcomes, p.11' },
+  { db: 'PubMed', type: 'Meta-Analysis', title: 'Comparative efficacy of GLP-1 RAs on body weight — network meta-analysis of 62 trials', journal: 'BMJ · MEDLINE-indexed, high impact', year: 2024, score: 0.85, artifacts: ['Deck', 'Blog', 'Facts'], track: 'Comparative effectiveness', designTier: 'Network meta-analysis · 62 RCTs', appraisal: 'AMSTAR-2: 15/16 (high confidence)', grade: 'High certainty', citations: '218 citations · 218/yr', funding: 'Independent · academic network', statRigor: 'Pooled N=52,180, I²=31%', relevance: 87, flag: null, excerpt: '"In a network meta-analysis of 62 trials, semaglutide 2.4 mg ranked first for weight reduction (SUCRA 0.94), followed by tirzepatide 15 mg (SUCRA 0.89), with all GLP-1 RAs demonstrating superior weight loss versus placebo (P<0.001 for each comparison)."', excerptSrc: '— Comparative weight outcomes, p.7' },
+  { db: 'ADA Guidelines', type: 'Guideline', title: 'ADA Standards of Medical Care in Diabetes 2025 — pharmacological approaches', journal: 'Diabetes Care · ADA official guideline', year: 2025, score: 0.82, artifacts: ['Deck', 'Protocol', 'Blurb'], track: 'Clinical practice guideline', designTier: 'Expert consensus · ADA guideline committee', appraisal: 'AGREE II: A-rated', grade: 'Grade A — Strong recommendation', citations: '312 citations · 312/yr', funding: 'ADA · nonprofit medical association', statRigor: 'N/A · evidence synthesis', relevance: 83, flag: null, excerpt: '"For adults with type 2 diabetes and established cardiovascular disease or high cardiovascular risk, a GLP-1 receptor agonist with proven cardiovascular benefit is recommended independently of HbA1c or background metformin use, with treatment initiation based on cardiometabolic risk profile."', excerptSrc: '— Section 9: Pharmacological agents, p.42' },
+  { db: 'PubMed', type: 'Real-World', title: 'GLP-1 RA use in chronic kidney disease: real-world safety and efficacy outcomes', journal: 'JASN · MEDLINE-indexed, high impact', year: 2023, score: 0.75, artifacts: ['Deck', 'Protocol', 'Facts'], track: 'Renal & safety outcomes', designTier: 'Retrospective cohort · EHR data', appraisal: 'STROBE: 17/22 (good)', grade: 'Moderate certainty', citations: '68 citations · 22.7/yr', funding: 'Independent · NIHR-funded', statRigor: 'N=12,480 · 3-yr follow-up', relevance: 74, flag: null, excerpt: '"In adults with CKD stage 3b–4, GLP-1 receptor agonists were associated with a 22% lower risk of eGFR decline ≥40% (HR 0.78; 95% CI 0.69–0.88) with no significant increase in serious adverse events, supporting use in this high-risk population with appropriate dose adjustment."', excerptSrc: '— Renal endpoints, p.9' },
+  { db: 'EMBASE', type: 'Systematic Review', title: 'Patient-reported outcomes with GLP-1 RA therapy — systematic review of 28 studies', journal: 'Qual Life Res · MEDLINE-indexed', year: 2023, score: 0.71, artifacts: ['Blog', 'Facts'], track: 'Patient outcomes & quality of life', designTier: 'Systematic review · PRO instruments', appraisal: 'PRISMA: 24/27 (high quality)', grade: 'Moderate certainty', citations: '39 citations · 13/yr', funding: 'Independent · academic consortium', statRigor: 'Pooled N=18,400 · 28 studies', relevance: 72, flag: null, excerpt: '"GLP-1 receptor agonist treatment was associated with significant improvements in health-related quality of life (SF-36 PCS: +4.2 points; 95% CI 2.9–5.5) and physical functioning scores across 28 studies, with greatest gains observed in patients achieving ≥10% weight reduction."', excerptSrc: '— PRO synthesis, p.11' },
+  { db: 'PubMed', type: 'RCT', title: 'FLOW trial: Semaglutide in chronic kidney disease with type 2 diabetes', journal: 'N Engl J Med · MEDLINE-indexed, high impact', year: 2024, score: 0.89, artifacts: ['Deck', 'Blog', 'Protocol', 'Facts'], track: 'Renal & safety outcomes', designTier: 'RCT · double-blind, event-driven', appraisal: 'CONSORT: 24/25 (excellent)', grade: 'High certainty', citations: '187 citations · 187/yr', funding: 'Industry-sponsored · Novo Nordisk', statRigor: 'N=3,533 · median 3.4 yrs follow-up', relevance: 89, flag: null, excerpt: '"Semaglutide 1.0 mg significantly reduced the composite kidney endpoint (sustained ≥50% eGFR decline, kidney failure, or death) by 24% versus placebo (HR 0.76; 95% CI 0.66–0.88; P<0.001), establishing GLP-1 RA therapy as nephroprotective in high-risk CKD populations."', excerptSrc: '— Primary kidney outcome, p.5' },
+];
+
 const RESEARCH_DBS = ['PubMed', 'EMBASE', 'ADA / EASD Guidelines', 'NICE / SIGN', 'Cochrane Library', 'IDF Atlas'];
 
 /* ---------- Alternate excerpts for Manage Excerpt panel (per paper _idx) ---------- */
@@ -1129,12 +1141,15 @@ export default class MedFactory extends React.Component {
       moreResearchN: 0,
       moreResearchDone: false,
       evidenceLoadMore: false,
+      moreResearchDone2: false,
+      evidenceLoadMore2: false,
       researchSourcesOpen: false,
       researchSrcExpanded: {},
       researchFilter: 'All',
       trackFilter: 'All',
       gradeFilter: [],
       artifactFilter: 'All',
+      filterManual: false,
       fundingFilter: 'All',
       sortBy: 'composite',
       sortDir: 'desc',
@@ -1840,6 +1855,14 @@ export default class MedFactory extends React.Component {
     }, 1800);
   };
 
+  loadEvidencePapers2 = () => {
+    if (this.state.moreResearchDone2 || this.state.evidenceLoadMore2) return;
+    this.setState({ evidenceLoadMore2: true });
+    setTimeout(() => {
+      this.setState({ moreResearchDone2: true, evidenceLoadMore2: false });
+    }, 1800);
+  };
+
   curBlocks() {
     const n = this.state.slides[this.state.slideIdx].n;
     return this.state.blocks || BLOCKS[n] || BLOCKS.DEFAULT;
@@ -2040,6 +2063,8 @@ export default class MedFactory extends React.Component {
       moreResearchN: st.moreResearchN,
       moreResearchDone: st.moreResearchDone,
       evidenceLoadMore: st.evidenceLoadMore,
+      moreResearchDone2: st.moreResearchDone2,
+      evidenceLoadMore2: st.evidenceLoadMore2,
       researchSourcesOpen: st.researchSourcesOpen,
       toggleResearchSources: () => this.setState((s) => ({ researchSourcesOpen: !s.researchSourcesOpen })),
       researchSrcExpanded: st.researchSrcExpanded,
@@ -2054,6 +2079,8 @@ export default class MedFactory extends React.Component {
       })),
       artifactFilter: st.artifactFilter,
       setArtifactFilter: (f) => this.setState({ artifactFilter: f }),
+      filterManual: st.filterManual,
+      toggleFilterManual: () => this.setState((s) => ({ filterManual: !s.filterManual })),
       fundingFilter: st.fundingFilter,
       setFundingFilter: (f) => this.setState({ fundingFilter: f }),
       sortBy: st.sortBy,
@@ -2069,7 +2096,7 @@ export default class MedFactory extends React.Component {
       clearEvidenceFilters: () => this.setState({
         trackFilter: 'All', gradeFilter: [], artifactFilter: 'All',
         fundingFilter: 'All', sortBy: 'composite', sortDir: 'desc', sortDropdownOpen: false,
-        showAccepted: false,
+        showAccepted: false, filterManual: false,
       }),
       quickAccept: (preset) => this.setState((s) => {
         const acc = { ...s.acceptedPapers };
@@ -2725,7 +2752,7 @@ export default class MedFactory extends React.Component {
           acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {},
           sciInlineComments: {}, maComments: {}, sciComments: {},
           organizeArtifactAssignments: {}, organizeTrackAssignments: {},
-          moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false,
+          moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false, moreResearchDone2: false, evidenceLoadMore2: false,
         }), () => this.go('workspace-hub'));
       },
       skipToHubWithModal: () => {
@@ -2744,7 +2771,7 @@ export default class MedFactory extends React.Component {
           acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {},
           sciInlineComments: {}, maComments: {}, sciComments: {},
           organizeArtifactAssignments: {}, organizeTrackAssignments: {},
-          moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false,
+          moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false, moreResearchDone2: false, evidenceLoadMore2: false,
         }), () => this.go('workspace-hub'));
       },
       wsResearches: st.wsResearches,
@@ -2955,7 +2982,7 @@ export default class MedFactory extends React.Component {
           acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {},
           sciInlineComments: {}, maComments: {}, sciComments: {},
           organizeArtifactAssignments: {}, organizeTrackAssignments: {},
-          moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false,
+          moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false, moreResearchDone2: false, evidenceLoadMore2: false,
         }), () => this.go('research'));
       },
 
@@ -4064,7 +4091,7 @@ export default class MedFactory extends React.Component {
                                   <Box
                                     css="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;font:700 10px/1 Plus Jakarta Sans;color:var(--acc);border:1px solid rgba(44,82,204,0.25);border-radius:6px;cursor:pointer;background:rgba(44,82,204,0.06);flex-shrink:0"
                                     hover="background:rgba(44,82,204,0.12)"
-                                    onClick={() => { v.setWsActiveResearch(r.id); this.setState((s) => ({ wsResearches: s.wsResearches.map(x => x.id === r.id ? { ...x, status: 'in-progress' } : x), pptStatus: 'draft', sciReviewSent: false, sciReviewConfirmOpen: false, acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {}, sciInlineComments: {}, maComments: {}, sciComments: {}, organizeArtifactAssignments: {}, organizeTrackAssignments: {}, moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false, createdWorkspaces: s.createdWorkspaces.map(w => w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'draft' } : w) }), () => this.go('section-select')); }}
+                                    onClick={() => { v.setWsActiveResearch(r.id); this.setState((s) => ({ wsResearches: s.wsResearches.map(x => x.id === r.id ? { ...x, status: 'in-progress' } : x), pptStatus: 'draft', sciReviewSent: false, sciReviewConfirmOpen: false, acceptedPapers: {}, deletedPapers: {}, sciReviewComments: {}, sciInlineComments: {}, maComments: {}, sciComments: {}, organizeArtifactAssignments: {}, organizeTrackAssignments: {}, moreResearchDone: false, moreResearchActive: false, moreResearchN: 0, evidenceLoadMore: false, moreResearchDone2: false, evidenceLoadMore2: false, createdWorkspaces: s.createdWorkspaces.map(w => w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'draft' } : w) }), () => this.go('section-select')); }}
                                   >
                                     <svg width="8" height="10" viewBox="0 0 8 10" fill="none"><path d="M1 1l6 4-6 4V1z" fill="currentColor"/></svg>
                                     Run
@@ -4771,8 +4798,59 @@ export default class MedFactory extends React.Component {
                   )}
 
                   {/* Input */}
-                  <div style={S('padding:14px 20px;border-top:1px solid var(--rule);flex:none')}>
-                    {/* Quick prompts — shown when papers are attached */}
+                  <div style={S('border-top:1px solid var(--rule);flex:none')}>
+
+                    {/* ── Attachment cards ── */}
+                    {v.chatAttachments.length > 0 && (
+                      <div style={{ padding: '12px 20px 0', borderBottom: '1px solid var(--rule)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 1.5h5l2 2v7a.5.5 0 01-.5.5h-6.5a.5.5 0 01-.5-.5v-9a.5.5 0 01.5-.5z" stroke="var(--faint)" strokeWidth="1.2"/><path d="M7.5 1.5v2.5h2" stroke="var(--faint)" strokeWidth="1.2"/></svg>
+                          <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)' }}>
+                            ATTACHED · {v.chatAttachments.length} {v.chatAttachments.length === 1 ? 'PAPER' : 'PAPERS'}
+                          </span>
+                          <button
+                            onClick={v.clearChatAttachments}
+                            style={{ marginLeft: 'auto', background: 'none', border: 'none', padding: '2px 6px', cursor: 'pointer', font: '600 9.5px/1 Plus Jakarta Sans', color: 'var(--faint)', borderRadius: 4 }}
+                          >Clear all</button>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingBottom: 12 }}>
+                          {v.chatAttachments.map((p, i) => {
+                            const gl = gradeLetterFromPaper(p);
+                            const gradeClr = gl === 'A' ? '#15803d' : gl === 'B' ? '#2c52cc' : '#b45309';
+                            const gradeBg = gl === 'A' ? 'rgba(22,101,52,0.1)' : gl === 'B' ? 'rgba(44,82,204,0.1)' : 'rgba(180,83,9,0.1)';
+                            return (
+                              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 11px', background: 'var(--s1)', border: '1px solid var(--rule2)', borderLeft: '2.5px solid var(--acc)', borderRadius: 8, animation: 'rise 0.15s ease', boxShadow: '0 1px 3px rgba(15,31,74,0.04)' }}>
+                                {/* Icon */}
+                                <div style={{ width: 30, height: 30, borderRadius: 7, background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="var(--acc)" strokeWidth="1.3"/><path d="M3.5 5.5h7M3.5 8h5" stroke="var(--acc)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                                </div>
+                                {/* Text */}
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ font: '600 11.5px/1.35 Plus Jakarta Sans', color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.title}>{p.title}</div>
+                                  <div style={{ font: '500 10px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 3, display: 'flex', alignItems: 'center', gap: 5 }}>
+                                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>{(p.journal || '').split('·')[0].trim()}</span>
+                                    {p.year && <><span style={{ opacity: 0.4 }}>·</span><span style={{ flexShrink: 0 }}>{p.year}</span></>}
+                                  </div>
+                                </div>
+                                {/* Grade */}
+                                <span style={{ padding: '2px 7px', background: gradeBg, border: `1px solid ${gradeClr}`, color: gradeClr, font: '700 9px/1 Plus Jakarta Sans', borderRadius: 4, flexShrink: 0 }}>
+                                  Grade {gl}
+                                </span>
+                                {/* Remove */}
+                                <button
+                                  onClick={() => v.removeChatAttachment(i)}
+                                  style={{ background: 'none', border: 'none', padding: '4px', cursor: 'pointer', color: 'var(--faint)', lineHeight: 1, fontSize: 12, borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                >
+                                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ── Quick prompts ── */}
                     {v.chatAttachments.length > 0 && (() => {
                       const thread = v.projectThreads?.find((t) => t.id === v.activeThreadId);
                       const msgCount = thread?.messages?.filter((m) => m.from === 'user').length || 0;
@@ -4794,45 +4872,28 @@ export default class MedFactory extends React.Component {
                         'Summarise safety data across these papers',
                       ];
                       const prompts = msgCount === 0 ? initialPrompts : followUpPrompts;
-                      const label = msgCount === 0 ? 'QUICK PROMPTS' : 'FOLLOW-UP PROMPTS';
+                      const label = msgCount === 0 ? 'QUICK PROMPTS' : 'FOLLOW-UP';
                       return (
-                        <div style={{ marginBottom: 10 }}>
-                          <div style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--faint)', marginBottom: 7 }}>{label}</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                        <div style={{ padding: '10px 20px 14px' }}>
+                          <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', marginBottom: 8 }}>{label}</div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                             {prompts.map((s) => (
-                              <Box key={s} css="padding:5px 11px;font:600 10.5px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--rule2);border-radius:20px;color:var(--dim);background:var(--s2);transition:all 0.15s;white-space:nowrap" hover="border-color:var(--acc);color:var(--acc);background:rgba(44,82,204,0.06)" onClick={() => this.setState({ projectInput: s }, () => v.sendIntelMessage())}>{s}</Box>
+                              <Box key={s} css="padding:5px 11px;font:600 10.5px/1 Plus Jakarta Sans;cursor:pointer;border:1px solid var(--rule2);border-radius:20px;color:var(--dim);background:var(--s2);white-space:nowrap" hover="border-color:var(--acc);color:var(--acc);background:rgba(44,82,204,0.06)" onClick={() => this.setState({ projectInput: s }, () => v.sendIntelMessage())}>{s}</Box>
                             ))}
                           </div>
                         </div>
                       );
                     })()}
-                    {/* Attachment chips */}
-                    {v.chatAttachments.length > 0 && (
-                      <div style={S('display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px')}>
-                        {v.chatAttachments.map((p, i) => (
-                          <div key={i} style={S('display:inline-flex;align-items:center;gap:5px;padding:4px 8px 4px 10px;background:rgba(44,82,204,0.1);border:1px solid rgba(44,82,204,0.25);border-radius:20px;animation:rise 0.15s ease')}>
-                            <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><rect x="1" y="1.5" width="10" height="9" rx="1" stroke="#2c52cc" strokeWidth="1.3"/><path d="M3.5 5h5M3.5 7.5h3" stroke="#2c52cc" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                            <span style={S('font:600 10px/1 Plus Jakarta Sans;color:var(--acc);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')} title={p.title}>{p.title}</span>
-                            <button
-                              onClick={() => v.removeChatAttachment(i)}
-                              style={{ background: 'none', border: 'none', padding: '0 0 0 2px', cursor: 'pointer', color: 'var(--acc)', opacity: 0.6, lineHeight: 1, fontSize: 11 }}
-                            >✕</button>
-                          </div>
-                        ))}
-                        <button
-                          onClick={v.clearChatAttachments}
-                          style={{ background: 'none', border: 'none', padding: '4px 6px', cursor: 'pointer', font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}
-                        >Clear all</button>
-                      </div>
-                    )}
+
+                    {/* ── Empty state when no papers ── */}
                     {v.chatAttachments.length === 0 && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', background: 'var(--s2)', border: '1.5px dashed var(--rule2)', borderRadius: 10 }}>
-                        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="var(--acc)" strokeWidth="1.3"/><path d="M4 6h6M4 8.5h4" stroke="var(--acc)" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                      <div style={{ margin: '0 20px 14px', display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: 'rgba(44,82,204,0.04)', border: '1.5px dashed rgba(44,82,204,0.2)', borderRadius: 10 }}>
+                        <div style={{ width: 30, height: 30, borderRadius: 8, background: 'rgba(44,82,204,0.08)', border: '1px solid rgba(44,82,204,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="var(--acc)" strokeWidth="1.3"/><path d="M4 6h6M4 8.5h4" stroke="var(--acc)" strokeWidth="1.3" strokeLinecap="round"/></svg>
                         </div>
                         <div>
-                          <div style={{ font: '700 12px/1.3 Plus Jakarta Sans', color: 'var(--dim)', marginBottom: 2 }}>No papers attached</div>
-                          <div style={{ font: '500 10.5px/1.4 Plus Jakarta Sans', color: 'var(--faint)' }}>Select papers using the checkboxes and click <strong style={{ color: 'var(--acc)', fontWeight: 700 }}>Add selected paper to chat</strong> to start a conversation</div>
+                          <div style={{ font: '700 11.5px/1.3 Plus Jakarta Sans', color: 'var(--dim)', marginBottom: 2 }}>No papers attached yet</div>
+                          <div style={{ font: '500 10px/1.4 Plus Jakarta Sans', color: 'var(--faint)' }}>Check papers in the grid → <strong style={{ color: 'var(--acc)' }}>Add to chat</strong> to start a conversation</div>
                         </div>
                       </div>
                     )}
@@ -5074,12 +5135,8 @@ export default class MedFactory extends React.Component {
                       {/* ===== FILTER / SORT BAR ===== */}
                       {!v.moreResearchActive && (() => {
                         // Precompute counts
-                        const artifactCounts = {};
-                        RESEARCH_PAPERS.forEach((p) => p.artifacts.forEach((a) => { artifactCounts[a] = (artifactCounts[a] || 0) + 1; }));
                         const gradeCounts = { A: 0, B: 0, C: 0, D: 0, F: 0 };
                         RESEARCH_PAPERS.forEach((p) => { const g = gradeLetterFromPaper(p); if (g in gradeCounts) gradeCounts[g]++; });
-                        const ART_COLORS_EV = { Deck: '#2563eb', Blog: '#d97706', Protocol: '#7c3aed', Blurb: '#dc2626', Facts: 'var(--dim)' };
-
                         const SORT_OPTIONS = [
                           { key: 'relevance', label: 'Relevance' },
                           { key: 'year', label: 'Publication year' },
@@ -5088,11 +5145,14 @@ export default class MedFactory extends React.Component {
                         const sortLabel = (SORT_OPTIONS.find((o) => o.key === v.sortBy) || SORT_OPTIONS[0]).label;
 
                         // Combine base + extra papers when expanded search is done
-                        const manualOffset = RESEARCH_PAPERS.length + EXTRA_PAPERS.length;
+                        const batch2Offset = RESEARCH_PAPERS.length;
+                        const batch3Offset = batch2Offset + EXTRA_PAPERS.length;
+                        const manualOffset = batch3Offset + EXTRA_PAPERS_2.length;
                         const allEvidencePapers = [
                           ...RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i, _batch: 1 })),
-                          ...(v.moreResearchDone ? EXTRA_PAPERS.map((p, i) => ({ ...p, _idx: RESEARCH_PAPERS.length + i, _batch: 2 })) : []),
-                          ...v.manualPapers.map((p, i) => ({ ...p, _idx: manualOffset + i, _batch: 3, manual: true })),
+                          ...(v.moreResearchDone ? EXTRA_PAPERS.map((p, i) => ({ ...p, _idx: batch2Offset + i, _batch: 2 })) : []),
+                          ...(v.moreResearchDone2 ? EXTRA_PAPERS_2.map((p, i) => ({ ...p, _idx: batch3Offset + i, _batch: 3 })) : []),
+                          ...v.manualPapers.map((p, i) => ({ ...p, _idx: manualOffset + i, _batch: 4, manual: true })),
                         ];
 
                         // Filtered + sorted papers
@@ -5114,11 +5174,12 @@ export default class MedFactory extends React.Component {
                             if (v.artifactFilter !== 'All' && !p.artifacts.includes(v.artifactFilter)) return false;
                             if (v.fundingFilter === 'Independent' && !p.funding.toLowerCase().includes('independent')) return false;
                             if (v.fundingFilter === 'Industry' && !p.funding.toLowerCase().includes('industry')) return false;
+                            if (v.filterManual && !p.manual) return false;
                             return true;
                           })
                           .sort(evidenceSortFn(v.sortBy, v.sortDir));
 
-                        const isFiltered = v.showAccepted || v.trackFilter !== 'All' || v.gradeFilter.length > 0 || v.artifactFilter !== 'All' || v.sortBy !== 'composite';
+                        const isFiltered = v.showAccepted || v.trackFilter !== 'All' || v.gradeFilter.length > 0 || v.artifactFilter !== 'All' || v.sortBy !== 'composite' || v.filterManual;
 
                         return (
                           <>
@@ -5166,22 +5227,17 @@ export default class MedFactory extends React.Component {
                                 );
                               })}
 
-                              <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
-
-                              <span style={S('font:700 9px/1 Plus Jakarta Sans;letter-spacing:0.12em;color:var(--faint)')}>ARTIFACT</span>
-                              {['All', ...ALL_ARTIFACTS].map((a) => {
-                                const active = v.artifactFilter === a;
-                                const count = a === 'All' ? RESEARCH_PAPERS.length : (artifactCounts[a] || 0);
-                                const col = a !== 'All' ? ART_COLORS_EV[a] : 'var(--acc)';
-                                return (
-                                  <Box
-                                    key={a}
-                                    css={`padding:4px 12px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${active ? col : 'var(--rule2)'};background:${active ? col : 'transparent'};color:${active ? '#fff' : 'var(--faint)'};transition:all 0.15s`}
-                                    hover={!active ? `background:${col}22;border-color:${col};color:${col}` : ''}
-                                    onClick={() => v.setArtifactFilter(a)}
-                                  >{a}{a !== 'All' ? ` (${count})` : ''}</Box>
-                                );
-                              })}
+                              {v.manualPapers.length > 0 && <>
+                                <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
+                                <Box
+                                  css={`padding:4px 12px;font:600 10px/1 Plus Jakarta Sans;cursor:pointer;border-radius:20px;border:1.5px solid ${v.filterManual ? '#7c3aed' : 'var(--rule2)'};background:${v.filterManual ? '#7c3aed' : 'transparent'};color:${v.filterManual ? '#fff' : 'var(--faint)'};display:inline-flex;align-items:center;gap:5px;transition:all 0.15s`}
+                                  hover={!v.filterManual ? 'border-color:#7c3aed;color:#7c3aed;background:rgba(124,58,237,0.06)' : ''}
+                                  onClick={v.toggleFilterManual}
+                                >
+                                  <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M1 1.5h8M1 5h8M1 8.5h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                                  Manually Added ({v.manualPapers.length})
+                                </Box>
+                              </>}
 
                               <div style={S('width:1px;height:20px;background:var(--rule2);flex-shrink:0')} />
 
@@ -5287,14 +5343,14 @@ export default class MedFactory extends React.Component {
 
                                 {/* Accepted toggle — always visible, grayed when 0 */}
                                 <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
-                                  {acceptedCount > 0 && (
+                                  {Object.keys(v.chatPaperSelections).length > 0 && (
                                     <Box
                                       css="display:inline-flex;align-items:center;gap:5px;padding:5px 13px;font:700 10px/1 Plus Jakarta Sans;cursor:pointer;border:none;color:#fff;background:linear-gradient(135deg,#2c52cc,#4468e0);border-radius:20px;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 8px rgba(44,82,204,0.28)"
                                       hover="opacity:0.9"
-                                      onClick={v.addAllAcceptedToChat}
+                                      onClick={v.addSelectedToChat}
                                     >
                                       <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                                      Add selected paper to chat
+                                      Add {Object.keys(v.chatPaperSelections).length} paper{Object.keys(v.chatPaperSelections).length > 1 ? 's' : ''} to chat
                                     </Box>
                                   )}
                                   <Box
@@ -5553,15 +5609,13 @@ export default class MedFactory extends React.Component {
                               {/* ── Show more papers ── */}
                               {!v.showAccepted && (
                                 <div style={{ marginTop: 16, marginBottom: 4 }}>
-                                  <Box
-                                    css={`padding:16px 20px;border:1.5px ${v.moreResearchDone ? 'solid rgba(21,128,61,0.3)' : `dashed ${v.evidenceLoadMore ? 'var(--acc)' : 'var(--rule2)'}`};border-radius:12px;background:${v.moreResearchDone ? 'rgba(21,128,61,0.04)' : v.evidenceLoadMore ? 'rgba(44,82,204,0.03)' : 'transparent'};cursor:${v.moreResearchDone || v.evidenceLoadMore ? 'default' : 'pointer'};display:flex;align-items:center;gap:14px;transition:all 0.18s;width:100%`}
-                                    hover={v.moreResearchDone || v.evidenceLoadMore ? '' : 'border-color:var(--acc);background:rgba(44,82,204,0.03)'}
-                                    onClick={() => !v.evidenceLoadMore && !v.moreResearchDone && this.loadEvidencePapers()}
+                                  {!v.moreResearchDone && <Box
+                                    css={`padding:16px 20px;border:1.5px dashed ${v.evidenceLoadMore ? 'var(--acc)' : 'var(--rule2)'};border-radius:12px;background:${v.evidenceLoadMore ? 'rgba(44,82,204,0.03)' : 'transparent'};cursor:${v.evidenceLoadMore ? 'default' : 'pointer'};display:flex;align-items:center;gap:14px;transition:all 0.18s;width:100%`}
+                                    hover={v.evidenceLoadMore ? '' : 'border-color:var(--acc);background:rgba(44,82,204,0.03)'}
+                                    onClick={() => !v.evidenceLoadMore && this.loadEvidencePapers()}
                                   >
-                                    <div style={{ width: 36, height: 36, borderRadius: 10, background: v.moreResearchDone ? 'rgba(21,128,61,0.1)' : v.evidenceLoadMore ? 'rgba(44,82,204,0.08)' : 'var(--s2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.18s' }}>
-                                      {v.moreResearchDone ? (
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-6" stroke="#15803d" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                      ) : v.evidenceLoadMore ? (
+                                    <div style={{ width: 36, height: 36, borderRadius: 10, background: v.evidenceLoadMore ? 'rgba(44,82,204,0.08)' : 'var(--s2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.18s' }}>
+                                      {v.evidenceLoadMore ? (
                                         <div style={{ width: 16, height: 16, border: '2px solid rgba(44,82,204,0.2)', borderTopColor: 'var(--acc)', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
                                       ) : (
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -5571,17 +5625,50 @@ export default class MedFactory extends React.Component {
                                       )}
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                      <div style={{ font: '700 13px/1.3 Plus Jakarta Sans', color: v.moreResearchDone ? '#15803d' : 'var(--ink)', marginBottom: 4 }}>
-                                        {v.moreResearchDone ? `${EXTRA_PAPERS.length} additional papers loaded` : v.evidenceLoadMore ? 'Fetching more papers…' : `Load ${EXTRA_PAPERS.length} more papers`}
+                                      <div style={{ font: '700 13px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 4 }}>
+                                        {v.evidenceLoadMore ? 'Fetching more papers…' : `Load ${EXTRA_PAPERS.length} more papers`}
                                       </div>
                                       <div style={{ font: '500 11px/1.4 Plus Jakarta Sans', color: 'var(--faint)' }}>Cochrane Library · NICE HTA · Supplementary PubMed</div>
                                     </div>
-                                    {!v.moreResearchDone && !v.evidenceLoadMore && (
+                                    {!v.evidenceLoadMore && (
                                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: 'var(--faint)' }}>
                                         <path d="M5.5 2.5l4.5 4.5-4.5 4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                                       </svg>
                                     )}
-                                  </Box>
+                                  </Box>}
+
+                                  {/* ── Second batch load more (shown once first batch is done) ── */}
+                                  {v.moreResearchDone && (
+                                    <Box
+                                      css={`margin-top:8px;padding:16px 20px;border:1.5px ${v.moreResearchDone2 ? 'solid rgba(21,128,61,0.3)' : `dashed ${v.evidenceLoadMore2 ? 'var(--acc)' : 'var(--rule2)'}`};border-radius:12px;background:${v.moreResearchDone2 ? 'rgba(21,128,61,0.04)' : v.evidenceLoadMore2 ? 'rgba(44,82,204,0.03)' : 'transparent'};cursor:${v.moreResearchDone2 || v.evidenceLoadMore2 ? 'default' : 'pointer'};display:flex;align-items:center;gap:14px;transition:all 0.18s;width:100%;animation:rise 0.3s ease`}
+                                      hover={v.moreResearchDone2 || v.evidenceLoadMore2 ? '' : 'border-color:var(--acc);background:rgba(44,82,204,0.03)'}
+                                      onClick={() => !v.evidenceLoadMore2 && !v.moreResearchDone2 && this.loadEvidencePapers2()}
+                                    >
+                                      <div style={{ width: 36, height: 36, borderRadius: 10, background: v.moreResearchDone2 ? 'rgba(21,128,61,0.1)' : v.evidenceLoadMore2 ? 'rgba(44,82,204,0.08)' : 'var(--s2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'background 0.18s' }}>
+                                        {v.moreResearchDone2 ? (
+                                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-6" stroke="#15803d" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                        ) : v.evidenceLoadMore2 ? (
+                                          <div style={{ width: 16, height: 16, border: '2px solid rgba(44,82,204,0.2)', borderTopColor: 'var(--acc)', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                                        ) : (
+                                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <circle cx="8" cy="8" r="6.5" stroke="var(--acc)" strokeWidth="1.3"/>
+                                            <path d="M8 5v6M5.5 8.5l2.5 2.5 2.5-2.5" stroke="var(--acc)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                                          </svg>
+                                        )}
+                                      </div>
+                                      <div style={{ flex: 1 }}>
+                                        <div style={{ font: '700 13px/1.3 Plus Jakarta Sans', color: v.moreResearchDone2 ? '#15803d' : 'var(--ink)', marginBottom: 4 }}>
+                                          {v.moreResearchDone2 ? `${EXTRA_PAPERS_2.length} more papers loaded` : v.evidenceLoadMore2 ? 'Fetching more papers…' : `Load ${EXTRA_PAPERS_2.length} more papers`}
+                                        </div>
+                                        <div style={{ font: '500 11px/1.4 Plus Jakarta Sans', color: 'var(--faint)' }}>JASN · Circulation · Cochrane · BMJ deep search</div>
+                                      </div>
+                                      {!v.moreResearchDone2 && !v.evidenceLoadMore2 && (
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, color: 'var(--faint)' }}>
+                                          <path d="M5.5 2.5l4.5 4.5-4.5 4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                      )}
+                                    </Box>
+                                  )}
                                 </div>
                               )}
                             </div>
@@ -5856,7 +5943,7 @@ export default class MedFactory extends React.Component {
             const ExcerptCard = ({ p }) => {
               const currentExcerpts = v.paperExcerpts[p._idx] || [{ text: p.excerpt, src: p.excerptSrc }];
               return (
-                <div style={{ position: 'relative', background: '#fff', border: `1px solid ${sel && sel._idx === p._idx ? 'var(--acc)' : 'var(--rule2)'}`, borderLeft: `4px solid ${tc2(p.type)}`, borderRadius: '0 10px 10px 0', transition: 'all 0.15s', overflow: 'hidden' }}>
+                <div style={{ position: 'relative', background: sel && sel._idx === p._idx ? 'rgba(44,82,204,0.06)' : '#fff', border: `${sel && sel._idx === p._idx ? '2px' : '1px'} solid ${sel && sel._idx === p._idx ? 'var(--acc)' : 'var(--rule2)'}`, borderLeft: `4px solid ${sel && sel._idx === p._idx ? 'var(--acc)' : tc2(p.type)}`, borderRadius: '0 10px 10px 0', transition: 'all 0.15s', overflow: 'hidden', boxShadow: sel && sel._idx === p._idx ? '0 0 0 3px rgba(44,82,204,0.15), 0 2px 8px rgba(44,82,204,0.12)' : 'none' }}>
                   {/* Clickable main content */}
                   <div
                     style={{ padding: '16px 18px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: 10 }}
@@ -6069,19 +6156,6 @@ export default class MedFactory extends React.Component {
                       <div style={{ font:'400 13px/1.6 Plus Jakarta Sans', color:'var(--dim)', maxWidth:520 }}>
                         Excerpts grouped by content track — a paper appears under every track its evidence serves. Select any excerpt to inspect the full card.
                       </div>
-                    </div>
-                    {/* stat pills */}
-                    <div style={S('display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:24px')}>
-                      {[
-                        { label: 'Papers', val: acceptedList.length, bg: '#15803d' },
-                        { label: 'Excerpts', val: totalExcerpts, bg: '#1d4ed8' },
-                        { label: 'Tracks', val: `${populatedTracks} / ${CONTENT_TRACKS.length}`, bg: '#b45309' },
-                      ].map(({ label, val, bg }) => (
-                        <div key={label} style={{ textAlign:'center', padding:'10px 22px', background: bg, borderRadius:14 }}>
-                          <div style={{ font:'800 22px/1 Plus Jakarta Sans', color:'#fff', marginBottom:5 }}>{val}</div>
-                          <div style={{ font:'700 9px/1 Plus Jakarta Sans', letterSpacing:'0.14em', color:'rgba(255,255,255,0.8)' }}>{label.toUpperCase()}</div>
-                        </div>
-                      ))}
                     </div>
                   </div>
 
@@ -7330,7 +7404,7 @@ export default class MedFactory extends React.Component {
               const aiGenerated = v.aiExcerpts[pIdx] || [];
               const aiLoading   = v.aiExcerptsLoading[pIdx];
               return (
-                <div style={{ borderLeft: '1px solid rgba(124,58,237,0.15)', background: '#fff', display: 'flex', flexDirection: 'column', flex: '0 0 38%', minWidth: 320, maxWidth: 520, animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
+                <div style={{ borderLeft: '1px solid rgba(124,58,237,0.15)', background: '#fff', display: 'flex', flexDirection: 'column', width: '100%', height: '100%', overflow: 'hidden', animation: 'slideInRight 0.22s cubic-bezier(0.22,1,0.36,1) both' }}>
                   <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: '#7c3aed', textTransform: 'uppercase', marginBottom: 3 }}>✦ AI Recommendations</div>
@@ -7833,18 +7907,9 @@ export default class MedFactory extends React.Component {
                     </div>
                   );
 
-                  const gapRightPanel = v.gapExcerptOpen && selGap && selPaper2
-                    ? (
-                      <div style={{ display: 'flex', height: '100%' }}>
-                        <div style={{ flex: '0 0 50%', overflow: 'hidden' }}>{gapCardPanel}</div>
-                        <div style={{ flex: '0 0 50%', overflow: 'hidden' }}>{GapNormPanel({ pIdx: selGap.paperIdx, paper: selPaper2 })}</div>
-                      </div>
-                    )
-                    : gapCardPanel;
-
                   return (
                     <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
-                      <ResizableSplit left={gapList} right={gapRightPanel} defaultLeftPct={62} minPct={30} maxPct={78} />
+                      <ResizableSplit left={gapList} right={gapCardPanel} defaultLeftPct={62} minPct={30} maxPct={78} />
                     </div>
                   );
                 })()}
@@ -7883,6 +7948,13 @@ export default class MedFactory extends React.Component {
                 </div>
               )}
               </div>{/* end inner column */}
+
+              {/* ══ GAP NORM PANEL — full-height right sibling ══ */}
+              {v.gapExcerptOpen && selGap && selPaper2 && (
+                <div style={{ width: 420, flexShrink: 0, borderLeft: '1px solid rgba(124,58,237,0.2)', background: '#fff', display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideInRight 0.26s cubic-bezier(0.22,1,0.36,1) both', boxShadow: '-4px 0 20px rgba(124,58,237,0.07)' }}>
+                  {GapNormPanel({ pIdx: selGap.paperIdx, paper: selPaper2 })}
+                </div>
+              )}
 
               {/* ══ RESOLVE WITH AI SIDEBAR ══ */}
               {v.resolveAIPaper && (() => {
