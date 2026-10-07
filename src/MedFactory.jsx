@@ -1244,6 +1244,14 @@ export default class MedFactory extends React.Component {
 
   componentDidMount() {
     this.applyTheme();
+    // Restore session so page refresh doesn't log the user out
+    try {
+      const saved = sessionStorage.getItem('mf_session');
+      if (saved) {
+        const { role, screen, topic, heroProduct, audience, pptStatus, activeWorkspaceId, createdWorkspaces, wsResearches, wsActiveResearch } = JSON.parse(saved);
+        if (role) this.setState({ role, screen: screen || 'dash', topic: topic || '', heroProduct: heroProduct || '', audience: audience || '', pptStatus: pptStatus || 'draft', activeWorkspaceId: activeWorkspaceId || null, createdWorkspaces: createdWorkspaces || [], wsResearches: wsResearches || [], wsActiveResearch: wsActiveResearch || null });
+      }
+    } catch (_) {}
     window.history.replaceState({ screen: this.state.screen }, '');
     this._onPopState = (e) => {
       const s = e.state?.screen;
@@ -1256,6 +1264,13 @@ export default class MedFactory extends React.Component {
   }
   componentDidUpdate(prevProps, prevState) {
     this.applyTheme();
+    // Persist session state on every update
+    const { role, screen, topic, heroProduct, audience, pptStatus, activeWorkspaceId, createdWorkspaces, wsResearches, wsActiveResearch } = this.state;
+    if (role) {
+      try { sessionStorage.setItem('mf_session', JSON.stringify({ role, screen, topic, heroProduct, audience, pptStatus, activeWorkspaceId, createdWorkspaces, wsResearches, wsActiveResearch })); } catch (_) {}
+    } else {
+      try { sessionStorage.removeItem('mf_session'); } catch (_) {}
+    }
     if (prevState.researchN !== this.state.researchN && this.state.researchN >= 20) {
       const { wsResearches, wsActiveResearch } = this.state;
       const activeR = wsResearches.find((r) => r.id === wsActiveResearch);
@@ -3662,9 +3677,6 @@ export default class MedFactory extends React.Component {
                         <span style={{ font: '700 9.5px/1 Plus Jakarta Sans', letterSpacing: '0.16em', color: 'var(--acc)' }}>TUESDAY · 2 SEPTEMBER 2026</span>
                       </div>
                       <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-0.04em', margin: '0 0 10px', color: 'var(--ink)', lineHeight: 1.1 }}>Good morning, Mayank</h1>
-                      <div style={{ color: 'var(--dim)', fontSize: 14, lineHeight: 1.6, maxWidth: '52ch' }}>
-                        Two workspaces need your sign-off before they move to Munal. September&apos;s topic queue is ready for approval.
-                      </div>
                     </div>
                     <Box
                       css="flex:none;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;font-weight:700;padding:15px 26px;cursor:pointer;display:flex;align-items:center;gap:12px;border-radius:12px;box-shadow:0 4px 20px rgba(44,82,204,0.28);white-space:nowrap"
