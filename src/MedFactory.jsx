@@ -7743,33 +7743,80 @@ export default class MedFactory extends React.Component {
                       </div>
                     </div>
                   );
-                })() : filteredGaps.length > 0 && (
-                  <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule)', background: '#fafbff', padding: '9px 40px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}><path d="M6 1l1.5 3 3.5.5-2.5 2.5.5 3.5L6 9l-3 1.5.5-3.5L1 4.5 4.5 4z" fill="#7c3aed" opacity="0.9"/></svg>
-                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase', flexShrink: 0 }}>Issue Navigator</span>
-                    <div style={{ width: 1, height: 14, background: 'var(--rule)', margin: '0 2px', flexShrink: 0 }} />
-                    {[
-                      { label: 'To review', count: toReviewCount, bg: 'rgba(124,58,237,0.08)', border: 'rgba(124,58,237,0.28)', color: '#7c3aed' },
-                      { label: 'Resolved', count: resolvedCount, bg: 'rgba(21,128,61,0.07)', border: 'rgba(21,128,61,0.22)', color: '#15803d' },
-                    ].map(({ label, count, bg, border, color }) => (
-                      <div key={label} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 10px', borderRadius: 20, border: `1px solid ${border}`, background: bg }}>
-                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color }}>{label}</span>
-                        <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 800, color }}>{count}</span>
+                })() : filteredGaps.length > 0 && (() => {
+                    const currentGap = filteredGaps[safeNavIdx] || null;
+                    const currentPaper = currentGap ? RESEARCH_PAPERS[currentGap.paperIdx] : null;
+                    const isResolved = currentGap ? v.paperExcerpts[currentGap.paperIdx] !== undefined : false;
+                    const isCritical = currentGap?.severity === 'Critical';
+                    return (
+                      <div style={{ flexShrink: 0, borderBottom: '1px solid var(--rule)', background: '#fafbff', padding: '0 40px' }}>
+                        {/* Row 1: label + stats + nav controls */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 0 8px' }}>
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0 }}><path d="M6 1l1.5 3 3.5.5-2.5 2.5.5 3.5L6 9l-3 1.5.5-3.5L1 4.5 4.5 4z" fill="#7c3aed" opacity="0.9"/></svg>
+                          <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.1em', color: '#7c3aed', textTransform: 'uppercase', flexShrink: 0 }}>Findings</span>
+                          <div style={{ width: 1, height: 14, background: 'var(--rule)', margin: '0 2px', flexShrink: 0 }} />
+                          {[
+                            { label: 'To review', count: toReviewCount, bg: 'rgba(124,58,237,0.08)', border: 'rgba(124,58,237,0.28)', color: '#7c3aed' },
+                            { label: 'Resolved', count: resolvedCount, bg: 'rgba(21,128,61,0.07)', border: 'rgba(21,128,61,0.22)', color: '#15803d' },
+                          ].map(({ label, count, bg, border, color }) => (
+                            <div key={label} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '3px 10px', borderRadius: 20, border: `1px solid ${border}`, background: bg }}>
+                              <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color }}>{label}</span>
+                              <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 800, color }}>{count}</span>
+                            </div>
+                          ))}
+                          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+                            {/* Progress dots — clickable */}
+                            <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+                              {filteredGaps.map((fg, di) => {
+                                const fgResolved = v.paperExcerpts[fg.paperIdx] !== undefined;
+                                const isCur = di === safeNavIdx;
+                                return (
+                                  <div
+                                    key={di}
+                                    title={`Issue ${di + 1}: ${fg.type}`}
+                                    onClick={() => v.gapNavJump(di)}
+                                    style={{
+                                      width: isCur ? 22 : 7, height: 7, borderRadius: 4,
+                                      background: isCur ? '#7c3aed' : fgResolved ? 'rgba(21,128,61,0.4)' : fg.severity === 'Critical' ? 'rgba(220,38,38,0.22)' : 'rgba(217,119,6,0.22)',
+                                      border: isCur ? 'none' : `1px solid ${fgResolved ? 'rgba(21,128,61,0.3)' : fg.severity === 'Critical' ? 'rgba(220,38,38,0.2)' : 'rgba(217,119,6,0.2)'}`,
+                                      transition: 'all 0.2s',
+                                      cursor: 'pointer',
+                                      flexShrink: 0,
+                                    }}
+                                  />
+                                );
+                              })}
+                            </div>
+                            <div style={{ width: 1, height: 14, background: 'var(--rule2)', flexShrink: 0 }} />
+                            <button onClick={v.gapNavPrev} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--dim)', background: '#fff', border: '1px solid var(--rule2)', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#7c3aed'; e.currentTarget.style.color = '#7c3aed'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--rule2)'; e.currentTarget.style.color = 'var(--dim)'; }}>
+                              <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M5 1L2 4l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              Prev
+                            </button>
+                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 700, color: 'var(--ink)', minWidth: 42, textAlign: 'center' }}>{filteredGaps.length > 0 ? `${safeNavIdx + 1} / ${filteredGaps.length}` : '—'}</span>
+                            <button onClick={v.gapNavNext} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: 'none', borderRadius: 20, cursor: 'pointer', boxShadow: '0 2px 8px rgba(124,58,237,0.25)', transition: 'opacity 0.15s' }} onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
+                              Next
+                              <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M3 1l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </button>
+                          </div>
+                        </div>
+                        {/* Row 2: current issue context */}
+                        {currentGap && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 0 9px', borderTop: '1px solid var(--rule)' }}>
+                            <div style={{ padding: '2px 9px', borderRadius: 20, background: isCritical ? '#fef2f2' : '#fffbeb', border: `1px solid ${isCritical ? '#fecaca' : '#fde68a'}`, color: isCritical ? '#dc2626' : '#d97706', fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 800, letterSpacing: '0.08em', flexShrink: 0 }}>
+                              {isCritical ? '● CRITICAL' : '▲ WARNING'}
+                            </div>
+                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: 'var(--ink)', flexShrink: 0 }}>{currentGap.type}</span>
+                            <span style={{ color: 'var(--rule2)', flexShrink: 0, fontSize: 14 }}>·</span>
+                            <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 11.5, fontWeight: 500, color: 'var(--dim)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{currentPaper?.title || ''}</span>
+                            {isResolved
+                              ? <span style={{ padding: '2px 10px', borderRadius: 20, background: 'rgba(21,128,61,0.09)', border: '1px solid rgba(21,128,61,0.22)', color: '#15803d', fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 800, letterSpacing: '0.08em', flexShrink: 0 }}>✓ RESOLVED</span>
+                              : <span style={{ padding: '2px 10px', borderRadius: 20, background: 'rgba(124,58,237,0.07)', border: '1px solid rgba(124,58,237,0.2)', color: '#7c3aed', fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: 800, letterSpacing: '0.08em', flexShrink: 0 }}>NEEDS REVIEW</span>
+                            }
+                          </div>
+                        )}
                       </div>
-                    ))}
-                    <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <button onClick={v.gapNavPrev} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: 'var(--dim)', background: '#fff', border: '1px solid var(--rule2)', borderRadius: 20, cursor: 'pointer', transition: 'all 0.15s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#7c3aed'; e.currentTarget.style.color = '#7c3aed'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--rule2)'; e.currentTarget.style.color = 'var(--dim)'; }}>
-                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M5 1L2 4l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        Prev
-                      </button>
-                      <div style={{ minWidth: 56, textAlign: 'center', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, color: 'var(--ink)' }}>{filteredGaps.length > 0 ? `${safeNavIdx + 1} of ${filteredGaps.length}` : '0 issues'}</div>
-                      <button onClick={v.gapNavNext} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '5px 12px', fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: 700, color: '#fff', background: 'linear-gradient(135deg,#7c3aed,#a855f7)', border: 'none', borderRadius: 20, cursor: 'pointer', boxShadow: '0 2px 8px rgba(124,58,237,0.25)', transition: 'opacity 0.15s' }} onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; }} onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
-                        Next
-                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M3 1l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                )}
+                    );
+                  })()}
                 {/* ══ BODY — ResizableSplit mirrors Organize Research exactly ══ */}
                 {(() => {
                   const gapList = (
@@ -8636,198 +8683,122 @@ export default class MedFactory extends React.Component {
             const relColor = relScore >= 85 ? '#22c55e' : relScore >= 70 ? '#f59e0b' : '#dc2626';
             const canCite = ce.depth < 3;
             const mockViewPaper = { ...ce, type: 'Guideline', score: relScore, relevance: relScore, grade: variant.grade, citations: variant.citations, funding: 'Not disclosed on source page', statRigor: 'Not formally assessed (auto-evaluated)', appraisal: 'Auto-evaluated', designTier: variant.designTier, artifacts: variant.artifacts, track: variant.tracks[0] || '', excerpt: variant.excerpt, excerptSrc: `${ce.journal}, ${ce.year}`, _idx: -1 };
+            const metaRows = [
+              ['Design Tier', variant.designTier],
+              ['GRADE Certainty', variant.grade],
+              ['Citations', variant.citations],
+              ['Funding / COI', 'Not disclosed on source page'],
+              ['Stat. Rigor', 'Not formally assessed'],
+            ];
             return (
               <div
-                style={{ position: 'fixed', inset: 0, background: 'rgba(5,12,30,0.8)', zIndex: 310, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '28px 20px', backdropFilter: 'blur(8px)' }}
+                style={{ position: 'fixed', inset: 0, background: 'rgba(15,31,74,0.45)', zIndex: 310, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, backdropFilter: 'blur(2px)' }}
                 onClick={(e) => { if (e.target === e.currentTarget) v.setCiteEvalPaper(null); }}
               >
-                <div style={{ width: '100%', maxWidth: 960, height: '92vh', display: 'flex', flexDirection: 'column', borderRadius: 18, boxShadow: '0 48px 120px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.07)', overflow: 'hidden', animation: 'fadeUp 0.24s cubic-bezier(0.22,1,0.36,1)' }}>
+                <div style={{ background: '#fff', width: '100%', maxWidth: 560, maxHeight: '88vh', display: 'flex', flexDirection: 'column', borderRadius: 14, boxShadow: '0 24px 64px rgba(15,31,74,0.28)', overflow: 'hidden', animation: 'fadeUp 0.22s ease' }}>
 
-                  {/* Top bar — citation chain breadcrumb */}
-                  <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--rule)', padding: '0 24px', display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0, minHeight: 52, overflowX: 'auto' }}>
-                    <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--faint)', flexShrink: 0, marginRight: 14 }}>CITATION CHAIN</span>
-
-                    {/* Breadcrumb — one node per stack item */}
-                    {v.citeEvalStack.map((item, idx) => {
-                      const isCurrent = idx === v.citeEvalStack.length - 1;
-                      const shortTitle = item.title.split(/\s+/).slice(0, 5).join(' ') + (item.title.split(/\s+/).length > 5 ? '…' : '');
-                      return (
-                        <React.Fragment key={idx}>
-                          {idx > 0 && (
-                            <svg width="14" height="14" fill="none" viewBox="0 0 14 14" style={{ flexShrink: 0, margin: '0 2px' }}><path d="M4.5 3l5 4-5 4" stroke="var(--rule2)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          )}
-                          <button
-                            onClick={() => !isCurrent && v.goToCiteDepth(idx + 1)}
-                            style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 10px', borderRadius: 8, background: isCurrent ? 'rgba(44,82,204,0.08)' : 'transparent', border: isCurrent ? '1px solid rgba(44,82,204,0.25)' : '1px solid transparent', cursor: isCurrent ? 'default' : 'pointer', flexShrink: 0, transition: 'all 0.15s' }}
-                            onMouseEnter={(e) => { if (!isCurrent) e.currentTarget.style.background = 'var(--s2)'; }}
-                            onMouseLeave={(e) => { if (!isCurrent) e.currentTarget.style.background = 'transparent'; }}
-                          >
-                            <div style={{ width: 18, height: 18, borderRadius: '50%', background: isCurrent ? 'var(--acc)' : 'var(--s2)', border: isCurrent ? 'none' : '1px solid var(--rule2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                              <span style={{ font: '700 8px/1 Plus Jakarta Sans', color: isCurrent ? '#fff' : 'var(--faint)' }}>{idx + 1}</span>
-                            </div>
-                            <span style={{ font: `${isCurrent ? '600' : '400'} 11px/1 Plus Jakarta Sans`, color: isCurrent ? 'var(--acc)' : 'var(--faint)', whiteSpace: 'nowrap', maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis' }}>{shortTitle}</span>
-                          </button>
-                        </React.Fragment>
-                      );
-                    })}
-
-                    {/* Spacer + right controls */}
-                    <div style={{ flex: 1 }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, paddingLeft: 16 }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'var(--s2)', border: '1px solid var(--rule2)', borderRadius: 20, padding: '4px 12px' }}>
-                        <span style={{ font: '600 9.5px/1 Plus Jakarta Sans', color: 'var(--acc)' }}>Depth {ce.depth} of 3</span>
+                  {/* Header — type pill + journal/year + depth + close */}
+                  <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--rule)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                    <span style={{ padding: '4px 12px', font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', background: '#7c3aed', color: '#fff', borderRadius: 100 }}>CITATION</span>
+                    <span style={{ font: '600 10px/1 var(--mono)', color: 'var(--faint)' }}>{ce.journal?.split('·')[0]?.trim()} · {ce.year}</span>
+                    {v.citeEvalStack.length > 1 && (
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(44,82,204,0.07)', border: '1px solid rgba(44,82,204,0.2)', borderRadius: 20, padding: '3px 10px', flexShrink: 0 }}>
+                        <span style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--acc)' }}>Depth {ce.depth} of 3</span>
                       </div>
-                      <button onClick={() => v.setCiteEvalPaper(null)} style={{ background: 'var(--s2)', border: '1px solid var(--rule2)', borderRadius: 8, width: 32, height: 32, cursor: 'pointer', color: 'var(--faint)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <svg width="11" height="11" fill="none" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
-                      </button>
+                    )}
+                    <button
+                      onClick={() => v.setCiteEvalPaper(null)}
+                      style={{ marginLeft: 'auto', flexShrink: 0, background: 'var(--s2)', border: 'none', borderRadius: 8, width: 28, height: 28, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--dim)', fontSize: 15 }}
+                    >✕</button>
+                  </div>
+
+                  {/* Citation chain breadcrumb — only when depth > 1 */}
+                  {v.citeEvalStack.length > 1 && (
+                    <div style={{ padding: '8px 18px', borderBottom: '1px solid var(--rule)', background: 'var(--s2)', display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto', flexShrink: 0 }}>
+                      <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.12em', color: 'var(--faint)', flexShrink: 0, marginRight: 10 }}>CHAIN</span>
+                      {v.citeEvalStack.map((item, idx) => {
+                        const isCurrent = idx === v.citeEvalStack.length - 1;
+                        const shortTitle = item.title.split(/\s+/).slice(0, 4).join(' ') + '…';
+                        return (
+                          <React.Fragment key={idx}>
+                            {idx > 0 && <svg width="12" height="12" fill="none" viewBox="0 0 14 14" style={{ flexShrink: 0, margin: '0 2px' }}><path d="M4.5 3l5 4-5 4" stroke="var(--rule2)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                            <button
+                              onClick={() => !isCurrent && v.goToCiteDepth(idx + 1)}
+                              style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 8px', borderRadius: 6, background: isCurrent ? 'rgba(44,82,204,0.1)' : 'transparent', border: isCurrent ? '1px solid rgba(44,82,204,0.25)' : '1px solid transparent', cursor: isCurrent ? 'default' : 'pointer', flexShrink: 0, transition: 'all 0.15s' }}
+                            >
+                              <div style={{ width: 16, height: 16, borderRadius: '50%', background: isCurrent ? 'var(--acc)' : 'var(--s2)', border: isCurrent ? 'none' : '1px solid var(--rule2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <span style={{ font: '700 7px/1 Plus Jakarta Sans', color: isCurrent ? '#fff' : 'var(--faint)' }}>{idx + 1}</span>
+                              </div>
+                              <span style={{ font: `${isCurrent ? '600' : '400'} 10px/1 Plus Jakarta Sans`, color: isCurrent ? 'var(--acc)' : 'var(--faint)', whiteSpace: 'nowrap', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis' }}>{shortTitle}</span>
+                            </button>
+                          </React.Fragment>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Body */}
+                  <div style={{ flex: 1, overflowY: 'auto', padding: '20px 22px' }}>
+
+                    {/* Title */}
+                    <div style={{ font: '800 16px/1.4 Plus Jakarta Sans', letterSpacing: '-0.02em', color: 'var(--ink)', marginBottom: 16 }}>{ce.title}</div>
+
+                    {/* Relevance bar */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+                      <span style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.13em', color: 'var(--faint)', flexShrink: 0 }}>RELEVANCE</span>
+                      <div style={{ flex: 1, height: 5, background: 'var(--rule)', borderRadius: 4, overflow: 'hidden' }}>
+                        <div style={{ width: `${relScore}%`, height: '100%', background: relScore >= 80 ? 'var(--ok)' : relScore >= 60 ? 'var(--warn)' : 'var(--acc)', borderRadius: 4 }} />
+                      </div>
+                      <span style={{ font: '800 13px/1 Plus Jakarta Sans', color: relColor, flexShrink: 0 }}>{relScore}/100</span>
+                    </div>
+
+                    {/* Metadata table */}
+                    <div style={{ border: '1px solid var(--rule)', borderRadius: 10, overflow: 'hidden', marginBottom: 16 }}>
+                      {metaRows.map(([label, val], ri) => (
+                        <div key={label} style={{ display: 'flex', alignItems: 'flex-start', borderBottom: ri < metaRows.length - 1 ? '1px solid var(--rule)' : 'none', padding: '10px 14px', background: ri % 2 === 0 ? '#fff' : 'var(--s2)' }}>
+                          <span style={{ font: '600 10px/1.5 Plus Jakarta Sans', letterSpacing: '0.06em', color: 'var(--faint)', width: 130, flexShrink: 0 }}>{label}</span>
+                          <span style={{ font: '600 12px/1.45 Plus Jakarta Sans', color: label === 'GRADE Certainty' ? gradeColor : 'var(--ink)' }}>{val || '—'}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Collapsible excerpt */}
+                    <div style={{ border: '1px solid var(--rule)', borderRadius: 10, overflow: 'hidden' }}>
+                      <div style={{ padding: '10px 14px', background: 'var(--s2)', font: '700 10px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--faint)' }}>KEY EXCERPT</div>
+                      <div style={{ padding: '14px 16px', borderTop: '1px solid var(--rule)' }}>
+                        <blockquote style={{ margin: 0, font: '600 13px/1.75 Georgia, serif', color: '#111', borderLeft: '3px solid #7c3aed', paddingLeft: 14 }}>{variant.excerpt}</blockquote>
+                        <div style={{ font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)', marginTop: 10, fontFamily: 'var(--mono)' }}>{ce.journal}, {ce.year}</div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Main content — horizontal split */}
-                  <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-
-                    {/* LEFT — paper content */}
-                    <div style={{ flex: '0 0 58%', display: 'flex', flexDirection: 'column', background: '#fff', overflowY: 'auto' }}>
-
-                      {/* Paper hero */}
-                      <div style={{ padding: '32px 36px 24px', borderBottom: '1px solid var(--rule)' }}>
-                        <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
-                          {variant.artifacts.map((a) => (
-                            <span key={a} style={{ padding: '4px 12px', borderRadius: 20, background: `${ART_COLORS_CE[a]}15`, border: `1.5px solid ${ART_COLORS_CE[a]}40`, font: '700 10px/1 Plus Jakarta Sans', color: ART_COLORS_CE[a], letterSpacing: '0.04em' }}>{a}</span>
-                          ))}
-                          {variant.tracks.map((t) => (
-                            <span key={t} style={{ padding: '4px 12px', borderRadius: 20, background: 'var(--s2)', border: '1px solid var(--rule2)', font: '600 10px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{t}</span>
-                          ))}
-                        </div>
-                        <h2 style={{ margin: '0 0 12px', font: '700 20px/1.35 Plus Jakarta Sans', color: 'var(--ink)', letterSpacing: '-0.02em' }}>{ce.title}</h2>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                          <span style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{ce.journal}</span>
-                          <span style={{ color: 'var(--rule2)', fontSize: 12 }}>·</span>
-                          <span style={{ font: '600 12.5px/1 Plus Jakarta Sans', color: 'var(--dim)' }}>{ce.year}</span>
-                          <span style={{ color: 'var(--rule2)', fontSize: 12 }}>·</span>
-                          <span style={{ font: '600 11px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{variant.citations}</span>
-                        </div>
+                  {/* Footer */}
+                  <div style={{ padding: '12px 18px', borderTop: '1px solid var(--rule)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, flexWrap: 'wrap' }}>
+                    {added === 'accepted' ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', background: 'rgba(22,101,52,0.07)', border: '1px solid rgba(22,101,52,0.25)', borderRadius: 8, font: '700 11px/1 Plus Jakarta Sans', color: 'var(--ok)' }}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Accepted
                       </div>
-
-                      {/* Excerpt */}
-                      <div style={{ padding: '28px 36px', borderBottom: '1px solid var(--rule)', flex: 1 }}>
-                        <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--faint)', marginBottom: 16 }}>KEY EXCERPT</div>
-                        <div style={{ position: 'relative', paddingLeft: 20 }}>
-                          <div style={{ position: 'absolute', left: 0, top: 4, bottom: 4, width: 3, background: 'linear-gradient(180deg,#2c52cc,#4468e0)', borderRadius: 2 }} />
-                          <p style={{ margin: 0, font: 'italic 15px/1.85 Georgia, serif', color: 'var(--ink)', letterSpacing: '-0.005em' }}>{variant.excerpt}</p>
-                        </div>
-                        <div style={{ marginTop: 14, font: '600 10.5px/1 Plus Jakarta Sans', color: 'var(--faint)' }}>{ce.journal}, {ce.year}</div>
+                    ) : added === 'added' ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', background: 'rgba(44,82,204,0.07)', border: '1px solid rgba(44,82,204,0.2)', borderRadius: 8, font: '700 11px/1 Plus Jakarta Sans', color: 'var(--acc)' }}>
+                        <svg width="12" height="12" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        Added to evidence
                       </div>
-
-                      {/* Relevance bar */}
-                      <div style={{ padding: '20px 36px', background: 'var(--bg)', borderTop: '1px solid var(--rule)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                          <span style={{ font: '600 10px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--faint)', flexShrink: 0 }}>RELEVANCE SCORE</span>
-                          <div style={{ flex: 1, height: 6, borderRadius: 3, background: 'var(--rule)', overflow: 'hidden' }}>
-                            <div style={{ height: '100%', width: `${relScore}%`, background: `linear-gradient(90deg,${relColor}88,${relColor})`, borderRadius: 3, transition: 'width 0.6s cubic-bezier(0.22,1,0.36,1)' }} />
-                          </div>
-                          <span style={{ font: '800 16px/1 Plus Jakarta Sans', color: relColor, flexShrink: 0 }}>{relScore}<span style={{ font: '600 11px/1', color: 'var(--faint)' }}>/100</span></span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* RIGHT — metadata + actions */}
-                    <div style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', background: 'var(--bg)', borderLeft: '1px solid var(--rule)', overflowY: 'auto' }}>
-
-                      {/* Evidence quality */}
-                      <div style={{ padding: '28px 28px 20px', borderBottom: '1px solid var(--rule)' }}>
-                        <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.16em', color: 'var(--faint)', marginBottom: 18 }}>EVIDENCE QUALITY</div>
-                        {[
-                          ['Design tier', variant.designTier, false],
-                          ['GRADE certainty', variant.grade, true],
-                          ['Appraisal', 'Not formally appraised', false],
-                          ['Funding / COI', 'Not disclosed on source page', false],
-                          ['Stat. rigor', 'Not formally assessed', false],
-                        ].map(([label, val, isGrade]) => (
-                          <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 14 }}>
-                            <span style={{ font: '600 9px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: 'var(--faint)', textTransform: 'uppercase' }}>{label}</span>
-                            <span style={{ font: isGrade ? '700 12.5px/1.4 Plus Jakarta Sans' : '500 12px/1.4 Plus Jakarta Sans', color: isGrade ? gradeColor : 'var(--dim)' }}>{val}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Citation context */}
-                      <div style={{ padding: '20px 28px', borderBottom: '1px solid var(--rule)' }}>
-                        <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.16em', color: 'var(--faint)', marginBottom: 14 }}>CITATION CONTEXT</div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                          <div style={{ background: 'var(--s1)', border: '1px solid var(--rule)', borderRadius: 10, padding: '12px 14px' }}>
-                            <div style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 6, letterSpacing: '0.08em' }}>CITATIONS</div>
-                            <div style={{ font: '700 15px/1 Plus Jakarta Sans', color: 'var(--acc)' }}>{variant.citations.split(' ')[0]}</div>
-                          </div>
-                          <div style={{ background: 'var(--s1)', border: '1px solid var(--rule)', borderRadius: 10, padding: '12px 14px' }}>
-                            <div style={{ font: '600 9px/1 Plus Jakarta Sans', color: 'var(--faint)', marginBottom: 6, letterSpacing: '0.08em' }}>JOURNAL</div>
-                            <div style={{ font: '600 10.5px/1.4 Plus Jakarta Sans', color: 'var(--dim)' }}>{ce.journal.split(' ').slice(0,3).join(' ')}</div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Spacer pushes actions to bottom */}
-                      <div style={{ flex: 1 }} />
-
-                      {/* Action zone */}
-                      <div style={{ padding: '24px 28px', borderTop: '1px solid var(--rule)', background: 'var(--s1)' }}>
-                        <div style={{ font: '700 9px/1 Plus Jakarta Sans', letterSpacing: '0.14em', color: 'var(--faint)', marginBottom: 14 }}>ACTIONS</div>
-
-                        {/* Navigate row */}
-                        <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-                          <Box
-                            css="flex:1;padding:10px 0;font:600 11.5px/1 Plus Jakarta Sans;color:var(--acc);border:1px solid var(--rule2);border-radius:10px;cursor:pointer;background:var(--s2);display:flex;align-items:center;justify-content:center;gap:6px"
-                            hover="background:rgba(44,82,204,0.1);border-color:var(--acc)"
-                            onClick={() => v.setPipeViewPaper(mockViewPaper)}
-                          >
-                            <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.4"/><path d="M11 4h2.5M11 7h2.5M11 10h2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M4.5 5h4M4.5 8h4M4.5 11h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                            View Paper
-                          </Box>
-                          {canCite && (
-                            <Box
-                              css="flex:1;padding:10px 0;font:600 11.5px/1 Plus Jakarta Sans;color:var(--dim);border:1px solid var(--rule2);border-radius:10px;cursor:pointer;background:var(--s2);display:flex;align-items:center;justify-content:center;gap:6px"
-                              hover="background:var(--s2);border-color:var(--dim)"
-                              onClick={() => v.setPipeCitationsOpen(ce)}
-                            >
-                              <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.4"/><path d="M8 7v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="8" cy="4.5" r="0.9" fill="currentColor"/></svg>
-                              Citations
-                            </Box>
-                          )}
-                        </div>
-
-                        {/* Add/Accept row */}
-                        {added === 'accepted' ? (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 0', background: 'rgba(22,101,52,0.07)', border: '1.5px solid rgba(22,101,52,0.25)', borderRadius: 12, font: '700 12.5px/1 Plus Jakarta Sans', color: 'var(--ok)' }}>
-                            <svg width="15" height="15" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.4"/><path d="M5.5 8.5l2 2 3-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                            Paper accepted to evidence list
-                          </div>
-                        ) : added === 'added' ? (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 0', background: 'rgba(44,82,204,0.07)', border: '1.5px solid rgba(44,82,204,0.2)', borderRadius: 12, font: '700 12.5px/1 Plus Jakarta Sans', color: 'var(--acc)' }}>
-                            <svg width="15" height="15" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.4"/><path d="M5.5 8.5l2 2 3-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                            Added to evidence list
-                          </div>
-                        ) : (
-                          <div style={{ display: 'flex', gap: 8 }}>
-                            <Box
-                              css="flex:1;padding:13px 0;font:700 12px/1 Plus Jakarta Sans;color:var(--acc);border:1.5px solid var(--rule2);border-radius:12px;cursor:pointer;background:var(--s2);display:flex;align-items:center;justify-content:center;gap:6px"
-                              hover="background:rgba(44,82,204,0.1);border-color:var(--acc)"
-                              onClick={() => v.addCiteToEvidence(key)}
-                            >
-                              <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/></svg>
-                              Add to evidence
-                            </Box>
-                            <Box
-                              css="flex:1;padding:13px 0;font:700 12px/1 Plus Jakarta Sans;color:var(--ok);border:1.5px solid rgba(22,101,52,0.25);border-radius:12px;cursor:pointer;background:rgba(22,101,52,0.07);display:flex;align-items:center;justify-content:center;gap:6px"
-                              hover="background:rgba(22,101,52,0.14);border-color:var(--ok)"
-                              onClick={() => v.acceptCitePaper(key)}
-                            >
-                              <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                              Accept paper
-                            </Box>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    ) : (
+                      <>
+                        <Box css="padding:8px 14px;font:700 11px/1 Plus Jakarta Sans;cursor:pointer;background:linear-gradient(135deg,#2c52cc,#4468e0);color:#fff;border:none;border-radius:8px" hover="opacity:0.88" onClick={() => v.addCiteToEvidence(key)}>
+                          + Add to evidence
+                        </Box>
+                        <Box css="padding:8px 14px;font:700 11px/1 Plus Jakarta Sans;cursor:pointer;background:rgba(22,101,52,0.08);color:var(--ok);border:1px solid rgba(22,101,52,0.25);border-radius:8px" hover="background:rgba(22,101,52,0.15)" onClick={() => v.acceptCitePaper(key)}>
+                          ✓ Accept paper
+                        </Box>
+                      </>
+                    )}
+                    {canCite && (
+                      <Box css="padding:8px 14px;font:700 11px/1 Plus Jakarta Sans;cursor:pointer;color:var(--dim);border:1px solid var(--rule2);border-radius:8px;background:transparent" hover="background:var(--s2)" onClick={() => v.setPipeCitationsOpen(ce)}>
+                        View citations
+                      </Box>
+                    )}
                   </div>
                 </div>
               </div>

@@ -16,7 +16,7 @@
 - **Vite 5** — build tool; `npm run dev` for dev server, `npm run build` for production
 - **No TypeScript, no CSS modules, no external UI library** — all styles are inline React style objects
 - **Font**: Plus Jakarta Sans (Google Fonts, loaded in `index.css`)
-- **3 source files**: `src/MedFactory.jsx` (~5800 lines), `src/index.css`, `src/main.jsx`
+- **3 source files**: `src/MedFactory.jsx` (~9500+ lines), `src/index.css`, `src/main.jsx`
 
 ---
 
@@ -35,7 +35,7 @@ Everything lives in `MedFactory.jsx` in this order:
 
 1. **Style helpers** (`S()`, `merge()`, `Box`) — top of file
 2. **Static content** (`SRC`, `DECKS`, `BLOCKS`, `TOPIC_OPTIONS`, `LOG_SCRIPT`, etc.)
-3. **Research data** (`RESEARCH_PAPERS`, `EXTRA_PAPERS`, `RESEARCH_DBS`, `CONTENT_TRACKS`, `ALL_ARTIFACTS`, `ARTIFACT_TARGETS`)
+3. **Research data** (`RESEARCH_PAPERS`, `EXTRA_PAPERS`, `EXTRA_PAPERS_2`, `RESEARCH_DBS`, `CONTENT_TRACKS`, `ALL_ARTIFACTS`, `ARTIFACT_TARGETS`)
 4. **Module-level components** (defined BEFORE the class — critical for React identity stability):
    - `SciPaperReader` — Google Docs-style paragraph commenting for scientific review
    - `ResizableSplit` — draggable divider between two panels
@@ -362,7 +362,7 @@ Track chips map from `CONTENT_TRACKS` + "All papers". Active chip: accent border
 - "Clear filters" link calls `clearEvidenceFilters()`
 
 **Row 3 — Quick accept presets**  
-Static label + four preset buttons: Grade A & B, Independent funding, Relevance ≥ 80, Strong journal credibility. Each calls `v.quickAccept(preset)` to bulk-set `acceptedPapers`.
+Static label + two preset buttons: **Grade A & B** and **Relevance ≥ 80**. Each calls `v.quickAccept(preset)` to bulk-set `acceptedPapers`. ("Independent funding" and "Strong journal credibility" were removed.)
 
 ### Filtered + Sorted Paper List
 ```js
@@ -380,8 +380,47 @@ Accepted papers tracked in `this.state.acceptedPapers` as `{ [idx]: true }`.
 Deleted papers tracked in `this.state.deletedPapers` as `{ [idx]: true }`.  
 `flag: null` on all paper objects — all mock warning flags have been removed.
 
+### Evidence Paper Pool
+```js
+const allEvidencePapers = [
+  ...RESEARCH_PAPERS.map((p, i) => ({ ...p, _idx: i, _batch: 1 })),
+  ...(v.moreResearchDone  ? EXTRA_PAPERS.map((p, i)  => ({ ...p, _idx: batch2Offset + i, _batch: 2 })) : []),
+  ...(v.moreResearchDone2 ? EXTRA_PAPERS_2.map((p, i) => ({ ...p, _idx: batch3Offset + i, _batch: 3 })) : []),
+  ...v.manualPapers.map((p, i) => ({ ...p, _idx: manualOffset + i, _batch: 4, manual: true })),
+];
+```
+Load-more buttons: first batch button disappears once loaded; second batch button (`Load 8 more`) appears after first batch loads.
+
+### Manually Added Filter
+When `v.manualPapers.length > 0`, a "Manually Added (N)" purple toggle pill appears in Row 2 of the filter bar. Controlled by `filterManual` state / `v.toggleFilterManual()`. No artifact filter pills.
+
+### Chat Attachments
+Papers can be checked via `chatPaperSelections` (checkbox state per paper index). "Add N paper(s) to chat" button appears when any are checked — adds only checked papers to `chatAttachments`, not all accepted papers.
+
+Chat panel shows attachment cards (not pill chips): doc icon + title + journal/year + grade badge + ✕ remove button. Quick prompts appear below attachments. No free-text input — users can only send from the quick prompt options.
+
 ### Sources Tab
 Shows compact DB stats bar + "Evidence Retrieved · 12" list. Each card expandable on click showing: study type pill, design/GRADE/sample/citations metadata grid + excerpt blockquote.
+
+### Gap Analysis Screen (MA Review tab)
+**Findings bar** (renamed from "Issue Navigator"): two-row bar above the paper list.
+- Row 1: "Findings" label + "To review / Resolved" count badges + clickable progress dots (one per filtered gap, elongated pill for current, color-coded by severity/resolved state, clickable to jump) + Prev / `N / total` / Next buttons
+- Row 2: current issue context — severity badge (CRITICAL/WARNING) + issue type + paper title + RESOLVED/NEEDS REVIEW status pill
+
+**Gap Analysis AI panel** (`GapNormPanel`): renders as a full-height sibling of the main content column in the outer flex container (same pattern as the Resolve With AI sidebar), NOT inside the ResizableSplit right panel. When `v.gapExcerptOpen && selGap && selPaper2` is true, a 420px wide panel slides in from the right and the main column compresses.
+
+```jsx
+{/* Outer flex container */}
+<div style={{ display: 'flex', height: '100%' }}>
+  <div style={{ flex: 1, ... }}>{/* header + Findings bar + ResizableSplit(gapList, gapCardPanel) */}</div>
+  {v.gapExcerptOpen && selGap && selPaper2 && (
+    <div style={{ width: 420, flexShrink: 0, ... }}>{GapNormPanel(...)}</div>
+  )}
+</div>
+```
+
+### Citation Eval Card (`citeEvalPaper`)
+When user clicks "Evaluate" on a citation, a modal opens using the **same design as `pipeViewPaper`**: light overlay (`rgba(15,31,74,0.45)` + `blur(2px)`), 560px white card, 14px border-radius. Structure: header (CITATION pill + journal/year + depth badge + ✕) → optional citation chain breadcrumb row (only when depth > 1) → body (title + relevance bar + metadata table + excerpt) → footer (Add to evidence + Accept paper + View citations). Does NOT use the old 960px split-panel dark-overlay design.
 
 ---
 
@@ -392,7 +431,7 @@ Shows compact DB stats bar + "Evidence Retrieved · 12" list. Each card expandab
 ResizableSplit (defaultLeftPct=64, minPct=40, maxPct=76):
   left (content):
     <column>
-      header (title, stat pills, tabs, artifact filter)
+      header (title, tabs, artifact filter)   ← stat pills (12 PAPERS / EXCERPTS / TRACKS) removed
       {sel
         ? <div flex:1><ResizableSplit left={trackList} right={detailPanel} defaultLeftPct=62 /></div>
         : <div flex:1>{trackList}</div>
@@ -405,6 +444,9 @@ Note: agent panel is on the **right** side.
 
 ### Paper Detail Panel
 Only renders when `v.organizeSelectedPaper` is set. Clicking ✕ sets it to null. Contains: type pill + relevance bar, title + journal, figures, evidence quality table, excerpt, artifact tags.
+
+### ExcerptCard Selected Highlight
+Selected card has strong blue tint: `background: rgba(44,82,204,0.06)`, `border: 2px solid var(--acc)`, `borderLeft: 4px solid var(--acc)`, `boxShadow: '0 0 0 3px rgba(44,82,204,0.15), 0 2px 8px rgba(44,82,204,0.12)'`. Unselected has 1px `var(--rule2)` border and type color left border.
 
 ### Agent Auto-Run
 When navigating to organize screen (`go('organize')`), `runOrganizeAgent()` fires after 600ms. It runs through `ORGANIZE_AGENT_MSGS` with staggered delays, toggling `organizeAgentThinking` between each message.
@@ -482,13 +524,18 @@ All state in `this.state` (class component). Key fields:
   researchSrcExpanded: {},     // { [idx]: true } — sources tab expanded cards
   moreResearchActive: false,   // extra papers being loaded
   moreResearchN: 0,
-  moreResearchDone: false,
+  moreResearchDone: false,     // first batch (15 papers) loaded
+  moreResearchDone2: false,    // second batch (8 papers) loaded
+  evidenceLoadMore2: false,    // second batch loading spinner
   chatCollapsed: false,        // agent chat panel collapsed
-  
+  chatPaperSelections: {},     // { [idx]: true } — checkboxes for "Add to chat"
+  chatAttachments: [],         // papers added to chat panel
+  filterManual: false,         // show only manually added papers
+
   // evidence filter/sort
   trackFilter: 'All',          // track-based filter
   gradeFilter: [],             // [] = all; multi-select ['A','B',...]
-  artifactFilter: 'All',       // 'All' | artifact name
+  artifactFilter: 'All',       // 'All' | artifact name (not actively used — artifact pills removed)
   fundingFilter: 'All',        // 'All' | 'Independent' | 'Industry'
   sortBy: 'composite',         // composite|relevance|year|title|citations|grade|funding|statRigor
   sortDir: 'desc',             // 'asc' | 'desc'
@@ -564,7 +611,10 @@ proceedFromSectionSelect: () => ...,  // skips workspace creation when wsResearc
 12 paper objects. All have `flag: null` (warning badges removed). Fields: `db`, `type`, `title`, `journal`, `year`, `score`, `artifacts`, `track`, `designTier`, `appraisal`, `grade`, `citations`, `funding`, `statRigor`, `relevance`, `excerpt`, `excerptSrc`.
 
 ### `EXTRA_PAPERS`
-8 additional papers revealed when user clicks "show me more papers" in the evidence feed.
+15 additional papers (first batch) revealed when user clicks "Load 15 more papers" in the evidence feed.
+
+### `EXTRA_PAPERS_2`
+8 additional papers (second batch) revealed after first batch loads — "Load 8 more papers" button appears only after `moreResearchDone` is true. State: `moreResearchDone2`, `evidenceLoadMore2`. Loaded via `loadEvidencePapers2()` method.
 
 ### `CONTENT_TRACKS`
 7 tracks with `id`, `label`, `color`, `paperTracks[]`. Used for evidence filter chips in Evidence Review and track chips in Organize By Artifact view.
@@ -661,5 +711,8 @@ Both `organizeArtifactAssignments` and `organizeTrackAssignments` use lazy initi
 - `static CREDENTIALS` — the three login accounts are fixed for the demo
 - `RESEARCH_PAPERS[*].flag` — all set to `null`, keep them that way (no warning badges)
 - Module-level placement of `SciPaperReader` and `ResizableSplit` — must stay outside the class
-- CSS variable names in `index.css` — referenced throughout ~5800 lines
+- CSS variable names in `index.css` — referenced throughout the file
 - `gradeLetterFromPaper` and `evidenceSortFn` — must stay at module level (before the class), used in both `renderVals()` and the Evidence Review IIFE
+- Citation eval card design — must match `pipeViewPaper` style (560px white card, light overlay) — do NOT revert to the old 960px split-panel dark-overlay design
+- Gap Analysis AI panel placement — `GapNormPanel` renders as sibling of main column in outer flex, NOT inside `gapRightPanel`
+- Quick accept presets — only two: `grade-ab` and `relevance80`
