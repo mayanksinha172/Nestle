@@ -574,7 +574,7 @@ function freshState(){
     picks:{}, exfig:{}, guidance:'', decks:null, reviewed:{}, chosen:null, work:null, hist:[], chat:[], cur:0, review:null, pending:null};
 }
 let S = freshState();
-try{ const raw = localStorage.getItem(STORE); if(raw){ S = Object.assign(freshState(), JSON.parse(raw)); } }catch(e){}
+try{ const raw = localStorage.getItem(STORE); if(raw){ S = Object.assign(freshState(), JSON.parse(raw)); S.step=1; if(!S.collapsed[3]) S.collapsed[3]=[]; if(!S.collapsed[4]) S.collapsed[4]=[]; } }catch(e){}
 const loading = {}; // transient: generation in progress, keyed by item id or 'decks'/'chat'
 function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
 
