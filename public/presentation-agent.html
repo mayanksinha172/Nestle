@@ -1234,7 +1234,7 @@ document.getElementById('esDlgRoot').addEventListener('change', e=>{ if(e.target
 document.getElementById('esDlgRoot').addEventListener('input', e=>{ if(e.target.id==='esdNote'){ const g=document.getElementById('esdGo'); if(g&&g.dataset.need==='1') g.disabled=!e.target.value.trim(); } });
 /* ===== end ES ===== */
 /* ES: the actions behind the three dialogs */
-function esDoSubmit(rec){ S.review.maApproval=rec; esHook('submitted',{approval:{at:rec.at,note:rec.note}}); /* ES-HOOK */ const R=S.review; if(Object.keys(R.excludedSl).length){ S.work.slides=S.work.slides.filter(x=>!R.excludedSl[x.id]); S.work.version++; } R.excludedSl={}; R.status='sci'; S.cur=0; S.maxStep=9; S.sentToSci=true; save(); render(); toast('Submitted for scientific review'); }
+function esDoSubmit(rec){ S.review.maApproval=rec; esHook('submitted',{approval:{at:rec.at,note:rec.note}}); /* ES-HOOK */ const R=S.review; if(Object.keys(R.excludedSl).length){ S.work.slides=S.work.slides.filter(x=>!R.excludedSl[x.id]); S.work.version++; } R.excludedSl={}; R.status='sci'; S.cur=0; S.maxStep=8; S.sentToSci=true; save(); render(); toast('Submitted for scientific review'); }
 function esDoApprove(rec){ S.review.saApproval=rec; S.review.rejectNote=null; esHook('decision',{outcome:'approved',note:rec.note,snapshot:JSON.stringify(S)}); /* ES-HOOK */ S.review.status='approved'; S.review.approvedAt=new Date().toISOString(); S.cur=0; S.maxStep=9; go(10); toast('Deck approved'); }
 function esDoReject(rec){ S.review.rejectNote=rec; S.review.saApproval=null; esHook('decision',{outcome:'rejected',note:rec.note,snapshot:JSON.stringify(S)}); /* ES-HOOK */ const R=S.review; const w=S.work;
     const lines=[]; const pend={};

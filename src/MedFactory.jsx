@@ -3174,7 +3174,7 @@ export default class MedFactory extends React.Component {
         return [...liveItems, ...hist].map((r) => ({
           ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status),
           open: r.live && ['ma-approved', 'sent-to-sci'].includes(r.status) ? () => {
-            this.setState({ activeWorkspaceId: r.id, pptStatus: r.status }, () => this.go('sci-review'));
+            this.setState({ activeWorkspaceId: r.id, pptStatus: r.status, sciViewMode: 'deck' }, () => this.go('sci-review'));
           } : null,
         }));
       })(),
