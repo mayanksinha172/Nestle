@@ -1280,11 +1280,11 @@ export default class MedFactory extends React.Component {
     window.ESHost = {
       event: (_iframe, evt, _data) => {
         if (evt === 'submitted') {
-          // MA reviewer confirmed submission → mark workspace as sent-to-sci so it appears in Arjun's inbox
+          // Deck submitted for sci review — separate status from research sent-to-sci
           this.setState((s) => ({
-            pptStatus: 'sent-to-sci',
+            pptStatus: 'deck-sent-to-sci',
             createdWorkspaces: s.createdWorkspaces.map((w) =>
-              w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'sent-to-sci' } : w
+              w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'deck-sent-to-sci' } : w
             ),
           }));
         }
@@ -3158,13 +3158,15 @@ export default class MedFactory extends React.Component {
 
       /* ---------- Sci inbox (dynamic from createdWorkspaces) ---------- */
       sciInbox: (() => {
-        const statusLabel = (s) => ({ 'ma-approved': 'Pending Review', 'sent-to-sci': 'Pending Review', 'sci-rejected': 'Sent Back', 'sci-approved': 'Approved' }[s] || 'Approved');
-        const statusColor = (s) => ['ma-approved', 'sent-to-sci'].includes(s) ? 'var(--acc)' : s === 'sci-rejected' ? 'var(--warn)' : 'var(--ok)';
+        const isDeckReview = (s) => ['deck-sent-to-sci', 'deck-sci-approved', 'deck-sci-rejected'].includes(s);
+        const isPending = (s) => ['ma-approved', 'sent-to-sci', 'deck-sent-to-sci'].includes(s);
+        const statusLabel = (s) => ({ 'ma-approved': 'Pending Review', 'sent-to-sci': 'Pending Review', 'sci-rejected': 'Sent Back', 'sci-approved': 'Approved', 'deck-sent-to-sci': 'Deck Review', 'deck-sci-approved': 'Deck Approved', 'deck-sci-rejected': 'Deck Sent Back' }[s] || 'Approved');
+        const statusColor = (s) => isPending(s) ? 'var(--acc)' : s === 'sci-rejected' || s === 'deck-sci-rejected' ? 'var(--warn)' : 'var(--ok)';
         const liveItems = st.createdWorkspaces
-          .filter((w) => ['ma-approved', 'sent-to-sci', 'sci-rejected', 'sci-approved'].includes(w.pptStatus))
+          .filter((w) => ['ma-approved', 'sent-to-sci', 'sci-rejected', 'sci-approved', 'deck-sent-to-sci', 'deck-sci-approved', 'deck-sci-rejected'].includes(w.pptStatus))
           .map((w) => ({
             id: w.id, topic: w.topic, by: 'Mayank Gupta',
-            date: 'Today · MA approved',
+            date: isDeckReview(w.pptStatus) ? 'Today · Deck for review' : 'Today · MA approved',
             status: w.pptStatus, live: true, heroProduct: w.heroProduct,
           }));
         const hist = [
@@ -3173,13 +3175,14 @@ export default class MedFactory extends React.Component {
         ];
         return [...liveItems, ...hist].map((r) => ({
           ...r, statusLabel: statusLabel(r.status), statusColor: statusColor(r.status),
-          open: r.live && ['ma-approved', 'sent-to-sci'].includes(r.status) ? () => {
-            this.setState({ activeWorkspaceId: r.id, pptStatus: r.status, sciViewMode: 'deck' }, () => this.go('sci-review'));
+          open: r.live && isPending(r.status) ? () => {
+            const mode = isDeckReview(r.status) ? 'deck' : 'papers';
+            this.setState({ activeWorkspaceId: r.id, pptStatus: r.status, sciViewMode: mode }, () => this.go('sci-review'));
           } : null,
         }));
       })(),
 
-      sciInboxLocked: !['ma-approved', 'sent-to-sci', 'sci-rejected', 'sci-approved'].includes(st.pptStatus),
+      sciInboxLocked: !['ma-approved', 'sent-to-sci', 'sci-rejected', 'sci-approved', 'deck-sent-to-sci', 'deck-sci-approved', 'deck-sci-rejected'].includes(st.pptStatus),
     };
   }
 
@@ -8146,12 +8149,12 @@ export default class MedFactory extends React.Component {
 
           {/* ============ SCI DASHBOARD ============ */}
           {v.isSciDash && (() => {
-            const pending = v.sciInbox.filter((r) => r.live && ['ma-approved', 'sent-to-sci'].includes(r.status));
+            const pending = v.sciInbox.filter((r) => r.live && ['ma-approved', 'sent-to-sci', 'deck-sent-to-sci'].includes(r.status));
             const all = v.sciInbox;
             const APPROVED_DAYS = [3, 5];
-            const slabel = (s, ri) => ({ 'ma-approved': 'Pending Review', 'sent-to-sci': 'Pending Review', 'sci-rejected': 'Sent Back', 'sci-approved': `Pending · ${APPROVED_DAYS[ri] || 2} days` }[s] || s);
-            const scolor = (s) => ['ma-approved', 'sent-to-sci'].includes(s) ? '#15803d' : s === 'sci-rejected' ? '#dc2626' : '#b45309';
-            const sbg = (s) => ['ma-approved', 'sent-to-sci'].includes(s) ? 'rgba(21,128,61,0.08)' : s === 'sci-rejected' ? 'rgba(220,38,38,0.08)' : 'rgba(180,83,9,0.08)';
+            const slabel = (s, ri) => ({ 'ma-approved': 'Pending Review', 'sent-to-sci': 'Pending Review', 'deck-sent-to-sci': 'Deck Review', 'sci-rejected': 'Sent Back', 'deck-sci-rejected': 'Deck Sent Back', 'sci-approved': `Pending · ${APPROVED_DAYS[ri] || 2} days` }[s] || s);
+            const scolor = (s) => ['ma-approved', 'sent-to-sci', 'deck-sent-to-sci'].includes(s) ? '#15803d' : ['sci-rejected', 'deck-sci-rejected'].includes(s) ? '#dc2626' : '#b45309';
+            const sbg = (s) => ['ma-approved', 'sent-to-sci', 'deck-sent-to-sci'].includes(s) ? 'rgba(21,128,61,0.08)' : ['sci-rejected', 'deck-sci-rejected'].includes(s) ? 'rgba(220,38,38,0.08)' : 'rgba(180,83,9,0.08)';
             return (
               <div style={S('padding:40px 48px;min-height:100%;animation:fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both')}>
                 {/* Header */}
@@ -8192,7 +8195,7 @@ export default class MedFactory extends React.Component {
                   </div>
                 )}
                 {all.map((r, ri) => (
-                  <div key={ri} style={{ border: `1px solid ${['ma-approved','sent-to-sci'].includes(r.status) ? 'rgba(21,128,61,0.35)' : 'var(--rule2)'}`, borderLeft: `3px solid ${scolor(r.status)}`, background: 'var(--s1)', marginBottom: 12, animation: `cardIn 0.3s ease both`, animationDelay: `${ri * 0.06}s` }}>
+                  <div key={ri} style={{ border: `1px solid ${['ma-approved','sent-to-sci','deck-sent-to-sci'].includes(r.status) ? 'rgba(21,128,61,0.35)' : 'var(--rule2)'}`, borderLeft: `3px solid ${scolor(r.status)}`, background: 'var(--s1)', marginBottom: 12, animation: `cardIn 0.3s ease both`, animationDelay: `${ri * 0.06}s` }}>
                     <div style={{ padding: '18px 24px', display: 'flex', alignItems: 'flex-start', gap: 16 }}>
                       <div style={{ flexShrink: 0, width: 44, height: 44, background: scolor(r.status), display: 'grid', placeItems: 'center', font: '700 16px/1 Plus Jakarta Sans', color: '#fff', borderRadius: 8 }}>D</div>
                       <div style={{ flex: 1, minWidth: 0 }}>
@@ -8202,7 +8205,7 @@ export default class MedFactory extends React.Component {
                       </div>
                       <div style={{ textAlign: 'right', flexShrink: 0 }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 10px', background: sbg(r.status), border: `1px solid ${scolor(r.status)}44`, borderRadius: 20, marginBottom: 8 }}>
-                          {['ma-approved','sent-to-sci'].includes(r.status) && <div style={{ width: 6, height: 6, borderRadius: '50%', background: scolor(r.status), animation: 'puls 1.2s infinite' }} />}
+                          {['ma-approved','sent-to-sci','deck-sent-to-sci'].includes(r.status) && <div style={{ width: 6, height: 6, borderRadius: '50%', background: scolor(r.status), animation: 'puls 1.2s infinite' }} />}
                           <span style={{ font: '700 10px/1 Plus Jakarta Sans', color: scolor(r.status) }}>{slabel(r.status, ri)}</span>
                         </div>
                         {r.open && (
@@ -8324,7 +8327,7 @@ export default class MedFactory extends React.Component {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     {/* Deck Review tab only appears when a deck is actually awaiting sci review */}
-                    {['sent-to-sci', 'sci-rejected'].includes(v.pptStatus) && (
+                    {['deck-sent-to-sci', 'deck-sci-rejected'].includes(v.pptStatus) && (
                     <div style={{ display: 'flex', background: '#eef0f6', borderRadius: 10, padding: 4, gap: 3 }}>
                       {[['papers','Research Review'],['deck','Deck Review']].map(([val, lbl]) => (
                         <button key={val} onClick={() => v.setSciViewMode(val)} style={{ padding: '7px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, borderRadius: 7, border: 'none', cursor: 'pointer', background: v.sciViewMode === val ? '#fff' : 'transparent', color: v.sciViewMode === val ? 'var(--ink)' : 'var(--faint)', boxShadow: v.sciViewMode === val ? '0 1px 4px rgba(15,31,74,0.13)' : 'none', transition: 'all 0.15s' }}>{lbl}</button>
@@ -8347,7 +8350,7 @@ export default class MedFactory extends React.Component {
 
                 {/* BODY */}
                 <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-                  {v.sciViewMode === 'deck' && ['sent-to-sci', 'sci-rejected'].includes(v.pptStatus) && (
+                  {v.sciViewMode === 'deck' && ['deck-sent-to-sci', 'deck-sci-rejected'].includes(v.pptStatus) && (
                     <iframe
                       key="sci-deck-review"
                       src="/presentation-agent.html"
