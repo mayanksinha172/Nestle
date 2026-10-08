@@ -1138,6 +1138,18 @@ function reviewOverlay(mode){ return (s, big)=>{
 /* ---------------- Step 8: Medical Affairs review ---------------- */
 function step8(){
   const w=S.work, R=S.review;
+  if(S.sentToSci && R.status==='sci'){
+    const at=R.maApproval&&R.maApproval.at ? ` · ${esWhen(R.maApproval.at)}` : '';
+    const note=R.maApproval&&R.maApproval.note ? `<p class="rv-hint" style="margin-top:8px;padding:8px 10px;background:var(--teal-tint);border-radius:8px;"><b style="color:var(--teal)">MA note:</b> ${esc(R.maApproval.note)}</p>` : '';
+    return `<div class="page-head"><div class="page-head-text"><h2>Medical Affairs review</h2><p>Deck submitted for scientific review · round ${R.round}. The deck is locked while the scientific reviewer completes their review.</p></div></div>
+  <div class="refine"><div>${viewerHtml(w,S.cur,'work')}</div>
+    <aside class="rv-panel">
+      <div class="rv-done"><b>✓ Submitted for scientific review${at}</b><span>Scientific review is in progress. The deck will be unlocked when approved or sent back with feedback.</span></div>
+      ${note}
+      <p class="rv-hint" style="margin-top:12px">${ICON.lock} Deck is locked. Waiting for the scientific reviewer.</p>
+      <div class="rv-nav"><button type="button" class="pill-btn" data-slide="${S.cur-1}" data-v="work" ${S.cur<=0?'disabled':''}>Previous slide</button><button type="button" class="pill-btn" data-slide="${S.cur+1}" data-v="work" ${S.cur>=w.slides.length-1?'disabled':''}>Next slide</button></div>
+    </aside></div>`;
+  }
   const exN=Object.keys(R.excludedSl).length, apN=Object.keys(R.applied).length, igN=maIgnoredSlides().length, openN=maOpenSlides().length;
   return `<div class="page-head"><div class="page-head-text"><h2>Medical Affairs review</h2><p>Reviewer's view · round ${R.round}. For each slide the AI gives guidance from a Medical Affairs point of view. Apply it with AI, ignore it, exclude the slide, or leave it as is. Then submit the deck for scientific review.</p></div>
 </div>
@@ -1222,7 +1234,7 @@ document.getElementById('esDlgRoot').addEventListener('change', e=>{ if(e.target
 document.getElementById('esDlgRoot').addEventListener('input', e=>{ if(e.target.id==='esdNote'){ const g=document.getElementById('esdGo'); if(g&&g.dataset.need==='1') g.disabled=!e.target.value.trim(); } });
 /* ===== end ES ===== */
 /* ES: the actions behind the three dialogs */
-function esDoSubmit(rec){ S.review.maApproval=rec; esHook('submitted',{approval:{at:rec.at,note:rec.note}}); /* ES-HOOK */ const R=S.review; if(Object.keys(R.excludedSl).length){ S.work.slides=S.work.slides.filter(x=>!R.excludedSl[x.id]); S.work.version++; } R.excludedSl={}; R.status='sci'; S.cur=0; S.maxStep=8; go(9); toast('Submitted for scientific review'); }
+function esDoSubmit(rec){ S.review.maApproval=rec; esHook('submitted',{approval:{at:rec.at,note:rec.note}}); /* ES-HOOK */ const R=S.review; if(Object.keys(R.excludedSl).length){ S.work.slides=S.work.slides.filter(x=>!R.excludedSl[x.id]); S.work.version++; } R.excludedSl={}; R.status='sci'; S.cur=0; S.maxStep=9; S.sentToSci=true; save(); render(); toast('Submitted for scientific review'); }
 function esDoApprove(rec){ S.review.saApproval=rec; S.review.rejectNote=null; esHook('decision',{outcome:'approved',note:rec.note,snapshot:JSON.stringify(S)}); /* ES-HOOK */ S.review.status='approved'; S.review.approvedAt=new Date().toISOString(); S.cur=0; S.maxStep=9; go(10); toast('Deck approved'); }
 function esDoReject(rec){ S.review.rejectNote=rec; S.review.saApproval=null; esHook('decision',{outcome:'rejected',note:rec.note,snapshot:JSON.stringify(S)}); /* ES-HOOK */ const R=S.review; const w=S.work;
     const lines=[]; const pend={};
@@ -1376,4 +1388,6 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(esDlg){ esClo
 document.getElementById('overlayRoot').addEventListener('click', e=>{ if(e.target.id==='ovl'){ reviewIdx=null; renderOverlay(); } });
 
 render(); onEnter(S.step); esHook('step-change', {step: S.step});
+/* SA reviewer: if this iframe is opened in sa-review mode while a deck is awaiting sci review, jump to step 9 */
+try{ if(window.frameElement && window.frameElement.getAttribute('data-es-mode')==='sa-review' && S.sentToSci && S.review && S.review.status==='sci') go(9); }catch(e){}
 </script>

@@ -1222,6 +1222,7 @@ export default class MedFactory extends React.Component {
       sciReviewGroupExpanded: {},
       sciGroupBy: 'track',
       sciReviewTab: 'track',
+      sciViewMode: 'papers',    // 'papers' | 'deck' — tab in sci-review screen
       sciChatInput: '',
       sciChatMessages: [],
       sciChatN: 0,
@@ -1276,6 +1277,7 @@ export default class MedFactory extends React.Component {
       this._skipHistory = false;
     };
     window.addEventListener('popstate', this._onPopState);
+    window.ESHost = { event: () => {} };
   }
   componentDidUpdate(prevProps, prevState) {
     this.applyTheme();
@@ -1299,6 +1301,7 @@ export default class MedFactory extends React.Component {
   componentWillUnmount() {
     clearInterval(this.t);
     window.removeEventListener('popstate', this._onPopState);
+    delete window.ESHost;
   }
 
   dirOf() { return this.state.dir ?? this.props.theme ?? 'dark'; }
@@ -2475,6 +2478,8 @@ export default class MedFactory extends React.Component {
       doSciRejectResearch: () => this.sciSendBack(),
       sciReviewTab: st.sciReviewTab,
       setSciReviewTab: (t) => this.setState({ sciReviewTab: t }),
+      sciViewMode: st.sciViewMode,
+      setSciViewMode: (m) => this.setState({ sciViewMode: m }),
       sciChatInput: st.sciChatInput,
       sciChatMessages: st.sciChatMessages,
       onSciChatInput: (e) => this.setState({ sciChatInput: e.target.value }),
@@ -4073,6 +4078,7 @@ export default class MedFactory extends React.Component {
                           {v.wsResearches.map((r, ri) => {
                             const isDone = r.status === 'complete';
                             const isPending = r.status === 'pending';
+                            const isApproved = isDone && v.pptStatus === 'sci-approved' && r.id === v.wsActiveResearch;
                             const dotColor = isDone ? 'var(--ok)' : isPending ? 'var(--warn)' : 'var(--acc)';
                             const badgeColor = isDone ? 'var(--ok)' : isPending ? 'var(--warn)' : 'var(--acc)';
                             const badgeBg = isDone ? 'rgba(21,128,61,0.08)' : isPending ? 'rgba(180,83,9,0.08)' : 'rgba(44,82,204,0.08)';
@@ -4085,7 +4091,7 @@ export default class MedFactory extends React.Component {
                                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: dotColor, flexShrink: 0, animation: (!isDone && !isPending) ? 'puls 1.4s ease-in-out infinite' : 'none' }} />
                                 <div style={{ flex: 1, font: '600 13px/1 Plus Jakarta Sans', color: 'var(--ink)' }}>{r.name}</div>
                                 <span style={{ font: '700 8px/1 Plus Jakarta Sans', letterSpacing: '0.1em', color: badgeColor, background: badgeBg, border: `1px solid ${badgeBorder}`, borderRadius: 4, padding: '2px 6px', flexShrink: 0 }}>
-                                  {isDone ? 'DONE' : isPending ? 'PENDING' : 'RUNNING'}
+                                  {isApproved ? 'APPROVED' : isDone ? 'DONE' : isPending ? 'PENDING' : 'RUNNING'}
                                 </span>
                                 {isPending ? (
                                   <Box
@@ -4294,13 +4300,23 @@ export default class MedFactory extends React.Component {
                           </div>
                         </div>
 
-                        <div style={{ margin: '0 32px 28px', textAlign: 'center', padding: '24px 16px', background: 'var(--bg)', borderRadius: 10, border: '1px solid var(--rule)' }}>
-                          <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--s2)', border: '1px solid var(--rule2)', display: 'grid', placeItems: 'center', margin: '0 auto 14px' }}>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="2" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/></svg>
+                        {v.pptStatus === 'sci-approved' ? (
+                          <div style={{ margin: '0 32px 28px', textAlign: 'center', padding: '24px 16px', background: 'rgba(21,128,61,0.04)', borderRadius: 10, border: '1px solid rgba(21,128,61,0.2)' }}>
+                            <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(21,128,61,0.1)', border: '1px solid rgba(21,128,61,0.25)', display: 'grid', placeItems: 'center', margin: '0 auto 14px' }}>
+                              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4.5 4.5 7.5-7.5" stroke="#15803d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            </div>
+                            <div style={{ font: '700 12.5px/1.3 Plus Jakarta Sans', color: '#15803d', marginBottom: 8 }}>Research scientifically approved</div>
+                            <div style={{ font: '600 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 300, margin: '0 auto' }}>Your research has been approved by the scientific reviewer and is ready to generate an artifact.</div>
                           </div>
-                          <div style={{ font: '600 12.5px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>Research required first</div>
-                          <div style={{ font: '600 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 300, margin: '0 auto' }}>Artifacts are built from research. Run research in this workspace and accept at least one paper first.</div>
-                        </div>
+                        ) : (
+                          <div style={{ margin: '0 32px 28px', textAlign: 'center', padding: '24px 16px', background: 'var(--bg)', borderRadius: 10, border: '1px solid var(--rule)' }}>
+                            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--s2)', border: '1px solid var(--rule2)', display: 'grid', placeItems: 'center', margin: '0 auto 14px' }}>
+                              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="2" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="2" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/><rect x="11" y="11" width="7" height="7" rx="1.5" stroke="var(--dim)" strokeWidth="1.4"/></svg>
+                            </div>
+                            <div style={{ font: '600 12.5px/1.3 Plus Jakarta Sans', color: 'var(--ink)', marginBottom: 8 }}>Research required first</div>
+                            <div style={{ font: '600 12px/1.65 Plus Jakarta Sans', color: 'var(--faint)', maxWidth: 300, margin: '0 auto' }}>Artifacts are built from research. Run research in this workspace and accept at least one paper first.</div>
+                          </div>
+                        )}
 
                         <div style={{ display: 'flex', gap: 10, padding: '0 32px 28px' }}>
                           <Box
@@ -4308,14 +4324,25 @@ export default class MedFactory extends React.Component {
                             hover="background:var(--s2);border-color:var(--dim)"
                             onClick={v.closeWsModal}
                           >Close</Box>
-                          <Box
-                            css="flex:2;padding:12px;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
-                            hover="opacity:0.88"
-                            onClick={() => { v.closeWsModal(); v.openWsModal('create-research'); }}
-                          >
-                            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                            Create Research first
-                          </Box>
+                          {v.pptStatus === 'sci-approved' ? (
+                            <Box
+                              css="flex:2;padding:12px;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,#15803d,#16a34a);color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 10px rgba(21,128,61,0.28)"
+                              hover="opacity:0.88"
+                              onClick={() => { v.closeWsModal(); this.go('presentation'); }}
+                            >
+                              <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="4" height="4" rx="0.8" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="1" width="4" height="4" rx="0.8" stroke="currentColor" strokeWidth="1.4"/><rect x="1" y="9" width="4" height="4" rx="0.8" stroke="currentColor" strokeWidth="1.4"/><rect x="9" y="9" width="4" height="4" rx="0.8" stroke="currentColor" strokeWidth="1.4"/></svg>
+                              Create Presentation
+                            </Box>
+                          ) : (
+                            <Box
+                              css="flex:2;padding:12px;font:700 13px/1 Plus Jakarta Sans;cursor:pointer;border-radius:8px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 10px rgba(44,82,204,0.22)"
+                              hover="opacity:0.88"
+                              onClick={() => { v.closeWsModal(); v.openWsModal('create-research'); }}
+                            >
+                              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                              Create Research first
+                            </Box>
+                          )}
                         </div>
                       </div>
                     )}
@@ -8284,21 +8311,38 @@ export default class MedFactory extends React.Component {
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: 'var(--faint)' }}>Submitted by Mayank Gupta (Medical Affairs)</span>
-                    <Box css="margin-left:12px;padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => v.expandAllSciGroups(allGroupKeys)}>Expand all</Box>
-                    <Box css="padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => this.setState({ sciReviewGroupExpanded: {} })}>Collapse all</Box>
-                    {/* By Track / By Artifact toggle */}
-                    <div style={{ marginLeft: 'auto', display: 'flex', background: '#eef0f6', borderRadius: 10, padding: 4, gap: 3 }}>
-                      {[['track','By Track'],['artifact','By Artifact']].map(([val, label]) => (
-                        <button key={val} onClick={() => v.setSciGroupBy(val)} style={{ padding: '7px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, borderRadius: 7, border: 'none', cursor: 'pointer', background: v.sciGroupBy === val ? '#fff' : 'transparent', color: v.sciGroupBy === val ? 'var(--ink)' : 'var(--faint)', boxShadow: v.sciGroupBy === val ? '0 1px 4px rgba(15,31,74,0.13)' : 'none', transition: 'all 0.15s' }}>{label}</button>
+                    {/* Papers / Deck Review tab switcher */}
+                    <div style={{ display: 'flex', background: '#eef0f6', borderRadius: 10, padding: 4, gap: 3 }}>
+                      {[['papers','Research Review'],['deck','Deck Review']].map(([val, lbl]) => (
+                        <button key={val} onClick={() => v.setSciViewMode(val)} style={{ padding: '7px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, borderRadius: 7, border: 'none', cursor: 'pointer', background: v.sciViewMode === val ? '#fff' : 'transparent', color: v.sciViewMode === val ? 'var(--ink)' : 'var(--faint)', boxShadow: v.sciViewMode === val ? '0 1px 4px rgba(15,31,74,0.13)' : 'none', transition: 'all 0.15s' }}>{lbl}</button>
                       ))}
                     </div>
+                    {v.sciViewMode === 'papers' && <>
+                      <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: 'var(--faint)' }}>Submitted by Mayank Gupta (Medical Affairs)</span>
+                      <Box css="margin-left:12px;padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => v.expandAllSciGroups(allGroupKeys)}>Expand all</Box>
+                      <Box css="padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => this.setState({ sciReviewGroupExpanded: {} })}>Collapse all</Box>
+                      {/* By Track / By Artifact toggle */}
+                      <div style={{ marginLeft: 'auto', display: 'flex', background: '#eef0f6', borderRadius: 10, padding: 4, gap: 3 }}>
+                        {[['track','By Track'],['artifact','By Artifact']].map(([val, label]) => (
+                          <button key={val} onClick={() => v.setSciGroupBy(val)} style={{ padding: '7px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, borderRadius: 7, border: 'none', cursor: 'pointer', background: v.sciGroupBy === val ? '#fff' : 'transparent', color: v.sciGroupBy === val ? 'var(--ink)' : 'var(--faint)', boxShadow: v.sciGroupBy === val ? '0 1px 4px rgba(15,31,74,0.13)' : 'none', transition: 'all 0.15s' }}>{label}</button>
+                        ))}
+                      </div>
+                    </>}
                   </div>
                 </div>
 
                 {/* BODY */}
                 <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-                  {(() => {
+                  {v.sciViewMode === 'deck' && (
+                    <iframe
+                      key="sci-deck-review"
+                      src="/presentation-agent.html"
+                      data-es-mode="sa-review"
+                      style={{ flex: 1, border: 'none', width: '100%', height: '100%', display: 'block' }}
+                      title="Scientific Review — Deck"
+                    />
+                  )}
+                  {v.sciViewMode === 'papers' && (() => {
                     const paperList = (
                       <div style={{ height: '100%', overflowY: 'auto', padding: '20px 40px 120px' }}>
                         {sciGroups.map((group, gi) => {
@@ -8470,8 +8514,8 @@ export default class MedFactory extends React.Component {
                   })()}
                 </div>
 
-                {/* STICKY FOOTER */}
-                <div style={{ flexShrink: 0, borderTop: '1px solid var(--rule2)', background: '#fff', padding: '14px 40px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 -2px 12px rgba(15,31,74,0.06)' }}>
+                {/* STICKY FOOTER — only in Research Review mode */}
+                {v.sciViewMode === 'papers' && <div style={{ flexShrink: 0, borderTop: '1px solid var(--rule2)', background: '#fff', padding: '14px 40px', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 -2px 12px rgba(15,31,74,0.06)' }}>
                   {rejectedCount > 0
                     ? <>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
@@ -8492,7 +8536,7 @@ export default class MedFactory extends React.Component {
                         </button>
                       </>
                   }
-                </div>
+                </div>}
 
                 {/* REJECT MODAL */}
                 {v.sciRejectModalPaper !== null && (() => {
@@ -9067,10 +9111,10 @@ export default class MedFactory extends React.Component {
                       <Box
                         css="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font:700 13px/1 Plus Jakarta Sans;color:#fff;background:linear-gradient(135deg,#2c52cc,#4468e0);border:none;border-radius:10px;cursor:pointer;box-shadow:0 4px 14px rgba(44,82,204,0.3)"
                         hover="opacity:0.88"
-                        onClick={() => this.go('presentation')}
+                        onClick={() => this.go('workspace-hub')}
                       >
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="11" rx="1.5" stroke="currentColor" strokeWidth="1.5"/><path d="M1 5h14" stroke="currentColor" strokeWidth="1.5"/><path d="M6 13v2M10 13v2M4 15h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                        Build Presentation
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.4"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.4"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.4"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.4"/></svg>
+                        Create Artifact
                       </Box>
                     </div>
                   </div>
@@ -9176,22 +9220,13 @@ export default class MedFactory extends React.Component {
                   </div>
                 )}
 
-                {/* Iframe — renders underneath loading, becomes visible after */}
+                {/* Persistent iframe — fills remaining space after loading screen */}
                 {!v.presentationLoading && (
-                  <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', flexDirection: 'column', background: '#f4f7fd', animation: 'fadeUp 0.4s ease both' }}>
-                    <div style={{ position: 'absolute', top: 14, left: 14, zIndex: 10 }}>
-                      <Box
-                        css="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font:700 12px/1 Plus Jakarta Sans;color:#fff;background:rgba(12,26,61,0.72);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);border-radius:8px;cursor:pointer"
-                        hover="background:rgba(12,26,61,0.9)"
-                        onClick={() => this.go('ma-research')}
-                      >
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L3 6l5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                        Back
-                      </Box>
-                    </div>
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', animation: 'fadeUp 0.3s ease both' }}>
                     <iframe
+                      key="pres-agent"
                       src="/presentation-agent.html"
-                      style={{ flex: 1, border: 'none', width: '100%', height: '100%' }}
+                      style={{ flex: 1, border: 'none', width: '100%', height: '100%', display: 'block' }}
                       title="Medical Affairs Presentation Agent"
                     />
                   </div>
