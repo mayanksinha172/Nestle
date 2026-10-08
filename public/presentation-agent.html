@@ -570,11 +570,11 @@ function esHook(evt, data){ try{ if(window.parent!==window && window.parent.ESHo
 function esRO(){ return document.documentElement.getAttribute('data-es-mode')==='review-readonly'; }
 /* ===== end ES-HOOK ===== */
 function freshState(){
-  return {step:1, maxStep:1, approved:DATA.approved, excluded:{}, filter:'all', collapsed:{1:[],3:[],4:[]},
+  return {step:1, maxStep:1, approved:DATA.approved, excluded:{}, filter:'all', collapsed:{1:[],2:['__asis'],3:[],4:[]},
     picks:{}, exfig:{}, guidance:'', decks:null, reviewed:{}, chosen:null, work:null, hist:[], chat:[], cur:0, review:null, pending:null};
 }
 let S = freshState();
-try{ const raw = localStorage.getItem(STORE); if(raw){ S = Object.assign(freshState(), JSON.parse(raw)); S.step=1; if(!S.collapsed[3]) S.collapsed[3]=[]; if(!S.collapsed[4]) S.collapsed[4]=[]; } }catch(e){}
+try{ const raw = localStorage.getItem(STORE); if(raw){ S = Object.assign(freshState(), JSON.parse(raw)); S.step=1; if(!S.collapsed[2]) S.collapsed[2]=['__asis']; if(!S.collapsed[3]) S.collapsed[3]=[]; if(!S.collapsed[4]) S.collapsed[4]=[]; } }catch(e){}
 const loading = {}; // transient: generation in progress, keyed by item id or 'decks'/'chat'
 function save(){ try{ localStorage.setItem(STORE, JSON.stringify(S)); }catch(e){} }
 
@@ -806,7 +806,7 @@ function renderStepper(){
 function render(){
   renderBadges(); renderStepper();
   const sb = document.getElementById('stepBar'); if(sb) sb.style.display = 'none';
-  const fullWide = [1,3,4].includes(S.step);
+  const fullWide = [1,2,3,4].includes(S.step);
   const mw = document.getElementById('mainWrap'); if(mw) mw.className = fullWide ? 'wrap wrap-full' : 'wrap';
   const st=document.getElementById('stage');
   st.className = 'stage' + (fullWide ? ' stage-s1' : '');
@@ -983,21 +983,95 @@ function pickerHtml(store, it, inline){
 }
 function pickState(rec){ if(rec && rec.sel){ return `<span class="chip ok pick-state">${rec.sel==='upload'?'Your upload selected':'Option '+(()=>{for(const b of rec.batches)for(const o of b.options)if(o.id===rec.sel)return o.n;})()+' selected'}</span>`; } return `<span class="chip warm pick-state">Choose a design</span>`; }
 
-/* ---------------- Step 2: Figure refinement ---------------- */
+/* ---------------- Step 2: Figure refinement (r1-* layout) ---------------- */
 function step2(){
   const figs=redesignFigs(), asis=asIsFigs();
   const missing=figs.filter(f=>!chosenUrl(S.picks[f.id])).length;
-  let h=`<div class="page-head"><div class="page-head-text"><h2>Figure refinement</h2><p>Figures taken from papers need a redesign before they go on a slide. Pick one of the AI's designs for each figure, ask for 5 more with optional guidance, or upload your own file.</p></div>
-    <div class="tally"><div class="tally-item"><div class="tally-num">${figs.length}</div><div class="tally-lbl">Need a redesign</div></div><div class="tally-item"><div class="tally-num">${asis.length}</div><div class="tally-lbl">Used as is</div></div></div></div>`;
-  if(asis.length) h+=`<h3 style="font-size:14px;margin:22px 0 10px">Used as is</h3><div class="asis-row">${asis.map(f=>`<div class="asis"><img src="${f.img}" alt="${esc(f.caption)}"><div><b>${esc(f.caption)}</b><br><span class="chip ok">Use as is · no redesign needed</span></div></div>`).join('')}</div>`;
-  h+=`<h3 style="font-size:14px;margin:22px 0 10px">Needs a redesign</h3>`;
-  if(!figs.length) h+=`<div class="hidden-note">No figures need a redesign.</div>`;
-  figs.forEach(f=>{ const p=paperById[f.paperId];
-    h+=`<div class="gen"><div class="gen-head"><div class="gen-orig"><img src="${f.img}" alt="Original: ${esc(f.caption)}"><div style="min-width:0;flex:1"><div class="lbl">Original figure</div><div class="gen-title">${esc(f.caption)}</div><div class="source">${esc(p.title)} · ${esc(p.journal)}, ${p.year}</div><div class="chips"><span class="chip">Used in: ${f.sections.map(esc).join(', ')}</span></div></div></div>${pickState(S.picks[f.id])}</div>${pickerHtml(S.picks,f,false)}</div>`; });
-  h+=`<p class="sim-note">Prototype: the AI designs are simulated placeholders.</p>
-  <div class="next-bar"><button type="button" class="btn secondary" data-go="1">${ICON.back} Research review</button><p class="next-summary">${missing?`<span class="warn">Choose a design for ${missing} more figure${missing===1?'':'s'} to continue.</span>`:'Every figure has a design.'}</p>
-    <button type="button" class="btn" data-go="3" ${missing?'disabled':''}>Figures from excerpts ${ICON.arrow}</button></div>`;
-  return h;
+  const col2=S.collapsed[2]||['__asis'];
+  let sectionsHtml='';
+
+  /* One collapsible r1-sec per figure needing redesign */
+  figs.forEach(f=>{
+    const p=paperById[f.paperId];
+    const rec=S.picks[f.id];
+    const hasChoice=!!chosenUrl(rec);
+    const collapsed=col2.includes(f.id);
+    const dotColor=hasChoice?'#15803d':'#e5a14b';
+    const badgeStyle=hasChoice
+      ?'background:rgba(21,128,61,0.08);color:#15803d;border:1px solid rgba(21,128,61,0.15)'
+      :'background:rgba(180,83,9,0.08);color:#b45309;border:1px solid rgba(180,83,9,0.22)';
+    const bodyHtml=`<div style="padding:18px 22px 22px">
+      <div class="gen-head" style="margin-bottom:16px">
+        <div class="gen-orig">
+          <img src="${f.img}" alt="Original: ${esc(f.caption)}" style="width:160px;max-width:40%">
+          <div style="min-width:0;flex:1">
+            <div class="lbl">Original figure</div>
+            <div class="gen-title">${esc(f.caption)}</div>
+            <div class="source" style="margin-top:4px">${esc(p.title)} · ${esc(p.journal)}, ${p.year}</div>
+            <div class="chips" style="margin-top:6px"><span class="chip">Used in: ${f.sections.map(esc).join(', ')}</span></div>
+          </div>
+        </div>
+        ${pickState(rec)}
+      </div>
+      ${pickerHtml(S.picks,f,false)}
+    </div>`;
+    sectionsHtml+=`<div class="r1-sec">
+      <button type="button" class="r1-sec-head${collapsed?' collapsed':''}" data-fold="2" data-sec="${esc(f.id)}">
+        <span class="r1-dot" style="background:${dotColor}"></span>
+        <span class="r1-sec-name">${esc(f.caption)}</span>
+        <span class="r1-sec-badge" style="${badgeStyle}">${hasChoice?'Design chosen':'Needs a design'}</span>
+        <span class="r1-chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="r1-sec-body${collapsed?' r1-hidden':''}">${bodyHtml}</div>
+    </div>`;
+  });
+
+  /* As-is figures — one collapsible section, collapsed by default */
+  if(asis.length){
+    const asisCollapsed=col2.includes('__asis');
+    const asisBody=`<div style="padding:16px 22px"><div class="asis-row">${
+      asis.map(f=>`<div class="asis"><img src="${f.img}" alt="${esc(f.caption)}"><div><b>${esc(f.caption)}</b><br><span class="chip ok">Use as is · no redesign needed</span></div></div>`).join('')
+    }</div></div>`;
+    sectionsHtml+=`<div class="r1-sec">
+      <button type="button" class="r1-sec-head${asisCollapsed?' collapsed':''}" data-fold="2" data-sec="__asis">
+        <span class="r1-dot" style="background:#15803d"></span>
+        <span class="r1-sec-name">Used as is</span>
+        <span class="r1-sec-badge" style="background:rgba(21,128,61,0.08);color:#15803d;border:1px solid rgba(21,128,61,0.15)">${asis.length} figure${asis.length===1?'':'s'}</span>
+        <span class="r1-chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="r1-sec-body${asisCollapsed?' r1-hidden':''}">${asisBody}</div>
+    </div>`;
+  }
+
+  if(!figs.length) sectionsHtml=`<div class="r1-empty-note">No figures need a redesign for this deck.</div>`;
+  const summaryText=missing
+    ?`<span style="color:#b91c1c;font-weight:700">Choose a design for ${missing} more figure${missing===1?'':'s'} to continue.</span>`
+    :'Every figure has a design — ready to continue.';
+
+  return `<div class="r1-layout">
+    <div class="r1-header">
+      <div>
+        <h1 class="r1-title">Figure Refinement</h1>
+        <p class="r1-sub">Figures taken from papers need a redesign before they go on a slide. Pick one of the AI's designs for each figure, ask for 5 more with optional guidance, or upload your own file.</p>
+      </div>
+      <div class="tally">
+        <div class="tally-item${missing?' warn':''}"><div class="tally-num">${figs.length}</div><div class="tally-lbl">Need a redesign</div></div>
+        <div class="tally-item"><div class="tally-num">${asis.length}</div><div class="tally-lbl">Used as is</div></div>
+      </div>
+    </div>
+    <div class="r1-toolbar">
+      <div style="flex:1"></div>
+      <span class="note" style="padding-bottom:12px">Prototype: AI designs are simulated placeholders.</span>
+    </div>
+    <div class="r1-sections">${sectionsHtml}</div>
+    <div class="r1-proceed">
+      <p class="r1-summary">${summaryText}</p>
+      <div style="display:flex;gap:10px">
+        <button type="button" class="btn secondary" data-go="1">${ICON.back} Research review</button>
+        <button type="button" class="btn" data-go="3" ${missing?'disabled':''}>Figures from excerpts ${ICON.arrow}</button>
+      </div>
+    </div>
+  </div>`;
 }
 
 /* ---------------- Step 3: Figures from excerpts (r1-* layout) ---------------- */
@@ -1008,7 +1082,7 @@ function step3(){
     const col=TCOLS[si%TCOLS.length];
     const ex=secItems(sec,usedExcerpts());
     const w=ex.filter(e=>S.exfig[e.id]&&S.exfig[e.id].wanted).length;
-    const collapsed=S.collapsed[3].includes(sec);
+    const collapsed=(S.collapsed[3]||[]).includes(sec);
     let cardsHtml='';
     if(!ex.length){
       cardsHtml=`<div class=”r1-empty-note”>This section only has figures, which were handled in the previous step.</div>`;
@@ -1093,7 +1167,7 @@ function step4(){
   includedSections().forEach((sec,si)=>{
     const col=TCOLS[si%TCOLS.length];
     const its=secItems(sec,using());
-    const collapsed=S.collapsed[4].includes(sec);
+    const collapsed=(S.collapsed[4]||[]).includes(sec);
     const figs=its.filter(x=>x.kind==='figure').length + its.filter(x=>x.kind==='excerpt'&&x.sections[0]===sec&&excerptFigUrl(x)).length;
     const exN=its.filter(x=>x.kind==='excerpt').length;
     let cardsHtml='';
@@ -1654,7 +1728,7 @@ document.addEventListener('click', e=>{
   const d=t.dataset;
   if(d.go){ const n=+d.go; if(S.step===9 && n<9) return; if(n<=S.maxStep || n===S.step+1) go(n); return; }
   if(d.filter){ S.filter=d.filter; save(); render(); return; }
-  if(d.fold){ const arr=S.collapsed[d.fold]; const i=arr.indexOf(d.sec); i<0?arr.push(d.sec):arr.splice(i,1); save(); render(); return; }
+  if(d.fold){ if(!S.collapsed[d.fold]) S.collapsed[d.fold]=[]; const arr=S.collapsed[d.fold]; const i=arr.indexOf(d.sec); i<0?arr.push(d.sec):arr.splice(i,1); save(); render(); return; }
   if(d.foldall){ S.collapsed[d.foldall] = d.open==='1' ? [] : DATA.sections.slice(); save(); render(); return; }
   if(d.exclude){ S.excluded[d.exclude]?delete S.excluded[d.exclude]:S.excluded[d.exclude]=true; invalidateAfter(1); save(); render(); toast(S.excluded[d.exclude]?'Excluded from the deck':'Included again'); return; }
   if(d.pick){ const store=d.store==='ex'?S.exfig:S.picks; store[d.pick].sel=d.opt; invalidateAfter(S.step); save(); render(); return; }
