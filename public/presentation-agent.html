@@ -31,13 +31,14 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 .narrow{max-width:980px;}
 
 /* Banner */
-.banner{display:none;}
-.eyebrow{font-size:11px; color:var(--ink-faint); margin-bottom:6px; letter-spacing:0.08em; text-transform:uppercase; font-weight:700;}
-.banner h1{font-weight:800; font-size:clamp(20px,3vw,26px); margin:0 0 10px; letter-spacing:-0.03em; color:var(--ink); text-wrap:balance;}
-.badges{display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; font-size:12.5px; color:var(--ink-faint);}
+.banner{display:block; background:var(--panel); border-bottom:1px solid var(--line);}
+.banner .wrap{padding-block:20px 18px;}
+.eyebrow{font-size:9.5px; color:var(--ink-faint); margin-bottom:8px; letter-spacing:0.16em; text-transform:uppercase; font-weight:700;}
+.banner h1{font-weight:800; font-size:22px; margin:0 0 10px; letter-spacing:-0.03em; color:var(--ink); text-wrap:balance;}
+.badges{display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; font-size:12.5px; color:var(--ink-faint);}
 .badges b{color:var(--ink-muted); font-weight:700;}
 .art-type{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-top:12px; font-size:12.5px; color:var(--ink-faint); max-width:90ch;}
-.art-pill{background:rgba(44,82,204,0.07); border:1px solid rgba(44,82,204,0.18); border-radius:100px; padding:3px 12px; color:#2c52cc; white-space:nowrap; font-weight:700; font-size:11px; letter-spacing:0.02em;}
+.art-pill{background:rgba(44,82,204,0.07); border:1px solid rgba(44,82,204,0.18); border-radius:100px; padding:4px 12px; color:#2c52cc; white-space:nowrap; font-weight:700; font-size:11px; letter-spacing:0.02em;}
 .art-pill b{font-weight:800;}
 .status-badge{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:4px 12px 4px 8px; border-radius:100px; letter-spacing:0.02em;}
 .status-badge.approved{background:rgba(21,128,61,0.08); color:#15803d; border:1px solid rgba(21,128,61,0.25);}
@@ -45,7 +46,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 .status-badge svg{width:14px; height:14px;}
 
 /* Stepper — full-width sticky two-row nav */
-.step-bar{position:sticky; top:0; z-index:10; background:#fff; border-bottom:1px solid var(--line);}
+.step-bar{position:sticky; top:0; z-index:10; background:var(--panel); border-bottom:1px solid var(--line); box-shadow:0 1px 4px rgba(15,31,74,0.06);}
+.step-bar::before{content:''; display:block; height:3px; background:linear-gradient(90deg,#2c52cc,#4468e0);}
 .step-track{display:flex; align-items:center; gap:0; padding:14px 24px 0; overflow-x:auto; scrollbar-width:none;}
 .step-track::-webkit-scrollbar{display:none;}
 .st{display:flex; align-items:center; justify-content:center; background:none; border:none; padding:0; cursor:pointer; flex-shrink:0;}
@@ -293,9 +295,8 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 .sent{background:var(--ok-tint); color:var(--ok); border-radius:10px; padding:10px 14px; font-size:13px; font-weight:700;}
 .pub-err{font-size:12.5px; color:var(--grade-f); font-weight:600;}
 
-/* Demo bar */
-.demo{border-top:1px solid var(--line); padding-block:14px 30px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; font-size:11.5px; color:var(--ink-faint); font-weight:600; margin-top:16px;}
-.demo .seg button{font-size:11.5px; padding:4px 11px;}
+/* Demo bar — hidden in polished mode */
+.demo{display:none;}
 .demo-status{display:inline-flex; align-items:center; gap:10px;}
 .link-btn{background:none; border:none; color:var(--teal); text-decoration:underline; cursor:pointer; font-size:12px; padding:0; font-weight:700;}
 
@@ -419,11 +420,12 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 .es-ban .n{font-size:13px; white-space:pre-wrap; overflow-wrap:anywhere;} .es-ban .n span{color:var(--ink-muted);}
 .es-bans{display:flex; flex-direction:column; gap:10px; margin:0 0 18px;}
 @media (max-width:520px){ .es-d-foot .btn{flex:1; justify-content:center;} }
-/* ===== ES-HOOK (Evidence Studio): role gating. The host sets data-es-mode on <html>; standalone use is unaffected. ===== */
+/* ===== ES-HOOK (Evidence Studio): role gating. The host sets data-es-mode on <html> via JS init. ===== */
 html[data-es-mode="review-readonly"] #deckReject, html[data-es-mode="review-readonly"] #approveWrap,
 html[data-es-mode="review-readonly"] #sciReject, html[data-es-mode="review-readonly"] #sciRevert,
-html[data-es-mode="review-readonly"] #startOver, html[data-es-mode="review-readonly"] #demoStatus,
-html[data-es-mode="sa-review"] #startOver, html[data-es-mode="sa-review"] #demoStatus{display:none !important;}
+html[data-es-mode="review-readonly"] #startOver, html[data-es-mode="review-readonly"] #demoStatus{display:none !important;}
+/* sa-review: outer React shell provides the header context, hide banner to avoid duplication */
+html[data-es-mode="sa-review"] .banner{display:none !important;}
 /* ===== end ES-HOOK ===== */
 </style>
 <header class="banner">
@@ -1394,6 +1396,11 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(esDlg){ esClo
 document.getElementById('overlayRoot').addEventListener('click', e=>{ if(e.target.id==='ovl'){ reviewIdx=null; renderOverlay(); } });
 
 render(); onEnter(S.step); esHook('step-change', {step: S.step});
-/* SA reviewer: if this iframe is opened in sa-review mode while a deck is awaiting sci review, jump to step 9 */
-try{ if(window.frameElement && window.frameElement.getAttribute('data-es-mode')==='sa-review' && S.sentToSci && S.review && S.review.status==='sci') go(9); }catch(e){}
+/* Propagate data-es-mode from parent <iframe> element to this document's <html> so CSS selectors work */
+try{
+  const _esMode = window.frameElement && window.frameElement.getAttribute('data-es-mode');
+  if(_esMode) document.documentElement.setAttribute('data-es-mode', _esMode);
+  /* SA reviewer: if opened in sa-review mode while deck awaiting sci review, jump to step 9 */
+  if(_esMode === 'sa-review' && S.sentToSci && S.review && S.review.status === 'sci') go(9);
+}catch(e){}
 </script>
