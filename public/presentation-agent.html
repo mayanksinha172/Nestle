@@ -696,9 +696,15 @@ function renderBadges(){
   /* ES: research-status demo toggle removed */
 }
 function renderStepper(){
+  // When submitted to sci review, hide steps 9 & 10 from the stepper
+  const visibleMax = S.sentToSci ? S.maxStep : STEPS.length;
   let h='';
-  STEPS.forEach((l,i)=>{ const n=i+1; const cls = n===S.step?'active':(n<=S.maxStep?'done':'');
-    if(i) h += `<div class="st-line${n<=S.maxStep?' done':''}"></div>`;
+  let firstVisible=true;
+  STEPS.forEach((l,i)=>{ const n=i+1;
+    if(n > visibleMax) return; // hide steps beyond maxStep after submission
+    const cls = n===S.step?'active':(n<=S.maxStep?'done':'');
+    if(!firstVisible) h += `<div class="st-line${n<=S.maxStep?' done':''}"></div>`;
+    firstVisible=false;
     const locked = (S.review && S.review.status==='approved' && n<10) || (S.step===9 && n<9);
     const isDone = n<S.step||(n<=S.maxStep&&n!==S.step);
     const dotContent = isDone ? `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>` : n;
@@ -707,10 +713,10 @@ function renderStepper(){
   const act=bar.querySelector('.st.active'); if(act && bar.scrollWidth>bar.clientWidth){ bar.scrollLeft = act.offsetLeft - bar.offsetLeft - (bar.clientWidth-act.offsetWidth)/2; }
   // Update info row
   const posEl=document.getElementById('stepPos'); const curEl=document.getElementById('stepCur');
-  if(posEl) posEl.textContent = `Step ${S.step} of ${STEPS.length}`;
+  if(posEl) posEl.textContent = `Step ${S.step} of ${visibleMax}`;
   if(curEl) curEl.textContent = STEPS[S.step-1]||'';
   // Update progress bar
-  const fill=document.getElementById('stepProgFill'); if(fill) fill.style.width = ((S.step-1)/(STEPS.length-1)*100)+'%';
+  const fill=document.getElementById('stepProgFill'); if(fill) fill.style.width = ((S.step-1)/(visibleMax-1)*100)+'%';
   // Wire prev/next
   const prevBtn=document.getElementById('stepPrev'); const nextBtn=document.getElementById('stepNext');
   if(prevBtn){ prevBtn.disabled=S.step<=1; prevBtn.onclick=()=>{ if(S.step>1) go(S.step-1); }; }
