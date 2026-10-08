@@ -8323,12 +8323,14 @@ export default class MedFactory extends React.Component {
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    {/* Papers / Deck Review tab switcher */}
+                    {/* Deck Review tab only appears when a deck is actually awaiting sci review */}
+                    {['sent-to-sci', 'sci-rejected'].includes(v.pptStatus) && (
                     <div style={{ display: 'flex', background: '#eef0f6', borderRadius: 10, padding: 4, gap: 3 }}>
                       {[['papers','Research Review'],['deck','Deck Review']].map(([val, lbl]) => (
                         <button key={val} onClick={() => v.setSciViewMode(val)} style={{ padding: '7px 18px', fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: 700, borderRadius: 7, border: 'none', cursor: 'pointer', background: v.sciViewMode === val ? '#fff' : 'transparent', color: v.sciViewMode === val ? 'var(--ink)' : 'var(--faint)', boxShadow: v.sciViewMode === val ? '0 1px 4px rgba(15,31,74,0.13)' : 'none', transition: 'all 0.15s' }}>{lbl}</button>
                       ))}
                     </div>
+                    )}
                     {v.sciViewMode === 'papers' && <>
                       <span style={{ fontFamily: 'Plus Jakarta Sans', fontSize: 10.5, fontWeight: 700, color: 'var(--faint)' }}>Submitted by Mayank Gupta (Medical Affairs)</span>
                       <Box css="margin-left:12px;padding:4px 10px;font:600 10px/1 Plus Jakarta Sans;border:1px solid var(--rule);color:var(--faint);cursor:pointer;border-radius:4px" hover="color:var(--ink)" onClick={() => v.expandAllSciGroups(allGroupKeys)}>Expand all</Box>
@@ -8345,7 +8347,7 @@ export default class MedFactory extends React.Component {
 
                 {/* BODY */}
                 <div style={{ flex: 1, display: 'flex', overflow: 'hidden', minHeight: 0 }}>
-                  {v.sciViewMode === 'deck' && (
+                  {v.sciViewMode === 'deck' && ['sent-to-sci', 'sci-rejected'].includes(v.pptStatus) && (
                     <iframe
                       key="sci-deck-review"
                       src="/presentation-agent.html"
