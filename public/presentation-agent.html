@@ -15,6 +15,7 @@
   --grade-c:#b45309; --grade-c-tint:rgba(180,83,9,0.07);
   --grade-d:#9a3412; --grade-d-tint:rgba(154,52,18,0.07);
   --grade-f:#b91c1c; --grade-f-tint:rgba(185,28,28,0.07);
+  --ma:#6A3FA0; --ma-tint:#EFE7F7;
   --banner-ink:#e8eef8; --banner-muted:#8aaad4; --banner-faint:#4d6fa0;
   --overlay:rgba(8,12,24,0.62);
   --sans:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -22,7 +23,7 @@
   --radius:12px; --shadow:0 1px 4px rgba(15,31,74,0.06),0 4px 16px rgba(15,31,74,0.05);
 }
 *{box-sizing:border-box;}
-body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:13.5px; line-height:1.55; -webkit-font-smoothing:antialiased; font-weight:600;}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:13px; line-height:1.55; -webkit-font-smoothing:antialiased; font-weight:600;}
 button,input,textarea{font-family:inherit; font-size:inherit; font-weight:inherit;}
 button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-within{outline:2px solid var(--teal); outline-offset:2px;}
 .wrap{max-width:1180px; margin:0 auto; padding-inline:24px;}
@@ -30,42 +31,54 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 .narrow{max-width:980px;}
 
 /* Banner */
-.banner{background:linear-gradient(135deg,#0d1f4e 0%,#1e3370 100%); color:var(--banner-ink); padding-block:22px 24px;}
-.eyebrow{font-size:11px; color:var(--banner-faint); margin-bottom:6px; letter-spacing:0.08em; text-transform:uppercase; font-weight:700;}
-.banner h1{font-weight:800; font-size:clamp(20px,3vw,28px); margin:0 0 10px; letter-spacing:-0.03em; text-wrap:balance;}
-.badges{display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; font-size:12.5px; color:var(--banner-muted);}
-.badges b{color:var(--banner-ink); font-weight:700;}
-.art-type{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-top:12px; font-size:13px; color:var(--banner-muted); max-width:90ch;}
-.art-pill{border:1px solid rgba(255,255,255,.22); border-radius:100px; padding:3px 12px; color:var(--banner-ink); white-space:nowrap; font-weight:600;}
+.banner{display:none;}
+.eyebrow{font-size:11px; color:var(--ink-faint); margin-bottom:6px; letter-spacing:0.08em; text-transform:uppercase; font-weight:700;}
+.banner h1{font-weight:800; font-size:clamp(20px,3vw,26px); margin:0 0 10px; letter-spacing:-0.03em; color:var(--ink); text-wrap:balance;}
+.badges{display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; font-size:12.5px; color:var(--ink-faint);}
+.badges b{color:var(--ink-muted); font-weight:700;}
+.art-type{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-top:12px; font-size:12.5px; color:var(--ink-faint); max-width:90ch;}
+.art-pill{background:rgba(44,82,204,0.07); border:1px solid rgba(44,82,204,0.18); border-radius:100px; padding:3px 12px; color:#2c52cc; white-space:nowrap; font-weight:700; font-size:11px; letter-spacing:0.02em;}
 .art-pill b{font-weight:800;}
 .status-badge{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; padding:4px 12px 4px 8px; border-radius:100px; letter-spacing:0.02em;}
-.status-badge.approved{background:rgba(21,128,61,0.9); color:#fff;}
-.status-badge.unapproved{background:rgba(180,83,9,0.85); color:#fff;}
+.status-badge.approved{background:rgba(21,128,61,0.08); color:#15803d; border:1px solid rgba(21,128,61,0.25);}
+.status-badge.unapproved{background:rgba(180,83,9,0.08); color:#b45309; border:1px solid rgba(180,83,9,0.25);}
 .status-badge svg{width:14px; height:14px;}
 
-/* Stepper */
-.stepper{display:flex; align-items:flex-start; overflow-x:auto; padding-block:18px 8px; gap:0;}
-.st{display:flex; flex-direction:column; align-items:center; gap:6px; flex:1 1 0; min-width:74px; background:none; border:none; padding:0 4px; color:var(--ink-faint); cursor:pointer; text-align:center; font-weight:600;}
-.st:disabled{cursor:default; opacity:.45;}
-.st-dot{width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12.5px; border:2px solid var(--line); background:var(--panel); color:var(--ink-muted);}
-.st-lbl{font-size:11px; line-height:1.3; overflow-wrap:anywhere; font-weight:600;}
-.st.done .st-dot{border-color:var(--teal); background:var(--teal-tint); color:var(--teal);}
-.st.done .st-lbl{color:var(--ink-muted);}
-.st.active .st-dot{border-color:var(--amber); background:var(--amber-tint); color:var(--ink); font-weight:800;}
-.st.active .st-lbl{color:var(--ink); font-weight:700;}
-.st-line{flex:0 1 14px; min-width:6px; height:2px; background:var(--line); margin-top:14px;}
-.st-line.done{background:var(--teal);}
+/* Stepper — full-width sticky two-row nav */
+.step-bar{position:sticky; top:0; z-index:10; background:#fff; border-bottom:1px solid var(--line);}
+.step-track{display:flex; align-items:center; gap:0; padding:14px 24px 0; overflow-x:auto; scrollbar-width:none;}
+.step-track::-webkit-scrollbar{display:none;}
+.st{display:flex; align-items:center; justify-content:center; background:none; border:none; padding:0; cursor:pointer; flex-shrink:0;}
+.st:disabled{cursor:default;}
+.st-dot{width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10px; border:1.5px solid rgba(12,26,61,0.15); background:#f4f7fd; color:#8899bb; transition:all 0.2s; flex-shrink:0;}
+.st.done .st-dot{border-color:#2c52cc; background:#2c52cc; color:#fff;}
+.st.active .st-dot{border-color:#2c52cc; background:#2c52cc; color:#fff; box-shadow:0 0 0 3px rgba(44,82,204,0.14),0 2px 8px rgba(44,82,204,0.2);}
+.st-line{flex:1 1 0; min-width:12px; height:1.5px; background:rgba(12,26,61,0.1); transition:background 0.25s; flex-shrink:0;}
+.st-line.done{background:#2c52cc;}
+.step-info{display:flex; align-items:center; justify-content:space-between; padding:8px 24px 12px; gap:12px;}
+.step-info-left{display:flex; align-items:center; gap:10px; min-width:0;}
+.step-pos{font-size:10.5px; font-weight:700; color:#3d5499; letter-spacing:0.06em; text-transform:uppercase; white-space:nowrap; flex-shrink:0;}
+.step-sep{width:1px; height:12px; background:rgba(12,26,61,0.15); flex-shrink:0;}
+.step-cur{font-size:13px; font-weight:700; color:#0c1a3d; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.step-nav{display:flex; align-items:center; gap:6px; flex-shrink:0;}
+.step-nav-btn{width:28px; height:28px; border-radius:50%; border:1.5px solid rgba(12,26,61,0.14); background:#fff; color:#1a3070; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0; transition:border-color 0.15s,color 0.15s,background 0.15s;}
+.step-nav-btn:hover:not(:disabled){border-color:#2c52cc; color:#2c52cc; background:rgba(44,82,204,0.05);}
+.step-nav-btn:disabled{opacity:0.3; cursor:default;}
+.step-nav-btn svg{width:13px; height:13px;}
+.step-prog{height:2px; background:rgba(12,26,61,0.07);}
+.step-prog-fill{height:100%; background:linear-gradient(90deg,#2c52cc,#4468e0); transition:width 0.35s ease;}
 
 /* Generic */
-.stage{padding-block:10px 40px;}
+.stage{padding-block:18px 40px;}
+.step-track .st{flex:1 1 0;}
 .page-head{display:flex; flex-wrap:wrap; gap:16px 28px; justify-content:space-between; align-items:flex-start; margin-top:10px;}
 .page-head-text{flex:1 1 420px; min-width:0;}
-.page-head h2{margin:0 0 4px; font-size:22px; font-weight:800; text-wrap:balance; letter-spacing:-0.03em;}
-.page-head p{margin:0; color:var(--ink-muted); max-width:72ch; font-size:13px; font-weight:500;}
+.page-head h2{margin:0 0 6px; font-size:22px; font-weight:800; text-wrap:balance; letter-spacing:-0.03em; color:var(--ink);}
+.page-head p{margin:0; color:var(--ink-muted); max-width:72ch; font-size:13px; font-weight:500; line-height:1.65;}
 .tally{display:flex; gap:8px; flex-wrap:wrap;}
-.tally-item{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px 16px; min-width:96px; box-shadow:var(--shadow);}
-.tally-num{font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.2; letter-spacing:-0.02em;}
-.tally-lbl{font-size:11px; color:var(--ink-faint); font-weight:600; letter-spacing:0.02em;}
+.tally-item{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 18px; min-width:96px; box-shadow:var(--shadow);}
+.tally-num{font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.2; letter-spacing:-0.02em; color:var(--teal);}
+.tally-lbl{font-size:10px; color:var(--ink-faint); font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-top:2px;}
 .tally-item.warn .tally-num{color:var(--grade-f);}
 .toolbar{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; margin-top:18px; padding-block:12px; border-top:1px solid var(--line);}
 .tool-left{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
@@ -75,56 +88,56 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 .pill-btn{border:1.5px solid var(--line); background:var(--panel); color:var(--ink-muted); font-size:12px; font-weight:600; padding:6px 14px; border-radius:100px; cursor:pointer;}
 .pill-btn:hover{border-color:var(--teal); color:var(--teal);}
 .note{font-size:12px; color:var(--ink-faint); display:flex; align-items:center; gap:6px; font-weight:500;}
-.btn{display:inline-flex; align-items:center; gap:9px; background:linear-gradient(135deg,#2c52cc,#4468e0); color:#fff; border:none; border-radius:12px; padding:11px 20px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 12px rgba(44,82,204,0.22); transition:opacity 0.15s,box-shadow 0.15s;}
+.btn{display:inline-flex; align-items:center; gap:9px; background:linear-gradient(135deg,#2c52cc,#4468e0); color:#fff; border:none; border-radius:12px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 2px 12px rgba(44,82,204,0.22); transition:opacity 0.15s,box-shadow 0.15s;}
 .btn:hover{opacity:0.88; box-shadow:0 4px 20px rgba(44,82,204,0.32); filter:none;}
 .btn:disabled{background:rgba(12,26,61,0.07); color:var(--ink-faint); cursor:not-allowed; filter:none; box-shadow:none;}
-.btn.secondary{background:var(--panel); color:var(--teal); border:1.5px solid var(--teal); box-shadow:none;}
-.btn.secondary:hover{background:var(--teal-tint); filter:none; box-shadow:none; opacity:1;}
+.btn.secondary{background:var(--panel); color:var(--teal); border:1.5px solid rgba(44,82,204,0.3); box-shadow:none;}
+.btn.secondary:hover{background:var(--teal-tint); filter:none; box-shadow:none; opacity:1; border-color:var(--teal);}
 .btn svg{width:16px; height:16px;}
-.next-bar{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:center; justify-content:space-between; border-top:1px solid var(--line); padding-block:22px 10px; margin-top:10px;}
+.next-bar{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:center; justify-content:space-between; border-top:2px solid var(--line); padding-block:22px 10px; margin-top:24px;}
 .next-summary{margin:0; font-size:13px; color:var(--ink-muted); flex:1 1 300px; min-width:0; font-weight:500;}
 .next-summary b{color:var(--ink); font-weight:700;}
 .next-summary .warn{color:var(--grade-f); font-weight:700;}
-.chip{font-size:10.5px; padding:2px 9px; border-radius:100px; background:var(--line-soft); color:var(--ink-muted); white-space:nowrap; font-weight:700;}
+.chip{font-size:10px; padding:2px 8px; border-radius:4px; background:var(--line-soft); color:var(--ink-muted); white-space:nowrap; font-weight:700; letter-spacing:0.02em;}
 .chip.warm{background:var(--amber-tint); color:var(--amber);}
 .chip.ok{background:var(--ok-tint); color:var(--ok); font-weight:700;}
 .chip.bad{background:var(--grade-f-tint); color:var(--grade-f); font-weight:700;}
 .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; align-items:center;}
 
 /* Sections */
-.section{padding-bottom:22px; margin-bottom:22px; border-bottom:1px solid var(--line);}
+.section{padding-bottom:22px; margin-bottom:10px; border-bottom:1px solid var(--line);}
 .section:last-child{border-bottom:none;}
-.section.collapsed{padding-bottom:12px; margin-bottom:12px;}
+.section.collapsed{padding-bottom:12px; margin-bottom:8px;}
 .section h3{margin:0;}
-.sec-head{width:100%; display:flex; align-items:center; gap:10px; background:none; border:none; padding:4px 0; cursor:pointer; color:var(--ink); text-align:left; flex-wrap:wrap;}
+.sec-head{width:100%; display:flex; align-items:center; gap:10px; background:none; border:none; padding:10px 0 6px; cursor:pointer; color:var(--ink); text-align:left; flex-wrap:wrap;}
 .sec-head:hover .sec-title{color:var(--teal);}
 .sec-chev{width:18px; height:18px; flex-shrink:0; color:var(--ink-faint); transition:transform .18s ease;}
 .sec-head[aria-expanded="false"] .sec-chev{transform:rotate(-90deg);}
-.sec-title{font-size:16px; font-weight:700; flex:1 1 auto; min-width:0; text-wrap:balance;}
-.sec-count{font-size:12px; color:var(--ink-faint); font-variant-numeric:tabular-nums; font-weight:500;}
-.sec-body{padding-top:12px;}
-.gap-note{border:1.5px dashed var(--grade-f); background:var(--grade-f-tint); border-radius:12px; padding:12px 16px; font-size:13px; font-weight:500;}
+.sec-title{font-size:15px; font-weight:700; flex:1 1 auto; min-width:0; text-wrap:balance;}
+.sec-count{font-size:11px; color:var(--ink-faint); font-variant-numeric:tabular-nums; font-weight:600; background:var(--paper); border:1px solid var(--line); border-radius:100px; padding:2px 8px;}
+.sec-body{padding-top:10px;}
+.gap-note{border:1.5px dashed rgba(185,28,28,0.4); background:rgba(185,28,28,0.04); border-radius:14px; padding:12px 16px; font-size:13px; font-weight:500;}
 .gap-note b{color:var(--grade-f);}
 .cards{display:flex; flex-direction:column; gap:10px;}
 .hidden-note{font-size:12.5px; color:var(--ink-faint); padding:6px 2px; font-weight:500;}
 
 /* Evidence card */
-.card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; display:grid; grid-template-columns:34px minmax(0,1fr); gap:4px 14px; box-shadow:var(--shadow);}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 16px; display:grid; grid-template-columns:34px minmax(0,1fr); gap:4px 14px; box-shadow:var(--shadow);}
 .grade{width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;}
 .grade-A{background:var(--grade-a-tint); color:var(--grade-a);} .grade-B{background:var(--grade-b-tint); color:var(--grade-b);}
 .grade-C{background:var(--grade-c-tint); color:var(--grade-c);} .grade-D{background:var(--grade-d-tint); color:var(--grade-d);}
 .grade-F{background:var(--grade-f-tint); color:var(--grade-f);}
 .card-body{min-width:0;}
-.quote{margin:0; font-style:italic; font-size:13.5px; line-height:1.65; border-left:3px solid var(--teal); padding:2px 0 2px 12px; max-width:78ch; font-weight:500;}
+.quote{margin:0; font-style:normal; font-size:13px; line-height:1.72; border-left:3px solid var(--teal); padding:2px 0 2px 12px; max-width:78ch; font-weight:500; color:var(--ink);}
 .figure{display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start;}
 .figure img{width:240px; max-width:100%; border-radius:8px; border:1px solid var(--line); background:#fff;}
 .figure-cap{flex:1 1 200px; min-width:0; font-size:13px; font-weight:600;}
-.source{margin-top:10px; font-size:12px; color:var(--ink-muted); font-weight:500;}
-.source .t{color:var(--ink); font-weight:700;}
+.source{margin-top:10px; font-size:11.5px; color:var(--ink-faint); font-weight:600; display:flex; align-items:baseline; gap:4px; flex-wrap:wrap;}
+.source .t{color:var(--ink-muted); font-weight:700;}
 .card-foot{grid-column:2; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px;}
-.aside-btn{border:1.5px solid var(--line); background:var(--panel); color:var(--ink-muted); font-size:12px; font-weight:700; padding:5px 14px; border-radius:100px; cursor:pointer;}
-.aside-btn:hover{border-color:var(--grade-f); color:var(--grade-f);}
-.aside-label{font-size:12px; font-weight:700; color:var(--grade-f); visibility:hidden;}
+.aside-btn{border:1px solid var(--line); background:var(--paper); color:var(--ink-muted); font-size:11.5px; font-weight:700; padding:5px 14px; border-radius:100px; cursor:pointer; transition:border-color 0.15s, color 0.15s;}
+.aside-btn:hover{border-color:rgba(185,28,28,0.4); color:var(--grade-f);}
+.aside-label{font-size:11.5px; font-weight:700; color:var(--grade-f); visibility:hidden;}
 .card.is-aside{background:var(--paper); border-style:dashed;}
 .card.is-aside .card-body,.card.is-aside .grade{opacity:.5;}
 .card.is-aside .quote{text-decoration:line-through; text-decoration-thickness:1px; border-left-color:var(--line);}
@@ -132,7 +145,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-with
 .card.is-aside .aside-btn{border-color:var(--teal); color:var(--teal);}
 
 /* Figure generation */
-.gen{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:16px; box-shadow:var(--shadow);}
+.gen{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:16px; box-shadow:var(--shadow);}
 .gen.inline{grid-column:1 / -1; margin:12px 0 0; padding:14px; background:var(--paper); box-shadow:none;}
 .gen-head{display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; justify-content:space-between;}
 .gen-orig{display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; flex:1 1 420px; min-width:0;}
@@ -232,9 +245,10 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 
 /* Deck choice */
 .decks{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; margin-top:18px;}
-.deck-card{background:var(--panel); border:1.5px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; box-shadow:var(--shadow);}
+.deck-card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:10px; box-shadow:var(--shadow); transition:border-color 0.18s, box-shadow 0.18s;}
+.deck-card:hover{border-color:rgba(44,82,204,0.3); box-shadow:0 2px 12px rgba(44,82,204,0.08),var(--shadow);}
 .deck-card.selected{border-color:var(--teal); box-shadow:0 0 0 3px var(--teal-tint),var(--shadow);}
-.deck-card h3{margin:0; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+.deck-card h3{margin:0; font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:8px;}
 .deck-card p{margin:0; font-size:12.5px; color:var(--ink-muted); font-weight:500;}
 .deck-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:6px;}
 .deck-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:auto;}
@@ -255,7 +269,7 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 .chat{background:var(--panel); border:1px solid var(--line); border-radius:14px; display:flex; flex-direction:column; height:640px; max-height:80vh; position:sticky; top:calc(env(safe-area-inset-top,0px) + 12px); box-shadow:var(--shadow);}
 @media (max-width:980px){ .chat{position:static; height:520px;} }
 .chat-head{padding:12px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap:8px;}
-.chat-head b{font-size:13.5px; font-weight:800;}
+.chat-head b{font-size:13px; font-weight:800; color:var(--ink);}
 .chat-log{flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:10px;}
 .msg{max-width:88%; padding:9px 13px; border-radius:12px; font-size:13px; line-height:1.5; white-space:pre-wrap; font-weight:500;}
 .msg.ai{background:var(--paper); border:1px solid var(--line); align-self:flex-start; border-bottom-left-radius:4px;}
@@ -280,7 +294,7 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 .pub-err{font-size:12.5px; color:var(--grade-f); font-weight:600;}
 
 /* Demo bar */
-.demo{border-top:1px dashed var(--line); padding-block:14px 30px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; font-size:12px; color:var(--ink-faint); font-weight:600;}
+.demo{border-top:1px solid var(--line); padding-block:14px 30px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; font-size:11.5px; color:var(--ink-faint); font-weight:600; margin-top:16px;}
 .demo .seg button{font-size:11.5px; padding:4px 11px;}
 .demo-status{display:inline-flex; align-items:center; gap:10px;}
 .link-btn{background:none; border:none; color:var(--teal); text-decoration:underline; cursor:pointer; font-size:12px; padding:0; font-weight:700;}
@@ -329,6 +343,24 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 .rv-done b{color:var(--ok); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; font-weight:800;}
 .rv-done span{display:block; color:var(--ink-muted); font-weight:500;}
 .rv-nav{display:flex; justify-content:space-between; gap:8px;}
+/* ES: Medical Affairs suggestions panel (step 8) */
+.ms-panel{background:var(--ma-tint); border:1px solid var(--ma); border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:10px; min-width:0;}
+.ms-panel > b{font-size:13px; color:var(--ma);} .ms-panel > p{margin:-6px 0 0; font-size:12px; color:var(--ink-muted);}
+.ms-jump{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:12px; color:var(--ink-muted);}
+.ms-chip{min-width:28px; height:28px; border-radius:100px; border:1px solid var(--ma); background:var(--panel); color:var(--ma); font-weight:600; font-size:12px; cursor:pointer; padding:0 8px;}
+.ms-chip.done::after{content:" ✓";} .ms-chip.ign{opacity:.5;}
+.ms-chip.on{background:var(--ma); color:#fff; opacity:1;}
+.ms-card{display:flex; flex-direction:column; gap:6px; background:var(--panel); border-radius:var(--radius); padding:10px; border-left:4px solid var(--ma);}
+.ms-card > b{color:var(--ma); font-size:12px;}
+.ms-text{background:var(--paper); color:var(--ink-muted); border:1px solid var(--line); border-radius:var(--radius); padding:10px 12px; font-size:13.5px; line-height:1.5; white-space:pre-wrap; overflow-wrap:anywhere;}
+.ms-done{border-left-color:var(--ok);} .ms-done > b{color:var(--ok);}
+.ms-actions{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:center;}
+.ms-actions .r{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
+.ms-actions .btn{padding:8px 14px; font-size:13px;}
+.ms-actions .btn.ma{background:var(--ma); color:#fff;}
+.ms-lnk{background:none; border:0; padding:0; color:var(--ma); font:inherit; font-size:12.5px; text-decoration:underline; cursor:pointer;}
+.ms-none{margin:0; font-size:13px; color:var(--ink-muted); background:var(--panel); border-radius:var(--radius); padding:10px 12px;}
+.ms-none a,.ms-none button.lnk{color:var(--ma); background:none; border:0; padding:0; font:inherit; text-decoration:underline; cursor:pointer;}
 .rv-notes{display:flex; flex-direction:column; gap:6px; margin-top:22px;}
 .viewer-main,.thumb{position:relative;}
 .ov-note{position:absolute; top:10px; right:10px; max-width:46%; background:#fffbe6; color:#3A2A00; border-radius:8px; padding:8px 10px; font-size:12.5px; line-height:1.4; box-shadow:0 2px 8px rgba(0,0,0,.18); font-weight:600;}
@@ -346,6 +378,47 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 .toast.show{opacity:1; transform:translate(-50%,0);}
 @media (prefers-reduced-motion: reduce){ .toast,.sec-chev{transition:none;} .spinner{animation:none;} }
 
+/* ===== ES (Evidence Studio): approval and rejection dialogs, and the approval banners ===== */
+.es-d-panel{max-width:580px !important; gap:0 !important; padding:0 !important; max-height:calc(100vh - 48px); overflow:hidden;}
+.es-d-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:16px 20px 12px; border-bottom:1px solid var(--line);}
+.es-d-head h3{margin:0; font-size:16px;}
+.es-d-sub{font-size:12.5px; color:var(--ink-muted); margin-top:2px; overflow-wrap:anywhere;}
+.es-d-x{flex:none; width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:var(--panel); color:var(--ink-muted); cursor:pointer; font-size:15px; line-height:1;}
+.es-d-body{padding:16px 20px; display:flex; flex-direction:column; gap:18px; overflow-y:auto;}
+.es-d-h{margin:0 0 8px; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-muted); font-weight:600;}
+.es-d-tiles{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:6px;}
+.es-d-tile{background:var(--line-soft); border-radius:var(--radius); padding:8px 12px;}
+.es-d-tile span{display:block; font-size:11.5px; color:var(--ink-muted);}
+.es-d-tile b{font-size:20px; color:var(--teal); font-variant-numeric:tabular-nums;}
+.es-d-row{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:7px 0; border-bottom:1px solid var(--line); font-size:13px;}
+.es-d-row:last-child{border-bottom:0;}
+.es-d-row .k{color:var(--ink-muted); flex:none; max-width:45%;}
+.es-d-row .v{text-align:right; min-width:0; overflow-wrap:anywhere;}
+.es-d-pill{font-size:11.5px; font-weight:500; padding:2px 9px; border-radius:100px; white-space:nowrap;}
+.es-d-pill.ok{background:var(--ok-tint); color:var(--ok);} .es-d-pill.thin{background:var(--amber-tint); color:var(--amber);}
+.es-d-flags{display:flex; flex-direction:column; gap:6px;}
+.es-d-flag{display:flex; gap:9px; align-items:flex-start; font-size:13px; padding:8px 11px; border-radius:var(--radius); background:var(--amber-tint); color:var(--ink);}
+.es-d-flag::before{content:"⚠"; color:var(--amber); font-weight:700;}
+.es-d-flag.ok{background:var(--ok-tint);} .es-d-flag.ok::before{content:"✓"; color:var(--ok);}
+.es-d-hint{margin:6px 0 0; font-size:12px; color:var(--ink-muted);}
+.es-d-att{display:flex; gap:12px; align-items:flex-start; font-size:14.5px; font-weight:600; color:var(--teal); cursor:pointer; line-height:1.45;
+  border:1.5px solid var(--teal); background:var(--teal-tint); border-radius:var(--radius); padding:12px 14px; transition:background .15s, border-color .15s, color .15s;}
+.es-d-att input{margin-top:2px; width:19px; height:19px; accent-color:var(--teal); flex:none; cursor:pointer;}
+.es-d-att:has(input:checked){border-color:var(--ok); background:var(--ok-tint); color:var(--ok);}
+.es-d-att:has(input:checked) input{accent-color:var(--ok);}
+.es-d-att:focus-within{outline:2px solid var(--teal); outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){ .es-d-att{transition:none;} }
+.es-d-note-l{display:block; font-size:12.5px; color:var(--ink-muted); margin:14px 0 5px;} .es-d-note-l span{color:var(--ink-faint);}
+.es-d-body textarea{min-height:60px; font-size:13px;}
+.es-d-who{margin:8px 0 0; font-size:12.5px; color:var(--ink-muted);} .es-d-who b{color:var(--ink); font-weight:500;}
+.es-d-foot{display:flex; justify-content:flex-end; gap:10px; padding:14px 20px; border-top:1px solid var(--line); flex-wrap:wrap;}
+.es-d-err{margin:6px 0 0; font-size:12.5px; color:var(--grade-f);}
+.es-d-rej .v{color:var(--grade-f);}
+.es-ban{border:1px solid var(--teal); background:var(--teal-tint); border-radius:var(--radius); padding:12px 16px; display:flex; flex-direction:column; gap:4px; font-size:13.5px; color:var(--ink);}
+.es-ban.sa{border-color:var(--ok); background:var(--ok-tint);} .es-ban.rej{border-color:var(--grade-f); background:var(--grade-f-tint);}
+.es-ban .n{font-size:13px; white-space:pre-wrap; overflow-wrap:anywhere;} .es-ban .n span{color:var(--ink-muted);}
+.es-bans{display:flex; flex-direction:column; gap:10px; margin:0 0 18px;}
+@media (max-width:520px){ .es-d-foot .btn{flex:1; justify-content:center;} }
 /* ===== ES-HOOK (Evidence Studio): role gating. The host sets data-es-mode on <html>; standalone use is unaffected. ===== */
 html[data-es-mode="review-readonly"] #deckReject, html[data-es-mode="review-readonly"] #approveWrap,
 html[data-es-mode="review-readonly"] #sciReject, html[data-es-mode="review-readonly"] #sciRevert,
@@ -361,8 +434,26 @@ html[data-es-mode="sa-review"] #startOver, html[data-es-mode="sa-review"] #demoS
   </div>
 </header>
 
+<div class="step-bar" id="stepBar">
+  <div class="step-track" id="stepper" aria-label="Progress"></div>
+  <div class="step-info">
+    <div class="step-info-left">
+      <span class="step-pos" id="stepPos">Step 1 of 10</span>
+      <div class="step-sep"></div>
+      <span class="step-cur" id="stepCur">Research review</span>
+    </div>
+    <div class="step-nav">
+      <button class="step-nav-btn" id="stepPrev" aria-label="Previous step">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M8 2.5L4.5 6.5 8 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="step-nav-btn" id="stepNext" aria-label="Next step">
+        <svg viewBox="0 0 13 13" fill="none"><path d="M5 2.5L8.5 6.5 5 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="step-prog"><div class="step-prog-fill" id="stepProgFill"></div></div>
+</div>
 <div class="wrap">
-  <nav class="stepper" id="stepper" aria-label="Progress"></nav>
   <main class="stage" id="stage"></main>
   <div class="demo">
     <span>Prototype demo controls</span>
@@ -371,6 +462,7 @@ html[data-es-mode="sa-review"] #startOver, html[data-es-mode="sa-review"] #demoS
   </div>
 </div>
 <div id="overlayRoot"></div>
+<div id="esDlgRoot"></div><!-- ES: approval and rejection dialogs -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -608,9 +700,21 @@ function renderStepper(){
   STEPS.forEach((l,i)=>{ const n=i+1; const cls = n===S.step?'active':(n<=S.maxStep?'done':'');
     if(i) h += `<div class="st-line${n<=S.maxStep?' done':''}"></div>`;
     const locked = (S.review && S.review.status==='approved' && n<10) || (S.step===9 && n<9);
-    h += `<button type="button" class="st ${cls}" data-go="${n}" ${n>S.maxStep||locked?'disabled':''} ${n===S.step?'aria-current="step"':''}><span class="st-dot">${n<S.step||(n<=S.maxStep&&n!==S.step)?'✓':n}</span><span class="st-lbl">${l}</span></button>`; });
+    const isDone = n<S.step||(n<=S.maxStep&&n!==S.step);
+    const dotContent = isDone ? `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>` : n;
+    h += `<button type="button" class="st ${cls}" data-go="${n}" title="${l}" ${n>S.maxStep||locked?'disabled':''} ${n===S.step?'aria-current="step"':''}><span class="st-dot">${dotContent}</span></button>`; });
   const bar=document.getElementById('stepper'); bar.innerHTML=h;
   const act=bar.querySelector('.st.active'); if(act && bar.scrollWidth>bar.clientWidth){ bar.scrollLeft = act.offsetLeft - bar.offsetLeft - (bar.clientWidth-act.offsetWidth)/2; }
+  // Update info row
+  const posEl=document.getElementById('stepPos'); const curEl=document.getElementById('stepCur');
+  if(posEl) posEl.textContent = `Step ${S.step} of ${STEPS.length}`;
+  if(curEl) curEl.textContent = STEPS[S.step-1]||'';
+  // Update progress bar
+  const fill=document.getElementById('stepProgFill'); if(fill) fill.style.width = ((S.step-1)/(STEPS.length-1)*100)+'%';
+  // Wire prev/next
+  const prevBtn=document.getElementById('stepPrev'); const nextBtn=document.getElementById('stepNext');
+  if(prevBtn){ prevBtn.disabled=S.step<=1; prevBtn.onclick=()=>{ if(S.step>1) go(S.step-1); }; }
+  if(nextBtn){ nextBtn.disabled=S.step>=S.maxStep; nextBtn.onclick=()=>{ if(S.step<S.maxStep) go(S.step+1); }; }
 }
 function render(){
   renderBadges(); renderStepper();
@@ -620,7 +724,7 @@ function render(){
   st.innerHTML = [null,step1,step2,step3,step4,step5,step6,step7,step8,step9,step10][S.step]();
   if(S.step===6){ const log=document.getElementById('chatLog'); if(log) log.scrollTop=log.scrollHeight; }
 }
-function go(n){ S.step=n; S.maxStep=Math.max(S.maxStep,n); save(); render(); window.scrollTo(0,0); onEnter(n); }
+function go(n){ S.step=n; S.maxStep=Math.max(S.maxStep,n); save(); render(); window.scrollTo(0,0); onEnter(n); esHook('step-change', {step: n}); }
 function onEnter(n){
   if(n===2) redesignFigs().forEach(it=>{ const r=S.picks[it.id]; if((!r||!r.batches.length) && !loading[it.id]) generate(S.picks,it.id,''); });
   if(n===5 && !S.decks && !loading.decks){ loading.decks=true; render(); setTimeout(()=>{ S.decks=buildDecks(); delete loading.decks; save(); render(); },1600); }
@@ -958,7 +1062,20 @@ function downloadPptx(){
 let uidN=0; const uid=()=>'s'+Date.now().toString(36)+(uidN++);
 function ensureIds(deck){ if(deck) deck.slides.forEach(s=>{ if(!s.id) s.id=uid(); }); }
 const LOW = g => g==='D'||g==='F';
+/* ES (prototype): show Medical Affairs suggestions on at most 4 slides. The pick is made once per review round,
+   by importance, then slide order, and stays fixed while slides are edited. */
+const MA_MAX_SUGGESTIONS = 4;
+const MA_PRIORITY = ['pre','sig','fund','aud','cav','src','short'];
 function maGuidance(s){
+  const R=S.review; if(!R || !S.work) return maGuidanceRaw(s);
+  if(!R.maPicked){
+    const c=S.work.slides.map((x,i)=>({id:x.id, i, g:maGuidanceRaw(x)})).filter(x=>x.g);
+    c.sort((a,b)=>(MA_PRIORITY.indexOf(a.g.k)-MA_PRIORITY.indexOf(b.g.k)) || (a.i-b.i));
+    R.maPicked=c.slice(0,MA_MAX_SUGGESTIONS).map(x=>x.id);
+  }
+  return R.maPicked.includes(s.id) ? maGuidanceRaw(s) : null;
+}
+function maGuidanceRaw(s){
   if(s.type==='cover') return s.sub.includes('healthcare professionals only') ? null : {k:'aud', text:'State the intended audience on the cover: for healthcare professionals only. This keeps the deck clearly educational.'};
   if(s.type==='figure') return s.fig && !/^Source:/.test(s.fig.cap) ? {k:'src', text:'Label the figure source directly under the image so it travels with the slide if it is reused.'} : null;
   if(s.type==='summary') return s.caveat ? null : {k:'cav', text:'Takeaways must not add claims beyond the slides. Add a line stating that they summarise the approved research only.'};
@@ -1004,7 +1121,7 @@ function implementAction(s, text){
   if(!did) did='Revised the slide to address this (simulated).';
   (s.revisions=s.revisions||[]).push({text, did}); return did;
 }
-function initReview(){ ensureIds(S.work); const round=(S.review&&S.review.round||0)+1; S.review={round, status:'ma', applied:{}, excludedSl:{}, rejected:{}, actions:{}, notes:'', started:new Date().toISOString()}; S.pending=null; S.cur=0; }
+function initReview(){ ensureIds(S.work); const round=(S.review&&S.review.round||0)+1; S.review={round, status:'ma', applied:{}, ignored:{}, excludedSl:{}, rejected:{}, actions:{}, notes:'', started:new Date().toISOString()}; S.pending=null; S.cur=0; }
 function actionCount(){ return Object.values(S.review.actions).filter(x=>x&&x.trim()).length; }
 function rejectCount(){ return Object.keys(S.review.rejected).length; }
 function blockReason(){ const a=actionCount(), r=rejectCount(); const parts=[]; if(a) parts.push(`${a} open action item${a===1?'':'s'}`); if(r) parts.push(`${r} rejected slide${r===1?'':'s'}`); return parts.length?`Approval is blocked by ${parts.join(' and ')}. ${r?'A deck with a rejected slide can only be rejected.':'Clear the action items to approve, or reject the deck so they can be implemented.'}`:''; }
@@ -1020,26 +1137,133 @@ function reviewOverlay(mode){ return (s, big)=>{
 
 /* ---------------- Step 8: Medical Affairs review ---------------- */
 function step8(){
-  const w=S.work, R=S.review; const s=w.slides[S.cur]; const g=maGuidance(s); const ex=!!R.excludedSl[s.id]; const done=R.applied[s.id];
-  const exN=Object.keys(R.excludedSl).length, apN=Object.keys(R.applied).length, openN=w.slides.filter(x=>!R.excludedSl[x.id]&&maGuidance(x)).length;
-  return `<div class="page-head"><div class="page-head-text"><h2>Medical Affairs review</h2><p>Reviewer's view · round ${R.round}. For each slide the AI gives guidance from a Medical Affairs point of view. Apply it with AI, exclude the slide, or leave it as is. Then submit the deck for scientific review.</p></div>
-    <div class="tally"><div class="tally-item"><div class="tally-num">${apN}</div><div class="tally-lbl">Suggestions applied</div></div><div class="tally-item"><div class="tally-num">${exN}</div><div class="tally-lbl">Slides excluded</div></div></div></div>
+  const w=S.work, R=S.review;
+  const exN=Object.keys(R.excludedSl).length, apN=Object.keys(R.applied).length, igN=maIgnoredSlides().length, openN=maOpenSlides().length;
+  return `<div class="page-head"><div class="page-head-text"><h2>Medical Affairs review</h2><p>Reviewer's view · round ${R.round}. For each slide the AI gives guidance from a Medical Affairs point of view. Apply it with AI, ignore it, exclude the slide, or leave it as is. Then submit the deck for scientific review.</p></div>
+</div>
   <div class="refine"><div>${viewerHtml(w,S.cur,'work',reviewOverlay('ma'))}</div>
-    <aside class="rv-panel"><div class="rv-kicker">Slide ${S.cur+1} · ${esc(s.title)}</div>
-      <div class="rv-box ma"><b>Medical Affairs guidance</b>${done?`<p>✓ Applied: ${esc(done)}</p>`:g?`<p>${esc(g.text)}</p>`:'<p>No Medical Affairs concerns for this slide.</p>'}</div>
-      ${!done&&g?`<button type="button" class="btn" id="maApply" ${ex?'disabled':''}>${ICON.spark} Apply suggestion with AI</button>`:''}
-      ${done&&R.orig&&R.orig[s.id]?`<button type="button" class="btn secondary" id="maRevert">${ICON.back} Revert to original slide</button>`:''}
-      ${s.type==='cover'?'<p class="rv-hint">The cover slide can\'t be excluded.</p>':`<button type="button" class="btn secondary" id="maExclude">${ex?'Include slide again':'Exclude slide'}</button>`}
+    <aside class="rv-panel">${maSuggestPanel()}
       <div class="rv-nav"><button type="button" class="pill-btn" data-slide="${S.cur-1}" data-v="work" ${S.cur<=0?'disabled':''}>Previous slide</button><button type="button" class="pill-btn" data-slide="${S.cur+1}" data-v="work" ${S.cur>=w.slides.length-1?'disabled':''}>Next slide</button></div></aside></div>
-  <div class="next-bar"><button type="button" class="btn secondary" data-go="7">${ICON.back} Publish</button><p class="next-summary">${openN?`<b>${openN}</b> slide${openN===1?' has':'s have'} guidance not applied. You can still submit.`:'All guidance addressed.'}${exN?` <b>${exN}</b> excluded slide${exN===1?'':'s'} will be removed.`:''}</p>
+  <div class="next-bar"><button type="button" class="btn secondary" data-go="7">${ICON.back} Publish</button><p class="next-summary">${openN?`<b>${openN}</b> slide${openN===1?' has':'s have'} a suggestion to review. You can still submit.`:'All suggestions handled.'}${igN?` <b>${igN}</b> ignored.`:''}${exN?` <b>${exN}</b> excluded slide${exN===1?'':'s'} will be removed.`:''}</p>
     <button type="button" class="btn" id="toSci">Submit for scientific review ${ICON.arrow}</button></div>`;
+}
+
+/* ===== ES (Evidence Studio): Medical Affairs approval, Scientific Affairs approval and rejection dialogs ===== */
+let esDlg=null; // 'ma' | 'sa' | 'rej'
+function esCtx(){ try{ if(window.parent!==window && window.parent.ESHost && window.parent.ESHost.context) return window.parent.ESHost.context(window)||{}; }catch(e){} return {}; }
+function esWhen(t){ return new Date(t).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }
+function esWait(ms){ ms=Math.max(0,ms); const D=864e5,H=36e5,M=6e4,d=Math.floor(ms/D),h=Math.floor(ms%D/H),m=Math.floor(ms%H/M); return d?`${d} day${d===1?'':'s'}${h?` ${h} h`:''}`:h?`${h} h${m?` ${m} min`:''}`:(m<1?'just now':`${m} min`); }
+function esBan(kind,a){ if(!a) return ''; const lbl={ma:'Medical approval',sa:'Scientific approval',rej:'Rejected'}[kind];
+  return `<div class="es-ban ${kind==='ma'?'':kind}" role="note"><div><b>${lbl}:</b> ${esc(a.byName||'')} · ${esWhen(a.at)}${a.round?` · round ${a.round}`:''}</div>${a.note?`<div class="n"><span>Note:</span> ${esc(a.note)}</div>`:''}</div>`; }
+function esBans(list){ const R=S.review; if(!R) return ''; const h=list.map(([k,a])=>esBan(k,a)).join(''); return h?`<div class="es-bans">${h}</div>`:''; }
+function esSummaryHtml(ctx){
+  const w=S.work, secs=new Set(w.slides.map(x=>x.section).filter(Boolean)).size;
+  const rName=ctx.researchName||DATA.topic, rOk=ctx.researchApproved!=null?ctx.researchApproved:S.approved;
+  return `<div class="es-d-tiles"><div class="es-d-tile"><span>Slides</span><b>${w.slides.length}</b></div><div class="es-d-tile"><span>Version</span><b>${w.version}</b></div><div class="es-d-tile"><span>Sections</span><b>${secs}</b></div></div>
+    <div class="es-d-row"><span class="k">Built from</span><span class="v">${esc(rName)} <span class="es-d-pill ${rOk?'ok':'thin'}">${rOk?'Approved research':'Research not approved'}</span></span></div>`;
+}
+function esFlags(list){ return `<div class="es-d-flags">${list.map(([k,t])=>`<div class="es-d-flag ${k==='ok'?'ok':''}">${t}</div>`).join('')}</div><p class="es-d-hint">These are warnings. You can still approve.</p>`; }
+function esSlideList(ids){ const w=S.work; const n=ids.map(id=>w.slides.findIndex(x=>x.id===id)+1).filter(x=>x>0).sort((a,b)=>a-b); return n.length?` (slide${n.length===1?'':'s'} ${n.length<2?n[0]:n.slice(0,-1).join(', ')+' and '+n[n.length-1]})`:''; }
+function renderEsDlg(){
+  const root=document.getElementById('esDlgRoot'); if(!esDlg){ root.innerHTML=''; return; }
+  const ctx=esCtx(), w=S.work, R=S.review, deckName=ctx.artifactName||w.name;
+  const head=(title,subs)=>`<div class="es-d-head"><div style="min-width:0"><h3 id="esdTitle">${title}</h3>${subs.filter(Boolean).map(x=>`<div class="es-d-sub">${x}</div>`).join('')}</div><button type="button" class="es-d-x" id="esdClose" aria-label="Close">✕</button></div>`;
+  const signoff=(who,att,to,ph,lbl)=>`<section><h4 class="es-d-h">${who} sign-off</h4><label class="es-d-att"><input type="checkbox" id="esdAtt"> <span>${att}</span></label>
+    <label class="es-d-note-l" for="esdNote">Note to ${to} <span>(optional)</span></label><textarea id="esdNote" maxlength="600" placeholder="${ph}"></textarea>
+    <p class="es-d-who">${lbl} <b>${esc(ctx.userName||'you')}</b> · ${esWhen(Date.now())}</p></section>`;
+  let body='', foot='';
+  if(esDlg==='ma'){
+    const ex=w.slides.filter(x=>R.excludedSl[x.id]), open=maOpenSlides(), ign=maIgnoredSlides();
+    const flags=[open.length?['warn',`${open.length} slide${open.length===1?' has':'s have'} a Medical Affairs suggestion still to review${esSlideList(open.map(x=>x.id))}.${ign.length?` ${ign.length} ${ign.length===1?'was':'were'} ignored.`:''}`]:['ok',`All Medical Affairs suggestions were handled.${ign.length?` ${ign.length} ${ign.length===1?'was':'were'} ignored.`:''}`]];
+    if(ex.length) flags.push(['warn',`${ex.length} excluded slide${ex.length===1?'':'s'} will be removed when you submit: ${ex.map(x=>'"'+esc(x.title)+'"').join(', ')}.`]);
+    body=head('Approve deck for Scientific Review',[esc(deckName),`Round ${R.round}${R.round>1?' · resubmission after rejection':''} · Medical Affairs review`])+
+      `<div class="es-d-body"><section><h4 class="es-d-h">What you're approving</h4>${esSummaryHtml(ctx)}</section><section><h4 class="es-d-h">Checks before you approve</h4>${esFlags(flags)}</section>
+      ${signoff('Medical Affairs','I have reviewed this deck for Medical Affairs and approve it for scientific review.','Scientific Affairs','Slide 9 keeps the trial wording as published.','Approving as')}
+      <p class="es-d-hint" style="margin:0">🔒 The deck locks once submitted, unless Scientific Affairs sends it back.</p></div>`;
+    foot=`<button type="button" class="btn secondary" id="esdCancel">Cancel</button><button type="button" class="btn" id="esdGo" disabled>Approve and submit</button>`;
+  } else if(esDlg==='sa'){
+    const sug=w.slides.filter(x=>sciGuidance(x).length);
+    const flags=[sug.length?['warn',`${sug.length} slide${sug.length===1?' still has':'s still have'} scientific suggestions${esSlideList(sug.map(x=>x.id))}.`]:['ok','No slides have open scientific suggestions.'],['ok','No slides rejected and no open action items.']];
+    body=head('Approve deck',[esc(deckName),`Round ${R.round}${ctx.submittedByName?` · submitted by ${esc(ctx.submittedByName)}`:''}${ctx.submittedAt?` · waiting ${esWait(Date.now()-ctx.submittedAt)}`:''}`])+
+      `<div class="es-d-body"><section><h4 class="es-d-h">What you're approving</h4>${esSummaryHtml(ctx)}</section>
+      <section><h4 class="es-d-h">Medical approval</h4>${R.maApproval?esBan('ma',R.maApproval):'<p class="es-d-hint" style="margin:0">No Medical Affairs approval was recorded for this round.</p>'}</section>
+      <section><h4 class="es-d-h">Checks before you approve</h4>${esFlags(flags)}</section>
+      ${signoff('Scientific Affairs','I have reviewed this deck for scientific accuracy and approve it for use.','Medical Affairs','Approved. Refresh slide 12 when the 2025 trial publishes.','Approving as')}
+      <p class="es-d-hint" style="margin:0">✓ The deck locks as approved and can be downloaded as PowerPoint.</p></div>`;
+    foot=`<button type="button" class="btn secondary" id="esdCancel">Cancel</button><button type="button" class="btn ok" id="esdGo" disabled>Approve deck</button>`;
+  } else {
+    const items=[]; w.slides.forEach((sl,i)=>{ const r=R.rejected[sl.id], a=(R.actions[sl.id]||'').trim();
+      if(r) items.push(`<div class="es-d-row es-d-rej"><span class="k">Slide ${i+1} · ${esc(sl.title)}</span><span class="v">Rejected: ${esc(r)}</span></div>`);
+      if(a) items.push(`<div class="es-d-row"><span class="k">Slide ${i+1} · ${esc(sl.title)}</span><span class="v">Action item: ${esc(a)}</span></div>`); });
+    const need=!items.length;
+    body=head('Reject this deck?',[`${esc(deckName)} · round ${R.round}`])+
+      `<div class="es-d-body"><p style="margin:0;font-size:13.5px">The deck goes back${ctx.submittedByName?` to ${esc(ctx.submittedByName)}`:''} in Refine with AI${items.length?', with this feedback:':'.'}</p>
+      ${items.length?`<section><h4 class="es-d-h">Going back with the deck</h4>${items.join('')}</section>`:''}
+      <section><label class="es-d-note-l" style="margin-top:0" for="esdNote">Note to Medical Affairs ${need?'<span>(required: there is no slide feedback)</span>':'<span>(optional)</span>'}</label>
+      <textarea id="esdNote" maxlength="600" placeholder="${need?'Explain what needs to change.':'Each rejected slide has its own reason. Add anything about the deck as a whole.'}"></textarea>${need?'<p class="es-d-err" id="esdErr" hidden>Add a note so Medical Affairs knows what to change.</p>':''}</section></div>`;
+    foot=`<button type="button" class="btn secondary" id="esdCancel">Cancel</button><button type="button" class="btn danger" id="esdGo" ${need?'disabled':''} data-need="${need?1:0}">Reject deck</button>`;
+  }
+  root.innerHTML=`<div class="overlay" id="esdOv" role="dialog" aria-modal="true" aria-labelledby="esdTitle"><div class="overlay-panel es-d-panel">${body}<div class="es-d-foot">${foot}</div></div></div>`;
+  setTimeout(()=>{ const f=document.getElementById(esDlg==='rej'?'esdNote':'esdAtt'); f&&f.focus(); },30);
+}
+function esOpenDlg(k){ esDlg=k; renderEsDlg(); }
+function esCloseDlg(){ esDlg=null; renderEsDlg(); }
+document.getElementById('esDlgRoot').addEventListener('click', e=>{
+  const id=e.target.id;
+  if(id==='esdOv'||id==='esdClose'||id==='esdCancel'){ esCloseDlg(); return; }
+  if(id!=='esdGo') return;
+  const btn=e.target; if(btn.disabled) return;
+  const ctx=esCtx(), note=(document.getElementById('esdNote')||{value:''}).value.trim(), k=esDlg, R=S.review;
+  const rec={byName:ctx.userName||(k==='ma'?'Medical Affairs':'Scientific Affairs'), at:Date.now(), note, round:R.round};
+  esCloseDlg();
+  if(k==='ma') esDoSubmit(rec); else if(k==='sa') esDoApprove(rec); else esDoReject(rec);
+});
+document.getElementById('esDlgRoot').addEventListener('change', e=>{ if(e.target.id==='esdAtt'){ const g=document.getElementById('esdGo'); if(g) g.disabled=!e.target.checked; } });
+document.getElementById('esDlgRoot').addEventListener('input', e=>{ if(e.target.id==='esdNote'){ const g=document.getElementById('esdGo'); if(g&&g.dataset.need==='1') g.disabled=!e.target.value.trim(); } });
+/* ===== end ES ===== */
+/* ES: the actions behind the three dialogs */
+function esDoSubmit(rec){ S.review.maApproval=rec; esHook('submitted',{approval:{at:rec.at,note:rec.note}}); /* ES-HOOK */ const R=S.review; if(Object.keys(R.excludedSl).length){ S.work.slides=S.work.slides.filter(x=>!R.excludedSl[x.id]); S.work.version++; } R.excludedSl={}; R.status='sci'; S.cur=0; S.maxStep=8; go(9); toast('Submitted for scientific review'); }
+function esDoApprove(rec){ S.review.saApproval=rec; S.review.rejectNote=null; esHook('decision',{outcome:'approved',note:rec.note,snapshot:JSON.stringify(S)}); /* ES-HOOK */ S.review.status='approved'; S.review.approvedAt=new Date().toISOString(); S.cur=0; S.maxStep=9; go(10); toast('Deck approved'); }
+function esDoReject(rec){ S.review.rejectNote=rec; S.review.saApproval=null; esHook('decision',{outcome:'rejected',note:rec.note,snapshot:JSON.stringify(S)}); /* ES-HOOK */ const R=S.review; const w=S.work;
+    const lines=[]; const pend={};
+    w.slides.forEach((sl,i)=>{ const r=R.rejected[sl.id]; const a=(R.actions[sl.id]||'').trim();
+      if(r||a){ pend[sl.id]={reason:r||null, action:a||null}; lines.push(`• Slide ${i+1} "${sl.title}"${r?` rejected: ${r}`:''}${r&&a?';':''}${a?` action item: ${a}`:''}`); } });
+    S.pending=Object.keys(pend).length?pend:null; R.status='rejected';
+    S.chat.push({r:'ai', t:`The scientific reviewer rejected the deck (round ${R.round}).\n\n${lines.length?lines.join('\n'):'No slide-level feedback.'}${rec.note?`\n\nNote from ${rec.byName}: ${rec.note}`:''}${S.pending?'\n\nEach slide\'s feedback shows above this chat when you open that slide. Rejected slides are marked in red.':''}\n\nWhen you're done, publish and send the deck for review again.`});
+    const first=w.slides.findIndex(x=>pend[x.id]); S.cur=first<0?0:first; S.maxStep=6; go(6); toast('Deck rejected. Back to Refine with AI'); }
+
+/* ES: Medical Affairs suggestion state per slide in the current review round */
+function maIgnoredMap(){ const R=S.review; if(!R.ignored) R.ignored={}; return R.ignored; }
+function maSlideState(x){ const R=S.review; if(R.excludedSl[x.id]) return 'excluded'; if(R.applied[x.id]) return 'resolved'; if(!maGuidance(x)) return null; return maIgnoredMap()[x.id] ? 'ignored' : 'open'; }
+function maOpenSlides(){ return S.work.slides.filter(x=>maSlideState(x)==='open'); }
+function maIgnoredSlides(){ return S.work.slides.filter(x=>maSlideState(x)==='ignored'); }
+function esAuto(){ return window.ES_AUTO_ADVANCE!==false; }
+const MA_DID={aud:'Added "For healthcare professionals only" to the cover.', src:'Labelled the figure source under the image.', cav:'Added a line saying the takeaways summarise the approved research only.', pre:'Reframed the low-grade points as preliminary evidence.', sig:'Removed "significantly" where no statistic was given.', fund:'Flagged industry funding next to the citations.', short:'Tightened each point to one message.'};
+const maDetailsOpen=new Set();
+function maNextOpen(){ const w=S.work; const L=w.slides.map((x,i)=>[x,i]).filter(([x])=>maSlideState(x)==='open').map(([,i])=>i); if(!L.length) return; const n=L.find(i=>i>S.cur); S.cur = n!=null ? n : L[0]; }
+function maSuggestPanel(){
+  const w=S.work, R=S.review, s=w.slides[S.cur], st=maSlideState(s), g=maGuidance(s);
+  const listed=w.slides.map((x,i)=>[x,i,maSlideState(x)]).filter(([,,k])=>k&&k!=='excluded');
+  const open=listed.filter(([,,k])=>k==='open').length, resN=listed.filter(([,,k])=>k==='resolved').length, ignN=listed.filter(([,,k])=>k==='ignored').length;
+  const counts=[`${open} to review`, `${resN} resolved`, `${ignN} ignored`].join(' · ');
+  const chips=listed.map(([x,i,k])=>`<button type="button" class="ms-chip${k==='resolved'?' done':''}${k==='ignored'?' ign':''}${i===S.cur?' on':''}" data-slide="${i}" data-v="work" aria-label="Slide ${i+1}, ${k==='open'?'to review':k}">${i+1}</button>`).join('');
+  let body; const busy=loading['ma-'+s.id];
+  if(st==='excluded') body=`<p class="ms-none">Slide ${S.cur+1} is excluded. It will be removed when you submit. ${s.type==='cover'?'':`<button type="button" class="lnk" id="maExclude">Include slide again</button>`}</p>`;
+  else if(st==='resolved'){ const det=maDetailsOpen.has(s.id); body=`<div class="ms-card ms-done"><b>✓ Resolved on this slide</b><div style="font-size:13px">${esc((R.appliedDid&&R.appliedDid[s.id])||'The AI applied this suggestion.')}</div>${det?`<div class="ms-text" role="note">Suggestion: ${esc(R.applied[s.id])}</div>`:''}<div class="ms-actions"><button type="button" class="ms-lnk" id="maDetails" aria-expanded="${det}">${det?'Hide details':'Details'}</button><span class="r">${R.orig&&R.orig[s.id]?`<button type="button" class="pill-btn" id="maRevert">Undo</button>`:''}${s.type==='cover'?'':'<button type="button" class="pill-btn" id="maExclude">Exclude slide</button>'}</span></div></div>`; }
+  else if(!g) body=`<p class="ms-none">No Medical Affairs suggestion on slide ${S.cur+1}.${s.type==='cover'?'':' <button type="button" class="lnk" id="maExclude">Exclude slide</button>'}</p>`;
+  else body=`<div class="ms-card"><b>${st==='ignored'?'Suggestion ignored':'Medical Affairs suggestion'}</b><div class="ms-text" role="note">${esc(g.text)}</div>
+    <div class="ms-actions"><span class="pa-hint">${st==='ignored'?'Ignored. It won\'t count as to review.':'Apply it, ignore it, or exclude the slide.'}</span><span class="r">${st==='ignored'
+      ? '<button type="button" class="pill-btn" id="maUnignore">Revert</button>'
+      : `<button type="button" class="pill-btn" id="maIgnore" ${busy?'disabled':''}>Ignore</button>${s.type==='cover'?'':`<button type="button" class="pill-btn" id="maExclude" ${busy?'disabled':''}>Exclude slide</button>`}<button type="button" class="btn ma" id="maApply" ${busy?'disabled':''}>${busy?'<span class="spinner"></span> Applying…':ICON.spark+' Apply with AI'}</button>`}</span></div></div>`;
+  return `<section class="ms-panel" aria-label="Medical Affairs suggestions"><b>✦ Medical Affairs suggestions · slide ${S.cur+1}</b><p>From the Medical Affairs agent. ${open?counts+'.':'✓ All suggestions handled'+(resN||ignN?` · ${resN} resolved · ${ignN} ignored`:'')+'.'}</p>
+    ${listed.length?`<div class="ms-jump"><span>Slides with suggestions:</span>${chips}</div>`:''}${body}</section>`;
 }
 
 /* ---------------- Step 9: Scientific review ---------------- */
 function step9(){
   const w=S.work, R=S.review; const s=w.slides[S.cur]; const sug=sciGuidance(s); const rej=R.rejected[s.id]; const act=R.actions[s.id]||'';
   const block=blockReason();
-  return `<div class="page-head"><div class="page-head-text"><h2>Scientific review</h2><p>Reviewer's view · round ${R.round}. Check each slide's scientific suggestions. Reject a slide with a reason and add action items where changes are needed. Approve only when nothing is open. Rejecting the deck sends it back with your feedback.</p></div>
+  return esBans([['ma',R.maApproval],['sa',R.saApproval],['rej',R.rejectNote]])+`<div class="page-head"><div class="page-head-text"><h2>Scientific review</h2><p>Reviewer's view · round ${R.round}. Check each slide's scientific suggestions. Reject a slide with a reason and add action items where changes are needed. Approve only when nothing is open. Rejecting the deck sends it back with your feedback.</p></div>
     <div class="tally"><div class="tally-item${actionCount()?' warn':''}"><div class="tally-num">${actionCount()}</div><div class="tally-lbl">Open action items</div></div><div class="tally-item${rejectCount()?' warn':''}"><div class="tally-num">${rejectCount()}</div><div class="tally-lbl">Rejected slides</div></div></div></div>
   <div class="refine"><div>${viewerHtml(w,S.cur,'work',reviewOverlay('sci'))}</div>
     <aside class="rv-panel"><div class="rv-kicker">Slide ${S.cur+1} · ${esc(s.title)}</div>
@@ -1073,7 +1297,7 @@ function renderRejectModal(){
 /* ---------------- Step 10: Approved ---------------- */
 function step10(){
   const w=S.work, R=S.review;
-  return `<div class="page-head"><div class="page-head-text"><h2>Approved deck</h2><p>${esc(w.name)} · ${w.slides.length} slides · approved in scientific review round ${R.round}. The deck is locked. Use Start over to build a new one.</p></div></div>
+  return esBans([['ma',R.maApproval],['sa',R.saApproval]])+`<div class="page-head"><div class="page-head-text"><h2>Approved deck</h2><p>${esc(w.name)} · ${w.slides.length} slides · approved in scientific review round ${R.round}. The deck is locked. Use Start over to build a new one.</p></div></div>
   <div class="pub"><div>${viewerHtml(w,S.cur,'work')}</div>
     <aside class="pub-panel"><div class="sent">✓ Approved · ${esc(new Date(R.approvedAt).toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}))}</div>
       ${R.notes?`<h3>Reviewer notes</h3><p style="white-space:pre-wrap">${esc(R.notes)}</p>`:''}
@@ -1105,13 +1329,16 @@ document.addEventListener('click', e=>{
   if(d.slide!==undefined){ const i=+d.slide; if(d.v==='ovl'){ reviewCur=i; renderOverlay(); } else { S.cur=i; save(); render(); } return; }
   if(d.say){ sendChat(d.say); return; }
   if(t.id==='genDeck'){ const g=document.getElementById('genGuidance'); S.guidance=g?g.value:''; S.decks=null; S.chosen=null; S.work=null; S.reviewed={}; S.maxStep=4; go(5); return; }
-  if(t.id==='moreDeck'){ const gi=document.getElementById('deckGuidance'); const g=gi?gi.value:''; loading.extraDeck=true; render(); setTimeout(()=>{ S.decks.push(buildExtraDeck(g)); delete loading.extraDeck; save(); render(); toast('1 more design added'); },1300); return; }
+  if(t.id==='moreDeck'){ const gi=document.getElementById('deckGuidance'); const g=gi?gi.value:''; loading.extraDeck=true; render(); esDelay('extraDeck', 1300, ()=>{ S.decks.push(buildExtraDeck(g)); delete loading.extraDeck; save(); render(); toast('1 more design added'); }); return; }
   if(t.id==='doneBtn'){ go(7); return; }
   if(t.id==='sendMA'){ esHook('sent-ma'); /* ES-HOOK */ initReview(); S.maxStep=7; go(8); toast('Sent to Medical Affairs'); return; }
-  if(t.id==='maRevert'){ const s=S.work.slides[S.cur]; const o=S.review.orig&&S.review.orig[s.id]; if(!o) return; restoreSlide(s.id,o); delete S.review.orig[s.id]; delete S.review.applied[s.id]; S.work.version++; save(); render(); toast('Reverted to the original slide'); return; }
-  if(t.id==='maApply'){ const s=S.work.slides[S.cur]; const g=maGuidance(s); if(!g) return; t.disabled=true; t.innerHTML='<span class="spinner"></span> Applying…'; setTimeout(()=>{ (S.review.orig=S.review.orig||{})[s.id]=JSON.stringify(s); applyMA(s,g); S.work.version++; S.review.applied[s.id]=g.text; save(); render(); toast('Suggestion applied'); },700); return; }
-  if(t.id==='maExclude'){ const id=S.work.slides[S.cur].id; S.review.excludedSl[id]?delete S.review.excludedSl[id]:S.review.excludedSl[id]=true; save(); render(); return; }
-  if(t.id==='toSci'){ esHook('submitted'); /* ES-HOOK */ const R=S.review; if(Object.keys(R.excludedSl).length){ S.work.slides=S.work.slides.filter(x=>!R.excludedSl[x.id]); S.work.version++; } R.excludedSl={}; R.status='sci'; S.cur=0; S.maxStep=8; go(9); toast('Submitted for scientific review'); return; }
+  if(t.id==='maRevert'){ const s=S.work.slides[S.cur]; const o=S.review.orig&&S.review.orig[s.id]; if(!o) return; restoreSlide(s.id,o); delete S.review.orig[s.id]; delete S.review.applied[s.id]; if(S.review.appliedDid) delete S.review.appliedDid[s.id]; maDetailsOpen.delete(s.id); S.work.version++; save(); render(); toast('Undone. The suggestion is back to review.'); return; }
+  if(t.id==='maApply'){ const s=S.work.slides[S.cur]; const g=maGuidance(s); if(!g) return; loading['ma-'+s.id]=true; render(); setTimeout(()=>{ delete loading['ma-'+s.id]; (S.review.orig=S.review.orig||{})[s.id]=JSON.stringify(s); applyMA(s,g); S.work.version++; S.review.applied[s.id]=g.text; (S.review.appliedDid=S.review.appliedDid||{})[s.id]=MA_DID[g.k]||''; delete maIgnoredMap()[s.id]; if(esAuto()) maNextOpen(); save(); render(); toast('Suggestion resolved'); },700); return; }
+  if(t.id==='maIgnore'){ const s=S.work.slides[S.cur]; maIgnoredMap()[s.id]=true; if(esAuto()) maNextOpen(); save(); render(); toast('Suggestion ignored. Find it by its faded chip to view or revert it.'); return; }
+  if(t.id==='maDetails'){ const id=S.work.slides[S.cur].id; maDetailsOpen.has(id)?maDetailsOpen.delete(id):maDetailsOpen.add(id); render(); return; }
+  if(t.id==='maUnignore'){ delete maIgnoredMap()[S.work.slides[S.cur].id]; save(); render(); toast('Back to review'); return; }
+  if(t.id==='maExclude'){ const id=S.work.slides[S.cur].id; if(S.review.excludedSl[id]) delete S.review.excludedSl[id]; else { S.review.excludedSl[id]=true; if(esAuto()) maNextOpen(); } save(); render(); return; }
+  if(t.id==='toSci'){ esOpenDlg('ma'); return; }
   if(t.id==='sciReject'){ rejectOpen=S.work.slides[S.cur].id; renderRejectModal(); return; }
   if(t.id==='sciRevert'){ delete S.review.rejected[S.work.slides[S.cur].id]; save(); render(); toast('Slide included again'); return; }
   if(t.id==='rjCancel'){ rejectOpen=null; renderRejectModal(); return; }
@@ -1126,14 +1353,8 @@ document.addEventListener('click', e=>{
       f.action=null; pendingLeft(); save(); render(); toast('Action item implemented'); },800); return; }
   if(d.rmrej){ const i=S.work.slides.findIndex(x=>x.id===d.rmrej); if(i<0) return; snapshot(); const sl=S.work.slides.splice(i,1)[0]; delete S.pending[d.rmrej]; pendingLeft(); S.work.version++; S.cur=Math.min(i,S.work.slides.length-1);
     S.chat.push({r:'ai', t:`Removed the rejected slide “${sl.title}”. Say “undo” to bring it back. (Now on version ${S.work.version}.)`}); save(); render(); toast('Slide removed'); return; }
-  if(t.id==='deckApprove'){ if(blockReason()) return; esHook('decision',{outcome:'approved',snapshot:JSON.stringify(S)}); /* ES-HOOK */ S.review.status='approved'; S.review.approvedAt=new Date().toISOString(); S.cur=0; S.maxStep=9; go(10); toast('Deck approved'); return; }
-  if(t.id==='deckReject'){ esHook('decision',{outcome:'rejected',snapshot:JSON.stringify(S)}); /* ES-HOOK */ const R=S.review; const w=S.work;
-    const lines=[]; const pend={};
-    w.slides.forEach((sl,i)=>{ const r=R.rejected[sl.id]; const a=(R.actions[sl.id]||'').trim();
-      if(r||a){ pend[sl.id]={reason:r||null, action:a||null}; lines.push(`• Slide ${i+1} “${sl.title}”${r?` rejected: ${r}`:''}${r&&a?';':''}${a?` action item: ${a}`:''}`); } });
-    S.pending=Object.keys(pend).length?pend:null; R.status='rejected';
-    S.chat.push({r:'ai', t:`The scientific reviewer rejected the deck (round ${R.round}).\n\n${lines.length?lines.join('\n'):'No slide-level feedback.'}${R.notes.trim()?`\n\nReviewer notes: ${R.notes.trim()}`:''}${S.pending?'\n\nEach slide\'s feedback shows above this chat when you open that slide. Rejected slides are marked in red.':''}\n\nWhen you're done, publish and send the deck for review again.`});
-    const first=w.slides.findIndex(x=>pend[x.id]); S.cur=first<0?0:first; S.maxStep=6; go(6); toast('Deck rejected. Back to Refine with AI'); return; }
+  if(t.id==='deckApprove'){ if(blockReason()) return; esOpenDlg('sa'); return; }
+  if(t.id==='deckReject'){ esOpenDlg('rej'); return; }
   if(t.id==='dlPptx'){ downloadPptx(); return; }
   if(t.id==='startOver'){ S=freshState(); reviewIdx=null; renderOverlay(); save(); render(); window.scrollTo(0,0); toast('Started over'); return; }
 });
@@ -1151,8 +1372,8 @@ function liveNote(text){
   if(!n){ n=document.createElement('div'); n.className='ov-note'; main.appendChild(n); }
   n.innerHTML='<b>Action item</b>'+esc(text);
 }
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(rejectOpen){ rejectOpen=null; renderRejectModal(); } else if(reviewIdx!==null){ reviewIdx=null; renderOverlay(); } } });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(esDlg){ esCloseDlg(); } else if(rejectOpen){ rejectOpen=null; renderRejectModal(); } else if(reviewIdx!==null){ reviewIdx=null; renderOverlay(); } } });
 document.getElementById('overlayRoot').addEventListener('click', e=>{ if(e.target.id==='ovl'){ reviewIdx=null; renderOverlay(); } });
 
-render(); onEnter(S.step);
+render(); onEnter(S.step); esHook('step-change', {step: S.step});
 </script>
