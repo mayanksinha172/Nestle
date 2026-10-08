@@ -501,6 +501,12 @@ html[data-es-mode="sa-review"] .infobar{display:none !important;}
 .r1-proceed{position:fixed; bottom:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:13px 40px; background:var(--panel); border-top:1px solid var(--line); box-shadow:0 -2px 16px rgba(15,31,74,0.07); z-index:9; gap:16px;}
 .r1-summary{font-size:13px; color:var(--ink-muted); font-weight:500; margin:0;}
 .r1-summary b{color:var(--ink); font-weight:700;}
+
+/* Global consistency: all steps match the organize-screen style */
+.page-head h2{font-size:26px;}
+.stage:not(.stage-s1){padding-bottom:90px;}
+.toolbar{border-top:none; border-bottom:1px solid var(--line); margin-top:12px;}
+.next-bar{position:fixed; bottom:0; left:0; right:0; z-index:9; margin-top:0; padding:13px 24px; border-top:1px solid var(--line); box-shadow:0 -2px 16px rgba(15,31,74,0.07); background:var(--panel);}
 </style>
 <div id="infobar" class="infobar">
   <span class="infobar-brand">Medical Affairs Presentation Agent</span>
@@ -799,11 +805,11 @@ function renderStepper(){
 }
 function render(){
   renderBadges(); renderStepper();
-  const isS1 = S.step === 1;
-  const sb = document.getElementById('stepBar'); if(sb) sb.style.display = isS1 ? 'none' : '';
-  const mw = document.getElementById('mainWrap'); if(mw) mw.className = isS1 ? 'wrap wrap-full' : 'wrap';
+  const sb = document.getElementById('stepBar'); if(sb) sb.style.display = 'none';
+  const fullWide = [1,3,4].includes(S.step);
+  const mw = document.getElementById('mainWrap'); if(mw) mw.className = fullWide ? 'wrap wrap-full' : 'wrap';
   const st=document.getElementById('stage');
-  st.className = 'stage' + (isS1 ? ' stage-s1' : (S.step<=4 ? ' narrow' : ''));
+  st.className = 'stage' + (fullWide ? ' stage-s1' : '');
   ensureIds(S.work);
   st.innerHTML = [null,step1,step2,step3,step4,step5,step6,step7,step8,step9,step10][S.step]();
   if(S.step===6){ const log=document.getElementById('chatLog'); if(log) log.scrollTop=log.scrollHeight; }
@@ -825,39 +831,40 @@ function chipsHtml(it){ const p=paperById[it.paperId];
   return `<div class="chips"><span class="chip">${esc(p.design)}</span><span class="chip">${esc(p.certainty)}</span><span class="chip">${p.citations} citations</span>${p.funding==='industry'?'<span class="chip warm">Industry-funded</span>':p.funding==='mixed'?'<span class="chip warm">Part industry-funded</span>':''}</div>`; }
 function gradeHtml(it){ const p=paperById[it.paperId]; return `<div class="grade grade-${p.grade}" title="Evidence grade ${p.grade}">${p.grade}</div>`; }
 
+/* ---------------- Shared: section colour + type-pill helpers (used by steps 1, 3, 4) ---------------- */
+const TCOLS=['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+function tpStyle(d){
+  const v=(d||'').toLowerCase();
+  if(v.includes('meta')&&v.includes('anal')) return 'background:rgba(109,40,217,0.09);color:#6d28d9';
+  if(v.includes('rct')||v.includes('randomiz')||v.includes('randomis')) return 'background:rgba(29,78,216,0.09);color:#1d4ed8';
+  if(v.includes('systematic')) return 'background:rgba(8,145,178,0.09);color:#0891b2';
+  if(v.includes('registry')) return 'background:rgba(220,38,38,0.09);color:#dc2626';
+  if(v.includes('cohort')||v.includes('real-world')) return 'background:rgba(234,88,12,0.09);color:#c2410c';
+  if(v.includes('cross')||v.includes('survey')) return 'background:rgba(16,185,129,0.09);color:#059669';
+  if(v.includes('case series')) return 'background:rgba(180,83,9,0.09);color:#b45309';
+  if(v.includes('expert')||v.includes('commentary')) return 'background:rgba(100,116,139,0.09);color:#475569';
+  return 'background:rgba(12,26,61,0.07);color:#3d5499';
+}
+function tpLabel(d){
+  const v=(d||'').toLowerCase();
+  if(v.includes('meta-analysis')||v.includes('meta analysis')) return 'Meta-Analysis';
+  if(v.includes('rct')||v.match(/randomized.*trial|randomised.*trial/)) return 'RCT';
+  if(v.includes('systematic review')) return 'Systematic Review';
+  if(v.includes('cross-sectional')) return 'Cross-Sectional';
+  if(v.includes('narrative review')) return 'Narrative Review';
+  if(v.includes('cohort')) return 'Cohort Study';
+  if(v.includes('real-world')) return 'Real-World';
+  if(v.includes('case-control')) return 'Case-Control';
+  if(v.includes('case series')) return 'Case Series';
+  if(v.includes('expert')||v.includes('commentary')) return 'Expert Opinion';
+  if(v.includes('registry')) return 'Registry';
+  return d||'Study';
+}
+
 /* ---------------- Step 1: Research review (organize-screen layout) ---------------- */
 function step1(){
   const u=using(), left=leftOutSections().length;
   const ex=u.filter(i=>i.kind==='excerpt').length, fg=u.filter(i=>i.kind==='figure').length;
-  const TCOLS=['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
-
-  function tpStyle(d){
-    const v=(d||'').toLowerCase();
-    if(v.includes('meta')&&v.includes('anal')) return 'background:rgba(109,40,217,0.09);color:#6d28d9';
-    if(v.includes('rct')||v.includes('randomiz')||v.includes('randomis')) return 'background:rgba(29,78,216,0.09);color:#1d4ed8';
-    if(v.includes('systematic')) return 'background:rgba(8,145,178,0.09);color:#0891b2';
-    if(v.includes('registry')) return 'background:rgba(220,38,38,0.09);color:#dc2626';
-    if(v.includes('cohort')||v.includes('real-world')) return 'background:rgba(234,88,12,0.09);color:#c2410c';
-    if(v.includes('cross')||v.includes('survey')) return 'background:rgba(16,185,129,0.09);color:#059669';
-    if(v.includes('case series')) return 'background:rgba(180,83,9,0.09);color:#b45309';
-    if(v.includes('expert')||v.includes('commentary')) return 'background:rgba(100,116,139,0.09);color:#475569';
-    return 'background:rgba(12,26,61,0.07);color:#3d5499';
-  }
-  function tpLabel(d){
-    const v=(d||'').toLowerCase();
-    if(v.includes('meta-analysis')||v.includes('meta analysis')) return 'Meta-Analysis';
-    if(v.includes('rct')||v.match(/randomized.*trial|randomised.*trial/)) return 'RCT';
-    if(v.includes('systematic review')) return 'Systematic Review';
-    if(v.includes('cross-sectional')) return 'Cross-Sectional';
-    if(v.includes('narrative review')) return 'Narrative Review';
-    if(v.includes('cohort')) return 'Cohort Study';
-    if(v.includes('real-world')) return 'Real-World';
-    if(v.includes('case-control')) return 'Case-Control';
-    if(v.includes('case series')) return 'Case Series';
-    if(v.includes('expert')||v.includes('commentary')) return 'Expert Opinion';
-    if(v.includes('registry')) return 'Registry';
-    return d||'Study';
-  }
 
   let secHtml='';
   DATA.sections.forEach((sec,si)=>{
@@ -993,50 +1000,180 @@ function step2(){
   return h;
 }
 
-/* ---------------- Step 3: Figures from excerpts ---------------- */
+/* ---------------- Step 3: Figures from excerpts (r1-* layout) ---------------- */
 function step3(){
   const wanted=wantedEx(); const missing=wanted.filter(i=>!chosenUrl(S.exfig[i.id])).length;
-  let secs='';
-  includedSections().forEach((sec,i)=>{
+  let secHtml='';
+  includedSections().forEach((sec,si)=>{
+    const col=TCOLS[si%TCOLS.length];
     const ex=secItems(sec,usedExcerpts());
     const w=ex.filter(e=>S.exfig[e.id]&&S.exfig[e.id].wanted).length;
-    const inner = ex.length ? `<div class="cards">${ex.map(it=>{ const rec=S.exfig[it.id]; const on=!!(rec&&rec.wanted);
-      const other = it.sections.length>1 && it.sections[0]!==sec;
-      return `<article class="card">${gradeHtml(it)}<div class="card-body"><blockquote class="quote">${esc(it.text)}</blockquote>${sourceHtml(it)}</div>
-      <div class="card-foot"><span>${on?pickState(rec):''}</span>${other?`<span class="chip">Figure choice is shared with “${esc(it.sections[0])}”</span>`:`<button type="button" class="want-btn" data-want="${it.id}" aria-pressed="${on}">${ICON.spark}${on?'Figure requested':'Create a figure from this excerpt'}</button>`}</div>
-      ${on&&!other?`<div class="gen inline">${pickerHtml(S.exfig,it,true)}</div>`:''}</article>`; }).join('')}</div>` : `<div class="hidden-note">This section only has figures, which were handled in the previous step.</div>`;
-    secs += sectionShell(3,sec,i,`<span class="sec-count">${ex.length} excerpt${ex.length===1?'':'s'}${w?` · ${w} figure${w===1?'':'s'} requested`:''}</span>`,inner);
+    const collapsed=S.collapsed[3].includes(sec);
+    let cardsHtml='';
+    if(!ex.length){
+      cardsHtml=`<div class=”r1-empty-note”>This section only has figures, which were handled in the previous step.</div>`;
+    } else {
+      ex.forEach(it=>{
+        const p=paperById[it.paperId]; const rec=S.exfig[it.id]; const on=!!(rec&&rec.wanted);
+        const other=it.sections.length>1 && it.sections[0]!==sec;
+        const fund=p.funding==='industry'?'<span class=”chip warm”>Industry-funded</span>':p.funding==='mixed'?'<span class=”chip warm”>Part industry-funded</span>':'';
+        cardsHtml+=`<div class=”r1-card” style=”border-left-color:${col}”>
+          <div class=”r1-card-top”>
+            <span class=”r1-type” style=”${tpStyle(p.design)}”>${tpLabel(p.design)}</span>
+            <span class=”r1-db”>${esc(p.journal)} · ${p.year}</span>
+          </div>
+          <div class=”r1-card-title”>${esc(p.title)}</div>
+          <blockquote class=”r1-quote”>${esc(it.text)}</blockquote>
+          <div class=”r1-ref”>— ${esc(it.ref)}</div>
+          <div class=”r1-card-chips”>
+            <span class=”chip”>${esc(p.certainty)}</span>
+            <span class=”chip”>${p.citations} citations</span>
+            ${fund}
+            <span class=”chip”>Grade ${p.grade}</span>
+          </div>
+          <div class=”r1-card-foot”>
+            <span>${on&&!other?pickState(rec):''}</span>
+            ${other?`<span class=”chip”>Figure shared with &ldquo;${esc(it.sections[0])}&rdquo;</span>`:`<button type=”button” class=”want-btn” data-want=”${it.id}” aria-pressed=”${on}”>${ICON.spark}${on?'Figure requested':'Create a figure'}</button>`}
+          </div>
+          ${on&&!other?`<div class=”gen inline” style=”margin:12px 0 0”>${pickerHtml(S.exfig,it,true)}</div>`:''}
+        </div>`;
+      });
+    }
+    const badgeStyle=w
+      ?`background:rgba(44,82,204,0.08);color:#2c52cc;border:1px solid rgba(44,82,204,0.15)`
+      :`background:rgba(12,26,61,0.06);color:#3d5499;border:1px solid rgba(12,26,61,0.10)`;
+    const badgeLabel=w?`${w} figure${w===1?'':'s'} requested`:`${ex.length} excerpt${ex.length===1?'':'s'}`;
+    const bh=[10,7,14];
+    const bars=bh.map((h,bi)=>`<span style=”height:${h}px;background:${col};opacity:${bi<ex.length?0.75:0.15}”></span>`).join('');
+    secHtml+=`<div class=”r1-sec”>
+      <button type=”button” class=”r1-sec-head${collapsed?' collapsed':''}” data-fold=”3” data-sec=”${esc(sec)}”>
+        <span class=”r1-dot” style=”background:${col}”></span>
+        <span class=”r1-sec-name”>${esc(sec)}</span>
+        <span class=”r1-sec-badge” style=”${badgeStyle}”>${badgeLabel}</span>
+        <span class=”r1-bars”>${bars}</span>
+        <span class=”r1-chev”><svg width=”14” height=”14” viewBox=”0 0 14 14” fill=”none”><path d=”M3 5l4 4 4-4” stroke=”currentColor” stroke-width=”1.6” stroke-linecap=”round” stroke-linejoin=”round”/></svg></span>
+      </button>
+      <div class=”r1-sec-body${collapsed?' r1-hidden':''}”>${cardsHtml}</div>
+    </div>`;
   });
-  return `<div class="page-head"><div class="page-head-text"><h2>Figures from excerpts</h2><p>Optional. Choose any excerpt you'd like turned into a figure. The AI offers 5 designs based on that excerpt only. Pick one, ask for 5 more with guidance, or upload your own.</p></div>
-    <div class="tally"><div class="tally-item"><div class="tally-num">${wanted.length}</div><div class="tally-lbl">Figures requested</div></div></div></div>
-  <div class="toolbar"><div class="tool-left">${foldButtons(3)}</div><span class="note">Skip this step by continuing without choosing any.</span></div>
-  ${secs}
-  <p class="sim-note">Prototype: the AI designs are simulated placeholders.</p>
-  <div class="next-bar"><button type="button" class="btn secondary" data-go="2">${ICON.back} Figure refinement</button><p class="next-summary">${missing?`<span class="warn">Choose a design for ${missing} requested figure${missing===1?'':'s'}, or cancel the request.</span>`:wanted.length?`<b>${wanted.length}</b> new figure${wanted.length===1?'':'s'} will be added.`:'No new figures requested.'}</p>
-    <button type="button" class="btn" data-go="4" ${missing?'disabled':''}>Final review ${ICON.arrow}</button></div>`;
+  return `<div class=”r1-layout”>
+    <div class=”r1-header”>
+      <div>
+        <h1 class=”r1-title”>Figures from Excerpts</h1>
+        <p class=”r1-sub”>Optional. Choose any excerpt to turn into a figure. The AI offers 5 designs based on that excerpt only. Pick one, ask for 5 more with guidance, or upload your own.</p>
+      </div>
+      <div class=”tally”>
+        <div class=”tally-item”><div class=”tally-num”>${wanted.length}</div><div class=”tally-lbl”>Figures requested</div></div>
+      </div>
+    </div>
+    <div class=”r1-toolbar”>
+      <div class=”r1-fold-btns”>
+        <button type=”button” class=”pill-btn” data-foldall=”3” data-open=”1”>Expand all</button>
+        <button type=”button” class=”pill-btn” data-foldall=”3” data-open=”0”>Collapse all</button>
+      </div>
+      <span class=”note” style=”padding-bottom:12px”>Skip this step — continue without choosing any.</span>
+    </div>
+    <div class=”r1-sections”>${secHtml}
+      <p class=”sim-note” style=”padding:4px 0 0”>Prototype: the AI designs are simulated placeholders.</p>
+    </div>
+    <div class=”r1-proceed”>
+      <p class=”r1-summary”>${missing?`<span style=”color:#b91c1c;font-weight:700”>Choose a design for ${missing} requested figure${missing===1?'':'s'}, or cancel the request.</span>`:wanted.length?`<b>${wanted.length}</b> new figure${wanted.length===1?'':'s'} will be added.`:'No new figures requested.'}</p>
+      <div style=”display:flex;gap:10px”>
+        <button type=”button” class=”btn secondary” data-go=”2”>${ICON.back} Figure refinement</button>
+        <button type=”button” class=”btn” data-go=”4” ${missing?'disabled':''}>Final review ${ICON.arrow}</button>
+      </div>
+    </div>
+  </div>`;
 }
 
-/* ---------------- Step 4: Final review ---------------- */
+/* ---------------- Step 4: Final review (r1-* layout) ---------------- */
 function step4(){
-  let secs='';
-  includedSections().forEach((sec,i)=>{
-    const its=secItems(sec,using());
-    const inner=`<div class="cards">${its.map(it=>{
-      if(it.kind==='figure'){ const url=figureUrl(it);
-        return `<article class="card">${gradeHtml(it)}<div class="card-body"><div class="figure"><img src="${url}" alt="${esc(it.caption)}"><div class="figure-cap">${esc(it.caption)}<div class="chips">${it.asIs?'<span class="chip ok">Used as is</span>':S.picks[it.id].sel==='upload'?'<span class="chip ok">Your upload</span>':'<span class="chip ok">Redesigned</span>'}</div></div></div>${sourceHtml(it)}</div></article>`; }
-      const fu = it.sections[0]===sec ? excerptFigUrl(it) : null;
-      return `<article class="card">${gradeHtml(it)}<div class="card-body"><blockquote class="quote">${esc(it.text)}</blockquote>${sourceHtml(it)}${chipsHtml(it)}${fu?`<div class="final-fig"><img src="${fu}" alt="Figure generated from this excerpt"><div class="figure-cap">Figure generated from this excerpt<div class="chips"><span class="chip ok">${S.exfig[it.id].sel==='upload'?'Your upload':'AI design'}</span></div></div></div>`:''}</div></article>`;
-    }).join('')}</div>`;
-    const figs=its.filter(x=>x.kind==='figure').length + its.filter(x=>x.kind==='excerpt'&&x.sections[0]===sec&&excerptFigUrl(x)).length;
-    secs += sectionShell(4,sec,i,`<span class="sec-count">${its.filter(x=>x.kind==='excerpt').length} excerpts · ${figs} figure${figs===1?'':'s'}</span>`,inner);
-  });
   const lo=leftOutSections();
-  return `<div class="page-head"><div class="page-head-text"><h2>Final review</h2><p>This is everything the agent will use to build the deck, with your figures in place. Check it over, add optional guidance, then generate the deck.</p></div></div>
-  ${lo.length?`<div class="left-out"><b>Left out of the deck (no research):</b> ${lo.map(esc).join(', ')}</div>`:''}
-  <div class="toolbar"><div class="tool-left">${foldButtons(4)}</div><span class="note">${ICON.lock} To change anything, go back a step.</span></div>
-  ${secs}
-  <div class="next-bar" style="align-items:flex-end"><div class="guidance"><label for="genGuidance">Guidance for the deck <span>(optional)</span></label><textarea id="genGuidance" placeholder="e.g. keep it to about 12 slides, lead with the clinical evidence, one key message per slide">${esc(S.guidance)}</textarea></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn secondary" data-go="3">${ICON.back} Back</button><button type="button" class="btn" id="genDeck">Generate deck ${ICON.spark}</button></div></div>`;
+  let secHtml='';
+  includedSections().forEach((sec,si)=>{
+    const col=TCOLS[si%TCOLS.length];
+    const its=secItems(sec,using());
+    const collapsed=S.collapsed[4].includes(sec);
+    const figs=its.filter(x=>x.kind==='figure').length + its.filter(x=>x.kind==='excerpt'&&x.sections[0]===sec&&excerptFigUrl(x)).length;
+    const exN=its.filter(x=>x.kind==='excerpt').length;
+    let cardsHtml='';
+    its.forEach(it=>{
+      const p=paperById[it.paperId];
+      const fund=p.funding==='industry'?'<span class="chip warm">Industry-funded</span>':p.funding==='mixed'?'<span class="chip warm">Part industry-funded</span>':'';
+      if(it.kind==='figure'){
+        const url=figureUrl(it);
+        cardsHtml+=`<div class="r1-card" style="border-left-color:${col}">
+          <div class="r1-card-top">
+            <span class="r1-type" style="background:rgba(21,128,61,0.08);color:#15803d">Figure</span>
+            <span class="r1-db">${esc(p.journal)} · ${p.year}</span>
+          </div>
+          <div class="r1-card-title">${esc(p.title)}</div>
+          <img class="r1-fig-img" src="${url}" alt="${esc(it.caption)}">
+          <div class="r1-fig-cap">${esc(it.caption)}</div>
+          <div class="r1-card-chips">
+            ${it.asIs?'<span class="chip ok">Used as is</span>':S.picks[it.id]&&S.picks[it.id].sel==='upload'?'<span class="chip ok">Your upload</span>':'<span class="chip ok">Redesigned</span>'}
+            ${fund}
+          </div>
+        </div>`;
+      } else {
+        const fu=it.sections[0]===sec?excerptFigUrl(it):null;
+        cardsHtml+=`<div class="r1-card" style="border-left-color:${col}">
+          <div class="r1-card-top">
+            <span class="r1-type" style="${tpStyle(p.design)}">${tpLabel(p.design)}</span>
+            <span class="r1-db">${esc(p.journal)} · ${p.year}</span>
+          </div>
+          <div class="r1-card-title">${esc(p.title)}</div>
+          <blockquote class="r1-quote">${esc(it.text)}</blockquote>
+          <div class="r1-ref">— ${esc(it.ref)}</div>
+          <div class="r1-card-chips">
+            <span class="chip">${esc(p.certainty)}</span>
+            <span class="chip">${p.citations} citations</span>
+            ${fund}
+            <span class="chip">Grade ${p.grade}</span>
+          </div>
+          ${fu?`<div style="margin-top:14px"><div class="r1-card-top"><span class="r1-type" style="background:rgba(21,128,61,0.08);color:#15803d">Generated figure</span></div><img class="r1-fig-img" src="${fu}" alt="Figure from excerpt"><div class="r1-fig-cap">${S.exfig[it.id].sel==='upload'?'Your upload':'AI-generated figure'}</div></div>`:''}
+        </div>`;
+      }
+    });
+    const badgeStyle=`background:rgba(12,26,61,0.06);color:#3d5499;border:1px solid rgba(12,26,61,0.10)`;
+    const badgeLabel=`${exN} excerpt${exN===1?'':'s'} · ${figs} figure${figs===1?'':'s'}`;
+    const bh=[10,7,14];
+    const bars=bh.map((h,bi)=>`<span style="height:${h}px;background:${col};opacity:${bi<its.length?0.75:0.15}"></span>`).join('');
+    secHtml+=`<div class="r1-sec">
+      <button type="button" class="r1-sec-head${collapsed?' collapsed':''}" data-fold="4" data-sec="${esc(sec)}">
+        <span class="r1-dot" style="background:${col}"></span>
+        <span class="r1-sec-name">${esc(sec)}</span>
+        <span class="r1-sec-badge" style="${badgeStyle}">${badgeLabel}</span>
+        <span class="r1-bars">${bars}</span>
+        <span class="r1-chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="r1-sec-body${collapsed?' r1-hidden':''}">${cardsHtml}</div>
+    </div>`;
+  });
+  return `<div class="r1-layout">
+    <div class="r1-header">
+      <div>
+        <h1 class="r1-title">Final Review</h1>
+        <p class="r1-sub">Everything the agent will use to build the deck, with your figures in place. Check it over, add optional guidance, then generate the deck.</p>
+      </div>
+    </div>
+    ${lo.length?`<div style="margin:16px 40px 0"><div class="left-out"><b>Left out of the deck (no research):</b> ${lo.map(esc).join(', ')}</div></div>`:''}
+    <div class="r1-toolbar">
+      <div class="r1-fold-btns">
+        <button type="button" class="pill-btn" data-foldall="4" data-open="1">Expand all</button>
+        <button type="button" class="pill-btn" data-foldall="4" data-open="0">Collapse all</button>
+      </div>
+      <span class="note" style="padding-bottom:12px">${ICON.lock} To change anything, go back a step.</span>
+    </div>
+    <div class="r1-sections" style="padding-bottom:160px">${secHtml}</div>
+    <div class="r1-proceed" style="align-items:flex-end">
+      <div class="guidance" style="flex:1;min-width:0"><label for="genGuidance">Guidance for the deck <span style="font-weight:500;color:var(--ink-faint)">(optional)</span></label><textarea id="genGuidance" placeholder="e.g. keep it to about 12 slides, lead with the clinical evidence, one key message per slide" style="min-height:62px;margin-top:6px">${esc(S.guidance)}</textarea></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0">
+        <button type="button" class="btn secondary" data-go="3">${ICON.back} Back</button>
+        <button type="button" class="btn" id="genDeck">Generate deck ${ICON.spark}</button>
+      </div>
+    </div>
+  </div>`;
 }
 
 /* ---------------- Deck building ---------------- */
