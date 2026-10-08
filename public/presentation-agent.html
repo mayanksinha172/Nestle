@@ -424,17 +424,92 @@ textarea{width:100%; min-height:84px; resize:vertical; border:1.5px solid var(--
 html[data-es-mode="review-readonly"] #deckReject, html[data-es-mode="review-readonly"] #approveWrap,
 html[data-es-mode="review-readonly"] #sciReject, html[data-es-mode="review-readonly"] #sciRevert,
 html[data-es-mode="review-readonly"] #startOver, html[data-es-mode="review-readonly"] #demoStatus{display:none !important;}
-/* sa-review: outer React shell provides the header context, hide banner to avoid duplication */
-html[data-es-mode="sa-review"] .banner{display:none !important;}
+html[data-es-mode="sa-review"] .infobar{display:none !important;}
 /* ===== end ES-HOOK ===== */
+
+/* ===== Info bar ===== */
+.infobar{display:flex; align-items:center; gap:0; padding:0 24px; background:var(--panel); border-bottom:1px solid var(--line); height:44px; overflow:hidden; flex-shrink:0;}
+.infobar-brand{font-size:12px; font-weight:800; color:var(--ink); letter-spacing:-0.01em; white-space:nowrap; flex-shrink:0;}
+.infobar-sep{width:1px; height:18px; background:var(--line); margin:0 16px; flex-shrink:0;}
+.infobar-badge{display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; background:rgba(21,128,61,0.08); color:#15803d; border:1px solid rgba(21,128,61,0.22); white-space:nowrap; flex-shrink:0;}
+.infobar-fields{display:flex; align-items:center; gap:18px; flex:1; overflow:hidden;}
+.infobar-field{font-size:12px; color:var(--ink-faint); font-weight:500; white-space:nowrap;}
+.infobar-field b{color:var(--ink-muted); font-weight:700;}
+.infobar-pill{background:rgba(44,82,204,0.07); border:1px solid rgba(44,82,204,0.18); border-radius:100px; padding:2px 10px; color:#2c52cc; font-size:10.5px; font-weight:700; white-space:nowrap; flex-shrink:0;}
+
+/* ===== Step 1 full-screen layout (matches Organize screen) ===== */
+.wrap-full{max-width:none !important; padding-inline:0 !important;}
+.stage-s1{padding:0 !important;}
+
+.r1-layout{display:flex; flex-direction:column; min-height:calc(100vh - 44px);}
+
+/* Header */
+.r1-header{display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; justify-content:space-between; padding:28px 40px 0;}
+.r1-title{font-size:26px; font-weight:800; letter-spacing:-0.03em; color:var(--ink); margin:0 0 6px;}
+.r1-sub{font-size:13px; color:var(--ink-muted); font-weight:500; margin:0; max-width:68ch; line-height:1.65;}
+
+/* Toolbar / tab bar */
+.r1-toolbar{display:flex; align-items:center; justify-content:space-between; padding:16px 40px 0; gap:12px; flex-wrap:wrap; border-bottom:1px solid var(--line); margin-top:20px;}
+.r1-tabs{display:flex; gap:0;}
+.r1-tab{border:none; background:none; font-family:var(--sans); font-size:13.5px; font-weight:600; color:var(--ink-muted); padding:8px 20px 12px; cursor:pointer; border-bottom:2.5px solid transparent; transition:color 0.15s, border-color 0.15s; white-space:nowrap;}
+.r1-tab.on{color:var(--ink); border-bottom-color:var(--teal);}
+.r1-tab:hover:not(.on){color:var(--ink);}
+.r1-fold-btns{display:flex; gap:8px; padding-bottom:12px;}
+
+/* Sections area */
+.r1-sections{padding:20px 40px 100px; display:flex; flex-direction:column; gap:14px;}
+
+/* Section group */
+.r1-sec-head{width:100%; display:flex; align-items:center; gap:10px; padding:13px 18px; background:var(--panel); border:1px solid var(--line); border-radius:14px; cursor:pointer; text-align:left; font-family:var(--sans); color:var(--ink); transition:background 0.12s; flex-shrink:0;}
+.r1-sec-head:hover{background:#f8f9fd;}
+.r1-sec-head.collapsed{border-radius:14px;}
+.r1-sec-head:not(.collapsed){border-radius:14px 14px 0 0;}
+.r1-sec-body{border:1px solid var(--line); border-top:none; border-radius:0 0 14px 14px; overflow:hidden;}
+.r1-sec-body.r1-hidden{display:none;}
+.r1-dot{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
+.r1-sec-name{font-size:14px; font-weight:700; flex:1; min-width:0;}
+.r1-sec-badge{font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; white-space:nowrap; flex-shrink:0;}
+.r1-bars{display:flex; gap:2px; align-items:flex-end; flex-shrink:0; height:16px;}
+.r1-bars span{width:3px; border-radius:2px; display:block;}
+.r1-chev{flex-shrink:0; color:var(--ink-faint); display:flex; align-items:center; margin-left:2px; transition:transform 0.2s;}
+.r1-sec-head.collapsed .r1-chev{transform:rotate(-90deg);}
+
+/* Excerpt / figure cards */
+.r1-card{padding:18px 22px; border-bottom:1px solid var(--line); background:var(--panel); transition:background 0.12s; border-left:3px solid transparent; position:relative;}
+.r1-card:last-child{border-bottom:none;}
+.r1-card.r1-excluded{background:#fbfbfc; opacity:0.65;}
+.r1-card-top{display:flex; align-items:center; gap:10px; margin-bottom:9px;}
+.r1-type{font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:100px; white-space:nowrap;}
+.r1-db{font-size:12px; color:var(--ink-faint); font-weight:600;}
+.r1-card-title{font-size:14px; font-weight:700; color:var(--ink); margin-bottom:11px; line-height:1.4;}
+.r1-quote{border-left:3px solid var(--teal); margin:0 0 5px; padding:3px 0 3px 14px; font-size:13.5px; line-height:1.75; color:var(--ink); font-weight:500; font-style:normal; max-width:90ch;}
+.r1-ref{font-size:12px; color:var(--ink-faint); font-weight:500; margin:0 0 10px; padding-left:17px;}
+.r1-fig-img{max-width:260px; border:1px solid var(--line); border-radius:8px; display:block; margin-bottom:6px;}
+.r1-fig-cap{font-size:12px; color:var(--ink-muted); font-weight:500; margin-bottom:10px;}
+.r1-card-chips{display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px;}
+.r1-card-foot{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+.r1-excl-label{font-size:12px; color:#b91c1c; font-weight:700;}
+.r1-excl-btn{background:none; border:1px solid var(--line); border-radius:100px; padding:5px 16px; font-family:var(--sans); font-size:12px; font-weight:700; color:var(--ink-faint); cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.15s; white-space:nowrap; flex-shrink:0;}
+.r1-excl-btn:hover{border-color:rgba(185,28,28,0.4); color:#b91c1c;}
+.r1-card.r1-excluded .r1-excl-btn{border-color:var(--teal); color:var(--teal);}
+.r1-card.r1-excluded .r1-excl-btn:hover{border-color:#15803d; color:#15803d;}
+.r1-gap-note{padding:14px 22px; font-size:13px; background:rgba(185,28,28,0.04); color:var(--ink-muted); font-weight:500;}
+.r1-gap-note b{color:#b91c1c;}
+.r1-empty-note{padding:14px 22px; font-size:13px; color:var(--ink-faint); font-weight:500;}
+
+/* Fixed proceed bar */
+.r1-proceed{position:fixed; bottom:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:13px 40px; background:var(--panel); border-top:1px solid var(--line); box-shadow:0 -2px 16px rgba(15,31,74,0.07); z-index:9; gap:16px;}
+.r1-summary{font-size:13px; color:var(--ink-muted); font-weight:500; margin:0;}
+.r1-summary b{color:var(--ink); font-weight:700;}
 </style>
-<header class="banner">
-  <div class="wrap">
-    <h1>Medical Affairs Presentation Agent</h1>
-    <div class="badges" id="badges"></div>
-    <div class="art-type"><span class="art-pill">Artifact type: <b>Deck</b></span><span>A 45-minute educational deck for healthcare professionals, ready for a webinar. It covers the condition through to safety and clinical application, uses only the approved research, and carries no product or marketing content.</span></div>
-  </div>
-</header>
+<div id="infobar" class="infobar">
+  <span class="infobar-brand">Medical Affairs Presentation Agent</span>
+  <div class="infobar-sep"></div>
+  <span class="infobar-badge" id="infoApproved">✓ Approved</span>
+  <div class="infobar-sep"></div>
+  <div class="infobar-fields" id="infoFields"></div>
+  <span class="infobar-pill">Artifact · <b>Deck</b></span>
+</div>
 
 <div class="step-bar" id="stepBar">
   <div class="step-track" id="stepper" aria-label="Progress"></div>
@@ -455,13 +530,8 @@ html[data-es-mode="sa-review"] .banner{display:none !important;}
   </div>
   <div class="step-prog"><div class="step-prog-fill" id="stepProgFill"></div></div>
 </div>
-<div class="wrap">
+<div id="mainWrap" class="wrap">
   <main class="stage" id="stage"></main>
-  <div class="demo">
-    <span>Prototype demo controls</span>
-    <!-- ES: research-status demo toggle removed; approval comes from the research selected in Evidence Studio -->
-    <button type="button" class="link-btn" id="startOver">Start over</button>
-  </div>
 </div>
 <div id="overlayRoot"></div>
 <div id="esDlgRoot"></div><!-- ES: approval and rejection dialogs -->
@@ -691,11 +761,14 @@ function generate(store, id, guidance){
 
 /* ---------------- Rendering: shell ---------------- */
 function renderBadges(){
-  const paperIds = new Set(DATA.items.map(i=>i.paperId));
-  document.getElementById('badges').innerHTML =
-    (S.approved ? `<span class="status-badge approved">${ICON.shield}Approved research</span>` : `<span class="status-badge unapproved">${ICON.warn}Research not approved</span>`) +
-    `<span>Topic of the month <b>${esc(DATA.topic)}</b></span><span>Hero product of the month <b>DAO Enzyme</b></span><span>Papers <b>${paperIds.size}</b></span>${S.approved?`<span>Date approved <b>${window.ES_APPROVED_ON||DATA.received}</b></span>`:`<span>Date approved <b>Not yet approved</b></span>`}`;
-  /* ES: research-status demo toggle removed */
+  const f = document.getElementById('infoFields');
+  if(f) f.innerHTML =
+    `<span class="infobar-field">Topic · <b>${esc(DATA.topic)}</b></span>` +
+    `<span class="infobar-field">Hero Product · <b>DAO Enzyme</b></span>` +
+    `<span class="infobar-field">Date Approved · <b>${esc(window.ES_APPROVED_ON||DATA.received)}</b></span>`;
+  const ab = document.getElementById('infoApproved');
+  if(ab){ ab.textContent = S.approved ? '✓ Approved' : '⚠ Not Approved';
+    ab.style.cssText = S.approved ? '' : 'background:rgba(180,83,9,0.08);color:#b45309;border-color:rgba(180,83,9,0.22)'; }
 }
 function renderStepper(){
   // When submitted to sci review, hide steps 9 & 10 from the stepper
@@ -726,8 +799,11 @@ function renderStepper(){
 }
 function render(){
   renderBadges(); renderStepper();
+  const isS1 = S.step === 1;
+  const sb = document.getElementById('stepBar'); if(sb) sb.style.display = isS1 ? 'none' : '';
+  const mw = document.getElementById('mainWrap'); if(mw) mw.className = isS1 ? 'wrap wrap-full' : 'wrap';
   const st=document.getElementById('stage');
-  st.className = 'stage' + (S.step<=4 ? ' narrow' : '');
+  st.className = 'stage' + (isS1 ? ' stage-s1' : (S.step<=4 ? ' narrow' : ''));
   ensureIds(S.work);
   st.innerHTML = [null,step1,step2,step3,step4,step5,step6,step7,step8,step9,step10][S.step]();
   if(S.step===6){ const log=document.getElementById('chatLog'); if(log) log.scrollTop=log.scrollHeight; }
@@ -749,34 +825,138 @@ function chipsHtml(it){ const p=paperById[it.paperId];
   return `<div class="chips"><span class="chip">${esc(p.design)}</span><span class="chip">${esc(p.certainty)}</span><span class="chip">${p.citations} citations</span>${p.funding==='industry'?'<span class="chip warm">Industry-funded</span>':p.funding==='mixed'?'<span class="chip warm">Part industry-funded</span>':''}</div>`; }
 function gradeHtml(it){ const p=paperById[it.paperId]; return `<div class="grade grade-${p.grade}" title="Evidence grade ${p.grade}">${p.grade}</div>`; }
 
-/* ---------------- Step 1: Research review ---------------- */
+/* ---------------- Step 1: Research review (organize-screen layout) ---------------- */
 function step1(){
-  const u=using(); const left=leftOutSections().length;
-  let secs='';
-  DATA.sections.forEach((sec,i)=>{
+  const u=using(), left=leftOutSections().length;
+  const ex=u.filter(i=>i.kind==='excerpt').length, fg=u.filter(i=>i.kind==='figure').length;
+  const TCOLS=['#7eb8f7','#7cc8b8','#e5a14b','#f97b7b','#c084fc','#fb923c','#4ade80'];
+
+  function tpStyle(d){
+    const v=(d||'').toLowerCase();
+    if(v.includes('meta')&&v.includes('anal')) return 'background:rgba(109,40,217,0.09);color:#6d28d9';
+    if(v.includes('rct')||v.includes('randomiz')||v.includes('randomis')) return 'background:rgba(29,78,216,0.09);color:#1d4ed8';
+    if(v.includes('systematic')) return 'background:rgba(8,145,178,0.09);color:#0891b2';
+    if(v.includes('registry')) return 'background:rgba(220,38,38,0.09);color:#dc2626';
+    if(v.includes('cohort')||v.includes('real-world')) return 'background:rgba(234,88,12,0.09);color:#c2410c';
+    if(v.includes('cross')||v.includes('survey')) return 'background:rgba(16,185,129,0.09);color:#059669';
+    if(v.includes('case series')) return 'background:rgba(180,83,9,0.09);color:#b45309';
+    if(v.includes('expert')||v.includes('commentary')) return 'background:rgba(100,116,139,0.09);color:#475569';
+    return 'background:rgba(12,26,61,0.07);color:#3d5499';
+  }
+  function tpLabel(d){
+    const v=(d||'').toLowerCase();
+    if(v.includes('meta-analysis')||v.includes('meta analysis')) return 'Meta-Analysis';
+    if(v.includes('rct')||v.match(/randomized.*trial|randomised.*trial/)) return 'RCT';
+    if(v.includes('systematic review')) return 'Systematic Review';
+    if(v.includes('cross-sectional')) return 'Cross-Sectional';
+    if(v.includes('narrative review')) return 'Narrative Review';
+    if(v.includes('cohort')) return 'Cohort Study';
+    if(v.includes('real-world')) return 'Real-World';
+    if(v.includes('case-control')) return 'Case-Control';
+    if(v.includes('case series')) return 'Case Series';
+    if(v.includes('expert')||v.includes('commentary')) return 'Expert Opinion';
+    if(v.includes('registry')) return 'Registry';
+    return d||'Study';
+  }
+
+  let secHtml='';
+  DATA.sections.forEach((sec,si)=>{
+    const col=TCOLS[si%TCOLS.length];
     const all=secItems(sec).sort((a,b)=>(a.kind===b.kind?0:a.kind==='figure'?1:-1)||paperById[a.paperId].grade.localeCompare(paperById[b.paperId].grade));
     const inUse=all.filter(it=>!isEx(it.id));
-    const shown=all.filter(it=>S.filter==='all'||(S.filter==='use')===!isEx(it.id));
-    let inner;
-    if(!all.length) inner=`<div class="gap-note"><b>No approved research, so this section will be left out of the deck.</b> To include it, Medical Affairs needs to add research for it in the Evidence Agent.</div>`;
-    else if(!shown.length) inner=`<div class="hidden-note">${S.filter==='use'?'Everything here is excluded.':'Nothing excluded here.'}</div>`;
-    else inner=`<div class="cards">${shown.map(it=>{
-      const off=isEx(it.id);
-      const body = it.kind==='figure' ? `<div class="figure"><img src="${it.img}" alt="${esc(it.caption)}"><div class="figure-cap">${esc(it.caption)}<div class="chips">${it.asIs?'<span class="chip ok">Use as is</span>':'<span class="chip warm">Needs redesign</span>'}</div></div></div>` : `<blockquote class="quote">${esc(it.text)}</blockquote>`;
-      return `<article class="card${off?' is-aside':''}">${gradeHtml(it)}<div class="card-body">${body}${sourceHtml(it)}${chipsHtml(it)}</div><div class="card-foot"><span class="aside-label">Excluded. The agent won't use this.</span><button type="button" class="aside-btn" data-exclude="${it.id}">${off?'Include again':'Exclude'}</button></div></article>`; }).join('')}</div>`;
-    if(all.length && !inUse.length && S.filter!=='aside') inner=`<div class="gap-note" style="margin-bottom:10px"><b>All research here is excluded, so this section will be left out of the deck.</b> Include an item again to keep the section.</div>`+inner;
-    const count = inUse.length ? `<span class="sec-count">${inUse.length} of ${all.length} in use</span>` : `<span class="chip bad">Left out of deck</span>`;
-    secs += sectionShell(1,sec,i,count,inner);
+    const shown=all.filter(it=>S.filter==='all'||(S.filter==='use'&&!isEx(it.id))||(S.filter==='aside'&&isEx(it.id)));
+    const collapsed=S.collapsed[1].includes(sec);
+
+    let cardsHtml='';
+    if(!all.length){
+      cardsHtml=`<div class="r1-gap-note"><b>No approved research</b> — this section will be left out of the deck.</div>`;
+    } else if(!shown.length){
+      cardsHtml=`<div class="r1-empty-note">${S.filter==='use'?'Everything here is excluded.':'Nothing excluded here.'}</div>`;
+    } else {
+      shown.forEach(it=>{
+        const p=paperById[it.paperId], off=isEx(it.id);
+        let content='';
+        if(it.kind==='figure'){
+          const url=figureUrl ? figureUrl(it) : it.img;
+          content=`<img class="r1-fig-img" src="${url}" alt="${esc(it.caption)}"><div class="r1-fig-cap">${esc(it.caption)}</div>`;
+        } else {
+          content=`<blockquote class="r1-quote">${esc(it.text)}</blockquote><div class="r1-ref">— ${esc(it.ref)}</div>`;
+        }
+        const fund=p.funding==='industry'?'<span class="chip warm">Industry-funded</span>':p.funding==='mixed'?'<span class="chip warm">Part industry-funded</span>':'';
+        cardsHtml+=`<div class="r1-card${off?' r1-excluded':''}" style="border-left-color:${col}">
+          <div class="r1-card-top">
+            <span class="r1-type" style="${tpStyle(p.design)}">${tpLabel(p.design)}</span>
+            <span class="r1-db">${esc(p.journal)} · ${p.year}</span>
+          </div>
+          <div class="r1-card-title">${esc(p.title)}</div>
+          ${content}
+          <div class="r1-card-chips">
+            <span class="chip">${esc(p.certainty)}</span>
+            <span class="chip">${p.citations} citations</span>
+            ${fund}
+            <span class="chip">Grade ${p.grade}</span>
+          </div>
+          <div class="r1-card-foot">
+            ${off?'<span class="r1-excl-label">Excluded — agent won\'t use this</span>':'<span></span>'}
+            <button type="button" class="r1-excl-btn" data-exclude="${it.id}">
+              ${off?`<svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 5.5h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Include again`:`<svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 1.5l8 8M9.5 1.5l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Exclude`}
+            </button>
+          </div>
+        </div>`;
+      });
+      if(inUse.length===0 && S.filter!=='aside')
+        cardsHtml=`<div class="r1-gap-note"><b>All research here is excluded</b> — this section will be left out.</div>`+cardsHtml;
+    }
+
+    const badgeStyle=inUse.length
+      ?`background:rgba(44,82,204,0.08);color:#2c52cc;border:1px solid rgba(44,82,204,0.15)`
+      :`background:rgba(185,28,28,0.08);color:#b91c1c;border:1px solid rgba(185,28,28,0.15)`;
+    const badgeLabel=inUse.length?`${inUse.length} item${inUse.length===1?'':'s'}`:'Left out';
+    const bh=[10,7,14]; // bar heights
+    const bars=bh.map((h,bi)=>`<span style="height:${h}px;background:${col};opacity:${bi<inUse.length?0.75:0.15}"></span>`).join('');
+
+    secHtml+=`<div class="r1-sec">
+      <button type="button" class="r1-sec-head${collapsed?' collapsed':''}" data-fold="1" data-sec="${esc(sec)}">
+        <span class="r1-dot" style="background:${col}"></span>
+        <span class="r1-sec-name">${esc(sec)}</span>
+        <span class="r1-sec-badge" style="${badgeStyle}">${badgeLabel}</span>
+        <span class="r1-bars">${bars}</span>
+        <span class="r1-chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="r1-sec-body${collapsed?' r1-hidden':''}">${cardsHtml}</div>
+    </div>`;
   });
-  const ex=u.filter(i=>i.kind==='excerpt').length, fg=u.filter(i=>i.kind==='figure').length;
-  return `<div class="page-head"><div class="page-head-text"><h2>Review the research</h2><p>The agent builds the HCP deck from this research only, section by section. It adds nothing from general knowledge, so a section with no research is left out. The deck carries no product content. Exclude anything you don't want on a slide.</p></div>
-    <div class="tally"><div class="tally-item"><div class="tally-num">${u.length}</div><div class="tally-lbl">Agent will use</div></div><div class="tally-item"><div class="tally-num">${DATA.items.length-u.length}</div><div class="tally-lbl">Excluded</div></div><div class="tally-item${left?' warn':''}"><div class="tally-num">${left}</div><div class="tally-lbl">Sections left out</div></div></div></div>
-  <div class="toolbar"><div class="tool-left"><div class="seg" role="group" aria-label="Filter evidence">
-    <button type="button" data-filter="all" aria-pressed="${S.filter==='all'}">All</button><button type="button" data-filter="use" aria-pressed="${S.filter==='use'}">Using</button><button type="button" data-filter="aside" aria-pressed="${S.filter==='aside'}">Excluded</button></div>${foldButtons(1)}</div>
-    <span class="note">${ICON.lock} Read-only research. Excluding only removes it from this deck.</span></div>
-  ${secs}
-  <div class="next-bar"><p class="next-summary">The agent will build the deck from <b>${ex} excerpt${ex===1?'':'s'}</b> and <b>${fg} figure${fg===1?'':'s'}</b>.${left?` <b>${left} section${left===1?'':'s'}</b> will be left out.`:''}</p>
-    <button type="button" class="btn" data-go="2">Figure refinement ${ICON.arrow}</button></div>`;
+
+  const warnLeft=left?` <span style="color:#b91c1c;font-weight:700">${left} section${left===1?'':'s'} left out.</span>`:'';
+  return `<div class="r1-layout">
+    <div class="r1-header">
+      <div>
+        <h1 class="r1-title">Review Your Research</h1>
+        <p class="r1-sub">Excerpts and figures from approved research, organised by section. The agent builds the deck from this research only — exclude anything you don't want on a slide.</p>
+      </div>
+      <div class="tally">
+        <div class="tally-item"><div class="tally-num">${u.length}</div><div class="tally-lbl">In use</div></div>
+        <div class="tally-item"><div class="tally-num">${DATA.items.length-u.length}</div><div class="tally-lbl">Excluded</div></div>
+        <div class="tally-item${left?' warn':''}"><div class="tally-num">${left}</div><div class="tally-lbl">Sections left out</div></div>
+      </div>
+    </div>
+    <div class="r1-toolbar">
+      <div class="r1-tabs">
+        <button type="button" class="r1-tab${S.filter==='all'?' on':''}" data-filter="all">All</button>
+        <button type="button" class="r1-tab${S.filter==='use'?' on':''}" data-filter="use">In use</button>
+        <button type="button" class="r1-tab${S.filter==='aside'?' on':''}" data-filter="aside">Excluded</button>
+      </div>
+      <div class="r1-fold-btns">
+        <button type="button" class="pill-btn" data-foldall="1" data-open="1">Expand all</button>
+        <button type="button" class="pill-btn" data-foldall="1" data-open="0">Collapse all</button>
+      </div>
+    </div>
+    <div class="r1-sections">${secHtml}</div>
+    <div class="r1-proceed">
+      <p class="r1-summary">The agent will use <b>${ex} excerpt${ex===1?'':'s'}</b> and <b>${fg} figure${fg===1?'':'s'}</b>.${warnLeft}</p>
+      <button type="button" class="btn" data-go="2">Figure refinement ${ICON.arrow}</button>
+    </div>
+  </div>`;
 }
 
 /* ---------------- Shared: figure picker ---------------- */
