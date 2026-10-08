@@ -1277,7 +1277,19 @@ export default class MedFactory extends React.Component {
       this._skipHistory = false;
     };
     window.addEventListener('popstate', this._onPopState);
-    window.ESHost = { event: () => {} };
+    window.ESHost = {
+      event: (_iframe, evt, _data) => {
+        if (evt === 'submitted') {
+          // MA reviewer confirmed submission → mark workspace as sent-to-sci so it appears in Arjun's inbox
+          this.setState((s) => ({
+            pptStatus: 'sent-to-sci',
+            createdWorkspaces: s.createdWorkspaces.map((w) =>
+              w.id === s.activeWorkspaceId ? { ...w, pptStatus: 'sent-to-sci' } : w
+            ),
+          }));
+        }
+      },
+    };
   }
   componentDidUpdate(prevProps, prevState) {
     this.applyTheme();
